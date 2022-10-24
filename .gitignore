@@ -1,4 +1,3 @@
-backend/build/
-backend/node_modules/
-frontend/node_modules/
-frontend/build/
+# Does the same as */build etc.
+build
+node_modules
