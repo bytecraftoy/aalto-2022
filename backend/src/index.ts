@@ -2,6 +2,8 @@ import express from "express";
 
 const PORT = process.env.PORT || 3030;
 
+const testNumber = 42;
+
 const app = express();
 
 app.get("/", (req, res) => {
@@ -11,3 +13,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () =>
   console.log(`server running on http://localhost:${PORT}`)
 );
+
+export { testNumber };
