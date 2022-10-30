@@ -30,4 +30,4 @@ jobs:
       - run: npm run setup-project
       - run: npm run prettier
       - run: npm run build-project
-      #- run: npm test
+      - run: npm run test-project
