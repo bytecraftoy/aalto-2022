@@ -1,13 +1,22 @@
-export const TailwindTestModal = () => {
-    return (
-      <div className="overflow-hidden bg-slate-700 shadow sm:rounded-lg">
-        <div className="px-10 py-8">
-          <h3 className="text-2xl font-medium leading-6 text-stone-400">Missile information</h3>
-        </div>
+import { Disclosure } from '@headlessui/react'
+import { ChevronUpIcon } from '@heroicons/react/20/solid'
 
-        <div className="border-t border-slate-600">
-          <dl>
-            <div className="px-8 py-8">
+export const TailwindTestModal = () => {
+  return (
+    <div className="w-full px-4 pt-16">
+      <div className="mx-auto w-full max-w-xl rounded-2xl bg-slate-700 p-2">
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button className="px-10 py-8 text-2xl font-medium leading-6 text-stone-400 flex w-full justify-between rounded-lg bg-slate-700 text-left hover:bg-slate-600">
+                <span>Missile information</span>
+                <ChevronUpIcon
+                  className={`${
+                    open ? '' : 'rotate-180 transform'
+                  } h-5 w-5 text-slate-500`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel className="border-t border-slate-600 px-8 py-8">
                 <p className="text-stone-400 font-medium text-lg">
                     The missile knows where it is at all times. It knows this because it knows where it isn’t.
                     By subtracting where it is from where it isn’t, or where it isn’t from where it is (whichever is greater),
@@ -23,9 +32,11 @@ export const TailwindTestModal = () => {
                     where it wasn’t, or vice-versa, and by differentiating this from the algebraic sum of where it shouldn’t be, and where
                     it was, it is able to obtain the deviation and its variation, which is called error.
                 </p>
-            </div>
-          </dl>
-        </div>
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
       </div>
-    )
-  }
+    </div>
+  )
+}

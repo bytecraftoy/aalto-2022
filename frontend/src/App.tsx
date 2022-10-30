@@ -20,8 +20,8 @@ function App() {
         >
           Learn React
         </a>
-        <div className="max-w-2xl py-8">
-          <TailwindTestModal />          
+        <div className="min-w-full py-2">
+          <TailwindTestModal />
         </div>
       </header>
     </div>
