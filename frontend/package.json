@@ -41,6 +41,8 @@
     ]
   },
   "devDependencies": {
+    "@headlessui/react": "^1.7.3",
+    "@heroicons/react": "^2.0.12",
     "autoprefixer": "^10.4.13",
     "eslint-config-prettier": "^8.5.0",
     "postcss": "^8.4.18",

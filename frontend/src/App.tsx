@@ -1,12 +1,13 @@
 import React from "react";
-import logo from "./logo.svg";
+import { CodeBracketIcon } from "@heroicons/react/24/outline"
+import { TailwindTestModal } from "./components/TailwindTestModal";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header h-screen bg-react text-white text-2xl justify-center items-center flex flex-col">
+      <header className="App-header min-h-screen bg-react text-white text-2xl justify-center items-center flex flex-col">
         <div className="animate-spin">
-          <img src={logo} className="App-logo h-40" alt="logo" />
+          <CodeBracketIcon className="App-logo h-40" />
         </div>
         <p className="">
           Edit <code>src/App.tsx</code> and save to reload.
@@ -19,6 +20,9 @@ function App() {
         >
           Learn React
         </a>
+        <div className="max-w-2xl py-8">
+          <TailwindTestModal />          
+        </div>
       </header>
     </div>
   );
