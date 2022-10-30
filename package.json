@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "prettier": "npx prettier --check .",
+    "prettier:write": "npx prettier --write .",
+    "setup-project": "npm run install-backend && npm run install-frontend && npm install",
+    "build-project": "npm run build-backend && npm run build-frontend",
+    "install-backend": "cd ./backend && npm install && cd ..",
+    "install-frontend": "cd ./frontend && npm install && cd ..",
+    "build-backend": "cd ./backend && npm run build && cd ..",
+    "build-frontend": "cd ./frontend && npm run build && cd .."
+  },
+  "devDependencies": {
+    "prettier": "2.7.1"
+  }
+}

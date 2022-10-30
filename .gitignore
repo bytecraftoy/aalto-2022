@@ -1,0 +1,3 @@
+# Does the same as */build etc.
+build
+node_modules
