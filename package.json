@@ -5,12 +5,15 @@
     "setup-project": "npm run install-backend && npm run install-frontend && npm install",
     "build-project": "npm run build-backend && npm run build-frontend",
     "test-project": "npm run test-backend && npm run test-frontend",
+    "lint-project": "npm run lint-backend && npm run lint-frontend",
     "install-backend": "cd ./backend && npm install && cd ..",
     "install-frontend": "cd ./frontend && npm install && cd ..",
     "build-backend": "cd ./backend && npm run build && cd ..",
     "build-frontend": "cd ./frontend && npm run build && cd ..",
     "test-backend": "cd ./backend && npm test && cd ..",
-    "test-frontend": "cd ./frontend && npm test && cd .."
+    "test-frontend": "cd ./frontend && npm test && cd ..",
+    "lint-backend": "cd ./backend && npm run lint && cd ..",
+    "lint-frontend": "cd ./frontend && npm run lint && cd .."
   },
   "devDependencies": {
     "prettier": "2.7.1"

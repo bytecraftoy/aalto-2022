@@ -29,5 +29,6 @@ jobs:
           cache: "npm"
       - run: npm run setup-project
       - run: npm run prettier
+      - run: npm run lint-project
       - run: npm run build-project
       - run: npm run test-project
