@@ -1,0 +1,1 @@
+GET http://localhost:3030/mirror/hello/there.txt
