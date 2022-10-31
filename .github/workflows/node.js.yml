@@ -4,31 +4,31 @@
 name: Node.js CI
 
 on:
-  # Run on all branches
-  push:
-  # Run on all pull requests
-  pull_request:
+    # Run on all branches
+    push:
+    # Run on all pull requests
+    pull_request:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        # https://nodejs.org/en/about/releases/
-        # LTS: 18.x
-        # Current: 19.x
-        node-version: [18.x, 19.x]
+        strategy:
+            matrix:
+                # https://nodejs.org/en/about/releases/
+                # LTS: 18.x
+                # Current: 19.x
+                node-version: [18.x, 19.x]
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - run: npm run setup-project
-      - run: npm run prettier
-      - run: npm run lint-project
-      - run: npm run build-project
-      - run: npm run test-project
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+            - run: npm run setup-project
+            - run: npm run prettier
+            - run: npm run lint-project
+            - run: npm run build-project
+            - run: npm run test-project
