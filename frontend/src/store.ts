@@ -8,4 +8,4 @@ const store = configureStore({
     reducer,
 });
 
-export default store;
+export { store };
