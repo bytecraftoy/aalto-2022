@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import app from '../index';
+import { app } from '../app';
 const api = supertest(app);
 
 test('mirror router responds correctly', async () => {
