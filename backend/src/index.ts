@@ -7,7 +7,7 @@ const app = express();
 const magicNumber = 42;
 
 app.get("/", (req, res) => {
-  res.status(200).send('Hello world');
+  res.status(200).send("Hello world");
 });
 
 const server = app.listen(PORT, () =>
