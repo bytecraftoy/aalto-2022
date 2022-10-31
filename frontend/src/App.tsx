@@ -2,6 +2,7 @@ import React from "react";
 //import { CodeBracketIcon } from "@heroicons/react/24/outline";
 import { ContentPanel } from "./components/ContentPanel";
 import { PromptCategoryBox } from "./components/PromptCategoryBox";
+import { PromptIOBox } from "./components/PromptIOBox";
 
 function App() {
   return (
@@ -15,8 +16,13 @@ function App() {
       </header>
       <div className="min-w-full py-2">
         <ContentPanel>
+          <div>
           <div className="flex flex-row justify-center items-center">
             <PromptCategoryBox />
+          </div>
+          <div>
+            <PromptIOBox />
+          </div>
           </div>
         </ContentPanel>
       </div>
