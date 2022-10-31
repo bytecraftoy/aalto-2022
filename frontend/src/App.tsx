@@ -17,11 +17,14 @@ function App() {
             <div className="min-w-full py-2">
                 <ContentPanel>
                     <div>
-                        <div className="flex flex-row justify-center items-center">
+                        <div className="flex flex-row justify-around items-center">
                             <PromptCategoryBox />
                         </div>
                         <div>
                             <PromptIOBox />
+                        </div>
+                        <div>
+                            <button> Generate content </button>
                         </div>
                     </div>
                 </ContentPanel>

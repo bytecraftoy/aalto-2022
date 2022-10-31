@@ -1,6 +1,6 @@
 export const PromptCategoryBox = () => {
     return (
-        <div className="w-full flex flex-col min-h-fit justify-start items-center">
+        <div className="w-full flex flex-col min-h-fit justify-start items-center my-8">
             <h2 className="text-white font-medium text-2xl pb-6"> Category </h2>
             <input
                 type={'text'}
