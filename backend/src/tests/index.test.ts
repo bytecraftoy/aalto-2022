@@ -1,6 +1,9 @@
-import { magicNumber, server } from "../index";
+import supertest from 'supertest';
+import { server } from '../index';
+const api = supertest(server);
 
-test("The magic number should be 42", () => {
-  expect(magicNumber).toBe(42);
-  server.close();
+test('can find the api-endpoint', async () => {
+    const response = await api.get('/').expect(200);
+
+    expect(response.text).toBe('Hello world');
 });
