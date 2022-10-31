@@ -7,7 +7,7 @@ const app = express();
 const magicNumber = 42;
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.status(200).send('Hello world');
 });
 
 const server = app.listen(PORT, () =>
@@ -15,3 +15,5 @@ const server = app.listen(PORT, () =>
 );
 
 export { server, magicNumber };
+
+export default app;
