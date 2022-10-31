@@ -1,5 +1,5 @@
 import http from 'http';
-import app from './app';
+import { app } from './app';
 
 const PORT = process.env.PORT || 3030;
 
@@ -10,4 +10,4 @@ if (process.env.NODE_ENV !== 'test')
         console.log(`server running on http://localhost:${PORT}`)
     );
 
-export default server;
+export { server };
