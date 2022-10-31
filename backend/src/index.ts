@@ -1,21 +1,11 @@
-import express from "express";
-
+import http from 'http';
+import app from './app';
 
 const PORT = process.env.PORT || 3030;
 
-const app = express();
+const server = http.createServer(app);
 
-const magicNumber = 42;
+if(process.env.NODE_ENV === 'test')
+    server.listen(PORT, () => console.log(`server running on http://localhost:${PORT}`));
 
-app.get("/", (req, res) => {
-  res.status(200).send("Hello world");
-});
-
-
-const server = app.listen(PORT, () =>
-  console.log(`server running on http://localhost:${PORT}`)
-);
-
-export { server, magicNumber };
-
-export default app;
+export default server;

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest  NODE-ENV=test --verbose --runInBand --forceExit",
+    "test": "jest --verbose --runInBand --forceExit",
     "tsc": "tsc",
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint --ext .ts .",
