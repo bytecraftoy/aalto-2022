@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 //import { CodeBracketIcon } from "@heroicons/react/24/outline";
 import { ContentPanel } from './components/ContentPanel';
 import { PromptCategoryBox } from './components/PromptCategoryBox';
 import { PromptIOBox } from './components/PromptIOBox';
+import { apiFetch } from './utils/apiFetch';
 
 function App() {
+    const [input, setInput] = useState('');
+    const [output, setOutput] = useState('');
+
+    const generateContent = async () => {
+        try {
+            const t = await apiFetch('/mirror/', {
+                method: 'POST',
+                body: input,
+            });
+            setOutput(t);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     return (
         <div className="App bg-react min-h-screen justify-start items-center flex flex-col">
             <header className="App-header text-white text-2xl py-10">
@@ -21,10 +37,18 @@ function App() {
                             <PromptCategoryBox />
                         </div>
                         <div>
-                            <PromptIOBox />
+                            <PromptIOBox
+                                input={input}
+                                setInput={setInput}
+                                output={output}
+                                setOutput={setOutput}
+                            />
                         </div>
                         <div>
-                            <button> Generate content </button>
+                            <button onClick={generateContent}>
+                                {' '}
+                                Generate content{' '}
+                            </button>
                         </div>
                     </div>
                 </ContentPanel>
