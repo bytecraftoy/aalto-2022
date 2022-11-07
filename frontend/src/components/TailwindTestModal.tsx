@@ -1,19 +1,22 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
-export const TailwindTestModal = () => {
+export const InfoModal = () => {
     return (
-        <div className="w-full px-4 pt-16">
-            <div className="mx-auto w-full max-w-xl rounded-2xl bg-slate-700 p-2">
+        <div className="w-full px-4 pt-6 pb-6">
+            <div className="mx-auto w-full max-w-xl rounded-2xl bg-panel p-2">
                 <Disclosure>
                     {({ open }) => (
                         <>
-                            <Disclosure.Button className="px-10 py-8 text-2xl font-medium leading-6 text-stone-400 flex w-full justify-between rounded-lg bg-slate-700 text-left hover:bg-slate-600 transition-colors">
-                                <span>Missile information</span>
+                            <Disclosure.Button className="px-10 py-8 text-2xl font-medium leading-6 text-textcolor flex w-full justify-between rounded-lg bg-panel text-left hover:bg-slate-600 transition-colors">
+                                <div className="flex flex-row justify-around items-center w-full">
+                                    <span>Info</span>
+                                </div>
+
                                 <ChevronUpIcon
                                     className={`${
                                         open ? '' : 'rotate-180 transform'
-                                    } h-5 w-5 text-slate-500`}
+                                    } h-5 w-5 text-textcolor`}
                                 />
                             </Disclosure.Button>
                             <Transition
@@ -29,46 +32,27 @@ export const TailwindTestModal = () => {
                                     static
                                     className="border-t border-slate-600 px-8 py-8"
                                 >
-                                    <p className="text-stone-400 font-medium text-lg">
-                                        The missile knows where it is at all
-                                        times. It knows this because it knows
-                                        where it isn’t. By subtracting where it
-                                        is from where it isn’t, or where it
-                                        isn’t from where it is (whichever is
-                                        greater), it obtains a difference, or
-                                        deviation. The guidance subsystem uses
-                                        deviations to generate corrective
-                                        commands to drive the missile from a
-                                        position where it is to a position where
-                                        it isn’t, and arriving at a position
-                                        where it wasn’t, it now is.
-                                        Consequently, the position where it is,
-                                        is now the position that it wasn’t, and
-                                        it follows that the position that it
-                                        was, is now the position that it isn’t.
-                                        In the event that the position that it
-                                        is in is not the position that it
-                                        wasn’t, the system has acquired a
-                                        variation, the variation being the
-                                        difference between where the missile is,
-                                        and where it wasn’t. If variation is
-                                        considered to be a significant factor,
-                                        it too may be corrected by the GEA.
-                                        However, the missile must also know
-                                        where it was. The missile guidance
-                                        computer scenario works as follows.
-                                        Because a variation has modified some of
-                                        the information the missile has
-                                        obtained, it is not sure just where it
-                                        is. However, it is sure where it isn’t,
-                                        within reason, and it knows where it
-                                        was. It now subtracts where it should be
-                                        from where it wasn’t, or vice-versa, and
-                                        by differentiating this from the
-                                        algebraic sum of where it shouldn’t be,
-                                        and where it was, it is able to obtain
-                                        the deviation and its variation, which
-                                        is called error.
+                                    <p className="text-textcolor font-medium text-lg">
+                                        Did you ever hear the tragedy of Darth
+                                        Plagueis The Wise? I thought not. It’s
+                                        not a story the Jedi would tell you.
+                                        It’s a Sith legend. Darth Plagueis was a
+                                        Dark Lord of the Sith, so powerful and
+                                        so wise he could use the Force to
+                                        influence the midichlorians to create
+                                        life... He had such a knowledge of the
+                                        dark side that he could even keep the
+                                        ones he cared about from dying. The dark
+                                        side of the Force is a pathway to many
+                                        abilities some consider to be unnatural.
+                                        He became so powerful... the only thing
+                                        he was afraid of was losing his power,
+                                        which eventually, of course, he did.
+                                        Unfortunately, he taught his apprentice
+                                        everything he knew, then his apprentice
+                                        killed him in his sleep. Ironic. He
+                                        could save others from death, but not
+                                        himself.
                                     </p>
                                 </Disclosure.Panel>
                             </Transition>
