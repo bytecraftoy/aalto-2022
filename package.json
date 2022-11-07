@@ -1,21 +1,30 @@
 {
     "scripts": {
+        "setup-project": "npm run install:backend && npm run install:frontend && npm install",
+        "build-project": "run-s build:*",
+        "test-project": "run-s test:*",
+        "lint-project": "run-s lint:*",
+        "deploy-project": "npm run setup-project && run-s build-project deploy:*",
+        "demo-project": "npm run deploy-project && cd deploy && node index.js",
+        "dev-project": "npm run setup-project && npm run build-project && run-p dev:*",
+        "install:frontend": "cd ./frontend && npm install && cd ..",
+        "install:backend": "cd ./backend && npm install && cd ..",
+        "build:backend": "cd ./backend && npm run build && cd ..",
+        "build:frontend": "cd ./frontend && npm run build && cd ..",
+        "test:backend": "cd ./backend && npm test && cd ..",
+        "test:frontend": "cd ./frontend && npm test && cd ..",
+        "lint:backend": "cd ./backend && npm run lint && cd ..",
+        "lint:frontend": "cd ./frontend && npm run lint && cd ..",
+        "deploy:backend": "cpy . ../../deploy --cwd=backend/build && cpy node_modules ../deploy --dot --cwd=backend",
+        "deploy:frontend": "cpy . ../../deploy/public --cwd=frontend/build",
+        "dev:backend": "cd ./backend && npm run start",
+        "dev:frontend": "cd ./frontend && npm run start",
         "prettier": "npx prettier --check .",
-        "prettier:write": "npx prettier --write .",
-        "setup-project": "npm run install-backend && npm run install-frontend && npm install",
-        "build-project": "npm run build-backend && npm run build-frontend",
-        "test-project": "npm run test-backend && npm run test-frontend",
-        "lint-project": "npm run lint-backend && npm run lint-frontend",
-        "install-backend": "cd ./backend && npm install && cd ..",
-        "install-frontend": "cd ./frontend && npm install && cd ..",
-        "build-backend": "cd ./backend && npm run build && cd ..",
-        "build-frontend": "cd ./frontend && npm run build && cd ..",
-        "test-backend": "cd ./backend && npm test && cd ..",
-        "test-frontend": "cd ./frontend && npm test && cd ..",
-        "lint-backend": "cd ./backend && npm run lint && cd ..",
-        "lint-frontend": "cd ./frontend && npm run lint && cd .."
+        "prettier-write": "npx prettier --write ."
     },
     "devDependencies": {
+        "cpy-cli": "^4.2.0",
+        "npm-run-all": "^4.1.5",
         "prettier": "2.7.1"
     }
 }
