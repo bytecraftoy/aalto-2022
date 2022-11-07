@@ -2,8 +2,7 @@ import supertest from 'supertest';
 import { server } from '../index';
 const api = supertest(server);
 
-test('can find the api-endpoint', async () => {
-    const response = await api.get('/').expect(200);
-
-    expect(response.text).toBe('Hello world');
+test('The CORS headers are available', async () => {
+    const response = await api.get('/');
+    expect(response.headers).toHaveProperty('access-control-allow-origin', '*');
 });
