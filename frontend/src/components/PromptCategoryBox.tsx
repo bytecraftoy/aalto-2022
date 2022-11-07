@@ -8,8 +8,7 @@ export const PromptCategoryBox = (props: {
     return (
         <div className="w-full flex flex-col min-h-fit justify-start items-center mt-2 mb-20">
             <h2 className="text-textcolor font-medium text-2xl pb-6">
-                {' '}
-                Category{' '}
+                Category
             </h2>
             <input
                 type={'text'}
