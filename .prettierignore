@@ -1,6 +1,7 @@
 public
 build
 node_modules
+deploy
 
 coverage
 .docusaurus
