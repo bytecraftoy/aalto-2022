@@ -50,7 +50,6 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
 
     return (
         <div className="w-full px-4 py-12">
-            <Button onClick={() => console.log('hello')} name="Hello world" />
             <div className="mx-auto my-auto w-full max-w-6xl rounded-2xl bg-panel p-12 min-h-fit">
                 <div className="flex flex-row justify-around items-center">
                     <PromptCategoryBox
@@ -59,12 +58,10 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                     />
                 </div>
                 <div className="flex flex-row justify-center items-center">
-                    
                     <Button onClick={generateAll} name="Generate Content" />
                     <Button onClick={addPromptBox} name="Add box" />
-
                 </div>
-                
+
                 <div className="flex flex-row flex-wrap justify-center items-center">
                     {promptBoxes.map((p) => {
                         return (

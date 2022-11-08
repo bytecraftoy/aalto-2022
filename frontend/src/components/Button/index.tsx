@@ -6,7 +6,6 @@ interface ButtonProp {
 }
 
 export const Button: React.FC<ButtonProp> = ({ onClick, name }) => {
- 
     return (
         <button
             className="rounded-lg bg-textfield text-textcolor h-16 min-h-fit font-medium text-xl px-4 text-center mx-6 mt-8 hover:bg-slate-500 transition-colors outline-none outline-offset-0 focus:outline-textcolor"
@@ -14,6 +13,5 @@ export const Button: React.FC<ButtonProp> = ({ onClick, name }) => {
         >
             {name}
         </button>
-    )
-}
-
+    );
+};
