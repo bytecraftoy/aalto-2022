@@ -5,6 +5,7 @@ import { randomInt } from 'crypto';
 import { act } from 'react-dom/test-utils';
 import { randomUUID } from 'crypto';
 
+//randomUUID isn't normally usable for reac-dom tests, so add it explicitly
 Object.defineProperty(global.self, 'crypto', {
     value: {
         randomUUID: () => randomUUID(),

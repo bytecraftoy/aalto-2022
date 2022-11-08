@@ -1,6 +1,11 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
+/**
+ * A collapsible infobox based on
+ * headlessUI Disclosure.
+ *
+ */
 export const InfoModal = () => {
     return (
         <div className="w-full px-4 pt-6 pb-6">

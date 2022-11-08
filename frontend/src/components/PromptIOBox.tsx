@@ -1,20 +1,31 @@
 import { FC } from 'react';
 
+/**
+ * Minimum required data for representing PromptIOBox state.
+ * Should also include the attributes we care about for import/export
+ */
 export interface PromptData {
     id: string;
     input: string;
     output: string;
 }
 
+/**
+ * Visible PromptIOBox state, and callback functions for
+ * performing necessary actions of the box.
+ */
 interface PromptIOBoxProps {
     input: string;
     output: string;
     setInput: (s: string) => void;
     setOutput: (s: string) => void;
     generate: () => void;
-    deleteSelf: (() => void) | null;
+    deleteSelf: (() => void) | null; //null --> don't show button
 }
-
+/**
+ * Component containing editable textareas for Input/Output with AI
+ * generation.
+ */
 export const PromptIOBox: FC<PromptIOBoxProps> = ({
     input,
     output,
@@ -23,6 +34,7 @@ export const PromptIOBox: FC<PromptIOBoxProps> = ({
     generate,
     deleteSelf,
 }) => {
+    //Calc approximately how tall a text prompt is drawn
     const lineHeight = (text: string) => {
         return `${Math.min(
             20,

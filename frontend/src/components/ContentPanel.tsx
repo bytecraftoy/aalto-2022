@@ -9,23 +9,28 @@ interface ContentPanelProps {
 }
 
 export const ContentPanel: FC<ContentPanelProps> = () => {
+    //Component state consists of category prompt, and N multiprompts (id, input, output)
     const [category, setCategory] = useState('');
     const [promptBoxes, setPromptBoxes] = useState<PromptData[]>([]);
 
-    const deletePromptBox = (id: string) =>
+    //Callbacks to add or remove PromptIOBoxes to the panels
+    const deletePromptBox = (id: string) => {
         setPromptBoxes((prev) => prev.filter((p) => p.id !== id));
-    const addPromptBox = () =>
-        setPromptBoxes((prev) => [
-            ...prev,
-            { id: crypto.randomUUID(), input: '', output: '' },
-        ]);
+    };
+    const addPromptBox = () => {
+        const newBox = { id: crypto.randomUUID(), input: '', output: '' };
+        setPromptBoxes((prev) => [...prev, newBox]);
+    };
 
+    //Callbacks to asynchronously fetch AI data from backend
     const generateAll = () => promptBoxes.forEach(generateOutput);
     const generateOutput = async (p: PromptData) => {
         setPromptOutput(p.id, await generateText(p.input, category));
     };
 
+    //Callback to modify the output area of a PromptIOBox by id
     const setPromptInput = (id: string, input: string) => {
+        //Replace the box that matches id with a new object where input is changed.
         setPromptBoxes((prev) =>
             prev.map((o) =>
                 o.id === id ? { id: id, input: input, output: o.output } : o
@@ -33,6 +38,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
         );
     };
 
+    //Callback to modify the input area of a PromptIOBox by id
     const setPromptOutput = (id: string, output: string) => {
         setPromptBoxes((prev) =>
             prev.map((o) =>

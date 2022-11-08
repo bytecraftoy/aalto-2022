@@ -6,6 +6,7 @@ interface PromptCategoryBoxProps {
     setCategory: StateHook<string>;
 }
 
+/** Component exposing a textfield for editing a panel category */
 export const PromptCategoryBox: FC<PromptCategoryBoxProps> = ({
     category,
     setCategory,
