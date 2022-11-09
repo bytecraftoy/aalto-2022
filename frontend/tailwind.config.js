@@ -15,26 +15,28 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-            
+                // Color thema of the application
+                // can be used in normal tailwind syntax, e.g.,
+                // bg-primary-dark for to use '#002884'
                 primary: {
                     light: '#757ce8',
                     main: '#3f50b5',
                     dark: '#002884',
                     contrastText: '#fff',
-                  },
-                  secondary: {
+                },
+                secondary: {
                     light: '#ff7961',
                     main: '#f44336',
                     dark: '#ba000d',
                     contrastText: '#000',
-                  },
+                },
 
-                  background: '#CFD8DC',
-                  surface: '#fff',
-                  onSurface: '#000',
-                  onBackground: '#000',
+                background: '#CFD8DC',
+                surface: '#fff',
+                onSurface: '#000',
+                onBackground: '#000',
 
-                  test: '#d0d7de'
+                test: '#d0d7de',
             },
         },
     },

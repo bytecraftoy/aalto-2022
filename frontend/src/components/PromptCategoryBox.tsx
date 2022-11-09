@@ -17,16 +17,7 @@ export const PromptCategoryBox: FC<PromptCategoryBoxProps> = ({
             <h2 className="text-onBackground font-medium text-2xl pb-6">
                 Category
             </h2>
-            {/* <input
-                type={'text'}
-                spellCheck={'false'}
-                className="w-full max-w-2xl rounded-xl h-10 text-textcolor bg-textfield font-medium text-xl px-4 text-center outline-none outline-offset-0 focus:outline-textcolor transition-[outline-color]"
-                value={category}
-                onInput={({ target }) =>
-                    setCategory((target as HTMLInputElement).value)
-                }
-            /> */}
-            <Input 
+            <Input
                 type={'text'}
                 value={category}
                 onInput={({ target }) =>
