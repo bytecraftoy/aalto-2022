@@ -8,8 +8,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.text({ type: '*/*' }));
 app.use('/mirror', mirror);
+app.use(express.static('./public/'));
+
+/*
 app.get('/', (req, res) => {
     res.status(200).send('Hello world');
 });
-
+*/
 export { app };
