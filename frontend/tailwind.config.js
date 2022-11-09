@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * Tailwind configuration file.
  * Responsible for listing the path of template files (for this project, mainly typescript and tsx sources)
@@ -8,19 +9,32 @@
 /** @type {import('tailwindcss').Config} */
 const plugin = require('tailwindcss/plugin');
 
+// eslint-disable-next-line no-undef
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
     theme: {
         extend: {
             colors: {
-                react: {
-                    DEFAULT: '#282c34',
-                },
+            
+                primary: {
+                    light: '#757ce8',
+                    main: '#3f50b5',
+                    dark: '#002884',
+                    contrastText: '#fff',
+                  },
+                  secondary: {
+                    light: '#ff7961',
+                    main: '#f44336',
+                    dark: '#ba000d',
+                    contrastText: '#000',
+                  },
 
-                //Custom colors, added as css classes like bg-textfield, font-textfield etc.
-                textfield: '#495E77',
-                textcolor: '#C7D3D1',
-                panel: '#334155',
+                  background: '#CFD8DC',
+                  surface: '#fff',
+                  onSurface: '#000',
+                  onBackground: '#000',
+
+                  test: '#d0d7de'
             },
         },
     },

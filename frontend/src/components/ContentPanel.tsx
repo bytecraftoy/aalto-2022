@@ -49,8 +49,8 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     };
 
     return (
-        <div className="w-full px-4 py-12">
-            <div className="mx-auto my-auto w-full max-w-6xl rounded-2xl bg-panel p-12 min-h-fit">
+        <div className="w-full px-4 py-12 ">
+            <div className="mx-auto my-auto w-full max-w-6xl rounded-2xl bg-panel p-12 min-h-fit bg-surface shadow-lg">
                 <div className="flex flex-row justify-around items-center">
                     <PromptCategoryBox
                         category={category}
