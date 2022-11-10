@@ -1,10 +1,16 @@
+import { FC } from 'react';
 import { StateHook } from '../utils/types';
 
-export const PromptCategoryBox = (props: {
+interface PromptCategoryBoxProps {
     category: string;
     setCategory: StateHook<string>;
+}
+
+/** Component exposing a textfield for editing a panel category */
+export const PromptCategoryBox: FC<PromptCategoryBoxProps> = ({
+    category,
+    setCategory,
 }) => {
-    const { category, setCategory } = props;
     return (
         <div className="w-full flex flex-col min-h-fit justify-start items-center mt-2 mb-20">
             <h2 className="text-textcolor font-medium text-2xl pb-6">

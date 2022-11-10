@@ -1,3 +1,10 @@
+/**
+ * Tailwind configuration file.
+ * Responsible for listing the path of template files (for this project, mainly typescript and tsx sources)
+ * In addition, can contain custom color presets, transition/animation properties and more styling options
+ *
+ */
+
 /** @type {import('tailwindcss').Config} */
 const plugin = require('tailwindcss/plugin');
 
@@ -10,6 +17,7 @@ module.exports = {
                     DEFAULT: '#282c34',
                 },
 
+                //Custom colors, added as css classes like bg-textfield, font-textfield etc.
                 textfield: '#495E77',
                 textcolor: '#C7D3D1',
                 panel: '#334155',
