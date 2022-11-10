@@ -1,7 +1,7 @@
 # Aalto AI assisted content creation tool
 
 A web based automation tool for rapid game content creation using state of the art AI models.
-This web application provides an efficient and easy to use interface for various online API's such as GPT3
+This web application provides an efficient and easy-to-use interface for various online API's such as GPT3
 
 ## Setting up, running and deploying the project
 

@@ -8,7 +8,7 @@ interface ButtonProp {
 export const Button: React.FC<ButtonProp> = ({ onClick, name }) => {
     return (
         <button
-            className="rounded-lg bg-textfield text-textcolor h-16 min-h-fit font-medium text-xl px-4 text-center mx-6 mt-8 hover:bg-slate-500 transition-colors outline-none outline-offset-0 focus:outline-textcolor"
+            className="font-sans font-bold text-sm bg-primary-light text-primary-contrastText p-3 rounded-xl transition-all cursor-pointer border-none hover:bg-primary-main active:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={onClick}
         >
             {name}
