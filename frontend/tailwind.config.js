@@ -30,13 +30,16 @@ module.exports = {
                     dark: '#ba000d',
                     contrastText: '#000',
                 },
+                error: {
+                    light: '#ef5350',
+                    main: '#d32f2f',
+                    dark: '#c62828',
+                },
 
                 background: '#CFD8DC',
                 surface: '#fff',
                 onSurface: '#000',
                 onBackground: '#000',
-
-                test: '#d0d7de',
             },
         },
     },

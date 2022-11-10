@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Button } from './Button';
 
 /**
  * Minimum required data for representing PromptIOBox state.
@@ -69,19 +70,17 @@ export const PromptIOBox: FC<PromptIOBoxProps> = ({
                     }}
                 />
                 <div className="flex flex-row">
-                    <button
-                        className="rounded-lg bg-textfield text-textcolor h-16 min-h-fit font-medium text-xl px-4 text-center mx-6 mt-8 hover:bg-slate-500 transition-colors outline-none outline-offset-0 focus:outline-textcolor"
+                    <Button
                         onClick={generate}
-                    >
-                        Generate
-                    </button>
+                        name="Generate"
+                        color="primary"
+                    />
                     {deleteSelf ? (
-                        <button
-                            className="rounded-lg bg-textfield text-textcolor h-16 min-h-fit font-medium text-xl px-4 text-center mx-6 mt-8 hover:bg-slate-500 transition-colors outline-none outline-offset-0 focus:outline-textcolor"
+                        <Button
                             onClick={() => deleteSelf?.()}
-                        >
-                            Delete
-                        </button>
+                            name="Delete"
+                            color="error"
+                        />
                     ) : (
                         <></>
                     )}

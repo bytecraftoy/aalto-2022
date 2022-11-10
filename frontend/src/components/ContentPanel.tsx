@@ -58,8 +58,16 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                     />
                 </div>
                 <div className="flex flex-row justify-center items-center">
-                    <Button onClick={generateAll} name="Generate content" />
-                    <Button onClick={addPromptBox} name="Add box" />
+                    <Button
+                        onClick={generateAll}
+                        name="Generate content"
+                        color="primary"
+                    />
+                    <Button
+                        onClick={addPromptBox}
+                        name="Add box"
+                        color="primary"
+                    />
                 </div>
 
                 <div className="flex flex-row flex-wrap justify-center items-center">
