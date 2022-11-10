@@ -1,5 +1,6 @@
 {
     "scripts": {
+        "ds": "run-p dev:*",
         "setup-project": "npm run install:backend && npm run install:frontend && npm install",
         "build-project": "run-s build:*",
         "test-project": "run-s test:*",
@@ -9,7 +10,7 @@
         "clean-check": "npm run clean-project && npm run check-project",
         "deploy-project": "npm run setup-project && run-s build-project deploy:*",
         "demo-project": "npm run deploy-project && cd deploy && node index.js",
-        "dev-project": "npm run setup-project && npm run build-project && run-p dev:*",
+        "dev-project": "npm run setup-project && npm run ds",
         "install:frontend": "cd ./frontend && npm install && cd ..",
         "install:backend": "cd ./backend && npm install && cd ..",
         "build:backend": "cd ./backend && npm run build && cd ..",

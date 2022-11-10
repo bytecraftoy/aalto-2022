@@ -9,7 +9,7 @@ To build the project and install dependencies, make sure that node.js and npm ar
 
 ### Quick start using npm scripts
 
-The project contains npm scripts to make setting up and deploying easier. These shouldn't require any additional work, and can be run straight after cloning the repository (provided that node.js and npm are installed correctly)
+The project contains npm scripts to make setting up and deploying easier. These shouldn't require any additional work, and can be run straight after cloning the repository (provided that node.js and npm are installed correctly) The scripts are designed to be run from a single terminal.
 The main ones are:
 
 -   `npm run dev-project`: This will install missing dependencies, and start the backend and frontend in dev mode. After running the command, the frontend should open up in a browser automatically.
@@ -20,6 +20,7 @@ The main ones are:
 
 Other commands include utilities used by the previous commands, as well as testing, linting and documentation generation:
 
+-   `npm run ds`: Quick start dev mode, don't install dependencies.
 -   `npm run setup-project`: Install all dependencies for the project with one command from the root directory.
 -   `npm run build-project`: Build backend and frontend separately in `backend/build` and `frontend/build`.
 -   `npm run test-project`: Run unit tests for backend and frontend with one command.
