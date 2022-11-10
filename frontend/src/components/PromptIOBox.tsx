@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Button } from './Button';
+import { TextInput } from './TextInput';
 
 /**
  * Minimum required data for representing PromptIOBox state.
@@ -35,40 +36,30 @@ export const PromptIOBox: FC<PromptIOBoxProps> = ({
     generate,
     deleteSelf,
 }) => {
-    //Calc approximately how tall a text prompt is drawn
-    const lineHeight = (text: string) => {
-        return `${Math.min(
-            20,
-            Math.max(4, text.split('\n').length) * 1.75 + 2
-        )}rem`;
-    };
-
     return (
         <div className="mt-16 pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around">
             <div className="w-full flex flex-col items-center justify-between">
                 <h3 className="text-onSurface font-medium text-2xl pb-6">
                     Prompt
                 </h3>
-                <textarea
-                    spellCheck={'false'}
-                    className="w-full max-w-6xl rounded-t-xl bg-textfield h-36 text-textcolor font-medium text-xl px-4 py-4 outline-none outline-offset-0 focus:outline-textcolor transition-[outline-color] resize-none focus:z-10 scrollbar"
+
+                <TextInput
                     placeholder="User input here"
-                    style={{ minHeight: lineHeight(input) }}
                     value={input}
+                    type="input"
                     onInput={({ target }) => {
                         setInput((target as HTMLTextAreaElement).value);
                     }}
                 />
-                <textarea
-                    spellCheck={'false'}
-                    className="w-full max-w-6xl rounded-b-xl bg-slate-500 h-36 text-textcolor font-medium text-xl px-4 py-4 outline-none outline-offset-0 focus:outline-textcolor transition-[outline-color] resize-none focus:z-10 scrollbar"
+                <TextInput
                     placeholder="AI generated content"
-                    style={{ minHeight: lineHeight(output) }}
                     value={output}
+                    type="output"
                     onInput={({ target }) => {
                         setOutput((target as HTMLTextAreaElement).value);
                     }}
                 />
+
                 <div className="flex flex-row">
                     <Button
                         onClick={generate}
