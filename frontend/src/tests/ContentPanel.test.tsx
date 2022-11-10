@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, prettyDOM } from '@testing-library/react';
 import { App } from '../App';
 import { randomInt } from 'crypto';
 import { act } from 'react-dom/test-utils';
@@ -93,9 +93,8 @@ test('Remove button should delete the correct promptIOBox', () => {
     expect(
         screen.getByTitle<HTMLTextAreaElement>('TestEl')
     ).toBeInTheDocument();
-    const buttons = inputArea.parentElement?.getElementsByClassName(
-        'rounded-lg hover:bg-slate-500 focus:outline-textcolor'
-    );
+
+    const buttons = inputArea.parentElement?.getElementsByTagName('button');
     expect(buttons?.length).toBeGreaterThan(1);
     const delButton = buttons?.[1] as HTMLButtonElement | undefined;
 

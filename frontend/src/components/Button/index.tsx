@@ -20,6 +20,7 @@ export const Button: React.FC<ButtonProp> = ({ onClick, name, color }) => {
             //className="font-sans font-bold text-sm bg-primary-light text-primary-contrastText p-3 rounded-xl transition-all cursor-pointer border-none hover:bg-primary-main active:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed"
             className={className}
             onClick={onClick}
+            data-testid="custom-button"
         >
             {name}
         </button>
