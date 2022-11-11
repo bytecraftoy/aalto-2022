@@ -1,13 +1,14 @@
 import express from 'express';
-const dummyService = require("../services/dummyService.ts")
+import {jsonValidation, sendToDummy} from '../services/dummyService';
 
 const router = express.Router();
 
 router.post('/', (req, res) => {
     //makes sure the request is correctly formatted. WIP
-    
-    if (dummyService.jsonValidation(req.body)) {
-        res.send(req.body);
+
+    if (jsonValidation(req.body)) {
+        const response = sendToDummy(req.body);
+        res.send(response);
     } else {
         res.status(400).json({ error: 'bad request' });
     }

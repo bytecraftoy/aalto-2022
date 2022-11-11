@@ -1,8 +1,14 @@
-//insert dummy communication magic here
-const jsonValidation = (json: any) => {if (json) return true;
+const jsonValidation = (json: any) => {
+    if (json) return true;
     return false;
 };
 
-module.exports = {
-    jsonValidation
-}
+const sendToDummy = (json: any) => {
+    //Communication to dummy backend (how?)
+    return 'hello from dummyService: ' + json;
+};
+
+export {
+    jsonValidation,
+    sendToDummy,
+};
