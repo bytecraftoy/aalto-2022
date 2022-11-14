@@ -79,7 +79,7 @@ jobs:
 
             - name: Change ownership for frontend files
               run: ssh root@65.108.249.101 "chown -R www-data:www-data /srv/http"
-                  
+
             - name: Copy backend files to server
               run: rsync --recursive --verbose --chmod=755 backend/ root@65.108.249.101:/home/app/live
 
