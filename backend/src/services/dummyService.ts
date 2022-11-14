@@ -2,8 +2,10 @@ import { Prompt } from '../types/Prompt';
 
 /**
  * Function assisting in prompt validation,
- * checks that all correct properties exist, returns boolean value.
- * @params
+ * checks that all correct properties exist, returns boolean value
+ *
+ * @param json JavaScript objection preferably of type Prompt
+ * @returns {Boolean}
  */
 function correctPropertiesExist(json: any): json is Prompt {
     return (
@@ -22,6 +24,9 @@ function correctPropertiesExist(json: any): json is Prompt {
  * Dummy performs more validations afterwards
  * Currently checks that the variable is an object
  * with the correct properties and only those.
+ *
+ * @param json JavaScript objection preferably of type Prompt
+ * @returns {Boolean}
  */
 const jsonValidation = (json: any) => {
     return (
@@ -32,7 +37,10 @@ const jsonValidation = (json: any) => {
 };
 
 /**
- *Function which sends data to dummy and recieves a response.
+ * Function which sends data to dummy and recieves a response
+ *
+ * @param json JavaScript object preferably of type Prompt
+ * @returns {String} currently returns a string, may be subject to change
  */
 const sendToDummy = async (json: any) => {
     //Communication to dummy backend (how?)
