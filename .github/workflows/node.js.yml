@@ -32,12 +32,14 @@ jobs:
             - run: npm run test-project
             - name: Archive frontend build files
               uses: actions/upload-artifact@v3
+              if: ${{ matrix.node-version  == '18.x' }}
               with:
                   name: build-frontend
                   path: frontend/build
                   retention-days: 7
             - name: Archive backend build files
               uses: actions/upload-artifact@v3
+              if: ${{ matrix.node-version  == '18.x' }}
               with:
                   name: build-backend
                   path: backend/build
