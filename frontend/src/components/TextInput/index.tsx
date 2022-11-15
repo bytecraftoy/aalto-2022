@@ -1,5 +1,5 @@
 import React from 'react';
-import { variantStyles } from './theme';
+import classNames from 'classnames/dedupe';
 
 /**
  * Props for textfield
@@ -29,14 +29,21 @@ export const TextInput: React.FC<TextInputProps> = ({
         )}rem`;
     };
 
-    // Choose the style
-    const className = variantStyles[type];
-
     return (
         <textarea
             spellCheck={'false'}
             placeholder={placeholder}
-            className={className}
+            className={classNames(
+                'form-control block w-full px-3 py-1.5 text-base font-normal bg-clip-padding border-2 border-solid border-gray-300 rounded transition ease-in-out m-0 focus:outline-none',
+                {
+                    'text-gray-700 bg-surface focus:text-gray-700 focus:bg-surface focus:border-primary-main':
+                        type === 'input',
+                },
+                {
+                    'text-black bg-gray-100 focus:text-gray-900 focus:bg-gray-50 focus:border-primary-main placeholder:text-gray-500':
+                        type === 'output',
+                }
+            )}
             style={{ minHeight: lineHeight(value) }}
             value={value}
             onInput={onInput}
