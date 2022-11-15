@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { Button } from './Button';
-import { TextInput } from './TextInput';
+import { CustomButton } from './Button';
+import { CustomTextInput } from './TextInput';
 
 /**
  * Minimum required data for representing PromptIOBox state.
@@ -39,11 +39,11 @@ export const PromptIOBox: FC<PromptIOBoxProps> = ({
     return (
         <div className="mt-16 pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around">
             <div className="w-full flex flex-col items-center justify-between">
-                <h3 className="text-onSurface font-medium text-2xl pb-6">
+                <h3 className="text-black font-medium text-2xl pb-6">
                     Prompt
                 </h3>
 
-                <TextInput
+                <CustomTextInput
                     placeholder="User input here"
                     value={input}
                     type="input"
@@ -51,7 +51,7 @@ export const PromptIOBox: FC<PromptIOBoxProps> = ({
                         setInput((target as HTMLTextAreaElement).value);
                     }}
                 />
-                <TextInput
+                <CustomTextInput
                     placeholder="AI generated content"
                     value={output}
                     type="output"
@@ -61,13 +61,13 @@ export const PromptIOBox: FC<PromptIOBoxProps> = ({
                 />
 
                 <div className="flex flex-row">
-                    <Button
+                    <CustomButton
                         onClick={generate}
                         name="Generate"
                         color="primary"
                     />
                     {deleteSelf ? (
-                        <Button
+                        <CustomButton
                             onClick={() => deleteSelf?.()}
                             name="Delete"
                             color="error"

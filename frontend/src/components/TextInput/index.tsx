@@ -15,7 +15,7 @@ interface TextInputProps {
     onInput: React.FormEventHandler<HTMLTextAreaElement> | undefined;
 }
 
-export const TextInput: React.FC<TextInputProps> = ({
+export const CustomTextInput: React.FC<TextInputProps> = ({
     placeholder,
     value,
     type,
@@ -36,11 +36,11 @@ export const TextInput: React.FC<TextInputProps> = ({
             className={classNames(
                 'form-control block w-full px-3 py-1.5 text-base font-normal bg-clip-padding border-2 border-solid border-gray-300 rounded transition ease-in-out m-0 focus:outline-none',
                 {
-                    'text-gray-700 bg-surface focus:text-gray-700 focus:bg-surface focus:border-primary-main':
+                    'text-gray-700 bg-surface focus:text-gray-700 focus:bg-surface focus:border-blue-400':
                         type === 'input',
                 },
                 {
-                    'text-black bg-gray-100 focus:text-gray-900 focus:bg-gray-50 focus:border-primary-main placeholder:text-gray-500':
+                    'text-black bg-gray-100 focus:text-gray-900 focus:bg-gray-50 focus:border-blue-400 placeholder:text-gray-500':
                         type === 'output',
                 }
             )}

@@ -7,13 +7,13 @@ interface InputProps {
 }
 
 // Input template with predefined styles
-export const Input: React.FC<InputProps> = ({ type, value, onInput }) => {
+export const CustomInput: React.FC<InputProps> = ({ type, value, onInput }) => {
     return (
         <input
             type={type}
             spellCheck={'false'}
             value={value}
-            className=" font-sans text-base font-normal leading-normal p-3 rounded-xl text-gray-900 bg-surface border-gray-300 border shadow hover:border-primary-light focus:outline-none focus:ring focus:border-primary-light"
+            className=" font-sans text-base font-normal leading-normal p-3 rounded-xl text-gray-900 bg-white border-gray-300 border shadow hover:border-blue-400 focus:outline-none focus:ring focus:border-blue-400"
             onInput={onInput}
         />
     );

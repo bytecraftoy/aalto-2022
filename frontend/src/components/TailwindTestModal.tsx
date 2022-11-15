@@ -9,11 +9,11 @@ import { ChevronUpIcon } from '@heroicons/react/20/solid';
 export const InfoModal = () => {
     return (
         <div className="w-full px-4 pt-6 pb-6">
-            <div className="mx-auto bg-surface text-onSurface w-full max-w-xl rounded-2xl p-2 shadow-lg">
+            <div className="mx-auto bg-white text-black w-full max-w-xl rounded-2xl p-2 shadow-lg">
                 <Disclosure>
                     {({ open }) => (
                         <>
-                            <Disclosure.Button className="px-10 py-8 text-2xl font-medium leading-6  bg-primary-main hover:bg-primary-dark text-primary-contrastText flex w-full justify-between rounded-lg text-left transition-colors">
+                            <Disclosure.Button className="px-10 py-8 text-2xl font-medium leading-6  bg-blue-500 hover:bg-blue-600 text-white flex w-full justify-between rounded-lg text-left transition-colors">
                                 <div className="flex flex-row justify-around items-center w-full">
                                     <span>Info</span>
                                 </div>
@@ -37,7 +37,7 @@ export const InfoModal = () => {
                                     static
                                     className="border-t px-8 py-8"
                                 >
-                                    <p className="text-textcolor font-medium text-lg">
+                                    <p className="text-black font-medium text-lg">
                                         Did you ever hear the tragedy of Darth
                                         Plagueis The Wise? I thought not. It’s
                                         not a story the Jedi would tell you.

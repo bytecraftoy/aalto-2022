@@ -13,34 +13,47 @@ const plugin = require('tailwindcss/plugin');
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
     theme: {
-        extend: {
-            colors: {
-                // Color thema of the application
-                // can be used in normal tailwind syntax, e.g.,
-                // bg-primary-dark for to use '#002884'
-                primary: {
-                    light: '#757ce8',
-                    main: '#3f50b5',
-                    dark: '#002884',
-                    contrastText: '#fff',
-                },
-                secondary: {
-                    light: '#ff7961',
-                    main: '#f44336',
-                    dark: '#ba000d',
-                    contrastText: '#000',
-                },
-                error: {
-                    light: '#ef5350',
-                    main: '#d32f2f',
-                    dark: '#c62828',
-                },
-
-                background: '#CFD8DC',
-                surface: '#fff',
-                onSurface: '#000',
-                onBackground: '#000',
+        colors: {
+            // Primary colors.
+            // Currently same as blue-400 for main and blue-600 for dark
+            primary: {
+                main: '#60a5fa',
+                dark: '#2563eb'
             },
+            blue: {
+                200: '#bfdbfe',
+                300: '#93c5fd',
+                400: '#60a5fa',
+                500: '#3b82f6',
+                600: '#2563eb',
+                700: '#1d4ed8'
+            },
+            gray: {
+                50: '#f9fafb',
+                100: '#f3f4f6',
+                300: '#cbd5e1',
+                400: '#9ca3af',
+                500: '#6b7280',
+                600: '#4b5563',
+                700: '#374151',
+                900: '#111827'
+            },
+            //Secondary color
+            purple: {
+                300: '#d8b4fe',
+                400: '#a78bfa',
+                500: '#a855f7',
+                600: '#9333ea',
+                700: '#7e22ce'
+            },
+            red: {
+                400: '#f87171',
+                500: '#ef4444',
+                600: '#dc2626',
+                700: '#b91c1c'
+            },
+            white: '#ffffff',
+            black: '#000000'
         },
     },
     plugins: [
