@@ -7,7 +7,11 @@ interface ButtonProp {
     color: 'error' | 'primary';
 }
 
-export const CustomButton: React.FC<ButtonProp> = ({ onClick, name, color }) => {
+export const CustomButton: React.FC<ButtonProp> = ({
+    onClick,
+    name,
+    color,
+}) => {
     return (
         <button
             className={classNames(

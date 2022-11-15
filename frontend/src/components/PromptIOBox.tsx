@@ -39,9 +39,7 @@ export const PromptIOBox: FC<PromptIOBoxProps> = ({
     return (
         <div className="mt-16 pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around">
             <div className="w-full flex flex-col items-center justify-between">
-                <h3 className="text-black font-medium text-2xl pb-6">
-                    Prompt
-                </h3>
+                <h3 className="text-black font-medium text-2xl pb-6">Prompt</h3>
 
                 <CustomTextInput
                     placeholder="User input here"

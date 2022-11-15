@@ -18,7 +18,7 @@ module.exports = {
             // Currently same as blue-400 for main and blue-600 for dark
             primary: {
                 main: '#60a5fa',
-                dark: '#2563eb'
+                dark: '#2563eb',
             },
             blue: {
                 200: '#bfdbfe',
@@ -26,7 +26,7 @@ module.exports = {
                 400: '#60a5fa',
                 500: '#3b82f6',
                 600: '#2563eb',
-                700: '#1d4ed8'
+                700: '#1d4ed8',
             },
             gray: {
                 50: '#f9fafb',
@@ -36,7 +36,7 @@ module.exports = {
                 500: '#6b7280',
                 600: '#4b5563',
                 700: '#374151',
-                900: '#111827'
+                900: '#111827',
             },
             //Secondary color
             purple: {
@@ -44,16 +44,16 @@ module.exports = {
                 400: '#a78bfa',
                 500: '#a855f7',
                 600: '#9333ea',
-                700: '#7e22ce'
+                700: '#7e22ce',
             },
             red: {
                 400: '#f87171',
                 500: '#ef4444',
                 600: '#dc2626',
-                700: '#b91c1c'
+                700: '#b91c1c',
             },
             white: '#ffffff',
-            black: '#000000'
+            black: '#000000',
         },
     },
     plugins: [
