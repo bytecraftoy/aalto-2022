@@ -11,14 +11,12 @@ import classNames from 'classnames/dedupe';
 interface TextInputProps {
     placeholder: string;
     value: string;
-    type: 'input' | 'output';
     onInput: React.FormEventHandler<HTMLTextAreaElement> | undefined;
 }
 
 export const CustomTextInput: React.FC<TextInputProps> = ({
     placeholder,
     value,
-    type,
     onInput,
 }) => {
     //Calc approximately how tall a text prompt is drawn
@@ -34,15 +32,7 @@ export const CustomTextInput: React.FC<TextInputProps> = ({
             spellCheck={'false'}
             placeholder={placeholder}
             className={classNames(
-                'form-control block w-full px-3 py-1.5 text-base font-normal bg-clip-padding border-2 border-solid border-gray-300 rounded transition ease-in-out m-0 focus:outline-none',
-                {
-                    'text-gray-700 bg-surface focus:text-gray-700 focus:bg-surface focus:border-blue-400':
-                        type === 'input',
-                },
-                {
-                    'text-black bg-gray-100 focus:text-gray-900 focus:bg-gray-50 focus:border-blue-400 placeholder:text-gray-500':
-                        type === 'output',
-                }
+                'form-control block w-full px-3 py-1.5 text-base font-normal bg-clip-padding border-2 border-solid border-gray-300 rounded transition ease-in-out m-0 focus:outline-none text-gray-700 bg-surface focus:text-gray-700 focus:bg-white focus:border-primary'
             )}
             style={{ minHeight: lineHeight(value) }}
             value={value}

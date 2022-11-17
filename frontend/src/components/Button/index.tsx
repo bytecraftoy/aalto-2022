@@ -17,7 +17,7 @@ export const CustomButton: React.FC<ButtonProp> = ({
             className={classNames(
                 'disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold font-sans text-sm p-3 rounded-md',
                 {
-                    'bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700':
+                    'bg-primary text-white hover:bg-primary-600 active:bg-primary-700':
                         color === 'primary',
                 },
                 {

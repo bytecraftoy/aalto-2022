@@ -13,7 +13,7 @@ export const CustomInput: React.FC<InputProps> = ({ type, value, onInput }) => {
             type={type}
             spellCheck={'false'}
             value={value}
-            className=" font-sans text-base font-normal leading-normal p-3 rounded-xl text-gray-900 bg-white border-gray-300 border shadow hover:border-blue-400 focus:outline-none focus:ring focus:border-blue-400"
+            className=" font-sans text-base font-normal leading-normal p-3 rounded-xl text-gray-900 bg-white border-gray-300 border shadow hover:border-primary focus:outline-none focus:ring focus:border-primary"
             onInput={onInput}
         />
     );

@@ -44,7 +44,6 @@ export const PromptIOBox: FC<PromptIOBoxProps> = ({
                 <CustomTextInput
                     placeholder="User input here"
                     value={input}
-                    type="input"
                     onInput={({ target }) => {
                         setInput((target as HTMLTextAreaElement).value);
                     }}
@@ -52,7 +51,6 @@ export const PromptIOBox: FC<PromptIOBoxProps> = ({
                 <CustomTextInput
                     placeholder="AI generated content"
                     value={output}
-                    type="output"
                     onInput={({ target }) => {
                         setOutput((target as HTMLTextAreaElement).value);
                     }}

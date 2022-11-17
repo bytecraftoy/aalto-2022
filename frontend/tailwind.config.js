@@ -15,15 +15,11 @@ module.exports = {
     theme: {
         colors: {
             // Primary colors.
-            // Currently same as blue-400 for main and blue-600 for dark
+            // Primary same colors than blue in tailwind
             primary: {
-                main: '#60a5fa',
-                dark: '#2563eb',
-            },
-            blue: {
                 200: '#bfdbfe',
                 300: '#93c5fd',
-                400: '#60a5fa',
+                DEFAULT: '#60a5fa',
                 500: '#3b82f6',
                 600: '#2563eb',
                 700: '#1d4ed8',
