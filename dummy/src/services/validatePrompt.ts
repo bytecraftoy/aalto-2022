@@ -1,12 +1,4 @@
-interface Prompt {
-    model: string,
-    prompt: string,
-    temperature: number,
-    max_tokens: number,
-    top_p: number,
-    frequency_penalty: number,
-    presence_penalty: number
-}
+import {Prompt} from './../types/Prompt';
 
 class ValidationError extends SyntaxError{
     name = 'ValidationError';
@@ -163,4 +155,4 @@ const validatePrompt = (prompt: string): void => {
     validateNumberTypes(prompt); //in JS all numbers are floats
 };
 
-export {Prompt, ValidationError, validatePrompt};
+export {ValidationError, validatePrompt};

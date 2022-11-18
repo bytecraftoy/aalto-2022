@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import {validatePrompt, Prompt, ValidationError} from './../services/validatePrompt';
+import {validatePrompt, ValidationError} from './../services/validatePrompt';
 
 /**
  * Returns the error message if validatePrompt throws a ValidationError,
