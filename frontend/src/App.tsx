@@ -15,7 +15,7 @@ function App() {
 
     return (
         <NavigationContainer>
-            <div className="App bg-gray-300 min-h-screen justify-start items-center flex flex-col">
+            <div className="App bg-gray-300 min-h-full justify-start items-center flex flex-col">
                 <header className="App-header text-black text-2xl py-10 px-4">
                     <div className="">
                         <h1 className="App-logo font-medium text-4xl">

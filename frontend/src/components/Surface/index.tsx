@@ -21,7 +21,7 @@ export const Surface: React.FC<SurfaceProps> = ({
     className,
 }) => {
     return (
-        <div className={`bg-primary-95` + className}>
+        <div className={`bg-primary-95 ` + className}>
             <div
                 className={classNames(
                     'bg-primary',
