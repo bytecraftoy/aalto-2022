@@ -100,6 +100,15 @@ module.exports = {
             white: '#ffffff',
             black: '#000000',
         },
+
+        extend: {
+            opacity: {
+                8: '.08',
+                11: '.11',
+                12: '.12',
+                14: '.14',
+            },
+        },
     },
     plugins: [
         plugin(({ addBase, theme }) => {
