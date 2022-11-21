@@ -108,6 +108,8 @@ module.exports = {
                 12: '.12',
                 14: '.14',
             },
+            white: '#ffffff',
+            black: '#000000',
         },
     },
     plugins: [
