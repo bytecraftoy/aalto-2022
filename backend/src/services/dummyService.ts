@@ -1,10 +1,11 @@
 import { Prompt } from '../types/Prompt';
+import axios from 'axios';
 
 /**
  * Function assisting in prompt validation,
  * checks that all correct properties exist, returns boolean value
  *
- * @param json JavaScript objection preferably of type Prompt
+ * @param {Object} json JavaScript objection preferably of type Prompt
  * @returns {Boolean}
  */
 function correctPropertiesExist(json: any): json is Prompt {
@@ -25,7 +26,7 @@ function correctPropertiesExist(json: any): json is Prompt {
  * Currently checks that the variable is an object
  * with the correct properties and only those.
  *
- * @param json JavaScript objection preferably of type Prompt
+ * @param {Object} json JavaScript objection preferably of type Prompt
  * @returns {Boolean}
  */
 const jsonValidation = (json: any) => {
@@ -39,16 +40,13 @@ const jsonValidation = (json: any) => {
 /**
  * Function which sends data to dummy and recieves a response
  *
- * @param json JavaScript object preferably of type Prompt
- * @returns {String} currently returns a string, may be subject to change
+ * @async
+ * @param {Object} json JavaScript object preferably of type Prompt
+ * @returns {Object} returns response in object form as gpt3 would
  */
 const sendToDummy = async (json: any) => {
-    //Communication to dummy backend (how?)
-
-    //placeholder await function to make linter shut up
-    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-    await sleep(1000);
-    return 'hello from dummyService: ' + json;
+    const response = await axios.post('localhost:8080', json); //replace url with variable?
+    return response;
 };
 
 export { jsonValidation, sendToDummy };
