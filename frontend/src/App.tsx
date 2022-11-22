@@ -14,7 +14,7 @@ function App() {
 
     return (
         <NavigationContainer>
-            <div className="App bg-neutral-99 h-full justify-start items-center flex flex-col">
+            <div className="App bg-neutral-99 h-full flex flex-col justify-start items-center">
                 <ContentPanel getMasterCategory={() => ''} />
             </div>
         </NavigationContainer>

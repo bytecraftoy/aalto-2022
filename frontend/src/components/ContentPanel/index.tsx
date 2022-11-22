@@ -5,6 +5,7 @@ import { CustomButton } from '../Button';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
+import { v4 as uuidv4 } from 'uuid';
 
 //Provide access to MasterCategory through a parent callback
 interface ContentPanelProps {
@@ -17,7 +18,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     const [promptBoxes, setPromptBoxes] = useState<PromptData[]>([]);
 
     const addPromptBox = () => {
-        const newBox = { id: crypto.randomUUID(), input: '', output: '' };
+        const newBox = { id: uuidv4(), input: '', output: '' };
         setPromptBoxes((prev) => [...prev, newBox]);
     };
 
@@ -37,7 +38,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     };
 
     return (
-        <div className="w-full px-4 py-12 ">
+        <div className="w-full px-4 py-12 flex flex-row justify-around items-center">
             <Surface
                 level={1}
                 className="w-full max-w-6xl rounded-2xl min-h-fit shadow-md border border-black border-opacity-10"

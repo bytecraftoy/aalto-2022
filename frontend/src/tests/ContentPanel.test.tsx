@@ -1,16 +1,14 @@
 import React from 'react';
-import { render, screen, prettyDOM } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { App } from '../App';
-import { randomInt } from 'crypto';
 import { act } from 'react-dom/test-utils';
-import { randomUUID } from 'crypto';
 
-//randomUUID isn't normally usable for reac-dom tests, so add it explicitly
-Object.defineProperty(global.self, 'crypto', {
-    value: {
-        randomUUID: () => randomUUID(),
-    },
-});
+//Removed crypto, so we don't have crypto.randomInt for tests
+//Replacing it with Math.random. It's not cryptographically random
+//but does it need to be for tests?
+const randomInt = (min: number, max: number) => {
+    return Math.floor(min + Math.random() * (max - min));
+};
 
 test('Should contain a button for adding promptIOBoxes', () => {
     act(() => {
