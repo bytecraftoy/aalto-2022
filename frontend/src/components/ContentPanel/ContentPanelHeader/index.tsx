@@ -17,7 +17,7 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
     setCategory,
 }) => {
     return (
-        <div className="flex flex-row justify-around items-center">
+        <div className="flex flex-row justify-around items-center mt-6">
             <PromptCategoryBox category={category} setCategory={setCategory} />
         </div>
     );

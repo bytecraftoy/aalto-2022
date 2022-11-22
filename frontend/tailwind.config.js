@@ -43,6 +43,20 @@ module.exports = {
                 95: '#F2EFFF',
                 99: '#FFFBFF',
             },
+            tertiary: {
+                10: '#2F1123',
+                20: '#472639',
+                30: '#603B50',
+                40: '#7A5368',
+                default: '#7A5368',
+                50: '#956B81',
+                60: '#B1849B',
+                70: '#CD9EB6',
+                80: '#EAB9D1',
+                90: '#FFD8EA',
+                95: '#FFECF3',
+                99: '#FFFBFF',
+            },
             red: {
                 10: '#410002',
                 20: '#690005',
@@ -76,6 +90,15 @@ module.exports = {
                 90: '#E4E1EC',
                 95: '#F3EFFA',
                 99: '#FFFBFF',
+            },
+
+            surface: {
+                default: '#FFFBFF',
+                1: '#F6F2FA',
+                2: '#F1EDF8',
+                3: '#ECE8F5',
+                4: '#EBE7F4',
+                5: '#E4E0F1',
             },
 
             //OLD COLORS, delete these when color scheme changed to new one
@@ -113,7 +136,7 @@ module.exports = {
         },
     },
     plugins: [
-        plugin(({ addBase, theme }) => {
+        plugin(({ addBase }) => {
             addBase({
                 '.scrollbar': {},
                 '.scrollbar::-webkit-scrollbar': {

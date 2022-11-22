@@ -4,9 +4,6 @@ import classNames from 'classnames';
 /**
  * Material design surface
  * In the material design, corresponds to colors surface 1 - 5.
- * Components created in order to reduce double div declarations in
- * other components that are needed ion order to create the right
- * surface color.
  */
 
 interface SurfaceProps {
@@ -21,20 +18,17 @@ export const Surface: React.FC<SurfaceProps> = ({
     className,
 }) => {
     return (
-        <div className={`bg-primary-99 ` + className}>
-            <div
-                className={classNames(
-                    'bg-primary',
-                    className,
-                    { ' bg-opacity-5': level === 1 },
-                    { ' bg-opacity-8': level === 2 },
-                    { ' bg-opacity-11': level === 3 },
-                    { 'bg-opacity-12': level === 4 },
-                    { 'bg-opacity-14': level === 5 }
-                )}
-            >
-                {children}
-            </div>
+        <div
+            className={classNames(
+                { 'bg-surface-1': level === 1 },
+                { 'bg-surface-2': level === 2 },
+                { 'bg-surface-3': level === 3 },
+                { 'bg-surface-4': level === 4 },
+                { 'bg-surface-5': level === 5 },
+                className
+            )}
+        >
+            {children}
         </div>
     );
 };

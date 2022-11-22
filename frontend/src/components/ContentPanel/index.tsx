@@ -5,6 +5,7 @@ import { CustomButton } from '../Button';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
+import { ContentPanelActions } from './ContentPanelActions';
 import { v4 as uuidv4 } from 'uuid';
 
 //Provide access to MasterCategory through a parent callback
@@ -12,11 +13,18 @@ interface ContentPanelProps {
     getMasterCategory: () => string;
 }
 
+/**
+ * A standalone panel for creating AI content.
+ *
+ */
 export const ContentPanel: FC<ContentPanelProps> = () => {
     //Component state consists of category prompt, and N multiprompts (id, input, output)
     const [category, setCategory] = useState('');
-    const [promptBoxes, setPromptBoxes] = useState<PromptData[]>([]);
+    const [promptBoxes, setPromptBoxes] = useState<PromptData[]>([
+        { id: uuidv4(), input: '', output: '' },
+    ]);
 
+    //Callback to create new boxes in the panel
     const addPromptBox = () => {
         const newBox = { id: uuidv4(), input: '', output: '' };
         setPromptBoxes((prev) => [...prev, newBox]);
@@ -38,17 +46,47 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     };
 
     return (
-        <div className="w-full px-4 py-12 flex flex-row justify-around items-center">
+        //Take up full space, and center the content panel in it
+        <div className="w-full px-4 py-16 flex flex-row justify-around items-center">
             <Surface
-                level={1}
-                className="w-full max-w-6xl rounded-2xl min-h-fit shadow-md border border-black border-opacity-10"
+                level={2}
+                className="w-full max-w-6xl min-h-fit rounded-2xl shadow-xl outline outline-1 outline-primary-90"
             >
-                <div className="mx-auto my-auto w-full max-w-6xl rounded-2xl p-12 min-h-fit">
-                    {/* Top most part of the content panel */}
-                    <ContentPanelHeader
-                        category={category}
-                        setCategory={setCategory}
+                {/* Top most part of the content panel */}
+                <ContentPanelHeader
+                    category={category}
+                    setCategory={setCategory}
+                />
+
+                <div className="flex flex-row justify-center items-center">
+                    <CustomButton
+                        onClick={generateAll}
+                        name="Generate content"
+                        color="primary"
                     />
+                    <CustomButton
+                        onClick={addPromptBox}
+                        name="Add box"
+                        color="primary"
+                    />
+                </div>
+
+                {/* IO TExtfields: Prompts of the content panel */}
+                <ContentPanelPrompts
+                    promptBoxes={promptBoxes}
+                    setPromptBoxes={setPromptBoxes}
+                    generateOutput={generateOutput}
+                    setPromptOutput={setPromptOutput}
+                />
+
+                {/* Bottom bar containing content panel actions */}
+                <ContentPanelActions name="a" />
+            </Surface>
+        </div>
+    );
+};
+
+/*
 
                     <div className="flex flex-row justify-center items-center">
                         <CustomButton
@@ -63,15 +101,4 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                         />
                     </div>
 
-                    {/* IO TExtfields: Prompts of the content panel */}
-                    <ContentPanelPrompts
-                        promptBoxes={promptBoxes}
-                        setPromptBoxes={setPromptBoxes}
-                        generateOutput={generateOutput}
-                        setPromptOutput={setPromptOutput}
-                    />
-                </div>
-            </Surface>
-        </div>
-    );
-};
+*/
