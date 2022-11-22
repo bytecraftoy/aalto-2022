@@ -1,7 +1,8 @@
 import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { PromptData } from '../PromptIOBox';
-import { CustomButton } from '../Button';
+import { CustomButton } from '../Buttons/ContainedButton';
+import { SegmentedButtons } from '../Buttons/SegmentedButton';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
@@ -37,10 +38,10 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     };
 
     return (
-        <div className="w-full px-4 py-12 ">
+        <div className="w-full px-4 py-12">
             <Surface
                 level={1}
-                className="w-full max-w-6xl rounded-2xl min-h-fit shadow-md border border-black border-opacity-10"
+                className="w-full max-w-6xl rounded-2xl min-h-fit shadow-md border border-black border-opacity-10 m-auto"
             >
                 <div className="mx-auto my-auto w-full max-w-6xl rounded-2xl p-12 min-h-fit">
                     {/* Top most part of the content panel */}
@@ -68,6 +69,12 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                         setPromptBoxes={setPromptBoxes}
                         generateOutput={generateOutput}
                         setPromptOutput={setPromptOutput}
+                    />
+
+                    {/* TEST */}
+                    <SegmentedButtons
+                        names={['json', 'excel']}
+                        onClicks={[undefined, undefined]}
                     />
                 </div>
             </Surface>

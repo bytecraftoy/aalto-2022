@@ -77,6 +77,7 @@ module.exports = {
                 95: '#F3EFFA',
                 99: '#FFFBFF',
             },
+            onSecondaryContainer: '#1D192B',
 
             //OLD COLORS, delete these when color scheme changed to new one
             //Secondary color
