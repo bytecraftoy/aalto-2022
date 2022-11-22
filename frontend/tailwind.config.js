@@ -91,6 +91,7 @@ module.exports = {
                 95: '#F3EFFA',
                 99: '#FFFBFF',
             },
+            onSecondaryContainer: '#1D192B',
 
             surface: {
                 default: '#FFFBFF',

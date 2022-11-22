@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { CustomButton } from './Button';
+import { CustomButton } from './Buttons/ContainedButton';
 import { CustomTextInput } from './TextInput';
 
 /**

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Surface } from '../../Surface';
+import { CustomButton } from '../../Buttons/ContainedButton';
+import { SegmentedButtons } from '../../Buttons/SegmentedButton';
 
 /**
  * Component of Content panel.
@@ -8,10 +10,16 @@ import { Surface } from '../../Surface';
  */
 
 interface ContentPanelActionsProps {
-    name: string;
+    generateAll: () => void
 }
 export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
-    name,
+    generateAll,
 }) => {
-    return <Surface level={5} className="h-20 w-full rounded-2xl"></Surface>;
+    return <Surface level={5} className="h-20 w-full rounded-2xl flex flex-row justify-between items-center">
+                    <CustomButton
+                        onClick={generateAll}
+                        name="Generate"
+                        color="primary"
+                    />
+    </Surface>;
 };

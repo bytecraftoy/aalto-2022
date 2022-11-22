@@ -1,7 +1,8 @@
 import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { PromptData } from '../PromptIOBox';
-import { CustomButton } from '../Button';
+import { CustomButton } from '../Buttons/ContainedButton';
+import { SegmentedButtons } from '../Buttons/SegmentedButton';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
@@ -60,11 +61,6 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
 
                 <div className="flex flex-row justify-center items-center">
                     <CustomButton
-                        onClick={generateAll}
-                        name="Generate content"
-                        color="primary"
-                    />
-                    <CustomButton
                         onClick={addPromptBox}
                         name="Add box"
                         color="primary"
@@ -80,7 +76,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                 />
 
                 {/* Bottom bar containing content panel actions */}
-                <ContentPanelActions name="a" />
+                <ContentPanelActions generateAll={generateAll} />
             </Surface>
         </div>
     );
