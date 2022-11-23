@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useState } from 'react';
 
 /**
  * Reusable input component with predefined style.
@@ -11,6 +11,8 @@ interface InputProps {
     value: string | number | readonly string[] | undefined;
     onInput: React.FormEventHandler<HTMLInputElement>;
     label?: string;
+    textHelper?: string;
+    required?: true;
 }
 
 // Input template with predefined styles
@@ -19,7 +21,17 @@ export const CustomInput: React.FC<InputProps> = ({
     value,
     onInput,
     label,
+    textHelper,
+    required,
 }) => {
+    const [touched, setTouched] = useState(false);
+    let error = '';
+
+    //Simple validation
+    if (touched && required && value === '') {
+        error = '*Required';
+    }
+
     return (
         <div className="relative">
             <input
@@ -43,6 +55,8 @@ export const CustomInput: React.FC<InputProps> = ({
                 )}
                 placeholder="category"
                 onInput={onInput}
+                onChange={() => setTouched(true)}
+                required
             />
             <label
                 htmlFor={`${label}`}
@@ -57,6 +71,15 @@ export const CustomInput: React.FC<InputProps> = ({
             >
                 {label}
             </label>
+            {!error ? (
+                <div className=" pt-1 px-4 text-xs max-w-[280px] text-neutral-30 ">
+                    {textHelper}
+                </div>
+            ) : (
+                <div className=" pt-1 px-4 text-xs max-w-[280px] text-red-40">
+                    {error}
+                </div>
+            )}
         </div>
     );
 };
