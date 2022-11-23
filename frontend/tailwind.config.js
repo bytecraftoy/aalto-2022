@@ -15,6 +15,7 @@ module.exports = {
     theme: {
         colors: {
             // NEW COLORS for material design
+            transparent: 'transparent',
             primary: {
                 10: '#110563',
                 20: '#282377',
@@ -78,6 +79,7 @@ module.exports = {
                 99: '#FFFBFF',
             },
             onSecondaryContainer: '#1D192B',
+            onSurface: '#1C1B1F',
 
             //OLD COLORS, delete these when color scheme changed to new one
             //Secondary color

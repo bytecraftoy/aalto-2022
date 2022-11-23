@@ -18,6 +18,7 @@ export const PromptCategoryBox: FC<PromptCategoryBoxProps> = ({
             <CustomInput
                 type={'text'}
                 value={category}
+                label={"Category"}
                 onInput={({ target }) =>
                     setCategory((target as HTMLInputElement).value)
                 }
