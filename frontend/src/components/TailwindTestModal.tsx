@@ -13,7 +13,7 @@ export const InfoModal = () => {
                 <Disclosure>
                     {({ open }) => (
                         <>
-                            <Disclosure.Button className="px-10 py-8 text-2xl font-medium leading-6  bg-blue-500 hover:bg-blue-600 text-white flex w-full justify-between rounded-lg text-left transition-colors">
+                            <Disclosure.Button className="px-10 py-8 text-2xl font-medium leading-6  bg-primary hover:bg-primary-500 text-white flex w-full justify-between rounded-lg text-left transition-colors">
                                 <div className="flex flex-row justify-around items-center w-full">
                                     <span>Info</span>
                                 </div>
