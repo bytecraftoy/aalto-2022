@@ -32,7 +32,7 @@
         "prettier": "npx prettier --check .",
         "prettier-write": "npx prettier --write .",
         "cypress": "npx cypress run",
-        "cypress-ci": "npm run ds & wait-on http://localhost:3000 && wait-on http://localhost:3030 && npx cypress run"
+        "cypress-ci": "npm run ds >/dev/null & wait-on --timeout 30000 http://127.0.0.1:3000 http://127.0.0.1:3030/mirror && npm run cypress"
     },
     "devDependencies": {
         "cpy-cli": "^4.2.0",
