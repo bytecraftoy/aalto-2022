@@ -1,6 +1,6 @@
 //import React, { useState } from 'react';
 import { ContentPanel } from './components/ContentPanel';
-import { InfoModal } from './components/TailwindTestModal';
+import { NavigationContainer } from './components/NavigationContainer';
 
 /**
  * The base react component
@@ -13,17 +13,11 @@ function App() {
     //const [masterCategory, setMasterCategory] = useState('');
 
     return (
-        <div className="App bg-react min-h-screen justify-start items-center flex flex-col">
-            <header className="App-header text-white text-2xl py-10 px-4">
-                <div className="">
-                    <h1 className="App-logo font-medium text-4xl">
-                        Aalto-2022 AI assisted game content creator
-                    </h1>
-                </div>
-            </header>
-            <InfoModal />
-            <ContentPanel getMasterCategory={() => ''} />
-        </div>
+        <NavigationContainer>
+            <div className="App bg-neutral-99 h-full justify-start items-center flex flex-col">
+                <ContentPanel getMasterCategory={() => ''} />
+            </div>
+        </NavigationContainer>
     );
 }
 

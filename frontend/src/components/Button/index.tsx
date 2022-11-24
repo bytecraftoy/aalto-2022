@@ -1,15 +1,32 @@
 import React from 'react';
+import classNames from 'classnames/dedupe';
 
 interface ButtonProp {
     onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
     name: string;
+    color: 'error' | 'primary';
 }
 
-export const Button: React.FC<ButtonProp> = ({ onClick, name }) => {
+export const CustomButton: React.FC<ButtonProp> = ({
+    onClick,
+    name,
+    color,
+}) => {
     return (
         <button
-            className="rounded-lg bg-textfield text-textcolor h-16 min-h-fit font-medium text-xl px-4 text-center mx-6 mt-8 hover:bg-slate-500 transition-colors outline-none outline-offset-0 focus:outline-textcolor"
+            className={classNames(
+                'disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold font-sans text-sm p-3 rounded-md',
+                {
+                    'bg-primary text-white hover:bg-primary-600 active:bg-primary-700':
+                        color === 'primary',
+                },
+                {
+                    ' bg-red-500 hover:bg-red-600 active:bg-red-700 text-white':
+                        color === 'error',
+                }
+            )}
             onClick={onClick}
+            data-testid="custom-button"
         >
             {name}
         </button>

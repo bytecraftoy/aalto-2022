@@ -25,8 +25,66 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
+
             - run: npm run setup-project
             - run: npm run prettier
             - run: npm run lint-project
             - run: npm run build-project
             - run: npm run test-project
+
+            - name: Archive frontend build files
+              uses: actions/upload-artifact@v3
+              # Only upload artifacts on node 18, to make artifacts consistent with deploy server node version
+              if: ${{ matrix.node-version  == '18.x' }}
+              with:
+                  name: build-frontend
+                  path: frontend/build
+                  retention-days: 7
+
+            - name: Archive backend build files
+              uses: actions/upload-artifact@v3
+              if: ${{ matrix.node-version  == '18.x' }}
+              with:
+                  name: build-backend
+                  path: backend/build
+                  retention-days: 7
+    deploy:
+        environment: main
+        if: github.ref == 'refs/heads/main'
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download frontend build files
+              uses: actions/download-artifact@v3
+              with:
+                  name: build-frontend
+                  path: frontend
+
+            - name: Download frontend build files
+              uses: actions/download-artifact@v3
+              with:
+                  name: build-backend
+                  path: backend
+
+            - name: Add SSH key
+              env:
+                  SSH_KEY: ${{ secrets.SSH_KEY }}
+              run: mkdir -p ~/.ssh && printf "%s" "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+
+            - name: Add host to known_hosts
+              run: echo "|1|51Fg/gQzqNfhMkuBnxLBSWCrl+s=|TbUOHEmNxVDTGdkxvvlmlN761QM= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMV0unNHDl5cqDEDYe5ADTCgXMZxr02k5M4mcI9gFPtlrUiDjlE0UTZ8ejgPWhILtK3iETzNb8FD53dMn6Ck/vQ=" >> ~/.ssh/known_hosts
+
+            - name: Copy frontend files to server
+              run: rsync --recursive --verbose --chmod=755 frontend/ root@65.108.249.101:/srv/http
+
+            - name: Change ownership for frontend files
+              run: ssh root@65.108.249.101 "chown -R www-data:www-data /srv/http"
+
+            - name: Copy backend files to server
+              run: rsync --recursive --verbose --chmod=755 backend/ root@65.108.249.101:/home/app/live
+
+            - name: Change ownership for backend files
+              run: ssh root@65.108.249.101 "chown -R app:app /home/app/live"
+
+            - name: Restart backend service
+              run: ssh root@65.108.249.101 "systemctl restart aalto_2022_backend.service"
