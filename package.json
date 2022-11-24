@@ -31,7 +31,8 @@
         "dev:frontend": "cd ./frontend && npm run start",
         "prettier": "npx prettier --check .",
         "prettier-write": "npx prettier --write .",
-        "cypress": "npx cypress run"
+        "cypress": "npx cypress run",
+        "cypress-ci": "npm run ds & wait-on http://localhost:3000 && wait-on http://localhost:3030 && npx cypress run"
     },
     "devDependencies": {
         "cpy-cli": "^4.2.0",
