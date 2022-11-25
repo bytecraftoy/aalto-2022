@@ -1,4 +1,3 @@
-import supertest from 'supertest';
 import { validatePrompt, ValidationError } from './../services/validatePrompt';
 
 /**
@@ -62,7 +61,7 @@ describe('prompt validation', () => {
             "frequency_penalty": 0.52,
             "presence_penalty": 0.5
         }`)
-        ).toBe('model is not a valid string');
+        ).toBe('model is not recognized. Valid models: text-davinci-002');
         expect(
             getPromptValidationError(`{
             "model": "text-davinci-002",

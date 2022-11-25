@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { validatePrompt, ValidationError } from './../services/validatePrompt';
-import { Prompt } from './../types/Prompt';
 import { generateData } from './../services/generateData';
+//import { Prompt } from './../types/Prompt';
 
 const textGenRouter = express.Router();
 
@@ -20,9 +20,9 @@ textGenRouter.post(
             }
             return;
         }
-        const prompt: Prompt = JSON.parse(body) as Prompt;
-        const response: string = generateData(prompt);
-        res.send(response);
+        //Prompt is unused, as it is not actually used to select the generated response
+        //const prompt: Prompt = JSON.parse(body) as Prompt;
+        res.json(generateData());
     }
 );
 

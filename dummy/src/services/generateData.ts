@@ -1,11 +1,15 @@
 import fs from 'fs';
-import { Prompt } from './../types/Prompt';
+import { AIResponse } from '../types/AIResponse';
 
-const exampleData: string = fs.readFileSync('example_data.txt').toString();
+const exampleData: AIResponse[] = JSON.parse(
+    fs.readFileSync('example_data.json').toString()
+) as AIResponse[];
 
-const generateData = (prompt: Prompt): string => {
-    const time = new Date().toUTCString();
-    return `${time}\n${prompt.prompt}\n${exampleData}`;
+const generateData = (): AIResponse => {
+    const time = new Date().valueOf();
+    const data = exampleData[Math.floor(Math.random() * exampleData.length)];
+    data.created = time;
+    return data;
 };
 
 export { generateData };

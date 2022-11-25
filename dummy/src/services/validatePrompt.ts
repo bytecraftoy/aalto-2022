@@ -48,7 +48,9 @@ const validateProperties = (obj: Prompt): void => {
     if (obj === null || obj.constructor !== Object)
         throw new ValidationError('data does not represent a plain object');
     else if (!validModels.includes(obj.model))
-        throw new ValidationError('model is not a valid string');
+        throw new ValidationError(
+            `model is not recognized. Valid models: ${validModels}`
+        );
     else if (typeof obj.prompt !== 'string' || obj.prompt.trim().length === 0)
         throw new ValidationError('prompt is not a non-empty string');
     else if (

@@ -1,14 +1,11 @@
 import supertest from 'supertest';
 import { server } from './../index';
-import fs from 'fs';
+import { AIResponse } from '../types/AIResponse';
 
 const api = supertest(server);
 
-const exampleData: string = fs.readFileSync('example_data.txt').toString();
-console.log(exampleData);
-
 describe('textgen router', () => {
-    test('gives correct response', async () => {
+    test('gives a response in the correct format', async () => {
         const response = await api
             .post('/')
             .send(
@@ -23,11 +20,13 @@ describe('textgen router', () => {
             }`
             )
             .expect(200);
-        const time = new Date().toUTCString();
+
+        //Unix timestamp
+        const time = new Date().valueOf();
         console.log(time);
-        expect(response.text).toBe(
-            `${time}\nWrite flavor text for a cyberpunk soldier in a dystopian board game:\n${exampleData}`
-        );
+        expect((response.body as AIResponse).created).toBeDefined();
+        const t = (response.body as AIResponse).created;
+        expect(Math.abs(time - t)).toBeLessThan(100);
     });
     test('handles errors correctly', async () => {
         const response = await api
@@ -38,7 +37,7 @@ describe('textgen router', () => {
                 "prompt": "Write flavor text for a cyberpunk soldier in a dystopian board game:",
                 "temperature": 0.5,
                 "max_tokens": 2000,
-                "top_p": 1,
+                "top_p": 2.5,
                 "frequency_penalty": 0.52,
                 "presence_penalty": 0.5
             }`
@@ -46,6 +45,8 @@ describe('textgen router', () => {
             .expect(400);
         const time = new Date().toUTCString();
         console.log(time);
-        expect(response.text).toBe('ValidationError: top_p is not a float');
+        expect(response.text).toBe(
+            'ValidationError: top_p is not a number between 0 and 1'
+        );
     });
 });
