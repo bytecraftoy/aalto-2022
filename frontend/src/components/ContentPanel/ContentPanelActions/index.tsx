@@ -27,7 +27,7 @@ export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
                 color="primary"
             />
             <SegmentedButtons
-                names={['Json', 'Xlsx']}
+                names={['json', 'excel']}
                 onClicks={[exportFunc, exportFunc]}
             />
         </Surface>
