@@ -1,23 +1,17 @@
 import { Prompt } from '../types/Prompt';
+import { ApiRequest } from '../types/ApiTypes';
+import { Gpt3Response } from '../types/Gpt3Response';
 import axios from 'axios';
 
 /**
  * Function assisting in prompt validation,
  * checks that all correct properties exist, returns boolean value
  *
- * @param {Object} json JavaScript objection preferably of type Prompt
+ * @param {ApiRequest} json
  * @returns {Boolean}
  */
-function correctPropertiesExist(json: any): json is Prompt {
-    return (
-        'model' in json &&
-        'prompt' in json &&
-        'temperature' in json &&
-        'max_tokens' in json &&
-        'top_p' in json &&
-        'frequency_penalty' in json &&
-        'presence_penalty' in json
-    );
+function correctPropertiesExist(json: ApiRequest): json is ApiRequest {
+    return 'contexts' in json && 'prompt' in json && 'id' in json;
 }
 
 /**
@@ -26,27 +20,60 @@ function correctPropertiesExist(json: any): json is Prompt {
  * Currently checks that the variable is an object
  * with the correct properties and only those.
  *
- * @param {Object} json JavaScript objection preferably of type Prompt
+ * @param {ApiRequest} json JavaScript objection preferably of type Prompt
  * @returns {Boolean}
  */
-const jsonValidation = (json: any) => {
+const jsonValidation = (json: ApiRequest) => {
     return (
         typeof json === 'object' &&
         correctPropertiesExist(json) &&
-        Object.keys(json).length == 7
+        Object.keys(json).length == 3
     );
+};
+
+/**
+ * turns the ApiRequest into proper Prompt format
+ * @param {ApiRequest} req
+ * @returns {Prompt}
+ */
+const promptGen = (req: ApiRequest) => {
+    //numbers currently placeholders
+    const prompt = {
+        model: 'string',
+        prompt: req.prompt,
+        temperature: 1,
+        max_tokens: 1,
+        top_p: 1,
+        frequency_penalty: 1,
+        presence_penalty: 1,
+    };
+    return prompt;
 };
 
 /**
  * Function which sends data to dummy and recieves a response
  *
  * @async
- * @param {Object} json JavaScript object preferably of type Prompt
- * @returns {Object} returns response in object form as gpt3 would
+ * @param {Prompt} json JavaScript object preferably of type Prompt
+ * @returns {Gpt3Response} returns response in object form as gpt3 would
  */
-const sendToDummy = async (json: any) => {
-    const response = await axios.post('localhost:8080', json); //replace url with variable?
+const sendToDummy = async (json: Prompt) => {
+    const response: Gpt3Response = await axios.post('localhost:8080', json); //possible TODO: replace url with env variable
     return response;
 };
 
-export { jsonValidation, sendToDummy };
+/**
+ * generates response to send to frontend
+ * @param {Gpt3Response} req
+ * @param {string} id The same id that was used in the frontend request
+ * @returns {ApiResponse}
+ */
+const responseGen = (response: Gpt3Response, id: string) => {
+    const result = response.choices[0].text;
+    return {
+        result: result,
+        id: id,
+    };
+};
+
+export { jsonValidation, sendToDummy, promptGen, responseGen };
