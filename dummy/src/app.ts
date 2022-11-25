@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {errorHandler} from './middleware/errorHandler';
-import {textGenRouter} from './routers/textgen';
+import { errorHandler } from './middleware/errorHandler';
+import { textGenRouter } from './routers/textgen';
 
 const app = express();
 

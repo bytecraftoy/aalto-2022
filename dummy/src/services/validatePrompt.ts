@@ -1,6 +1,6 @@
-import {Prompt} from './../types/Prompt';
+import { Prompt } from './../types/Prompt';
 
-class ValidationError extends SyntaxError{
+class ValidationError extends SyntaxError {
     name = 'ValidationError';
 }
 
@@ -18,10 +18,10 @@ const validateForDuplicateFields = (prompt: string): void => {
         '"max_tokens"',
         '"top_p"',
         '"frequency_penalty"',
-        '"presence_penalty"'
+        '"presence_penalty"',
     ];
-    for(const name of fields){
-        if(prompt.indexOf(name) !== prompt.lastIndexOf(name))
+    for (const name of fields) {
+        if (prompt.indexOf(name) !== prompt.lastIndexOf(name))
             throw new ValidationError('duplicate fields detected');
     }
 };
@@ -31,9 +31,9 @@ const validateForDuplicateFields = (prompt: string): void => {
  * Throws a ValidationError if JSON.parse() fails.
  */
 const parseJSON = (json: string): Prompt => {
-    try{
+    try {
         return JSON.parse(json) as Prompt;
-    }catch(e){
+    } catch (e) {
         throw new ValidationError((e as SyntaxError).message);
     }
 };
@@ -45,23 +45,47 @@ const parseJSON = (json: string): Prompt => {
  */
 const validateProperties = (obj: Prompt): void => {
     const validModels = ['text-davinci-002'];
-    if(obj === null || obj.constructor !== Object)
+    if (obj === null || obj.constructor !== Object)
         throw new ValidationError('data does not represent a plain object');
-    else if(!validModels.includes(obj.model))
+    else if (!validModels.includes(obj.model))
         throw new ValidationError('model is not a valid string');
-    else if(typeof obj.prompt !== 'string' || obj.prompt.trim().length === 0)
+    else if (typeof obj.prompt !== 'string' || obj.prompt.trim().length === 0)
         throw new ValidationError('prompt is not a non-empty string');
-    else if(typeof obj.temperature !== 'number' || obj.temperature < 0 || obj.temperature > 1)
-        throw new ValidationError('temperature is not a number between 0 and 1');
-    else if(typeof obj.max_tokens !== 'number' || obj.max_tokens < 256 || obj.max_tokens > 4000)
-        throw new ValidationError('max_tokens is not a number between 256 and 4000');
-    else if(typeof obj.top_p !== 'number' || obj.top_p < 0 || obj.top_p > 1)
+    else if (
+        typeof obj.temperature !== 'number' ||
+        obj.temperature < 0 ||
+        obj.temperature > 1
+    )
+        throw new ValidationError(
+            'temperature is not a number between 0 and 1'
+        );
+    else if (
+        typeof obj.max_tokens !== 'number' ||
+        obj.max_tokens < 256 ||
+        obj.max_tokens > 4000
+    )
+        throw new ValidationError(
+            'max_tokens is not a number between 256 and 4000'
+        );
+    else if (typeof obj.top_p !== 'number' || obj.top_p < 0 || obj.top_p > 1)
         throw new ValidationError('top_p is not a number between 0 and 1');
-    else if(typeof obj.frequency_penalty !== 'number' || obj.frequency_penalty < 0 || obj.frequency_penalty > 1)
-        throw new ValidationError('frequency_penalty is not a number between 0 and 1');
-    else if(typeof obj.presence_penalty !== 'number' || obj.presence_penalty < 0 || obj.presence_penalty > 1)
-        throw new ValidationError('presence_penalty is not a number between 0 and 1');
-    else if(Object.keys(obj).length !== 7)
+    else if (
+        typeof obj.frequency_penalty !== 'number' ||
+        obj.frequency_penalty < 0 ||
+        obj.frequency_penalty > 1
+    )
+        throw new ValidationError(
+            'frequency_penalty is not a number between 0 and 1'
+        );
+    else if (
+        typeof obj.presence_penalty !== 'number' ||
+        obj.presence_penalty < 0 ||
+        obj.presence_penalty > 1
+    )
+        throw new ValidationError(
+            'presence_penalty is not a number between 0 and 1'
+        );
+    else if (Object.keys(obj).length !== 7)
         throw new ValidationError('too many properties');
 };
 
@@ -78,15 +102,15 @@ const getNumberPropValue = (prompt: string, name: string): string => {
     let i = prompt.indexOf(propName);
     //this is not a validation error since this error should not occur
     //if other validations have been done
-    if(i === -1) throw new Error(`Unable to find ${propName} from prompt`);
+    if (i === -1) throw new Error(`Unable to find ${propName} from prompt`);
     i += propName.length;
     //the initial values for these variables aren't really important
     let start = 0;
     let end = prompt.length;
-    for(; i < prompt.length; i++){
+    for (; i < prompt.length; i++) {
         const c = prompt.charAt(i);
-        if(c === ':') start = i + 1;
-        else if(c === ',' || c === '}'){
+        if (c === ':') start = i + 1;
+        else if (c === ',' || c === '}') {
             end = i;
             break;
         }
@@ -99,10 +123,10 @@ const getNumberPropValue = (prompt: string, name: string): string => {
  * and includes only numbers from 0 to 9.
  */
 const isNumeric = (str: string): boolean => {
-    if(str.length === 0) return false;
-    for(const c of str){
+    if (str.length === 0) return false;
+    for (const c of str) {
         const code = c.charCodeAt(0);
-        if(code < 48 || code > 57) return false;
+        if (code < 48 || code > 57) return false;
     }
     return true;
 };
@@ -112,13 +136,17 @@ const isNumeric = (str: string): boolean => {
  * depending on the value of 'shouldBeInt'.
  * Throws a ValidationError if someting isn't correct.
  */
-const validateNumberType = (name: string, value: string, shouldBeInt: boolean): void => {
+const validateNumberType = (
+    name: string,
+    value: string,
+    shouldBeInt: boolean
+): void => {
     const parts = value.split('.');
-    if(shouldBeInt){
-        if(parts.length !== 1 || !parts.every(v => isNumeric(v)))
+    if (shouldBeInt) {
+        if (parts.length !== 1 || !parts.every((v) => isNumeric(v)))
             throw new ValidationError(`${name} is not an integer`);
-    }else{
-        if(parts.length !== 2 || !parts.every(v => isNumeric(v)))
+    } else {
+        if (parts.length !== 2 || !parts.every((v) => isNumeric(v)))
             throw new ValidationError(`${name} is not a float`);
     }
 };
@@ -129,14 +157,14 @@ const validateNumberType = (name: string, value: string, shouldBeInt: boolean): 
  * Throws a ValidationError if someting isn't correct.
  */
 const validateNumberTypes = (prompt: string): void => {
-    const toCheck: {name: string, shouldBeInt: boolean}[] = [
-        {name: 'temperature', shouldBeInt: false},
-        {name: 'max_tokens', shouldBeInt: true},
-        {name: 'top_p', shouldBeInt: false},
-        {name: 'frequency_penalty', shouldBeInt: false},
-        {name: 'presence_penalty', shouldBeInt: false}
+    const toCheck: { name: string; shouldBeInt: boolean }[] = [
+        { name: 'temperature', shouldBeInt: false },
+        { name: 'max_tokens', shouldBeInt: true },
+        { name: 'top_p', shouldBeInt: false },
+        { name: 'frequency_penalty', shouldBeInt: false },
+        { name: 'presence_penalty', shouldBeInt: false },
     ];
-    for(const prop of toCheck){
+    for (const prop of toCheck) {
         const value = getNumberPropValue(prompt, prop.name);
         validateNumberType(prop.name, value, prop.shouldBeInt);
     }
@@ -147,7 +175,7 @@ const validateNumberTypes = (prompt: string): void => {
  * Throws a ValidationError if someting isn't correct.
  */
 const validatePrompt = (prompt: string): void => {
-    if(typeof prompt !== 'string')
+    if (typeof prompt !== 'string')
         throw new ValidationError('data is not a string');
     validateForDuplicateFields(prompt); //JSON.parse allows duplicate fields to exist
     const obj: Prompt = parseJSON(prompt);
@@ -155,4 +183,4 @@ const validatePrompt = (prompt: string): void => {
     validateNumberTypes(prompt); //in JS all numbers are floats
 };
 
-export {ValidationError, validatePrompt};
+export { ValidationError, validatePrompt };
