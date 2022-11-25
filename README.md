@@ -30,6 +30,7 @@ Other commands include utilities used by the previous commands, as well as testi
 -   `npm run clean-project`: Cleans node modules, builds and deploys.
 -   `npm run check-project`: Do a sanity check on the project before commits. This will lint, build, test, and prettier-write.
 -   `npm run clean-check`: Clean project, and then check it.
+-   `npm run cypress`: Run End-to-End tests with Cypress.
 
 ### Building and running separately
 
