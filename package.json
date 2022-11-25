@@ -1,6 +1,7 @@
 {
     "scripts": {
         "ds": "run-p dev:*",
+        "docusaurus": "npm run build-docs && npm run start-docs",
         "setup-project": "npm run install:backend && npm run install:frontend && npm install",
         "build-project": "run-s build:*",
         "test-project": "run-s test:*",
