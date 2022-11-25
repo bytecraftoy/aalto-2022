@@ -1,7 +1,7 @@
 import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { PromptData } from '../PromptIOBox';
-import { CustomButton } from '../Buttons/ContainedButton';
+import { FilledButton } from '../Buttons/FilledButton';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
@@ -59,7 +59,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                 />
 
                 <div className="flex flex-row justify-center items-center">
-                    <CustomButton
+                    <FilledButton
                         onClick={addPromptBox}
                         name="Add box"
                         color="primary"

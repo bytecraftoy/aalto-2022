@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { CustomButton } from './Buttons/ContainedButton';
+import React from 'react';
+import { FilledButton } from './Buttons';
 import { CustomTextInput } from './TextInput';
 
 /**
@@ -28,7 +28,7 @@ interface PromptIOBoxProps {
  * Component containing editable textareas for Input/Output with AI
  * generation.
  */
-export const PromptIOBox: FC<PromptIOBoxProps> = ({
+export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
     input,
     output,
     setInput,
@@ -57,16 +57,16 @@ export const PromptIOBox: FC<PromptIOBoxProps> = ({
                 />
 
                 <div className="flex flex-row">
-                    <CustomButton
+                    <FilledButton
                         onClick={generate}
                         name="Generate"
                         color="primary"
                     />
                     {deleteSelf ? (
-                        <CustomButton
+                        <FilledButton
                             onClick={() => deleteSelf?.()}
                             name="Delete"
-                            color="error"
+                            color="red"
                         />
                     ) : (
                         <></>

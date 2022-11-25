@@ -1,7 +1,6 @@
 import React from 'react';
 import { Surface } from '../../Surface';
-import { CustomButton } from '../../Buttons';
-import { SegmentedButtons } from '../../Buttons';
+import { FilledButton, SegmentedButtons } from '../../Buttons';
 
 /**
  * Component of Content panel.
@@ -21,14 +20,16 @@ export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
             level={5}
             className="h-20 w-full rounded-2xl flex flex-row justify-between items-center"
         >
-            <CustomButton
+            <FilledButton
                 onClick={generateAll}
                 name="Generate content"
                 color="primary"
             />
             <SegmentedButtons
-                names={['json', 'excel']}
-                onClicks={[exportFunc, exportFunc]}
+                actions={[
+                    { name: 'json', onClick: exportFunc },
+                    { name: 'excel', onClick: exportFunc },
+                ]}
             />
         </Surface>
     );

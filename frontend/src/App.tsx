@@ -1,4 +1,3 @@
-//import React, { useState } from 'react';
 import { ContentPanel } from './components/ContentPanel';
 import { NavigationContainer } from './components/NavigationContainer';
 
@@ -14,6 +13,7 @@ function App() {
 
     return (
         <NavigationContainer>
+            {/* Current view of the page. Could be an about page or a ContentPanel */}
             <div className="App bg-neutral-99 h-full flex flex-col justify-start items-center">
                 <ContentPanel getMasterCategory={() => ''} />
             </div>
