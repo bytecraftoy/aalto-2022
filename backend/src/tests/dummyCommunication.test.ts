@@ -6,7 +6,7 @@ const api = supertest(server);
 
 describe('backend dummy communication, POST /api/textgen', () => {
     /**
-commented out because it currently fails everytime while the dummy isnt functional
+commented out because it currently fails everytime while the dummy isnt 'connected'
  
     function instanceofApiResponse(object: ApiResponse): object is ApiResponse {
         return (

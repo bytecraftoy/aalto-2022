@@ -56,9 +56,19 @@ const promptGen = (req: ApiRequest) => {
  * @param {Prompt} json JavaScript object preferably of type Prompt
  * @returns {Gpt3Response} returns response in object form as gpt3 would
  */
-const sendToDummy = async (json: Prompt) => {
-    const response: Gpt3Response = await axios.post('localhost:8080', json); //possible TODO: replace url with env variable
-    return response;
+const sendToProxy = async (json: Prompt) => {
+    //returns true if dummy environment, subject to change
+    const environmentCheck = (env: string | undefined) => !env || env !== 'openai';
+    
+    if (environmentCheck(process.env.ENVIRONMENT)){
+        //dummy
+        const response: Gpt3Response = await axios.post('localhost:8080', json); //possible TODO: replace url with env variable
+        return response
+    } else {
+        //send to real api here, currently same code as dummy as a placeholder
+        const response: Gpt3Response = await axios.post('localhost:8080', json); 
+        return response
+    }
 };
 
 /**
@@ -75,4 +85,4 @@ const responseGen = (response: Gpt3Response, id: string) => {
     };
 };
 
-export { jsonValidation, sendToDummy, promptGen, responseGen };
+export { jsonValidation, sendToProxy, promptGen, responseGen };
