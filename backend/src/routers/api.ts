@@ -17,8 +17,8 @@ router.post(
             if (jsonValidation(req.body)) {
                 const id = req.body.id;
                 const prompt = promptGen(req.body);
-                const dummyResponse = await sendToProxy(prompt);
-                const response = responseGen(dummyResponse, id);
+                const proxyResponse = await sendToProxy(prompt);
+                const response = responseGen(proxyResponse, id);
                 res.send(response);
             } else {
                 res.status(400).json({
