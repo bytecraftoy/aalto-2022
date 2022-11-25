@@ -33,6 +33,7 @@ export const CustomInput: React.FC<InputProps> = ({
     }
 
     return (
+        //Positioned relative, so label gets absolute position from this parent
         <div className="relative">
             <input
                 id={`${label}`}

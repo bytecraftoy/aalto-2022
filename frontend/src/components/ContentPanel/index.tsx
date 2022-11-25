@@ -2,7 +2,7 @@ import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { PromptData } from '../PromptIOBox';
 import { CustomButton } from '../Buttons/ContainedButton';
-import { SegmentedButtons } from '../Buttons/SegmentedButton';
+import { SegmentedButtons } from '../Buttons/SegmentedButtons';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
@@ -73,8 +73,20 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
 
                     {/* TEST */}
                     <SegmentedButtons
-                        names={['json', 'excel']}
-                        onClicks={[undefined, undefined]}
+                        actions={[
+                            {
+                                name: 'json',
+                                onClick: () => {
+                                    console.log('json export');
+                                },
+                            },
+                            {
+                                name: 'excel',
+                                onClick: () => {
+                                    console.log('excel export');
+                                },
+                            },
+                        ]}
                     />
                 </div>
             </Surface>

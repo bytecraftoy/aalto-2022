@@ -1,5 +1,5 @@
 import React from 'react';
-import { SegemnetdButton } from './SegmentedButton.tsx';
+import { SegmentedButton } from './SegmentedButton';
 
 /**
  * Group of buttons with same border
@@ -8,31 +8,28 @@ import { SegemnetdButton } from './SegmentedButton.tsx';
  */
 
 interface SegmentedButtonsProps {
-    names: Array<string>;
-    onClicks: Array<React.MouseEventHandler<HTMLButtonElement> | undefined>;
+    actions: {
+        name: string;
+        onClick: React.MouseEventHandler<HTMLButtonElement>;
+    }[];
 }
 
 export const SegmentedButtons: React.FC<SegmentedButtonsProps> = ({
-    names,
-    onClicks,
+    actions,
 }) => {
-    if (names.length != onClicks.length) {
-        return <div>Error declaring</div>;
-    }
-
     return (
         <div className="inline-block">
             <div className="grid grid-cols-3">
-                {names.map((name, index) => {
+                {actions.map((action, index) => {
                     let position: 'left' | 'right' | undefined;
                     if (index == 0) position = 'left';
-                    if (index == names.length - 1) position = 'right';
+                    if (index == actions.length - 1) position = 'right';
 
                     return (
-                        <SegemnetdButton
+                        <SegmentedButton
                             key={index}
-                            name={name}
-                            onClick={onClicks[index]}
+                            name={action.name}
+                            onClick={action.onClick}
                             position={position}
                         />
                     );
