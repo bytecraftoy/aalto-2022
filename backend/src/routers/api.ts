@@ -4,7 +4,7 @@ import {
     promptGen,
     responseGen,
     sendToProxy,
-} from '../services/dummyService';
+} from '../services/textGenService';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ApiRequest } from '../types/ApiTypes';
 
