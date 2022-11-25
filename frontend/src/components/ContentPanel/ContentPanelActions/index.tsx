@@ -1,7 +1,7 @@
 import React from 'react';
 import { Surface } from '../../Surface';
-import { CustomButton } from '../../Buttons/ContainedButton';
-import { SegmentedButtons } from '../../Buttons/SegmentedButton';
+import { CustomButton } from '../../Buttons';
+import { SegmentedButtons } from '../../Buttons';
 
 /**
  * Component of Content panel.
@@ -10,16 +10,26 @@ import { SegmentedButtons } from '../../Buttons/SegmentedButton';
  */
 
 interface ContentPanelActionsProps {
-    generateAll: () => void
+    generateAll: () => void;
 }
 export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
     generateAll,
 }) => {
-    return <Surface level={5} className="h-20 w-full rounded-2xl flex flex-row justify-between items-center">
-                    <CustomButton
-                        onClick={generateAll}
-                        name="Generate"
-                        color="primary"
-                    />
-    </Surface>;
+    const exportFunc = () => console.log('Not implemented');
+    return (
+        <Surface
+            level={5}
+            className="h-20 w-full rounded-2xl flex flex-row justify-between items-center"
+        >
+            <CustomButton
+                onClick={generateAll}
+                name="Generate content"
+                color="primary"
+            />
+            <SegmentedButtons
+                names={['Json', 'Xlsx']}
+                onClicks={[exportFunc, exportFunc]}
+            />
+        </Surface>
+    );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { App } from '../App';
+import { App } from '../../App';
 import { act } from 'react-dom/test-utils';
 
 //Removed crypto, so we don't have crypto.randomInt for tests
@@ -123,17 +123,16 @@ test('PromptIOBoxes should have no remove button if there are only one of them',
         screen.getAllByText<HTMLElement>('Prompt').length
     ).toBeGreaterThanOrEqual(3);
 
-    expect(screen.getAllByText<HTMLButtonElement>('Delete').length).toBe(3);
+    expect(
+        screen.getAllByText<HTMLButtonElement>('Delete').length
+    ).toBeGreaterThanOrEqual(3);
 
-    act(() => {
-        screen.queryAllByText<HTMLButtonElement>('Delete')[0]?.click();
-    });
-    act(() => {
-        screen.queryAllByText<HTMLButtonElement>('Delete')[0]?.click();
-    });
-    act(() => {
-        screen.queryAllByText<HTMLButtonElement>('Delete')[0]?.click();
-    });
+    //Try to repeatedly remove boxes so there is none left
+    for (let i = 0; i < 10; i++) {
+        act(() => {
+            screen.queryAllByText<HTMLButtonElement>('Delete')[0]?.click();
+        });
+    }
 
     expect(screen.queryByText<HTMLButtonElement>('Delete')).toBeNull();
 

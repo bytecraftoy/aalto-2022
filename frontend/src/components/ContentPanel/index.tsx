@@ -2,7 +2,6 @@ import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { PromptData } from '../PromptIOBox';
 import { CustomButton } from '../Buttons/ContainedButton';
-import { SegmentedButtons } from '../Buttons/SegmentedButton';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
