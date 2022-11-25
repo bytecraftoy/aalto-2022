@@ -80,20 +80,3 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
         </div>
     );
 };
-
-/*
-
-                    <div className="flex flex-row justify-center items-center">
-                        <CustomButton
-                            onClick={generateAll}
-                            name="Generate content"
-                            color="primary"
-                        />
-                        <CustomButton
-                            onClick={addPromptBox}
-                            name="Add box"
-                            color="primary"
-                        />
-                    </div>
-
-*/

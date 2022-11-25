@@ -8,7 +8,7 @@ import classNames from 'classnames';
 
 interface SegmentedButtonProps {
     name: string;
-    onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
     position?: 'left' | 'right';
 }
 
