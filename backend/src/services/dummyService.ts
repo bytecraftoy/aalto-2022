@@ -58,16 +58,17 @@ const promptGen = (req: ApiRequest) => {
  */
 const sendToProxy = async (json: Prompt) => {
     //returns true if dummy environment, subject to change
-    const environmentCheck = (env: string | undefined) => !env || env !== 'openai';
-    
-    if (environmentCheck(process.env.ENVIRONMENT)){
+    const environmentCheck = (env: string | undefined) =>
+        !env || env !== 'openai';
+
+    if (environmentCheck(process.env.ENVIRONMENT)) {
         //dummy
         const response: Gpt3Response = await axios.post('localhost:8080', json); //possible TODO: replace url with env variable
-        return response
+        return response;
     } else {
         //send to real api here, currently same code as dummy as a placeholder
-        const response: Gpt3Response = await axios.post('localhost:8080', json); 
-        return response
+        const response: Gpt3Response = await axios.post('localhost:8080', json);
+        return response;
     }
 };
 
