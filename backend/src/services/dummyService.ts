@@ -37,15 +37,14 @@ const jsonValidation = (json: ApiRequest) => {
  * @returns {Prompt}
  */
 const promptGen = (req: ApiRequest) => {
-    //numbers currently placeholders
     const prompt = {
-        model: 'string',
+        model: 'text-davinci-002',
         prompt: req.prompt,
-        temperature: 1,
-        max_tokens: 1,
-        top_p: 1,
-        frequency_penalty: 1,
-        presence_penalty: 1,
+        temperature: 0.5,
+        max_tokens: 2000,
+        top_p: 1.0,
+        frequency_penalty: 0.52,
+        presence_penalty: 0.5,
     };
     return prompt;
 };

@@ -12,7 +12,7 @@ import { ApiRequest } from '../types/ApiTypes';
 const environment = process.env.ENVIRONMENT;
 
 //returns true if dummy environment, subject to change
-const environmentCheck = (env: string | undefined) => !env || env == 'dummy';
+const environmentCheck = (env: string | undefined) => !env || env !== 'openai';
 
 const router = Router();
 
