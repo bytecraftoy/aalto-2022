@@ -1,5 +1,5 @@
 import React from 'react';
-import { SegmentedButton } from './SegmentedButton.tsx';
+import { SegmentedButton } from './SegmentedButton';
 
 /**
  * Group of buttons with same border
