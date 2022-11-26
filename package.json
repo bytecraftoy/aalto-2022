@@ -1,6 +1,7 @@
 {
     "scripts": {
         "ds": "run-p dev:*",
+        "docusaurus": "npm run build-docs && npm run start-docs",
         "setup-project": "npm run install:backend && npm run install:frontend && npm install",
         "build-project": "run-s build:*",
         "test-project": "run-s test:*",
@@ -11,6 +12,8 @@
         "deploy-project": "npm run setup-project && run-s build-project deploy:*",
         "demo-project": "npm run deploy-project && cd deploy && node index.js",
         "dev-project": "npm run setup-project && npm run ds",
+        "build-docs": "cd ./docusaurus && npm install && cd ..",
+        "start-docs": "cd ./docusaurus && npm start && cd .. ",
         "install:frontend": "cd ./frontend && npm install && cd ..",
         "install:backend": "cd ./backend && npm install && cd ..",
         "build:backend": "cd ./backend && npm run build && cd ..",
