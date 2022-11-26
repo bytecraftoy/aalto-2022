@@ -33,14 +33,11 @@ export const CustomInput: React.FC<InputProps> = ({
     }
 
     return (
-        <div className="relative">
+        <label className="relative">
             <input
-                id={`${label}`}
-                name={`${label}`}
                 type={type}
                 spellCheck={'false'}
                 value={value}
-                //className=" font-sans text-base font-normal leading-normal p-3 rounded-xl text-gray-900 bg-white border-gray-300 border shadow hover:border-primary focus:outline-none focus:ring focus:border-primary"
                 className={classNames(
                     // Shape
                     'min-w-[280px] h-12 pl-4 pr-3 rounded-t peer',
@@ -58,8 +55,7 @@ export const CustomInput: React.FC<InputProps> = ({
                 onChange={() => setTouched(true)}
                 required
             />
-            <label
-                htmlFor={`${label}`}
+            <span
                 className={classNames(
                     // Positions
                     'absolute left-0 top-0 peer-placeholder-shown:top-2.5',
@@ -70,7 +66,7 @@ export const CustomInput: React.FC<InputProps> = ({
                 )}
             >
                 {label}
-            </label>
+            </span>
             {!error ? (
                 <div className=" pt-1 px-4 text-xs max-w-[280px] text-neutral-30 ">
                     {textHelper}
@@ -80,6 +76,6 @@ export const CustomInput: React.FC<InputProps> = ({
                     {error}
                 </div>
             )}
-        </div>
+        </label>
     );
 };
