@@ -6,6 +6,8 @@ import { SegmentedButtons } from '../Buttons/SegmentedButtons';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
+import { ICONS } from '../../constants';
+import { FAB } from '../Buttons/FAB';
 
 //Provide access to MasterCategory through a parent callback
 interface ContentPanelProps {
@@ -82,6 +84,13 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                             ['json', unimplemented],
                             ['excel', unimplemented],
                         ]}
+                    />
+
+                    {/* Example of FAB */}
+                    <FAB
+                        icon={ICONS.PLUS}
+                        onClick={unimplemented}
+                        size={'large'}
                     />
                 </div>
             </Surface>
