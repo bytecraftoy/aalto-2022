@@ -14,10 +14,12 @@ export const PromptCategoryBox: FC<PromptCategoryBoxProps> = ({
 }) => {
     return (
         <div className="w-full  flex flex-col min-h-fit justify-start items-center mt-2 mb-20">
-            <h2 className="text-black font-medium text-2xl pb-6">Category</h2>
             <CustomInput
                 type={'text'}
                 value={category}
+                label={'Category'}
+                required
+                textHelper={'Type the category of the prompt'}
                 onInput={({ target }) =>
                     setCategory((target as HTMLInputElement).value)
                 }
