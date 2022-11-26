@@ -1,0 +1,171 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "label": "Next",
+          "banner": null,
+          "badge": false,
+          "noIndex": false,
+          "className": "docs-version-current",
+          "path": "/",
+          "tagsPath": "/tags",
+          "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs",
+          "editUrlLocalized": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/i18n/en/docusaurus-plugin-content-docs/current",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "C:\\Users\\samik\\Aalto\\Bytecraft\\aalto-2022\\docusaurus\\sidebars.js",
+          "contentPath": "C:\\Users\\samik\\Aalto\\Bytecraft\\aalto-2022\\docusaurus\\docs",
+          "contentPathLocalized": "C:\\Users\\samik\\Aalto\\Bytecraft\\aalto-2022\\docusaurus\\i18n\\en\\docusaurus-plugin-content-docs\\current",
+          "docs": [
+            {
+              "unversionedId": "api-endpoints/export/post-json",
+              "id": "api-endpoints/export/post-json",
+              "title": "POST /export/json/:name",
+              "description": "",
+              "source": "@site/docs/api-endpoints/export/post-json.md",
+              "sourceDirName": "api-endpoints/export",
+              "slug": "/api-endpoints/export/post-json",
+              "permalink": "/api-endpoints/export/post-json",
+              "draft": false,
+              "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/api-endpoints/export/post-json.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Documentation",
+                "permalink": "/"
+              },
+              "next": {
+                "title": "GET /mirror/:text",
+                "permalink": "/api-endpoints/mirror/get-mirror"
+              }
+            },
+            {
+              "unversionedId": "api-endpoints/mirror/get-mirror",
+              "id": "api-endpoints/mirror/get-mirror",
+              "title": "GET /mirror/:text",
+              "description": "Test API endpoint that just returns the pathname.",
+              "source": "@site/docs/api-endpoints/mirror/get-mirror.md",
+              "sourceDirName": "api-endpoints/mirror",
+              "slug": "/api-endpoints/mirror/get-mirror",
+              "permalink": "/api-endpoints/mirror/get-mirror",
+              "draft": false,
+              "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/api-endpoints/mirror/get-mirror.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "POST /export/json/:name",
+                "permalink": "/api-endpoints/export/post-json"
+              },
+              "next": {
+                "title": "POST /mirror",
+                "permalink": "/api-endpoints/mirror/post-mirror"
+              }
+            },
+            {
+              "unversionedId": "api-endpoints/mirror/post-mirror",
+              "id": "api-endpoints/mirror/post-mirror",
+              "title": "POST /mirror",
+              "description": "API endpoints that returns the request body given in the request.",
+              "source": "@site/docs/api-endpoints/mirror/post-mirror.md",
+              "sourceDirName": "api-endpoints/mirror",
+              "slug": "/api-endpoints/mirror/post-mirror",
+              "permalink": "/api-endpoints/mirror/post-mirror",
+              "draft": false,
+              "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/api-endpoints/mirror/post-mirror.md",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {},
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "GET /mirror/:text",
+                "permalink": "/api-endpoints/mirror/get-mirror"
+              }
+            },
+            {
+              "unversionedId": "intro",
+              "id": "intro",
+              "title": "Documentation",
+              "description": "Documentation for AI assisted content creatro tool",
+              "source": "@site/docs/intro.md",
+              "sourceDirName": ".",
+              "slug": "/",
+              "permalink": "/",
+              "draft": false,
+              "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/intro.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "slug": "/",
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "next": {
+                "title": "POST /export/json/:name",
+                "permalink": "/api-endpoints/export/post-json"
+              }
+            }
+          ],
+          "drafts": [],
+          "sidebars": {
+            "tutorialSidebar": [
+              {
+                "type": "doc",
+                "id": "intro"
+              },
+              {
+                "type": "category",
+                "label": "api-endpoints",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "category",
+                    "label": "export",
+                    "collapsible": true,
+                    "collapsed": true,
+                    "items": [
+                      {
+                        "type": "doc",
+                        "id": "api-endpoints/export/post-json"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "category",
+                    "label": "mirror",
+                    "collapsible": true,
+                    "collapsed": true,
+                    "items": [
+                      {
+                        "type": "doc",
+                        "id": "api-endpoints/mirror/get-mirror"
+                      },
+                      {
+                        "type": "doc",
+                        "id": "api-endpoints/mirror/post-mirror"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "docusaurus-plugin-content-pages": {
+    "default": []
+  },
+  "docusaurus-plugin-debug": {},
+  "docusaurus-theme-classic": {},
+  "docusaurus-bootstrap-plugin": {},
+  "docusaurus-mdx-fallback-plugin": {}
+}

@@ -1,0 +1,20 @@
+{
+  "unversionedId": "api-endpoints/get-mirror",
+  "id": "api-endpoints/get-mirror",
+  "title": "GET /mirror/:text",
+  "description": "Test API endpoint that just returns the pathname.",
+  "source": "@site/docs/api-endpoints/get-mirror.md",
+  "sourceDirName": "api-endpoints",
+  "slug": "/api-endpoints/get-mirror",
+  "permalink": "/api-endpoints/get-mirror",
+  "draft": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/api-endpoints/get-mirror.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Documentation",
+    "permalink": "/"
+  }
+}

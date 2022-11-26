@@ -2,7 +2,7 @@ import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { PromptData } from '../PromptIOBox';
 import { CustomButton } from '../Buttons/ContainedButton';
-import { SegmentedButtons } from '../Buttons/SegmentedButton';
+import { SegmentedButtons } from '../Buttons/SegmentedButtons';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
@@ -36,6 +36,11 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
             )
         );
     };
+
+    // Temporary handler
+    function unimplemented() {
+        console.log('unimplemented');
+    }
 
     return (
         <div className="w-full px-4 py-12">
@@ -73,8 +78,10 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
 
                     {/* TEST */}
                     <SegmentedButtons
-                        names={['json', 'excel']}
-                        onClicks={[undefined, undefined]}
+                        buttonProps={[
+                            ['json', unimplemented],
+                            ['excel', unimplemented],
+                        ]}
                     />
                 </div>
             </Surface>

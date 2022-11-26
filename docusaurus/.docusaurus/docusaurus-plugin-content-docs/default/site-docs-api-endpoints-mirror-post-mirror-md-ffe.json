@@ -1,0 +1,20 @@
+{
+  "unversionedId": "api-endpoints/mirror/post-mirror",
+  "id": "api-endpoints/mirror/post-mirror",
+  "title": "POST /mirror",
+  "description": "API endpoints that returns the request body given in the request.",
+  "source": "@site/docs/api-endpoints/mirror/post-mirror.md",
+  "sourceDirName": "api-endpoints/mirror",
+  "slug": "/api-endpoints/mirror/post-mirror",
+  "permalink": "/api-endpoints/mirror/post-mirror",
+  "draft": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/api-endpoints/mirror/post-mirror.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "GET /mirror/:text",
+    "permalink": "/api-endpoints/mirror/get-mirror"
+  }
+}

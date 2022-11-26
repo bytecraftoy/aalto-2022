@@ -1,0 +1,88 @@
+{
+  "pluginId": "default",
+  "version": "current",
+  "label": "Next",
+  "banner": null,
+  "badge": false,
+  "noIndex": false,
+  "className": "docs-version-current",
+  "isLast": true,
+  "docsSidebars": {
+    "tutorialSidebar": [
+      {
+        "type": "link",
+        "label": "Documentation",
+        "href": "/",
+        "docId": "intro"
+      },
+      {
+        "type": "category",
+        "label": "api-endpoints",
+        "collapsible": true,
+        "collapsed": true,
+        "items": [
+          {
+            "type": "category",
+            "label": "export",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "POST /export/json/:name",
+                "href": "/api-endpoints/export/post-json",
+                "docId": "api-endpoints/export/post-json"
+              }
+            ]
+          },
+          {
+            "type": "category",
+            "label": "mirror",
+            "collapsible": true,
+            "collapsed": true,
+            "items": [
+              {
+                "type": "link",
+                "label": "GET /mirror/:text",
+                "href": "/api-endpoints/mirror/get-mirror",
+                "docId": "api-endpoints/mirror/get-mirror"
+              },
+              {
+                "type": "link",
+                "label": "POST /mirror",
+                "href": "/api-endpoints/mirror/post-mirror",
+                "docId": "api-endpoints/mirror/post-mirror"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "docs": {
+    "api-endpoints/export/post-json": {
+      "id": "api-endpoints/export/post-json",
+      "title": "POST /export/json/:name",
+      "description": "",
+      "sidebar": "tutorialSidebar"
+    },
+    "api-endpoints/mirror/get-mirror": {
+      "id": "api-endpoints/mirror/get-mirror",
+      "title": "GET /mirror/:text",
+      "description": "Test API endpoint that just returns the pathname.",
+      "sidebar": "tutorialSidebar"
+    },
+    "api-endpoints/mirror/post-mirror": {
+      "id": "api-endpoints/mirror/post-mirror",
+      "title": "POST /mirror",
+      "description": "API endpoints that returns the request body given in the request.",
+      "sidebar": "tutorialSidebar"
+    },
+    "intro": {
+      "id": "intro",
+      "title": "Documentation",
+      "description": "Documentation for AI assisted content creatro tool",
+      "sidebar": "tutorialSidebar"
+    }
+  }
+}

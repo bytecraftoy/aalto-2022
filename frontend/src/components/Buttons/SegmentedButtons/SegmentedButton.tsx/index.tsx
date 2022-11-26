@@ -8,11 +8,11 @@ import classNames from 'classnames';
 
 interface SegmentedButtonProps {
     name: string;
-    onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
     position?: 'left' | 'right';
 }
 
-export const SegemnetdButton: React.FC<SegmentedButtonProps> = ({
+export const SegmentedButton: React.FC<SegmentedButtonProps> = ({
     name,
     onClick,
     position,
