@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames/dedupe';
 
 interface ButtonProp {
-    onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
     name: string;
     color: 'error' | 'primary';
 }
