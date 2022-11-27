@@ -5,7 +5,7 @@
 interface Choice {
     text: string;
     index: number;
-    logprobs: number;
+    logprobs: number | null;
     finish_reason: string;
 }
 
@@ -19,7 +19,8 @@ interface Gpt3Response {
     id: string;
     object: string;
     created: number;
-    choices: ReadonlyArray<Choice>;
+    model: string;
+    choices: Choice[];
     usage: Usage;
 }
 

@@ -1,5 +1,5 @@
 interface ApiRequest {
-    contexts: ReadonlyArray<string>;
+    contexts: string[];
     prompt: string;
     id: string;
 }

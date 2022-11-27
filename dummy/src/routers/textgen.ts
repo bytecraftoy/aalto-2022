@@ -7,7 +7,7 @@ const textGenRouter = express.Router();
 textGenRouter.post(
     '/',
     (req: Request, res: Response, next: NextFunction): void => {
-        const body: string = req.body as string;
+        const body = req.body as string;
 
         try {
             validatePrompt(body);
