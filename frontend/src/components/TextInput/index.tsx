@@ -24,8 +24,8 @@ export const CustomTextInput: React.FC<TextInputProps> = ({
             spellCheck={'false'}
             placeholder={placeholder}
             className={classNames(
-                'form-control h-60 block w-full px-3 py-1.5 text-base font-normal bg-clip-padding border-2',
-                'border-solid border-gray-300 rounded transition ease-in-out m-0 focus:outline-none text-gray-700',
+                'form-control h-40 block w-full px-3 py-1.5 text-base font-normal bg-clip-padding border-2 resize-none',
+                'border-solid border-gray-300 rounded-xl transition ease-in-out m-0 focus:outline-none text-gray-700',
                 'bg-surface focus:text-gray-700 focus:bg-white focus:border-primary'
             )}
             value={value}

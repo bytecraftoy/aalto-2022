@@ -8,7 +8,7 @@
 /** Color palette defining multiple colors based on Material design */
 export type Palette = 'primary' | 'secondary' | 'tertiary' | 'red';
 
-/** Background / Container color for this palette */
+/** Background color for this palette */
 export const bgColor = (c: Palette) => {
     switch (c) {
         case 'primary':
@@ -19,6 +19,20 @@ export const bgColor = (c: Palette) => {
             return 'bg-tertiary';
         case 'red':
             return 'bg-red';
+    }
+};
+
+/** Container color for this palette */
+export const containerColor = (c: Palette) => {
+    switch (c) {
+        case 'primary':
+            return 'bg-primary-90';
+        case 'secondary':
+            return 'bg-secondary-90';
+        case 'tertiary':
+            return 'bg-tertiary-90';
+        case 'red':
+            return 'bg-red-90';
     }
 };
 
