@@ -41,7 +41,7 @@
         "prettier": "npx prettier --check .",
         "prettier-write": "npx prettier --write .",
         "cypress": "npx cypress run",
-        "cypress-ci": "npm run ds >/dev/null & wait-on --timeout 30000 http://127.0.0.1:3000 http://127.0.0.1:3030/mirror && npm run cypress"
+        "cypress-ci": "npm run ds >/dev/null & wait-on --timeout 30000 http://127.0.0.1:3000 http://127.0.0.1:3030/api/mirror && npm run cypress"
     },
     "devDependencies": {
         "axios": "^1.2.0",

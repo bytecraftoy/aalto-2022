@@ -1,1 +1,1 @@
-GET http://localhost:3030/mirror/hello/there.txt
+GET http://localhost:3030/api/mirror/hello/there.txt

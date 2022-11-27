@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 app.use(cors());
 app.use(bodyParser.text({ type: '*/*' }));
-app.use('/mirror', mirror);
+app.use('/api/mirror', mirror);
 app.use('/api/export/', exportRouter);
 app.use('/api/textgen', api);
 app.use(express.static('./public/'));
