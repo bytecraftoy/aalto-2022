@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { validatePrompt, ValidationError } from './../services/validatePrompt';
-import { generateData } from './../services/generateData';
-//import { Prompt } from './../types/Prompt';
+import { generateData, validatePrompt, ValidationError } from './../services';
+import { DummyResponse, Prompt } from '../types';
 
 const textGenRouter = express.Router();
 
@@ -9,6 +8,7 @@ textGenRouter.post(
     '/',
     (req: Request, res: Response, next: NextFunction): void => {
         const body: string = req.body as string;
+
         try {
             validatePrompt(body);
         } catch (e) {
@@ -20,9 +20,16 @@ textGenRouter.post(
             }
             return;
         }
-        //Prompt is unused, as it is not actually used to select the generated response
-        //const prompt: Prompt = JSON.parse(body) as Prompt;
-        res.json(generateData());
+
+        const response: DummyResponse = {
+            gpt: generateData(),
+            debug: {
+                prompt: JSON.parse(body) as Prompt,
+                date: new Date().toUTCString(),
+            },
+        };
+
+        res.json(response);
     }
 );
 

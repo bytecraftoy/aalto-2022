@@ -1,23 +1,27 @@
-interface AIData {
+/**
+ * Gpt3 type to aid in correct OpenAI formatting
+ */
+
+interface Choice {
     text: string;
     index: number;
     logprobs: number | null;
     finish_reason: string;
 }
 
-interface AIUsage {
+interface Usage {
     prompt_tokens: number;
     completion_tokens: number;
     total_tokens: number;
 }
 
-interface AIResponse {
+interface Gpt3Response {
     id: string;
     object: string;
     created: number;
     model: string;
-    choices: AIData[];
-    usage: AIUsage[];
+    choices: Choice[];
+    usage: Usage;
 }
 
-export { AIResponse, AIData, AIUsage };
+export { Gpt3Response };
