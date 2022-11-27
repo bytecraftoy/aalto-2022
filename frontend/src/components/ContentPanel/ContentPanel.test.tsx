@@ -14,7 +14,7 @@ test('Should contain a button for adding promptIOBoxes', () => {
     act(() => {
         render(<App />);
     });
-    const addButton = screen.queryByText<HTMLButtonElement>('Add box');
+    const addButton = screen.queryByTestId<HTMLButtonElement>('fab-button');
     expect(addButton).toBeInTheDocument();
 });
 
@@ -22,7 +22,7 @@ test('Button should add arbitrary many promptIOBoxes', () => {
     act(() => {
         render(<App />);
     });
-    const addButton = screen.getByText<HTMLButtonElement>('Add box');
+    const addButton = screen.getByTestId<HTMLButtonElement>('fab-button');
 
     const nClicks = randomInt(3, 18);
     for (let i = 0; i < nClicks; i++) {
@@ -32,7 +32,7 @@ test('Button should add arbitrary many promptIOBoxes', () => {
     }
 
     expect(
-        screen.getAllByText<HTMLElement>('Prompt').length
+        screen.getAllByTestId<HTMLElement>('prompt').length
     ).toBeGreaterThanOrEqual(nClicks);
     expect(
         screen.getAllByPlaceholderText<HTMLTextAreaElement>('User input here')
@@ -49,7 +49,7 @@ test('PromptIOBoxes should have a remove button', () => {
     act(() => {
         render(<App />);
     });
-    const addButton = screen.getByText<HTMLButtonElement>('Add box');
+    const addButton = screen.getByTestId<HTMLButtonElement>('fab-button');
 
     const nClicks = randomInt(3, 18);
     for (let i = 0; i < nClicks; i++) {
@@ -68,7 +68,7 @@ test('Remove button should delete the correct promptIOBox', () => {
         render(<App />);
     });
 
-    const addButton = screen.getByText<HTMLButtonElement>('Add box');
+    const addButton = screen.getByTestId<HTMLButtonElement>('fab-button');
 
     const nClicks = randomInt(3, 18);
     for (let i = 0; i < nClicks; i++) {
@@ -107,7 +107,7 @@ test('PromptIOBoxes should have no remove button if there are only one of them',
     act(() => {
         render(<App />);
     });
-    const addButton = screen.getByText<HTMLButtonElement>('Add box');
+    const addButton = screen.getByTestId<HTMLButtonElement>('fab-button');
 
     act(() => {
         addButton.click();
@@ -120,7 +120,7 @@ test('PromptIOBoxes should have no remove button if there are only one of them',
     });
 
     expect(
-        screen.getAllByText<HTMLElement>('Prompt').length
+        screen.getAllByTestId<HTMLElement>('prompt').length
     ).toBeGreaterThanOrEqual(3);
 
     expect(

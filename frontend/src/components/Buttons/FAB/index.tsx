@@ -1,6 +1,10 @@
 import React from 'react';
 import { Icon, solidIcon } from '../../../utils/icons';
-import { Palette, containerColor, onContainerColor } from '../../../utils/colors';
+import {
+    Palette,
+    containerColor,
+    onContainerColor,
+} from '../../../utils/colors';
 import classNames from 'classnames';
 
 /**
@@ -25,7 +29,7 @@ export const FAB: React.FC<FABProps> = ({
     return (
         <div className="inline-block p-4 ">
             {/* Three different FABs: FAB, small FAB, large FAB */}
-            <button onClick={onClick}>
+            <button onClick={onClick} data-testid="fab-button">
                 {/* Color layer */}
                 <div
                     className={classNames(

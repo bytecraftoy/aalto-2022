@@ -57,10 +57,10 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
                     />
                 );
             })}
-            <div className='mt-10 pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around'>
+            <div className="mt-10 pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around">
                 <FAB
                     icon="PlusIcon"
-                    size='large'
+                    size="large"
                     colorPalette="primary"
                     onClick={addPromptBox}
                 />

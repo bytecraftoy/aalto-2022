@@ -1,5 +1,6 @@
 import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
+import { exportJson, downloadJson } from '../../utils/exportContent';
 import { PromptData } from '../PromptIOBox';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
@@ -44,6 +45,18 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
         );
     };
 
+    //Callback to export the category, and all inputs / outputs in json
+    const jsonExport = async () => {
+        const link = await exportJson(category, promptBoxes);
+        if (link) downloadJson(link);
+    };
+
+    //Callback to export outputs in excel
+    const excelExport = async () => {
+        const link = await exportJson(category, promptBoxes);
+        if (link) window.open(link, '_blank');
+    };
+
     return (
         //Take up full space, and center the content panel in it
         <div className="w-full px-4 py-16 flex flex-row justify-around items-center">
@@ -67,7 +80,11 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                 />
 
                 {/* Bottom bar containing content panel actions */}
-                <ContentPanelActions generateAll={generateAll} />
+                <ContentPanelActions
+                    generateAll={generateAll}
+                    exportJson={jsonExport}
+                    exportExcel={excelExport}
+                />
             </Surface>
         </div>
     );

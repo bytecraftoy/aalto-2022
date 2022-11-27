@@ -38,7 +38,10 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
 }) => {
     return (
         <div className="mt-10 pt-4 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around">
-            <div className="w-full flex flex-col items-center justify-between">
+            <div
+                className="w-full flex flex-col items-center justify-between"
+                data-testid="prompt"
+            >
                 <CustomTextInput
                     placeholder="User input here"
                     value={input}

@@ -10,11 +10,14 @@ import { FilledButton, SegmentedButtons } from '../../Buttons';
 
 interface ContentPanelActionsProps {
     generateAll: () => void;
+    exportJson: () => void;
+    exportExcel: () => void;
 }
 export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
     generateAll,
+    exportJson,
+    exportExcel,
 }) => {
-    const exportFunc = () => console.log('Not implemented');
     return (
         <Surface
             level={5}
@@ -27,8 +30,8 @@ export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
             />
             <SegmentedButtons
                 actions={[
-                    { name: 'json', onClick: exportFunc },
-                    { name: 'excel', onClick: exportFunc },
+                    { name: 'json', onClick: exportJson },
+                    { name: 'excel', onClick: exportExcel },
                 ]}
             />
         </Surface>
