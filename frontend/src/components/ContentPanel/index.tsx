@@ -1,10 +1,13 @@
 import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { PromptData } from '../PromptIOBox';
-import { CustomButton } from '../Button';
+import { CustomButton } from '../Buttons/ContainedButton';
+import { SegmentedButtons } from '../Buttons/SegmentedButtons';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
+import { ICONS } from '../../constants';
+import { FAB } from '../Buttons/FAB';
 
 //Provide access to MasterCategory through a parent callback
 interface ContentPanelProps {
@@ -36,11 +39,16 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
         );
     };
 
+    // Temporary handler
+    function unimplemented() {
+        console.log('unimplemented');
+    }
+
     return (
-        <div className="w-full px-4 py-12 ">
+        <div className="w-full px-4 py-12">
             <Surface
                 level={1}
-                className="w-full max-w-6xl rounded-2xl min-h-fit shadow-md border border-black border-opacity-10"
+                className="w-full max-w-6xl rounded-2xl min-h-fit shadow-md border border-black border-opacity-10 m-auto"
             >
                 <div className="mx-auto my-auto w-full max-w-6xl rounded-2xl p-12 min-h-fit">
                     {/* Top most part of the content panel */}
@@ -68,6 +76,21 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                         setPromptBoxes={setPromptBoxes}
                         generateOutput={generateOutput}
                         setPromptOutput={setPromptOutput}
+                    />
+
+                    {/* TEST */}
+                    <SegmentedButtons
+                        buttonProps={[
+                            ['json', unimplemented],
+                            ['excel', unimplemented],
+                        ]}
+                    />
+
+                    {/* Example of FAB */}
+                    <FAB
+                        icon={ICONS.PLUS}
+                        onClick={unimplemented}
+                        size={'large'}
                     />
                 </div>
             </Surface>
