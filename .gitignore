@@ -3,4 +3,5 @@ build
 node_modules
 deploy
 backend/public/
+cypress/videos
 .env

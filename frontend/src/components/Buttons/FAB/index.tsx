@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon } from '../../Icon';
+import { Icon, solidIcon } from '../../../utils/icons';
+import { Palette, bgColor, onContainerColor } from '../../../utils/colors';
 import classNames from 'classnames';
 
 /**
@@ -9,12 +10,18 @@ import classNames from 'classnames';
  */
 
 interface FABProps {
-    icon: string;
+    icon: Icon;
+    colorPalette: Palette;
     size?: 'large' | 'small';
     onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const FAB: React.FC<FABProps> = ({ icon, size, onClick }) => {
+export const FAB: React.FC<FABProps> = ({
+    icon,
+    colorPalette,
+    size,
+    onClick,
+}) => {
     return (
         <div className="inline-block p-4 ">
             {/* Three different FABs: FAB, small FAB, large FAB */}
@@ -31,29 +38,27 @@ export const FAB: React.FC<FABProps> = ({ icon, size, onClick }) => {
                     {/* State layer */}
                     <div
                         className={classNames(
-                            'w-full h-full flex items-center bg-onSecondaryContainer bg-opacity-0 hover:bg-opacity-8 active:bg-opacity-12',
+                            'w-full h-full flex justify-center items-center transition-colors bg-onSecondaryContainer bg-opacity-0 hover:bg-opacity-8 active:bg-opacity-12',
+                            bgColor(colorPalette),
                             { 'rounded-[28px]': size === 'large' },
                             { 'rounded-xl': size === 'small' },
                             { 'rounded-2xl': !size }
                         )}
                     >
                         {/* Large FAB */}
-                        {size === 'large' && (
-                            <Icon
-                                icon={icon}
-                                width={36}
-                                height={36}
-                                color="#110563"
-                            />
-                        )}
+                        {size === 'large' &&
+                            solidIcon(
+                                icon,
+                                'w-9 h-9 ' + onContainerColor(colorPalette)
+                            )}
 
                         {/* Small FAB */}
-                        {size === 'small' && (
-                            <Icon icon={icon} color="#110563" />
-                        )}
+                        {size === 'small' &&
+                            solidIcon(icon, onContainerColor(colorPalette))}
 
                         {/* Default FAB */}
-                        {!size && <Icon icon={icon} color="#110563" />}
+                        {!size &&
+                            solidIcon(icon, onContainerColor(colorPalette))}
                     </div>
                 </div>
             </button>

@@ -28,12 +28,13 @@ export const createPrompt = (
     preset = ''
 ): Prompt => {
     //Retrieve a preset by name, or the default preset if undefined
-    const result = presets.find((p) => p.name === preset) ?? defaultPreset;
+    const template = presets.find((p) => p.name === preset) ?? defaultPreset;
+    const result = template.parameters;
 
     //Gpt3 works with prompts that are formatted such as
     //Theme: Medieval fantasy\nBackstory of a knight with black armor and a magic sword:
 
     const theme = contexts.length ? `Theme: ${contexts[0]}\n` : '';
-    result.parameters.prompt = `${theme}${text}:`;
-    return result.parameters;
+    result.prompt = `${theme}${text}:`;
+    return result;
 };

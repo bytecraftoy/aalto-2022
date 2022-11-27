@@ -13,7 +13,7 @@ export const PromptCategoryBox: FC<PromptCategoryBoxProps> = ({
     setCategory,
 }) => {
     return (
-        <div className="w-full  flex flex-col min-h-fit justify-start items-center mt-2 mb-20">
+        <div className="w-full  flex flex-col min-h-fit justify-start items-center mt-2 mb-6">
             <CustomInput
                 type={'text'}
                 value={category}

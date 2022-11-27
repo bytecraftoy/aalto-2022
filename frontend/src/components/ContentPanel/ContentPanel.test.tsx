@@ -1,16 +1,14 @@
 import React from 'react';
-import { render, screen, prettyDOM } from '@testing-library/react';
-import { App } from '../App';
-import { randomInt } from 'crypto';
+import { render, screen } from '@testing-library/react';
+import { App } from '../../App';
 import { act } from 'react-dom/test-utils';
-import { randomUUID } from 'crypto';
 
-//randomUUID isn't normally usable for reac-dom tests, so add it explicitly
-Object.defineProperty(global.self, 'crypto', {
-    value: {
-        randomUUID: () => randomUUID(),
-    },
-});
+//Removed crypto, so we don't have crypto.randomInt for tests
+//Replacing it with Math.random. It's not cryptographically random
+//but does it need to be for tests?
+const randomInt = (min: number, max: number) => {
+    return Math.floor(min + Math.random() * (max - min));
+};
 
 test('Should contain a button for adding promptIOBoxes', () => {
     act(() => {
@@ -125,17 +123,16 @@ test('PromptIOBoxes should have no remove button if there are only one of them',
         screen.getAllByText<HTMLElement>('Prompt').length
     ).toBeGreaterThanOrEqual(3);
 
-    expect(screen.getAllByText<HTMLButtonElement>('Delete').length).toBe(3);
+    expect(
+        screen.getAllByText<HTMLButtonElement>('Delete').length
+    ).toBeGreaterThanOrEqual(3);
 
-    act(() => {
-        screen.queryAllByText<HTMLButtonElement>('Delete')[0]?.click();
-    });
-    act(() => {
-        screen.queryAllByText<HTMLButtonElement>('Delete')[0]?.click();
-    });
-    act(() => {
-        screen.queryAllByText<HTMLButtonElement>('Delete')[0]?.click();
-    });
+    //Try to repeatedly remove boxes so there is none left
+    for (let i = 0; i < 10; i++) {
+        act(() => {
+            screen.queryAllByText<HTMLButtonElement>('Delete')[0]?.click();
+        });
+    }
 
     expect(screen.queryByText<HTMLButtonElement>('Delete')).toBeNull();
 

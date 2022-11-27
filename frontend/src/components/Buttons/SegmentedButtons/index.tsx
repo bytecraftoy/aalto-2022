@@ -8,35 +8,28 @@ import { SegmentedButton } from './SegmentedButton';
  */
 
 interface SegmentedButtonsProps {
-    buttonProps: Array<[string, React.MouseEventHandler<HTMLButtonElement>]>;
+    actions: {
+        name: string;
+        onClick: React.MouseEventHandler<HTMLButtonElement>;
+    }[];
 }
 
 export const SegmentedButtons: React.FC<SegmentedButtonsProps> = ({
-    buttonProps,
+    actions,
 }) => {
-    const names: Array<string> = [];
-    const onClicks: Array<React.MouseEventHandler<HTMLButtonElement>> = [];
-
-    // Unpack the button names and onClick functions
-    for (let i = 0; i < buttonProps.length; i++) {
-        const buttonProp = buttonProps[i];
-        names.push(buttonProp[0]);
-        onClicks.push(buttonProp[1]);
-    }
-
     return (
         <div className="inline-block">
             <div className="grid grid-cols-3">
-                {names.map((name, index) => {
+                {actions.map((action, index) => {
                     let position: 'left' | 'right' | undefined;
                     if (index == 0) position = 'left';
-                    if (index == names.length - 1) position = 'right';
+                    if (index == actions.length - 1) position = 'right';
 
                     return (
                         <SegmentedButton
                             key={index}
-                            name={name}
-                            onClick={onClicks[index]}
+                            name={action.name}
+                            onClick={action.onClick}
                             position={position}
                         />
                     );

@@ -1,4 +1,5 @@
 import { Gpt3Response, DummyResponse, Prompt, ApiResponse } from '../types';
+import { getRndString } from './getRndString';
 import axios from 'axios';
 
 /**
@@ -18,15 +19,22 @@ const sendToProxy = async (json: Prompt): Promise<Gpt3Response> => {
         throw 'Tried to use proxy, but it is not yet available to the backend';
     } else {
         //dummy
-        const response: DummyResponse = await axios.post(
-            'localhost:8080',
+        const response = await axios.post<DummyResponse>(
+            'http://localhost:8080',
             json
-        ); //Possibly change this? Something similar to frontend backendURL
-        const { gpt, debug } = response;
-        //Do some logging, then return the actual gpt3 response
+        );
+
+        const { gpt, debug } = response.data;
+        //Do some logging, then return the actual gpt3 response with stuff appended
         console.log(
             `Replied to prompt:\n"${debug.prompt.prompt}"\nDate: ${debug.date}`
         );
+        const debugText = `This is a demo prompt generated using a dummy backend
+Date: ${debug.date}
+Prompt: ${JSON.stringify(debug.prompt)}
+id: ${getRndString(32)}`;
+
+        gpt.choices[0].text = debugText + gpt.choices[0].text;
         return gpt;
     }
 };
