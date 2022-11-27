@@ -7,12 +7,12 @@ describe('export router', () => {
     const fileName = 'file.json';
 
     test('handles incorrect IDs', async () => {
-        await api.get('/export/json/abc/').expect(404);
+        await api.get('/api/export/json/abc/').expect(404);
     });
 
     test('saves and servers and deletes data correctly', async () => {
         let res = await api
-            .post('/export/json/' + fileName)
+            .post('/api/export/json/' + fileName)
             .send(data)
             .expect(200);
 
@@ -21,12 +21,12 @@ describe('export router', () => {
         expect(typeof id).toBe('string');
         expect(id.length >= 16).toBe(true);
 
-        res = await api.get(`/export/json/${id}/`).expect(200);
+        res = await api.get(`/api/export/json/${id}/`).expect(200);
         expect(res.headers['content-disposition']).toBe(
             `attachment; filename="${fileName}"`
         );
         expect(res.text).toBe(data);
 
-        await api.get(`/export/json/${id}/`).expect(404);
+        await api.get(`/api/export/json/${id}/`).expect(404);
     });
 });

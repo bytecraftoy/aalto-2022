@@ -15,7 +15,7 @@ const exportJson = async (category: string, boxes: PromptData[]) => {
     };
 
     try {
-        const response = await apiFetch(`/export/json/${fileid}.json`, {
+        const response = await apiFetch(`/api/export/json/${fileid}.json`, {
             method: 'POST',
             body: JSON.stringify(obj),
         });
@@ -27,7 +27,7 @@ const exportJson = async (category: string, boxes: PromptData[]) => {
 };
 
 const downloadJson = (link: string) => {
-    window.open(`${backendURL}/export/json/${link}`, '_blank');
+    window.open(`${backendURL}/api/export/json/${link}`, '_blank');
 };
 
 export { exportJson, downloadJson };
