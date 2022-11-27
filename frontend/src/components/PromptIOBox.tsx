@@ -37,7 +37,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
     deleteSelf,
 }) => {
     return (
-        <div className="mt-16 pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around">
+        <div className="mt-10 pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around">
             <div className="w-full flex flex-col items-center justify-between">
                 <h3 className="text-black font-medium text-2xl pb-6">Prompt</h3>
 
@@ -60,13 +60,13 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                     <FilledButton
                         onClick={generate}
                         name="Generate"
-                        color="primary"
+                        colorPalette="primary"
                     />
                     {deleteSelf ? (
                         <FilledButton
                             onClick={() => deleteSelf?.()}
                             name="Delete"
-                            color="red"
+                            colorPalette="red"
                         />
                     ) : (
                         <></>

@@ -1,12 +1,12 @@
 import fs from 'fs';
-import { AIResponse } from '../types/AIResponse';
+import { Gpt3Response } from '../types';
 
-const exampleData: AIResponse[] = JSON.parse(
+const exampleData: Gpt3Response[] = JSON.parse(
     fs.readFileSync('example_data.json').toString()
-) as AIResponse[];
+) as Gpt3Response[];
 
-const generateData = (): AIResponse => {
-    const time = new Date().valueOf();
+const generateData = (): Gpt3Response => {
+    const time = Date.now();
     const data = exampleData[Math.floor(Math.random() * exampleData.length)];
     data.created = time;
     return data;

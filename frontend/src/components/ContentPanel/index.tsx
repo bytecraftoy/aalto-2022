@@ -1,7 +1,6 @@
 import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { PromptData } from '../PromptIOBox';
-import { FilledButton } from '../Buttons/FilledButton';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
@@ -33,7 +32,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     //Callbacks to asynchronously fetch AI data from backend
     const generateAll = () => promptBoxes.forEach(generateOutput);
     const generateOutput = async (p: PromptData) => {
-        setPromptOutput(p.id, await generateText(p.input, category));
+        setPromptOutput(p.id, await generateText(p.id, p.input, category));
     };
 
     //Callback to modify the input area of a PromptIOBox by id
@@ -58,20 +57,13 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                     setCategory={setCategory}
                 />
 
-                <div className="flex flex-row justify-center items-center">
-                    <FilledButton
-                        onClick={addPromptBox}
-                        name="Add box"
-                        color="primary"
-                    />
-                </div>
-
                 {/* IO TExtfields: Prompts of the content panel */}
                 <ContentPanelPrompts
                     promptBoxes={promptBoxes}
                     setPromptBoxes={setPromptBoxes}
                     generateOutput={generateOutput}
                     setPromptOutput={setPromptOutput}
+                    addPromptBox={addPromptBox}
                 />
 
                 {/* Bottom bar containing content panel actions */}

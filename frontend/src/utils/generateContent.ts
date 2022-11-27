@@ -1,23 +1,29 @@
-import { v4 as uuidv4 } from 'uuid';
-import { apiFetch } from './apiFetch';
+import { apiFetchJSON } from './apiFetch';
+import { ApiRequest, ApiResponse } from './types';
 
 /**
  * Request AI generated text from the backend.
- * This should query the dummy once it is finished.
- * For now, request from mirror
  */
-const generateText = async (input: string, category: string) => {
-    //Simulate delay for mirror
+const generateText = async (id: string, input: string, category: string) => {
+    //Simulate delay for now
+
+    const req: ApiRequest = {
+        id: id,
+        contexts: [category],
+        prompt: input,
+    };
+
     await new Promise((r) => setTimeout(r, 800));
 
     try {
-        return await apiFetch('/mirror/', {
+        const response = (await apiFetchJSON('/api/textgen', {
             method: 'POST',
-            body: `---Mirror---\ncategory: ${category}\ninput: ${input}\n${uuidv4()}`,
-        });
+            body: JSON.stringify(req),
+        })) as ApiResponse;
+        return response.result;
     } catch (e) {
         console.error(e);
-        return '';
+        return 'Text generation failed';
     }
 };
 

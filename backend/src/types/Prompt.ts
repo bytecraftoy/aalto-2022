@@ -1,6 +1,7 @@
 /**
  * Prompt type to aid in correct OpenAI formatting
  */
+
 interface Prompt {
     model: string;
     prompt: string;

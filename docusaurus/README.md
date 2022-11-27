@@ -4,38 +4,32 @@ This website is built using [Docusaurus 2](https://docusaurus.io/), a modern sta
 
 ### Installation
 
-```
-$ yarn
-```
+Docusaurus is essentially a set of npm packages.
 
-### Local Development
+#### Requirements
 
-```
-$ yarn start
-```
+Node.js version 16.14 or above (which can be checked by running `node -v`). You can use nvm for managing multiple Node versions on a single machine installed.
+When installing Node.js, you are recommended to check all checkboxes related to dependencies.
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+### Running the development server
 
-### Build
+To preview your changes as you edit the files, you can run a local development server that will serve your website and reflect the latest changes.
 
-```
-$ yarn build
-```
+`cd my-website`
+`npm run start`
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+By default, a browser window will open at http://localhost:3000.
+
+Congratulations! You have just created your first Docusaurus site! Browse around the site to see what's available.
 
 ### Deployment
 
-Using SSH:
+To build the static files of your website for production, run:
 
-```
-$ USE_SSH=true yarn deploy
-```
+`npm run build`
 
-Not using SSH:
+Once it finishes, the static files will be generated within the build directory.
 
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
+You can deploy your site to static site hosting services such as [Vercel]https://vercel.com/, [GitHub]https://pages.github.com/, [Netlify]https://www.netlify.com/, [Render]https://render.com/docs/static-sites, [Surge]https://surge.sh/help/getting-started-with-surge etc.
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+A Docusaurus site is statically rendered, and it can generally work without JavaScript!

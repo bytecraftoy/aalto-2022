@@ -1,11 +1,12 @@
 {
     "scripts": {
         "ds": "run-p dev:*",
+        "docusaurus": "npm run build-docs && npm run start-docs",
         "setup-project": "npm run install:backend && npm run install:frontend && npm run install:dummy && npm install",
         "build-project": "run-s build:*",
         "test-project": "run-s test:*",
         "lint-project": "run-s lint:*",
-        "clean-project": "npm run clean:deploy && npm run clean:backend && npm run clean:frontend",
+        "clean-project": "npm run clean:root && npm run clean:backend && npm run clean:frontend && npm run clean:dummy",
         "check-project": "npm run setup-project && run-s prettier-write lint-project build-project test-project",
         "clean-check": "npm run clean-project && npm run check-project",
         "deploy-project": "npm run setup-project && run-s build-project deploy:*",
@@ -24,10 +25,12 @@
         "lint:backend": "cd ./backend && npm run lint && cd ..",
         "lint:dummy": "cd ./dummy && npm run lint && cd ..",
         "lint:frontend": "cd ./frontend && npm run lint && cd ..",
-        "clean:deploy": "rm -rf deploy && rm -rf node_modules || npm run winclean:deploy",
-        "winclean:deploy": "(if exist \"deploy\" rmdir /s /q \"deploy\") && (if exist \"node_modules\" rmdir /s /q \"node_modules\")",
+        "clean:root": "rm -rf deploy && rm -rf node_modules || npm run winclean:deploy",
+        "winclean:root": "(if exist \"deploy\" rmdir /s /q \"deploy\") && (if exist \"node_modules\" rmdir /s /q \"node_modules\")",
         "clean:backend": "rm -rf backend/build && rm -rf backend/node_modules || npm run winclean:backend",
         "winclean:backend": "(if exist \"backend\\build\" rmdir /s /q \"backend\\build\") && (if exist \"backend\\node_modules\" rmdir /s /q \"backend\\node_modules\")",
+        "clean:dummy": "rm -rf dummy/build && rm -rf dummy/node_modules || npm run winclean:dummy",
+        "winclean:dummy": "(if exist \"dummy\\build\" rmdir /s /q \"dummy\\build\") && (if exist \"dummy\\node_modules\" rmdir /s /q \"dummy\\node_modules\")",
         "clean:frontend": "rm -rf frontend/build && rm -rf frontend/node_modules || npm run winclean:frontend",
         "winclean:frontend": "(if exist \"frontend\\build\" rmdir /s /q \"frontend\\build\") && (if exist \"frontend\\node_modules\" rmdir /s /q \"frontend\\node_modules\")",
         "deploy:backend": "cpy . ../../deploy --cwd=backend/build && cpy node_modules ../deploy --dot --cwd=backend",
@@ -41,6 +44,7 @@
         "cypress-ci": "npm run ds >/dev/null & wait-on --timeout 30000 http://127.0.0.1:3000 http://127.0.0.1:3030/mirror && npm run cypress"
     },
     "devDependencies": {
+        "axios": "^1.2.0",
         "cpy-cli": "^4.2.0",
         "cypress": "^11.2.0",
         "npm-run-all": "^4.1.5",

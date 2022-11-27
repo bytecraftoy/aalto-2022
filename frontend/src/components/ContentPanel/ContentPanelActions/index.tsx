@@ -23,7 +23,7 @@ export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
             <FilledButton
                 onClick={generateAll}
                 name="Generate content"
-                color="primary"
+                colorPalette="primary"
             />
             <SegmentedButtons
                 actions={[
