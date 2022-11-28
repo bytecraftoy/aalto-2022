@@ -37,7 +37,7 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
         })
         .catch((e) => {
             console.log(`Proxy/Dummy unavailable: ${e}`);
-            res.status(400).send(e);
+            res.status(502).send(e);
         });
 });
 
