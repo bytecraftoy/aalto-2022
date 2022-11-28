@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import { server } from '../index';
 
-//const api = supertest(server);
+const api = supertest(server);
 
 describe('backend dummy communication, POST /api/textgen', () => {
     //commented out until someone figures out how to start the dummy backend during backend tests
