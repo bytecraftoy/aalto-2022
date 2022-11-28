@@ -1,4 +1,4 @@
-# GET /mirror/:text
+# GET /api/mirror/:text
 
 Test API endpoint that just returns the pathname.
 
