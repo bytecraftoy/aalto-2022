@@ -8,9 +8,9 @@ import {
 } from '../services';
 import { ApiRequest } from '../types';
 
-const router = Router();
+const apiRouter = Router();
 
-router.post('/', (req: Request, res: Response, next: NextFunction) => {
+apiRouter.post('/', (req: Request, res: Response, next: NextFunction) => {
     const body = req.body as string;
 
     //Validate request json
@@ -41,4 +41,4 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
         });
 });
 
-export default router;
+export { apiRouter };
