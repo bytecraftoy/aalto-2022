@@ -2,7 +2,7 @@
  * Prompt type to aid in correct OpenAI formatting
  */
 
-interface Prompt {
+export interface Prompt {
     model: string;
     prompt: string;
     temperature: number;
@@ -11,5 +11,3 @@ interface Prompt {
     frequency_penalty: number;
     presence_penalty: number;
 }
-
-export { Prompt };

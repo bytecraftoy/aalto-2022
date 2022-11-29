@@ -4,7 +4,7 @@ import { Prompt, Gpt3Response } from '../types';
  * Debug info that the dummy provides, but an actual
  * response from gpt3 would not contain
  */
-interface DebugInfo {
+export interface DebugInfo {
     prompt: Prompt;
     date: string;
 }
@@ -14,9 +14,7 @@ interface DebugInfo {
  * In addition to returning a simulated Gpt3 response,
  * adds debug info such as date time string and received prompt
  */
-interface DummyResponse {
+export interface DummyResponse {
     gpt: Gpt3Response;
     debug: DebugInfo;
 }
-
-export { DummyResponse, DebugInfo };

@@ -1,12 +1,10 @@
-interface ApiRequest {
+export interface ApiRequest {
     contexts: string[];
     prompt: string;
     id: string;
 }
 
-interface ApiResponse {
+export interface ApiResponse {
     result: string;
     id: string;
 }
-
-export { ApiRequest, ApiResponse };

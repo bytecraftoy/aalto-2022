@@ -1,8 +1,6 @@
 import { Prompt } from './Prompt';
 
-interface Preset {
+export interface Preset {
     name: string;
     parameters: Prompt;
 }
-
-export { Preset };

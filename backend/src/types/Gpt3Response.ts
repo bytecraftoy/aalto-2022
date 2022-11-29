@@ -15,7 +15,7 @@ interface Usage {
     total_tokens: number;
 }
 
-interface Gpt3Response {
+export interface Gpt3Response {
     id: string;
     object: string;
     created: number;
@@ -23,5 +23,3 @@ interface Gpt3Response {
     choices: Choice[];
     usage: Usage;
 }
-
-export { Gpt3Response };
