@@ -1,10 +1,6 @@
 import React from 'react';
 import { Icon, solidIcon } from '../../../utils/icons';
-import {
-    Palette,
-    containerColor,
-    onContainerColor,
-} from '../../../utils/colors';
+import { Palette, bgContainer, textOnContainer } from '../../../utils/colors';
 import classNames from 'classnames';
 
 /**
@@ -34,7 +30,7 @@ export const FAB: React.FC<FABProps> = ({
                 <div
                     className={classNames(
                         'outline outline-2 outline-primary-80/30',
-                        containerColor(colorPalette),
+                        bgContainer(colorPalette),
                         'shadow-lg',
                         { 'w-24 h-24 rounded-[28px]': size === 'large' },
                         { 'w-10 h-10 rounded-xl': size === 'small' },
@@ -55,16 +51,16 @@ export const FAB: React.FC<FABProps> = ({
                         {size === 'large' &&
                             solidIcon(
                                 icon,
-                                'w-9 h-9 ' + onContainerColor(colorPalette)
+                                'w-9 h-9 ' + textOnContainer(colorPalette)
                             )}
 
                         {/* Small FAB */}
                         {size === 'small' &&
-                            solidIcon(icon, onContainerColor(colorPalette))}
+                            solidIcon(icon, textOnContainer(colorPalette))}
 
                         {/* Default FAB */}
                         {!size &&
-                            solidIcon(icon, onContainerColor(colorPalette))}
+                            solidIcon(icon, textOnContainer(colorPalette))}
                     </div>
                 </div>
             </button>

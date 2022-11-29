@@ -19,17 +19,3 @@ To preview your changes as you edit the files, you can run a local development s
 `npm run start`
 
 By default, a browser window will open at http://localhost:3000.
-
-Congratulations! You have just created your first Docusaurus site! Browse around the site to see what's available.
-
-### Deployment
-
-To build the static files of your website for production, run:
-
-`npm run build`
-
-Once it finishes, the static files will be generated within the build directory.
-
-You can deploy your site to static site hosting services such as [Vercel]https://vercel.com/, [GitHub]https://pages.github.com/, [Netlify]https://www.netlify.com/, [Render]https://render.com/docs/static-sites, [Surge]https://surge.sh/help/getting-started-with-surge etc.
-
-A Docusaurus site is statically rendered, and it can generally work without JavaScript!

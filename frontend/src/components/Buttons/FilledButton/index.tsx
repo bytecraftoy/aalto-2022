@@ -1,11 +1,6 @@
 import React from 'react';
 import { ButtonProps } from '..';
-import {
-    activeColor,
-    bgColor,
-    hoverColor,
-    onColor,
-} from '../../../utils/colors';
+import { bg, bgActive, bgHover, textOnBg } from '../../../utils/colors';
 import { solidIcon } from '../../../utils/icons';
 import classNames from 'classnames/dedupe';
 
@@ -30,17 +25,17 @@ export const FilledButton: React.FC<ButtonProps> = ({
                 'h-10 transition-colors rounded-full shadow-lg',
                 { 'pl-4 pr-6': icon },
                 { 'px-6': !icon },
-                onColor(colorPalette),
-                bgColor(colorPalette),
-                hoverColor(colorPalette),
-                activeColor(colorPalette),
+                bg(colorPalette),
+                textOnBg(colorPalette),
+                bgHover(colorPalette),
+                bgActive(colorPalette),
                 className
             )}
             onClick={onClick}
             disabled={disabled}
             data-testid="custom-button"
         >
-            {solidIcon(icon, 'mr-2 ' + onColor(colorPalette))}
+            {solidIcon(icon, 'mr-2 ' + textOnBg(colorPalette))}
             {name}
         </button>
     );

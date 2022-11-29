@@ -9,7 +9,7 @@
 export type Palette = 'primary' | 'secondary' | 'tertiary' | 'red';
 
 /** Background color for this palette */
-export const bgColor = (c: Palette) => {
+export const bg = (c: Palette) => {
     switch (c) {
         case 'primary':
             return 'bg-primary';
@@ -23,7 +23,7 @@ export const bgColor = (c: Palette) => {
 };
 
 /** Container color for this palette */
-export const containerColor = (c: Palette) => {
+export const bgContainer = (c: Palette) => {
     switch (c) {
         case 'primary':
             return 'bg-primary-90';
@@ -37,7 +37,7 @@ export const containerColor = (c: Palette) => {
 };
 
 /** Hover color for the container of this palette */
-export const hoverColor = (c: Palette) => {
+export const bgHover = (c: Palette) => {
     switch (c) {
         case 'primary':
             return 'hover:bg-primary-30';
@@ -51,7 +51,7 @@ export const hoverColor = (c: Palette) => {
 };
 
 /** Active color for the container of this palette */
-export const activeColor = (c: Palette) => {
+export const bgActive = (c: Palette) => {
     switch (c) {
         case 'primary':
             return 'active:bg-primary-20';
@@ -64,8 +64,8 @@ export const activeColor = (c: Palette) => {
     }
 };
 
-/** Corresponds to material design On X color */
-export const onColor = (c: Palette) => {
+/** Corresponds to material design default text color */
+export const textOnBg = (c: Palette) => {
     switch (c) {
         case 'primary':
             return 'text-primary-99';
@@ -79,7 +79,7 @@ export const onColor = (c: Palette) => {
 };
 
 /** Corresponds to material design On Container color */
-export const onContainerColor = (c: Palette) => {
+export const textOnContainer = (c: Palette) => {
     switch (c) {
         case 'primary':
             return 'text-primary-10';
