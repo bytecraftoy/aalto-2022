@@ -19,11 +19,8 @@ apiRouter.post(
             const body = req.body as string;
 
             try {
-                //Validate request
-                await validateApiRequest(body);
-
-                //Request is safe to parse, collect relevant fields
-                const { id, prompt, contexts } = JSON.parse(body) as ApiRequest;
+                //Validate request and collect fields from ApiRequest
+                const { id, prompt, contexts } = await validateApiRequest(body);
 
                 //Retrieve GPT3 response from proxy, and create our response based on it
                 const gpt = await sendToProxy(createPrompt(contexts, prompt));

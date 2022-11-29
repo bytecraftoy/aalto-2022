@@ -35,7 +35,7 @@ const correctPropertiesExist = (json: ApiRequest) => {
  * Currently does not check type of fields
  */
 // eslint-disable-next-line @typescript-eslint/require-await
-const validateApiRequest = async (body: string) => {
+const validateApiRequest = async (body: string): Promise<ApiRequest> => {
     const obj = parseJSON(body);
     if (!correctPropertiesExist(obj)) {
         throw new ValidationError(
@@ -48,6 +48,8 @@ const validateApiRequest = async (body: string) => {
             'Request contains the incorrect number of properties'
         );
     }
+
+    return JSON.parse(body);
 };
 
 export { validateApiRequest, ValidationError };
