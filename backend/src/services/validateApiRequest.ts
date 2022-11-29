@@ -49,7 +49,7 @@ const validateApiRequest = async (body: string): Promise<ApiRequest> => {
         );
     }
 
-    return JSON.parse(body);
+    return JSON.parse(body) as ApiRequest;
 };
 
 export { validateApiRequest, ValidationError };

@@ -8,7 +8,6 @@ import {
     responseGen,
     createPrompt,
 } from '../services';
-import { ApiRequest } from '../types';
 
 const apiRouter = Router();
 
