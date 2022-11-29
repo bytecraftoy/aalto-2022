@@ -34,7 +34,8 @@ const correctPropertiesExist = (json: ApiRequest) => {
  *
  * Currently does not check type of fields
  */
-const validateJson = (body: string) => {
+// eslint-disable-next-line @typescript-eslint/require-await
+const validateApiRequest = async (body: string) => {
     const obj = parseJSON(body);
     if (!correctPropertiesExist(obj)) {
         throw new ValidationError(
@@ -49,4 +50,4 @@ const validateJson = (body: string) => {
     }
 };
 
-export { validateJson, ValidationError };
+export { validateApiRequest, ValidationError };
