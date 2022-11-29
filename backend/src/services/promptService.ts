@@ -2,7 +2,7 @@ import fs from 'fs';
 import { Prompt, Preset } from '../types';
 
 const presets = JSON.parse(
-    fs.readFileSync('presets.json').toString()
+    fs.readFileSync('files/presets.json').toString()
 ) as Preset[];
 
 const defaultPreset: Preset = {
