@@ -2,6 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { App } from '../../App';
 import { act } from 'react-dom/test-utils';
+// For debugging
+//import { prettyDOM } from '@testing-library/react';
 
 //Removed crypto, so we don't have crypto.randomInt for tests
 //Replacing it with Math.random. It's not cryptographically random
@@ -92,7 +94,8 @@ test('Remove button should delete the correct promptIOBox', () => {
         screen.getByTitle<HTMLTextAreaElement>('TestEl')
     ).toBeInTheDocument();
 
-    const buttons = inputArea.parentElement?.getElementsByTagName('button');
+    const buttons =
+        inputArea.parentElement?.parentElement?.getElementsByTagName('button');
     expect(buttons?.length).toBeGreaterThan(1);
     const delButton = buttons?.[1] as HTMLButtonElement | undefined;
 
