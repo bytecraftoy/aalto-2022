@@ -44,6 +44,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
             >
                 <TextArea
                     placeholder="User input here"
+                    label="Input"
                     value={input}
                     onInput={({ target }) => {
                         setInput((target as HTMLTextAreaElement).value);
@@ -51,6 +52,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 />
                 <TextArea
                     placeholder="AI generated content"
+                    label="Output"
                     value={output}
                     onInput={({ target }) => {
                         setOutput((target as HTMLTextAreaElement).value);

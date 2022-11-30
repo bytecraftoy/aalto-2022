@@ -1,35 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/dedupe';
+import { textOnBg } from '../../utils/colors';
 
 /**
  * Props for textfield
  * placeholder = "what is seen before text in textarea"
  * value = text we write
  * type = changes style
+ * label = helper label that user sees when starting to type in the text area
  * onInput = function to change the value
  */
 interface TextInputProps {
     placeholder: string;
     value: string;
+    label: string;
     onInput: React.FormEventHandler<HTMLTextAreaElement> | undefined;
 }
 
 export const TextArea: React.FC<TextInputProps> = ({
     placeholder,
+    label,
     value,
     onInput,
 }) => {
+    const [touched, setTouched] = useState(false);
+
     return (
-        <textarea
-            spellCheck={'false'}
-            placeholder={placeholder}
-            className={classNames(
-                'form-control h-40 block w-full px-3 py-1.5 text-base font-normal bg-clip-padding border-2 resize-none',
-                'border-solid border-gray-300 rounded-xl transition ease-in-out m-0 focus:outline-none text-gray-700',
-                'bg-surface focus:text-gray-700 focus:bg-white focus:border-primary'
-            )}
-            value={value}
-            onInput={onInput}
-        />
+        <label className="relative w-full h-full">
+            <textarea
+                spellCheck={'false'}
+                placeholder="_"
+                className={classNames(
+                    'form-control peer h-40 block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding  resize-none',
+                    'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
+                    ' rounded-t-lg transition-colors ',
+                    'bg-neutral-90 hover:bg-onSurface hover:bg-opacity-10',
+                    'placeholder:text-transparent placeholder:select-none cursor-text'
+                )}
+                value={value}
+                onInput={onInput}
+                onChange={() => setTouched(true)}
+            />
+
+            <span
+                className={classNames(
+                    'absolute select-none left-0 top-0 pl-4 peer-placeholder-shown:top-3.5',
+                    'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base',
+                    'transition-all'
+                )}
+            >
+                {touched && value ? label : placeholder}
+            </span>
+        </label>
     );
 };
