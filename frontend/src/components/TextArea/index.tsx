@@ -14,7 +14,7 @@ interface TextInputProps {
     onInput: React.FormEventHandler<HTMLTextAreaElement> | undefined;
 }
 
-export const CustomTextInput: React.FC<TextInputProps> = ({
+export const TextArea: React.FC<TextInputProps> = ({
     placeholder,
     value,
     onInput,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { FilledButton } from './Buttons';
-import { CustomTextInput } from './TextInput';
+import { TextArea } from './TextArea';
 
 /**
  * Minimum required data for representing PromptIOBox state.
@@ -42,14 +42,14 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 className="w-full flex flex-col items-center justify-between"
                 data-testid="prompt"
             >
-                <CustomTextInput
+                <TextArea
                     placeholder="User input here"
                     value={input}
                     onInput={({ target }) => {
                         setInput((target as HTMLTextAreaElement).value);
                     }}
                 />
-                <CustomTextInput
+                <TextArea
                     placeholder="AI generated content"
                     value={output}
                     onInput={({ target }) => {
