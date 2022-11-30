@@ -1,6 +1,7 @@
 import React from 'react';
 import { PromptIOBox } from '../../PromptIOBox';
 import { PromptData } from '../../PromptIOBox';
+import { FAB } from '../../Buttons';
 
 /**
  * Component of Content panel.
@@ -12,6 +13,7 @@ interface ContentPanelPromptsProps {
     setPromptBoxes: React.Dispatch<React.SetStateAction<PromptData[]>>;
     generateOutput: (p: PromptData) => Promise<void>;
     setPromptOutput: (id: string, output: string) => void;
+    addPromptBox: () => void;
 }
 
 export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
@@ -19,6 +21,7 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
     setPromptBoxes,
     generateOutput,
     setPromptOutput,
+    addPromptBox,
 }) => {
     //Callback to modify the output area of a PromptIOBox by id
     const setPromptInput = (id: string, input: string) => {
@@ -36,7 +39,7 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
     };
 
     return (
-        <div className="flex flex-row flex-wrap justify-center items-center">
+        <div className="flex flex-row flex-wrap justify-center items-center p-8 mb-6">
             {promptBoxes.map((p) => {
                 return (
                     <PromptIOBox
@@ -54,6 +57,14 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
                     />
                 );
             })}
+            <div className="mt-10 pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around">
+                <FAB
+                    icon="PlusIcon"
+                    size="large"
+                    colorPalette="primary"
+                    onClick={addPromptBox}
+                />
+            </div>
         </div>
     );
 };

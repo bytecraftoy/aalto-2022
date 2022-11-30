@@ -6,6 +6,6 @@ test('Contains a button to generate content', () => {
     render(<App />);
     //const linkElement = screen.getByText(/learn react/i);
     //expect(linkElement).toBeInTheDocument();
-    const button = screen.getByText('Generate content');
+    const button = screen.getByText('Generate all');
     expect(button).toBeInTheDocument();
 });

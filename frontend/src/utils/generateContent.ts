@@ -1,21 +1,29 @@
-import { apiFetch } from './apiFetch';
+import { apiFetchJSON } from './apiFetch';
+import { ApiRequest, ApiResponse } from './types';
 
 /**
- * Request AI generated text from the backend
+ * Request AI generated text from the backend.
  */
-const generateText = async (input: string, category: string) => {
-    //Since the API endpoint hasn't been decided, just make up some string for mirror
-    const uuid = crypto.randomUUID();
-    const prompt = `Request: ${uuid}\nCategory: ${category}\nInput: ${input}\n`;
+const generateText = async (id: string, input: string, category: string) => {
+    //Simulate delay for now
 
-    //Simulate delay
+    const req: ApiRequest = {
+        id: id,
+        contexts: [category],
+        prompt: input,
+    };
+
     await new Promise((r) => setTimeout(r, 800));
 
     try {
-        return await apiFetch('/mirror/', { method: 'POST', body: prompt });
+        const response = (await apiFetchJSON('/api/textgen', {
+            method: 'POST',
+            body: JSON.stringify(req),
+        })) as ApiResponse;
+        return response.result;
     } catch (e) {
         console.error(e);
-        return '';
+        return 'Text generation failed';
     }
 };
 

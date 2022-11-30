@@ -1,13 +1,13 @@
 import express from 'express';
 
-const router = express.Router();
+const mirrorRouter = express.Router();
 
-router.post('/', (req, res) => {
+mirrorRouter.post('/', (req, res) => {
     res.send(req.body);
 });
 
-router.get('/*', (req, res) => {
+mirrorRouter.get('/*', (req, res) => {
     res.send(req.path);
 });
 
-export default router;
+export { mirrorRouter };

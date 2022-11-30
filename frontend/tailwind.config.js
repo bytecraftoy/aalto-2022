@@ -15,6 +15,7 @@ module.exports = {
     theme: {
         colors: {
             // NEW COLORS for material design
+            transparent: 'transparent',
             primary: {
                 10: '#110563',
                 20: '#282377',
@@ -34,7 +35,7 @@ module.exports = {
                 20: '#2F2E42',
                 30: '#464559',
                 40: '#5E5C71',
-                default: '#5E5C71',
+                DEFAULT: '#5E5C71',
                 50: '#77758B',
                 60: '#908EA5',
                 70: '#ABA9C1',
@@ -43,12 +44,26 @@ module.exports = {
                 95: '#F2EFFF',
                 99: '#FFFBFF',
             },
+            tertiary: {
+                10: '#2F1123',
+                20: '#472639',
+                30: '#603B50',
+                40: '#7A5368',
+                DEFAULT: '#7A5368',
+                50: '#956B81',
+                60: '#B1849B',
+                70: '#CD9EB6',
+                80: '#EAB9D1',
+                90: '#FFD8EA',
+                95: '#FFECF3',
+                99: '#FFFBFF',
+            },
             red: {
                 10: '#410002',
                 20: '#690005',
                 30: '#93000A',
                 40: '#BA1A1A',
-                default: '#BA1A1A',
+                DEFAULT: '#BA1A1A',
                 50: '#DE3730',
                 60: '#FF5449',
                 70: '#FF897D',
@@ -68,7 +83,7 @@ module.exports = {
                 20: '#302F38',
                 30: '#47464F',
                 40: '#5F5D67',
-                default: '#5F5D67',
+                DEFAULT: '#5F5D67',
                 50: '#787680',
                 60: '#928F9A',
                 70: '#ACAAB4',
@@ -76,6 +91,17 @@ module.exports = {
                 90: '#E4E1EC',
                 95: '#F3EFFA',
                 99: '#FFFBFF',
+            },
+            onSecondaryContainer: '#1D192B',
+            onSurface: '#1C1B1F',
+
+            surface: {
+                DEFAULT: '#FFFBFF',
+                1: '#F6F2FA',
+                2: '#F1EDF8',
+                3: '#ECE8F5',
+                4: '#EBE7F4',
+                5: '#E4E0F1',
             },
 
             //OLD COLORS, delete these when color scheme changed to new one
@@ -113,7 +139,7 @@ module.exports = {
         },
     },
     plugins: [
-        plugin(({ addBase, theme }) => {
+        plugin(({ addBase }) => {
             addBase({
                 '.scrollbar': {},
                 '.scrollbar::-webkit-scrollbar': {

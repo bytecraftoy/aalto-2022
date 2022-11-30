@@ -35,3 +35,12 @@ Other commands include utilities used by the previous commands, as well as testi
 ### Building and running separately
 
 Using the convinience scripts is purely optional. The backend and frontend can be built, run or tested separately with `npm build`, `npm start` and `npm test` etc. from `backend/` or `frontend/` respectively.
+
+### Documentation
+
+The project contains a documentation site created from markdown using [Docusaurus]https://docusaurus.io/
+To view the documentation, you can use `npm run docusaurus`. This will open documentation as a site at `http://localhost:7777`.
+It is the same as running the commands:
+
+-   `npm run build-docs`
+-   `npm run start-docs`
