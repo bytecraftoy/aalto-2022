@@ -14,6 +14,7 @@ interface TextInputProps {
     value: string;
     label: string;
     onInput: React.FormEventHandler<HTMLTextAreaElement> | undefined;
+    errors?: string;
 }
 
 export const TextArea: React.FC<TextInputProps> = ({
@@ -21,6 +22,7 @@ export const TextArea: React.FC<TextInputProps> = ({
     label,
     value,
     onInput,
+    errors,
 }) => {
     const [touched, setTouched] = useState(false);
 
@@ -34,7 +36,8 @@ export const TextArea: React.FC<TextInputProps> = ({
                     'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
                     ' rounded-t-lg transition-colors ',
                     'bg-neutral-90 hover:bg-onSurface hover:bg-opacity-10',
-                    'placeholder:text-transparent placeholder:select-none cursor-text'
+                    'placeholder:text-transparent placeholder:select-none cursor-text',
+                    { 'focus:border-red border-red': touched && errors }
                 )}
                 value={value}
                 onInput={onInput}
@@ -45,10 +48,14 @@ export const TextArea: React.FC<TextInputProps> = ({
                 className={classNames(
                     'absolute select-none left-0 top-0 pl-4 peer-placeholder-shown:top-3.5',
                     'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base',
-                    'transition-all'
+                    'transition-all',
+                    {
+                        'text-red peer-placeholder-shown:text-red':
+                            touched && errors,
+                    }
                 )}
             >
-                {touched && value ? label : placeholder}
+                {touched && errors ? errors : value ? label : placeholder}
             </span>
         </label>
     );
