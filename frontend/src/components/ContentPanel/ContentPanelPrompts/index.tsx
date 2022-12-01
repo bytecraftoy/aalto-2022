@@ -14,6 +14,7 @@ interface ContentPanelPromptsProps {
     generateOutput: (p: PromptData) => Promise<void>;
     setPromptOutput: (id: string, output: string) => void;
     addPromptBox: () => void;
+    lockPrompt: (id: string) => void;
 }
 
 export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
@@ -22,14 +23,13 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
     generateOutput,
     setPromptOutput,
     addPromptBox,
+    lockPrompt,
 }) => {
     //Callback to modify the output area of a PromptIOBox by id
     const setPromptInput = (id: string, input: string) => {
         //Replace the box that matches id with a new object where input is changed.
         setPromptBoxes((prev) =>
-            prev.map((o) =>
-                o.id === id ? { id: id, input: input, output: o.output } : o
-            )
+            prev.map((o) => (o.id === id ? { ...o, input: input } : o))
         );
     };
 
@@ -44,10 +44,12 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
                 return (
                     <PromptIOBox
                         key={p.id}
+                        id={p.id}
                         input={p.input}
                         output={p.output}
                         setInput={(s: string) => setPromptInput(p.id, s)}
                         setOutput={(s: string) => setPromptOutput(p.id, s)}
+                        lock={() => lockPrompt(p.id)}
                         generate={() => generateOutput(p)}
                         deleteSelf={
                             promptBoxes.length > 1
