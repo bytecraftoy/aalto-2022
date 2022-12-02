@@ -11,6 +11,7 @@ export interface PromptData {
     id: string;
     input: string;
     output: string;
+    locked: boolean;
 }
 
 /**
@@ -18,19 +19,21 @@ export interface PromptData {
  * performing necessary actions of the box.
  */
 interface PromptIOBoxProps {
+    id: string;
     input: string;
     output: string;
     setInput: (s: string) => void;
     setOutput: (s: string) => void;
     generate: () => void;
     deleteSelf: (() => void) | null; //null --> don't show button
+    lock: (id: string) => void;
 }
 
 /* Validation of user input with zod.
  *  More info about string error formatting on here:
  *  https://www.npmjs.com/package/zod#strings
  */
-const InputSchema = z
+export const InputSchema = z
     .string({
         required_error: 'Input is required',
         invalid_type_error: 'Input must be a string',
@@ -43,12 +46,14 @@ const InputSchema = z
  * generation.
  */
 export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
+    id,
     input,
     output,
     setInput,
     setOutput,
     generate,
     deleteSelf,
+    lock,
 }) => {
     // All the errors of the input
     let errors = '';

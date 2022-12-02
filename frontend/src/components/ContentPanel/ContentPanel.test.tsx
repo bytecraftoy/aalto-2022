@@ -97,7 +97,7 @@ test('Remove button should delete the correct promptIOBox', () => {
     const buttons =
         inputArea.parentElement?.parentElement?.getElementsByTagName('button');
     expect(buttons?.length).toBeGreaterThan(1);
-    const delButton = buttons?.[1] as HTMLButtonElement | undefined;
+    const delButton = buttons?.[2] as HTMLButtonElement | undefined;
 
     act(() => {
         delButton?.click();

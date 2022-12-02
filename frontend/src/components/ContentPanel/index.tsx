@@ -6,6 +6,7 @@ import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
 import { ContentPanelActions } from './ContentPanelActions';
+import { InputSchema } from '../PromptIOBox';
 import { v4 as uuidv4 } from 'uuid';
 
 //Provide access to MasterCategory through a parent callback
@@ -21,17 +22,23 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     //Component state consists of category prompt, and N multiprompts (id, input, output)
     const [category, setCategory] = useState('');
     const [promptBoxes, setPromptBoxes] = useState<PromptData[]>([
-        { id: uuidv4(), input: '', output: '' },
+        { id: uuidv4(), input: '', output: '', locked: false },
     ]);
 
     //Callback to create new boxes in the panel
     const addPromptBox = () => {
-        const newBox = { id: uuidv4(), input: '', output: '' };
+        const newBox = { id: uuidv4(), input: '', output: '', locked: false };
         setPromptBoxes((prev) => [...prev, newBox]);
     };
 
     //Callbacks to asynchronously fetch AI data from backend
-    const generateAll = () => promptBoxes.forEach(generateOutput);
+    const generateAll = () =>
+        promptBoxes.forEach((p) => {
+            // Generate if the prompt is not locked and input is valid
+            if (!p.locked && InputSchema.safeParse(p.input).success) {
+                generateOutput(p);
+            }
+        });
     const generateOutput = async (p: PromptData) => {
         setPromptOutput(p.id, await generateText(p.id, p.input, category));
     };
@@ -39,8 +46,15 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     //Callback to modify the input area of a PromptIOBox by id
     const setPromptOutput = (id: string, output: string) => {
         setPromptBoxes((prev) =>
-            prev.map((o) =>
-                o.id === id ? { id: id, input: o.input, output: output } : o
+            prev.map((o) => (o.id === id ? { ...o, output: output } : o))
+        );
+    };
+
+    // Locks a prompt box, so that it is not generated with generate all
+    const lockPrompt = (id: string) => {
+        setPromptBoxes((prev) =>
+            prev.map((box) =>
+                box.id === id ? { ...box, locked: !box.locked } : box
             )
         );
     };
@@ -77,6 +91,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                     generateOutput={generateOutput}
                     setPromptOutput={setPromptOutput}
                     addPromptBox={addPromptBox}
+                    lockPrompt={lockPrompt}
                 />
 
                 {/* Bottom bar containing content panel actions */}
