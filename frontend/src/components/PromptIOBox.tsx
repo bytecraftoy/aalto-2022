@@ -10,6 +10,7 @@ export interface PromptData {
     id: string;
     input: string;
     output: string;
+    locked: boolean;
 }
 
 /**
@@ -17,24 +18,28 @@ export interface PromptData {
  * performing necessary actions of the box.
  */
 interface PromptIOBoxProps {
+    id: string;
     input: string;
     output: string;
     setInput: (s: string) => void;
     setOutput: (s: string) => void;
     generate: () => void;
     deleteSelf: (() => void) | null; //null --> don't show button
+    lock: (id: string) => void;
 }
 /**
  * Component containing editable textareas for Input/Output with AI
  * generation.
  */
 export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
+    id,
     input,
     output,
     setInput,
     setOutput,
     generate,
     deleteSelf,
+    lock,
 }) => {
     return (
         <div className="mt-10 pt-4 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around">
@@ -63,6 +68,11 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                     <FilledButton
                         onClick={generate}
                         name="Generate"
+                        colorPalette="primary"
+                    />
+                    <FilledButton
+                        onClick={() => lock(id)}
+                        name="lock"
                         colorPalette="primary"
                     />
                     {deleteSelf ? (
