@@ -1,5 +1,5 @@
 /**
- * A router for exporting data in JSON (and later in XLSX) format.
+ * A router for exporting data in JSON and XLSX format.
  *
  * Front end sends a POST request to correct path on this router
  * and receives an ID in the response body.
@@ -11,49 +11,40 @@
  * or if saving newer data objects would exceed the fixed max limit.
  */
 
-import express from 'express';
-import { getRndString } from './../services/getRndString';
-
-interface ExportDataObject {
-    id: string;
-    fileName: string;
-    data: string;
-}
-
-const maxExportDataObjects = 5;
-const exportDataObjects: ExportDataObject[] = [];
+import express, {Request, Response} from 'express';
+import {generateXlsx, appendDataObject, readDataObject} from './../services/exportService';
 
 const exportRouter = express.Router();
 
 exportRouter.post('/json/:name', (req, res) => {
     const fileName = decodeURIComponent(req.params.name);
-    if (exportDataObjects.length >= maxExportDataObjects)
-        exportDataObjects.shift();
-    const id = getRndString(30);
-    exportDataObjects.push({
-        id,
-        fileName,
-        data: req.body as string,
-    });
+    const data = Buffer.from(req.body as string, 'utf-8');
+    const id = appendDataObject(fileName, data);
     res.send(id);
 });
 
-exportRouter.get('/json/:id/', (req, res) => {
-    const id = req.params.id;
-    const i = exportDataObjects.findIndex((o) => o.id === id);
-    if (i === -1) {
-        res.status(404).end(
-            'No data found.\nIt may be already deleted from server memory.'
-        );
-        return;
-    }
-    const obj = exportDataObjects[i];
-    exportDataObjects.splice(i, 1);
-    res.setHeader(
-        'Content-Disposition',
-        `attachment; filename="${obj.fileName}"`
-    );
-    res.end(obj.data);
+exportRouter.post('/xlsx/:name', (req, res) => {
+    const fileName = decodeURIComponent(req.params.name);
+    const data = generateXlsx();
+    const id = appendDataObject(fileName, data);
+    res.send(id);
 });
+
+const sendData = (req: Request<{id: string}>, res: Response): void => {
+    const {fileName, data} = readDataObject(req.params.id);
+    if(fileName === null){
+        res.status(404).end('No data found.\nIt may be already deleted from server memory.');
+    }else{
+        res.setHeader(
+            'Content-Disposition',
+            `attachment; filename="${fileName}"`
+        );
+        res.end(data);
+    }
+};
+
+exportRouter.get('/json/:id/', sendData);
+
+exportRouter.get('/xlsx/:id/', sendData);
 
 export { exportRouter };
