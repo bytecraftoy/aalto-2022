@@ -95,6 +95,11 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                         colorPalette="primary"
                         disabled={errors ? true : false}
                     />
+                    <FilledButton
+                        onClick={() => lock(id)}
+                        name="lock"
+                        colorPalette="primary"
+                    />
                     {deleteSelf ? (
                         <FilledButton
                             onClick={() => deleteSelf?.()}
