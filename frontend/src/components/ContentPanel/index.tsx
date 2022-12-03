@@ -6,6 +6,8 @@ import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
 import { ContentPanelActions } from './ContentPanelActions';
+import classNames from 'classnames';
+import { Loader } from '../Loader';
 import { v4 as uuidv4 } from 'uuid';
 
 //Provide access to MasterCategory through a parent callback
@@ -23,6 +25,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     const [promptBoxes, setPromptBoxes] = useState<PromptData[]>([
         { id: uuidv4(), input: '', output: '', locked: false },
     ]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     //Callback to create new boxes in the panel
     const addPromptBox = () => {
@@ -31,14 +34,17 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     };
 
     //Callbacks to asynchronously fetch AI data from backend
-    const generateAll = () =>
+    const generateAll = () => {
         promptBoxes.forEach((p) => {
             if (!p.locked) {
                 generateOutput(p);
             }
         });
+    };
     const generateOutput = async (p: PromptData) => {
+        setLoading(() => true);
         setPromptOutput(p.id, await generateText(p.id, p.input, category));
+        setLoading(() => false);
     };
 
     //Callback to modify the input area of a PromptIOBox by id
@@ -71,34 +77,47 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
 
     return (
         //Take up full space, and center the content panel in it
-        <div className="w-full px-4 py-16 flex flex-row justify-around items-center">
-            <Surface
-                level={2}
-                className="w-full max-w-6xl min-h-fit rounded-2xl shadow-xl outline outline-1 outline-primary-90"
+        <div className="relative w-full h-full">
+            <div
+                className={classNames(
+                    'w-full px-4 py-16 flex flex-row justify-around items-center',
+                    { 'opacity-50 pointer-events-none': loading }
+                )}
             >
-                {/* Top most part of the content panel */}
-                <ContentPanelHeader
-                    category={category}
-                    setCategory={setCategory}
-                />
+                <Surface
+                    level={2}
+                    className="w-full max-w-6xl min-h-fit rounded-2xl shadow-xl outline outline-1 outline-primary-90"
+                >
+                    {/* Top most part of the content panel */}
+                    <ContentPanelHeader
+                        category={category}
+                        setCategory={setCategory}
+                    />
 
-                {/* IO TExtfields: Prompts of the content panel */}
-                <ContentPanelPrompts
-                    promptBoxes={promptBoxes}
-                    setPromptBoxes={setPromptBoxes}
-                    generateOutput={generateOutput}
-                    setPromptOutput={setPromptOutput}
-                    addPromptBox={addPromptBox}
-                    lockPrompt={lockPrompt}
-                />
+                    {/* IO TExtfields: Prompts of the content panel */}
+                    <ContentPanelPrompts
+                        promptBoxes={promptBoxes}
+                        setPromptBoxes={setPromptBoxes}
+                        generateOutput={generateOutput}
+                        setPromptOutput={setPromptOutput}
+                        addPromptBox={addPromptBox}
+                        lockPrompt={lockPrompt}
+                    />
 
-                {/* Bottom bar containing content panel actions */}
-                <ContentPanelActions
-                    generateAll={generateAll}
-                    exportJson={jsonExport}
-                    exportExcel={excelExport}
-                />
-            </Surface>
+                    {/* Bottom bar containing content panel actions */}
+                    <ContentPanelActions
+                        generateAll={generateAll}
+                        exportJson={jsonExport}
+                        exportExcel={excelExport}
+                    />
+                </Surface>
+            </div>
+            {/* Loading spinner */}
+            {loading && (
+                <div className="absolute inset-1/2">
+                    <Loader />
+                </div>
+            )}
         </div>
     );
 };
