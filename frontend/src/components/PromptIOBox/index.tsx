@@ -1,6 +1,6 @@
 import React from 'react';
-import { FilledButton } from './Buttons';
-import { TextArea } from './TextArea';
+import { FilledButton } from '../Buttons';
+import { TextArea } from '../TextArea';
 
 /**
  * Minimum required data for representing PromptIOBox state.
