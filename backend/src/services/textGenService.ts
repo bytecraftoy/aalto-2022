@@ -19,22 +19,24 @@ const sendToProxy = async (json: Prompt): Promise<Gpt3Response> => {
     try {
         if (process.env.ENVIRONMENT === 'openai') {
             //send to the real proxy here
+            const proxyURL = (process.env.PROXYURL) ? process.env.PROXYURL : "not_found";
             const response = await axios.post<Gpt3Response>(
-                'http://localhost:8080',
+                proxyURL,
                 json
             );
             return response.data;
         } else {
             //send to the dummy here
+            const dummyURL = (process.env.DUMMYURL) ? process.env.DUMMYURL : "not_found";
             const response = await axios.post<Gpt3Response>(
-                'http://localhost:8080',
+                dummyURL,
                 json
             );
             return response.data;
         }
     } catch (e) {
         throw new ProxyError(
-            'Error when processing response from proxy\n' +
+            'Error connecting to or when processing response from proxy\n' +
                 (e as SyntaxError).message
         );
     }
