@@ -23,6 +23,11 @@ export const IOBoxButton: React.FC<IOBoxButtonProps> = ({
             colorPalette={colorPalette}
             disabled={disabled}
             onClick={onClick}
+            className={classNames(
+                'transition-all',
+                { '-translate-y-16': visible },
+                { '': !visible }
+            )}
         />
     );
 };

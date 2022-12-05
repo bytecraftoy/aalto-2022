@@ -47,7 +47,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
 
     return (
         <div
-            className="mt-10 pt-4 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around"
+            className="mt-6 pt-10 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around"
             onMouseEnter={() => {
                 setShowButtons(true);
             }}
