@@ -12,7 +12,7 @@
  */
 
 import express, {Request, Response} from 'express';
-import {generateXlsx, appendDataObject, readDataObject} from './../services/exportService';
+import {generateXlsx, appendDataObject, readDataObject, ExportData} from './../services/exportService';
 
 const exportRouter = express.Router();
 
@@ -25,9 +25,19 @@ exportRouter.post('/json/:name', (req, res) => {
 
 exportRouter.post('/xlsx/:name', (req, res) => {
     const fileName = decodeURIComponent(req.params.name);
-    const data = generateXlsx();
-    const id = appendDataObject(fileName, data);
-    res.send(id);
+    /**
+     * No validation is done for the request body
+     * since it is not used for anything sensitive in the server.
+     * If generating the xlsx file fails 400 is sent as a response.
+     */
+    try{
+        const data = generateXlsx(JSON.parse(req.body as string) as ExportData);
+        const id = appendDataObject(fileName, data);
+        res.send(id);
+    }catch(e){
+        console.error(e);
+        res.status(400).end();
+    }
 });
 
 const sendData = (req: Request<{id: string}>, res: Response): void => {

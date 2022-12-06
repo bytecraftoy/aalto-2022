@@ -9,6 +9,23 @@
 import xlsx from 'xlsx';
 import {getRndString} from './getRndString';
 
+interface Box {
+    id: string,
+    input: string,
+    output: string
+}
+
+interface Panel {
+    category: string,
+    panels: Panel[],
+    boxes: Box[]
+}
+
+interface ExportData {
+    theme: string,
+    panels: Panel[]
+}
+
 interface DataObject {
     id: string;
     fileName: string;
@@ -47,14 +64,92 @@ const readDataObject = (id: string): {fileName: string | null, data: Buffer | nu
     return {fileName, data};
 };
 
-const generateXlsx = (): Buffer => {
+/**
+ * Recursively calculate the max depth of panel tree.
+ * The returned number tells how many category columns will be required.
+ */
+const getMaxDepth = (panels: Panel[]): number => {
+    let max = 0;
+    for(const panel of panels){
+        const depth = 1 + getMaxDepth(panel.panels);
+        if(depth > max) max = depth;
+    }
+    return max;
+};
+
+/**
+ * Writes the column headers to an aoa.
+ * The aoa is an array of arrays that represents an excel work sheet.
+ */
+const writeHeadersToAOA = (aoa: string[][], maxDepth: number): void => {
+    const row = ['ID', 'Theme'];
+    for(let i = 1; i <= maxDepth; i++)
+        row.push(`Category_${i}`);
+    row.push('Simple_Prompt', 'Output');
+    aoa.push(row);
+};
+
+/**
+ * Writes a row representing the box information to an aoa.
+ * The aoa is an array of arrays that represents an excel work sheet.
+ */
+const writeBoxToAOA = (
+    aoa: string[][], 
+    maxDepth: number, 
+    theme: string, 
+    categoryStack: string[], 
+    box: Box
+): void => {
+    const row = [box.id, theme, ...categoryStack];
+    for(let i = maxDepth - categoryStack.length; i > 0; i--)
+        row.push('');
+    row.push(box.input, box.output);
+    aoa.push(row);
+};
+
+/**
+ * Recursively writes information of all panels to an aoa.
+ * The aoa is an array of arrays that represents an excel work sheet.
+ */
+const writePanelsToAOA = (
+    aoa: string[][], 
+    maxDepth: number, 
+    theme: string, 
+    categoryStack: string[], 
+    panels: Panel[]
+): void => {
+    for(const panel of panels){
+        const stack = categoryStack.concat(panel.category);
+        for(const box of panel.boxes)
+            writeBoxToAOA(aoa, maxDepth, theme, stack, box);
+        writePanelsToAOA(aoa, maxDepth, theme, stack, panel.panels);
+    }
+};
+
+/**
+ * Generates an excel work sheet object.
+ */
+const generateSheet = (data: ExportData): xlsx.WorkSheet => {
+    const maxDepth = getMaxDepth(data.panels);
+    const aoa: string[][] = [];
+    writeHeadersToAOA(aoa, maxDepth);
+    writePanelsToAOA(aoa, maxDepth, data.theme, [], data.panels);
+    return xlsx.utils.aoa_to_sheet(aoa);
+};
+
+/**
+ * Generates a data buffer representing an xlsx file.
+ * Does not perform any checks on the data.
+ */
+const generateXlsx = (data: ExportData): Buffer => {
     const wb = xlsx.utils.book_new();
-    const ws = xlsx.utils.aoa_to_sheet([['Hello World!']]);
+    const ws = generateSheet(data);
     xlsx.utils.book_append_sheet(wb, ws);
     return xlsx.write(wb, {type: 'buffer', bookType: 'xlsx'}) as Buffer;
 };
 
 export {
+    ExportData,
     generateXlsx,
     appendDataObject,
     readDataObject
