@@ -1,6 +1,6 @@
 import React from 'react';
 import { FilledButton } from './Buttons';
-import { CustomTextInput } from './TextInput';
+import { TextArea } from './TextArea';
 
 /**
  * Minimum required data for representing PromptIOBox state.
@@ -10,6 +10,7 @@ export interface PromptData {
     id: string;
     input: string;
     output: string;
+    locked: boolean;
 }
 
 /**
@@ -17,24 +18,28 @@ export interface PromptData {
  * performing necessary actions of the box.
  */
 interface PromptIOBoxProps {
+    id: string;
     input: string;
     output: string;
     setInput: (s: string) => void;
     setOutput: (s: string) => void;
     generate: () => void;
     deleteSelf: (() => void) | null; //null --> don't show button
+    lock: (id: string) => void;
 }
 /**
  * Component containing editable textareas for Input/Output with AI
  * generation.
  */
 export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
+    id,
     input,
     output,
     setInput,
     setOutput,
     generate,
     deleteSelf,
+    lock,
 }) => {
     return (
         <div className="mt-10 pt-4 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around">
@@ -42,15 +47,17 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 className="w-full flex flex-col items-center justify-between"
                 data-testid="prompt"
             >
-                <CustomTextInput
+                <TextArea
                     placeholder="User input here"
+                    label="Input"
                     value={input}
                     onInput={({ target }) => {
                         setInput((target as HTMLTextAreaElement).value);
                     }}
                 />
-                <CustomTextInput
+                <TextArea
                     placeholder="AI generated content"
+                    label="Output"
                     value={output}
                     onInput={({ target }) => {
                         setOutput((target as HTMLTextAreaElement).value);
@@ -61,6 +68,11 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                     <FilledButton
                         onClick={generate}
                         name="Generate"
+                        colorPalette="primary"
+                    />
+                    <FilledButton
+                        onClick={() => lock(id)}
+                        name="lock"
                         colorPalette="primary"
                     />
                     {deleteSelf ? (
