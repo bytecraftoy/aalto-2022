@@ -11,8 +11,13 @@
  * or if saving newer data objects would exceed the fixed max limit.
  */
 
-import express, {Request, Response} from 'express';
-import {generateXlsx, appendDataObject, readDataObject, ExportData} from './../services/exportService';
+import express, { Request, Response } from 'express';
+import {
+    generateXlsx,
+    appendDataObject,
+    readDataObject,
+    ExportData,
+} from './../services/exportService';
 
 const exportRouter = express.Router();
 
@@ -30,21 +35,23 @@ exportRouter.post('/xlsx/:name', (req, res) => {
      * since it is not used for anything sensitive in the server.
      * If generating the xlsx file fails 400 is sent as a response.
      */
-    try{
+    try {
         const data = generateXlsx(JSON.parse(req.body as string) as ExportData);
         const id = appendDataObject(fileName, data);
         res.send(id);
-    }catch(e){
+    } catch (e) {
         console.error(e);
         res.status(400).end();
     }
 });
 
-const sendData = (req: Request<{id: string}>, res: Response): void => {
-    const {fileName, data} = readDataObject(req.params.id);
-    if(fileName === null){
-        res.status(404).end('No data found.\nIt may be already deleted from server memory.');
-    }else{
+const sendData = (req: Request<{ id: string }>, res: Response): void => {
+    const { fileName, data } = readDataObject(req.params.id);
+    if (fileName === null) {
+        res.status(404).end(
+            'No data found.\nIt may be already deleted from server memory.'
+        );
+    } else {
         res.setHeader(
             'Content-Disposition',
             `attachment; filename="${fileName}"`

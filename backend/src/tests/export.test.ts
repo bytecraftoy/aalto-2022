@@ -47,14 +47,14 @@ const exportData = {
                         {
                             id: crypto.randomUUID(),
                             input: 'rifle',
-                            output: 'rifle output'
+                            output: 'rifle output',
                         },
                         {
                             id: crypto.randomUUID(),
                             input: 'pistol',
-                            output: 'pistol output'
-                        }
-                    ]
+                            output: 'pistol output',
+                        },
+                    ],
                 },
                 {
                     category: 'swords',
@@ -63,18 +63,18 @@ const exportData = {
                         {
                             id: crypto.randomUUID(),
                             input: 'katana',
-                            output: 'katana output'
-                        }
-                    ]
-                }
+                            output: 'katana output',
+                        },
+                    ],
+                },
             ],
             boxes: [
                 {
                     id: crypto.randomUUID(),
                     input: 'grenade',
-                    output: 'grenade output'
-                }
-            ]
+                    output: 'grenade output',
+                },
+            ],
         },
         {
             category: 'vehicles',
@@ -83,20 +83,20 @@ const exportData = {
                 {
                     id: crypto.randomUUID(),
                     input: 'car',
-                    output: 'car output'
-                }
-            ]
-        }
-    ]
+                    output: 'car output',
+                },
+            ],
+        },
+    ],
 };
 
 interface RowObject {
-    ID: string,
-    Theme: string,
-    Category_1: string,
-    Category_2: string,
-    Simple_Prompt: string,
-    Output: string
+    ID: string;
+    Theme: string;
+    Category_1: string;
+    Category_2: string;
+    Simple_Prompt: string;
+    Output: string;
 }
 
 const xlsxData: RowObject[] = [
@@ -106,7 +106,7 @@ const xlsxData: RowObject[] = [
         Category_1: 'weapons',
         Category_2: '',
         Simple_Prompt: 'grenade',
-        Output: 'grenade output'
+        Output: 'grenade output',
     },
     {
         ID: exportData.panels[0].panels[0].boxes[0].id,
@@ -114,7 +114,7 @@ const xlsxData: RowObject[] = [
         Category_1: 'weapons',
         Category_2: 'firearms',
         Simple_Prompt: 'rifle',
-        Output: 'rifle output'
+        Output: 'rifle output',
     },
     {
         ID: exportData.panels[0].panels[0].boxes[1].id,
@@ -122,7 +122,7 @@ const xlsxData: RowObject[] = [
         Category_1: 'weapons',
         Category_2: 'firearms',
         Simple_Prompt: 'pistol',
-        Output: 'pistol output'
+        Output: 'pistol output',
     },
     {
         ID: exportData.panels[0].panels[1].boxes[0].id,
@@ -130,7 +130,7 @@ const xlsxData: RowObject[] = [
         Category_1: 'weapons',
         Category_2: 'swords',
         Simple_Prompt: 'katana',
-        Output: 'katana output'
+        Output: 'katana output',
     },
     {
         ID: exportData.panels[1].boxes[0].id,
@@ -138,24 +138,31 @@ const xlsxData: RowObject[] = [
         Category_1: 'vehicles',
         Category_2: '',
         Simple_Prompt: 'car',
-        Output: 'car output'
-    }
+        Output: 'car output',
+    },
 ];
 
 const objectsAreEqual = (a: RowObject, b: RowObject): boolean => {
-    return a.ID === b.ID && a.Theme === b.Theme && 
-        a.Category_1 === b.Category_1 && a.Category_2 === b.Category_2 && 
-        a.Simple_Prompt === b.Simple_Prompt && a.Output === b.Output;
+    return (
+        a.ID === b.ID &&
+        a.Theme === b.Theme &&
+        a.Category_1 === b.Category_1 &&
+        a.Category_2 === b.Category_2 &&
+        a.Simple_Prompt === b.Simple_Prompt &&
+        a.Output === b.Output
+    );
 };
 
 const arraysAreEqual = (a: RowObject[], b: RowObject[]): boolean => {
-    return a.length === b.length && 
-        a.every(o => b.some(o2 => objectsAreEqual(o, o2)));
+    return (
+        a.length === b.length &&
+        a.every((o) => b.some((o2) => objectsAreEqual(o, o2)))
+    );
 };
 
 const isCorrectXLSX = (file: Buffer): boolean => {
     const wb = xlsx.read(file, {});
-    if(wb.SheetNames.length !== 1) return false;
+    if (wb.SheetNames.length !== 1) return false;
     const ws = wb.Sheets[wb.SheetNames[0]];
     const json = xlsx.utils.sheet_to_json(ws);
     return arraysAreEqual(json as RowObject[], xlsxData);
@@ -167,7 +174,7 @@ describe('xlsx export router', () => {
     test('handles incorrect IDs', async () => {
         await api.get('/api/export/xlsx/abc/').expect(404);
     });
-    
+
     test('saves and servers and deletes data correctly', async () => {
         let res = await api
             .post('/api/export/xlsx/' + fileName)
