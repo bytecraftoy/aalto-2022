@@ -34,12 +34,16 @@ export const IOBoxBar: React.FC<IOBoxBarProps> = ({
                 colorPalette={locked ? 'tertiary' : 'secondary'}
                 visible={locked || showButtons}
             />
-            <IOBoxButton
-                onClick={generate}
-                name="Generate"
-                colorPalette="primary"
-                visible={showButtons}
-            />
+            {!locked ? (
+                <IOBoxButton
+                    onClick={generate}
+                    name="Generate"
+                    colorPalette="primary"
+                    visible={showButtons}
+                />
+            ) : (
+                <></>
+            )}
         </div>
     );
 };
