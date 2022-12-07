@@ -1,9 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-import { FilledButton, ButtonProps } from '../../../Buttons';
+import { ButtonProps } from '../../../Buttons';
+import { ExtendedFAB } from '../../../Buttons/ExtendedFab';
 
 export interface IOBoxButtonProps extends ButtonProps {
     //Other properties
+    name: string;
     visible: boolean;
 }
 
@@ -17,11 +19,11 @@ export const IOBoxButton: React.FC<IOBoxButtonProps> = ({
     visible,
 }) => {
     return (
-        <FilledButton
+        <ExtendedFAB
             name={name}
-            icon={icon}
+            icon={icon ?? 'PlusIcon'}
             colorPalette={colorPalette}
-            disabled={disabled}
+            disabled={disabled ?? false}
             onClick={onClick}
             className={classNames(
                 'transition-all',
