@@ -32,8 +32,8 @@ interface DataObject {
     data: Buffer;
 }
 
-//The IDs should be long enought to prevent random guessing
-const idLenght = 30;
+//The IDs should be long enough to prevent random guessing
+const idLength = 30;
 
 //The max number of data objects is limited to limit memory consumption
 //However, this still doesn't limit the size of an individual data object
@@ -46,7 +46,7 @@ const dataObjects: DataObject[] = [];
  */
 const appendDataObject = (fileName: string, data: Buffer): string => {
     if (dataObjects.length >= maxDataObjects) dataObjects.shift();
-    const id = getRndString(idLenght);
+    const id = getRndString(idLength);
     dataObjects.push({ id, fileName, data });
     return id;
 };
@@ -80,7 +80,7 @@ const getMaxDepth = (panels: Panel[]): number => {
 
 /**
  * Writes the column headers to an aoa.
- * The aoa is an array of arrays that represents an excel work sheet.
+ * @param {string[][]} aoa an array of arrays that represents an excel work sheet
  */
 const writeHeadersToAOA = (aoa: string[][], maxDepth: number): void => {
     const row = ['ID', 'Theme'];
@@ -91,7 +91,7 @@ const writeHeadersToAOA = (aoa: string[][], maxDepth: number): void => {
 
 /**
  * Writes a row representing the box information to an aoa.
- * The aoa is an array of arrays that represents an excel work sheet.
+ * @param {string[][]} aoa an array of arrays that represents an excel work sheet
  */
 const writeBoxToAOA = (
     aoa: string[][],
@@ -108,7 +108,7 @@ const writeBoxToAOA = (
 
 /**
  * Recursively writes information of all panels to an aoa.
- * The aoa is an array of arrays that represents an excel work sheet.
+ * @param {string[][]} aoa an array of arrays that represents an excel work sheet
  */
 const writePanelsToAOA = (
     aoa: string[][],
