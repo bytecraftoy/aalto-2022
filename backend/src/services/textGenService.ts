@@ -17,21 +17,11 @@ const sendToProxy = async (json: Prompt): Promise<Gpt3Response> => {
     //Otherwise, expect that we are using the dummy
     //Currently, both expect the service available at port 8080
     try {
-        if (process.env.ENVIRONMENT === 'openai') {
-            //send to the real proxy here
-            const proxyURL = process.env.PROXYURL
-                ? process.env.PROXYURL
-                : 'not_found';
+            const proxyURL = process.env.ENVIRONMENT === 'openai'
+                ? process.env.PROXYURL as string
+                : process.env.DUMMYURL as string;
             const response = await axios.post<Gpt3Response>(proxyURL, json);
             return response.data;
-        } else {
-            //send to the dummy here
-            const dummyURL = process.env.DUMMYURL
-                ? process.env.DUMMYURL
-                : 'not_found';
-            const response = await axios.post<Gpt3Response>(dummyURL, json);
-            return response.data;
-        }
     } catch (e) {
         throw new ProxyError(
             'Error connecting to or when processing response from proxy\n' +
