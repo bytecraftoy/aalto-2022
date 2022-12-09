@@ -6,22 +6,21 @@ class ProxyError extends SyntaxError {
 }
 
 /**
- * Function which sends data to proxy, or dummy and receives a response
+ * Function which sends data to proxy if in 'openai' environment,
+ * otherwise, send data to internal dummy proxy.
  *
  * @async
  * @param {Prompt} json JavaScript object preferably of type Prompt
  * @returns {Promise<Gpt3Response>} returns response in object form as gpt3 would
  */
 const sendToProxy = async (json: Prompt): Promise<Gpt3Response> => {
-    //Send to proxy if environment is 'openai'
-    //Otherwise, expect that we are using the dummy
-    //Currently, both expect the service available at port 8080
     try {
-            const proxyURL = process.env.ENVIRONMENT === 'openai'
-                ? process.env.PROXYURL as string
-                : process.env.DUMMYURL as string;
-            const response = await axios.post<Gpt3Response>(proxyURL, json);
-            return response.data;
+        const proxyURL =
+            process.env.ENVIRONMENT === 'openai'
+                ? (process.env.PROXYURL as string)
+                : (process.env.DUMMYURL as string);
+        const response = await axios.post<Gpt3Response>(proxyURL, json);
+        return response.data;
     } catch (e) {
         throw new ProxyError(
             'Error connecting to or when processing response from proxy\n' +
