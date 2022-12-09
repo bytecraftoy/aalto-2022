@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "ds": "DUMMYURL='http://localhost:8080' run-p dev:*",
+        "ds": "run-p dev:*",
         "docusaurus": "npm run build-docs && npm run start-docs",
         "setup-project": "npm run install:backend && npm run install:frontend && npm run install:dummy && npm install",
         "build-project": "run-s build:*",
