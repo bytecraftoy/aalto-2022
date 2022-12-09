@@ -47,7 +47,8 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
 
     return (
         <div
-            className="mt-6 pt-10 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around"
+            //IOBoxBar is absolute so use relative here
+            className="mt-6 pt-10 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around relative"
             onMouseEnter={() => {
                 setShowButtons(true);
             }}
@@ -55,64 +56,34 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 setShowButtons(false);
             }}
         >
+            <IOBoxBar
+                showButtons={showButtons}
+                locked={locked}
+                generate={generate}
+                deleteSelf={deleteSelf}
+                lock={() => lock(id)}
+            />
             <div
-                className="w-full flex flex-col items-center justify-between relative"
+                className="w-full flex flex-col items-center justify-between z-10"
                 data-testid="prompt"
             >
-                <IOBoxBar
-                    showButtons={showButtons}
-                    locked={locked}
-                    generate={generate}
-                    deleteSelf={deleteSelf}
-                    lock={() => lock(id)}
+                <TextArea
+                    placeholder="User input here"
+                    label="Input"
+                    value={input}
+                    onInput={({ target }) => {
+                        setInput((target as HTMLTextAreaElement).value);
+                    }}
                 />
-                <div className="w-full h-full z-10">
-                    <TextArea
-                        placeholder="User input here"
-                        label="Input"
-                        value={input}
-                        onInput={({ target }) => {
-                            setInput((target as HTMLTextAreaElement).value);
-                        }}
-                    />
-                    <TextArea
-                        placeholder="AI generated content"
-                        label="Output"
-                        value={output}
-                        onInput={({ target }) => {
-                            setOutput((target as HTMLTextAreaElement).value);
-                        }}
-                    />
-                </div>
+                <TextArea
+                    placeholder="AI generated content"
+                    label="Output"
+                    value={output}
+                    onInput={({ target }) => {
+                        setOutput((target as HTMLTextAreaElement).value);
+                    }}
+                />
             </div>
         </div>
     );
 };
-
-/*
-
-                <div className="flex flex-row">
-                    <FilledButton
-                        onClick={generate}
-                        name="Generate"
-                        colorPalette="primary"
-                    />
-                    <FilledButton
-                        onClick={() => lock(id)}
-                        name="lock"
-                        colorPalette="primary"
-                    />
-                    {deleteSelf ? (
-                        <FilledButton
-                            onClick={() => deleteSelf?.()}
-                            name="Delete"
-                            colorPalette="red"
-                        />
-                    ) : (
-                        <></>
-                    )}
-                </div>
-
-
-
- */
