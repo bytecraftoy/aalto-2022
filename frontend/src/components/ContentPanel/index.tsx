@@ -33,6 +33,13 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
         setPromptBoxes((prev) => [...prev, newBox]);
     };
 
+    //Adds n ammount of new boxes in the panel instead of 1
+    const addPromptBoxes = (n: number) => {
+        for (let i = 0; i < n ;i++){
+            addPromptBox();
+        }
+    };
+
     //Callbacks to asynchronously fetch AI data from backend
     const generateAll = () => {
         promptBoxes.forEach((p) => {
@@ -107,6 +114,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                     {/* Bottom bar containing content panel actions */}
                     <ContentPanelActions
                         generateAll={generateAll}
+                        addPromptBoxes={addPromptBoxes}
                         exportJson={jsonExport}
                         exportExcel={excelExport}
                     />
