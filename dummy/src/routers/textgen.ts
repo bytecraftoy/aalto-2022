@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { generateData, validatePrompt, ValidationError } from './../services';
-import { DummyResponse, Prompt } from '../types';
+import { Gpt3Response, Prompt } from '../types';
 
 const textGenRouter = express.Router();
 
@@ -20,14 +20,8 @@ textGenRouter.post(
             }
             return;
         }
-
-        const response: DummyResponse = {
-            gpt: generateData(),
-            debug: {
-                prompt: JSON.parse(body) as Prompt,
-                date: new Date().toUTCString(),
-            },
-        };
+        const prompt = JSON.parse(body) as Prompt;
+        const response: Gpt3Response = generateData(prompt);
 
         res.json(response);
     }

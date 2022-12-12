@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import { server } from './../index';
-import { DummyResponse } from '../types';
+import { Gpt3Response } from '../types';
 
 const api = supertest(server);
 
@@ -22,12 +22,10 @@ describe('textgen router', () => {
         const time = Date.now();
         console.log(time);
 
-        const res = response.body as DummyResponse;
-        const gpt = res.gpt;
-        const debug = res.debug;
+        const gpt = response.body as Gpt3Response;
         const t = gpt.created;
         expect(Math.abs(time - t)).toBeLessThan(100);
-        expect(debug.prompt).toStrictEqual(JSON.parse(prompt));
+        expect(JSON.stringify(gpt)).toMatch(String(JSON.parse(prompt).prompt));
     });
     test('handles errors correctly', async () => {
         const response = await api
