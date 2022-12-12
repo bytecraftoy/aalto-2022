@@ -5,3 +5,4 @@ deploy
 backend/public/
 cypress/videos
 .env
+backend/files/timestamp-commit
