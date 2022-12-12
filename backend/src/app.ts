@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { exportRouter, apiRouter, healthRouter } from './routers';
+import { mirrorRouter, exportRouter, apiRouter, healthRouter } from './routers';
 import cors from 'cors';
 
 const app = express();
@@ -13,6 +13,7 @@ app.use((req, res, next) => {
 
 app.use(cors());
 app.use(bodyParser.text({ type: '*/*' }));
+app.use('/api/mirror', mirrorRouter);
 app.use('/api/export/', exportRouter);
 app.use('/api/textgen', apiRouter);
 app.use('/health', healthRouter);
