@@ -32,7 +32,7 @@ export const TextArea: React.FC<TextInputProps> = ({
                 className={classNames(
                     'form-control peer h-40 block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding  resize-none',
                     'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
-                    ' rounded-t-lg transition-colors ',
+                    'rounded-t-lg transition-colors ',
                     'bg-neutral-90 hover:bg-onSurface hover:bg-opacity-10',
                     'placeholder:text-transparent placeholder:select-none cursor-text'
                 )}
@@ -48,7 +48,7 @@ export const TextArea: React.FC<TextInputProps> = ({
                     'transition-all'
                 )}
             >
-                {touched && value ? label : placeholder}
+                {value ? label : placeholder}
             </span>
         </label>
     );

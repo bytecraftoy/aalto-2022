@@ -29,9 +29,13 @@ export const ExtendedFAB: React.FC<ExtendedFABProps> = ({
     onClick,
 }) => {
     return (
-        <div className={classNames("inline-block p-4 ", className)}>
+        <div className={classNames('inline-block p-4 ', className)}>
             {/* Three different FABs: FAB, small FAB, large FAB */}
-            <button onClick={onClick} disabled={disabled} data-testid="extended-fab-button">
+            <button
+                onClick={onClick}
+                disabled={disabled}
+                data-testid="extended-fab-button"
+            >
                 {/* Color layer */}
                 <div
                     className={classNames(
