@@ -30,10 +30,10 @@ export const TextArea: React.FC<TextInputProps> = ({
                 spellCheck={'false'}
                 placeholder={placeholder}
                 className={classNames(
-                    'form-control peer h-40 block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding  resize-none',
+                    'form-control peer h-40 block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding resize-none',
                     'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
-                    ' rounded-t-lg transition-colors ',
-                    'bg-neutral-90 hover:bg-onSurface hover:bg-opacity-10',
+                    'rounded-t-lg transition-colors',
+                    'bg-neutral-90',
                     'placeholder:text-transparent placeholder:select-none cursor-text'
                 )}
                 value={value}
@@ -45,10 +45,11 @@ export const TextArea: React.FC<TextInputProps> = ({
                 className={classNames(
                     'absolute select-none left-0 top-0 pl-4 peer-placeholder-shown:top-3.5',
                     'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base',
-                    'transition-all'
+                    'transition-all w-full',
+                    'bg-neutral-90 rounded-t-lg peer-placeholder-shown:bg-opacity-0'
                 )}
             >
-                {touched && value ? label : placeholder}
+                {value ? label : placeholder}
             </span>
         </label>
     );
