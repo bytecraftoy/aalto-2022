@@ -22,6 +22,7 @@ export const TextArea: React.FC<TextInputProps> = ({
     value,
     onInput,
 }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [touched, setTouched] = useState(false);
 
     return (

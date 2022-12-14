@@ -14,6 +14,7 @@ export const IOBoxButton: React.FC<IOBoxButtonProps> = ({
     icon,
     colorPalette,
     disabled,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     className,
     onClick,
     visible,

@@ -9,7 +9,7 @@ import { ContentPanelActions } from './ContentPanelActions';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { v4 as uuidv4 } from 'uuid';
-import { ExtendedFAB } from '../Buttons/ExtendedFab';
+//import { ExtendedFAB } from '../Buttons/ExtendedFab';
 
 //Provide access to MasterCategory through a parent callback
 interface ContentPanelProps {
