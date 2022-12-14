@@ -16,7 +16,7 @@ app.use(bodyParser.text({ type: '*/*' }));
 app.use('/api/mirror', mirrorRouter);
 app.use('/api/export/', exportRouter);
 app.use('/api/textgen', apiRouter);
-app.use('/health', healthRouter);
+app.use('/api/health', healthRouter);
 app.use(express.static('./public/'));
 
 export { app };

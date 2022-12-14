@@ -13,7 +13,7 @@ describe('health router', () => {
     })();
     console.log('version:', version);
     test('gives correct response', async () => {
-        const res = await api.get('/health').expect(200);
+        const res = await api.get('/api/health').expect(200);
         expect(res.body.status).toBe('OK');
         expect(res.body.version).toBe(version);
     });
