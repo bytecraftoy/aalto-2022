@@ -95,9 +95,9 @@ test('Remove button should delete the correct promptIOBox', () => {
     ).toBeInTheDocument();
 
     const buttons =
-        inputArea.parentElement?.parentElement?.parentElement?.children[1].getElementsByTagName('IOBoxButton');
-    console.log(inputArea.parentElement?.parentElement?.parentElement);
-    console.log(buttons);
+        inputArea.parentElement?.parentElement?.parentElement?.children[0].getElementsByTagName(
+            'button'
+        );
     expect(buttons?.length).toBeGreaterThan(0);
     const delButton = buttons?.[0] as HTMLButtonElement | undefined;
 
