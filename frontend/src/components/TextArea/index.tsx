@@ -26,6 +26,14 @@ export const TextArea: React.FC<TextInputProps> = ({
 }) => {
     const [touched, setTouched] = useState(false);
 
+    // Show error when input contains error and user has touched the input
+    const showError: boolean =
+        touched && errors != undefined && errors.length > 0;
+    // Show placeholder when there are no user input and not showing error
+    const showPlaceholder: boolean = !showError && !value;
+    // Else show the label
+    const showLabel: boolean = !showError && value.length > 0;
+
     return (
         <label className="relative w-full h-full">
             <textarea
@@ -55,7 +63,9 @@ export const TextArea: React.FC<TextInputProps> = ({
                     }
                 )}
             >
-                {touched && errors ? errors : value ? label : placeholder}
+                {showError && errors}
+                {showPlaceholder && placeholder}
+                {showLabel && label}
             </span>
         </label>
     );
