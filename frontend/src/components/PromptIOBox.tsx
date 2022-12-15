@@ -1,6 +1,7 @@
 import React from 'react';
 import { FilledButton } from './Buttons';
 import { TextArea } from './TextArea';
+import { z } from 'zod';
 
 /**
  * Minimum required data for representing PromptIOBox state.
@@ -27,6 +28,19 @@ interface PromptIOBoxProps {
     deleteSelf: (() => void) | null; //null --> don't show button
     lock: (id: string) => void;
 }
+
+/* Validation of user input with zod.
+ *  More info about string error formatting on here:
+ *  https://www.npmjs.com/package/zod#strings
+ */
+export const InputSchema = z
+    .string({
+        required_error: 'Input is required',
+        invalid_type_error: 'Input must be a string',
+    })
+    .trim()
+    .min(1, { message: 'Input must not be empty' });
+
 /**
  * Component containing editable textareas for Input/Output with AI
  * generation.
@@ -41,6 +55,15 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
     deleteSelf,
     lock,
 }) => {
+    // All the errors of the input
+    let errors = '';
+    // Set all the validation errors
+    const validatedInput = InputSchema.safeParse(input);
+    if (!validatedInput.success) {
+        const formattedErrors = validatedInput.error.format();
+        errors = formattedErrors._errors.join(', ');
+    }
+
     return (
         <div className="mt-10 pt-4 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around">
             <div
@@ -54,6 +77,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                     onInput={({ target }) => {
                         setInput((target as HTMLTextAreaElement).value);
                     }}
+                    errors={errors}
                 />
                 <TextArea
                     placeholder="AI generated content"
@@ -69,6 +93,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                         onClick={generate}
                         name="Generate"
                         colorPalette="primary"
+                        disabled={errors ? true : false}
                     />
                     <FilledButton
                         onClick={() => lock(id)}

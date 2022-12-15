@@ -6,6 +6,7 @@ import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
 import { ContentPanelActions } from './ContentPanelActions';
+import { InputSchema } from '../PromptIOBox';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { v4 as uuidv4 } from 'uuid';
@@ -36,7 +37,8 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     //Callbacks to asynchronously fetch AI data from backend
     const generateAll = () => {
         promptBoxes.forEach((p) => {
-            if (!p.locked) {
+            // Generate if the prompt is not locked and input is valid
+            if (!p.locked && InputSchema.safeParse(p.input).success) {
                 generateOutput(p);
             }
         });
