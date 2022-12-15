@@ -1,9 +1,9 @@
 import React from 'react';
 
 /**
- * Links in navigation drawer to navigate to another page 
- * 
-*/
+ * Links in navigation drawer to navigate to another page
+ *
+ */
 
 interface NavigationLinkProps {
     label: string;
@@ -16,7 +16,6 @@ export const NavigationLink: React.FC<NavigationLinkProps> = ({
     icon,
     onClick,
 }) => {
-
     return (
         <button
             onClick={onClick}
@@ -24,12 +23,10 @@ export const NavigationLink: React.FC<NavigationLinkProps> = ({
                 w-full h-14 rounded-full hover:bg-secondary-90 transition-all  
             "
         >
-            <div
-                className='flex py-4 pl-4 pr-5 gap-3'
-            >
+            <div className="flex py-4 pl-4 pr-5 gap-3">
                 {icon}
                 {label}
             </div>
         </button>
-    )
-}
+    );
+};

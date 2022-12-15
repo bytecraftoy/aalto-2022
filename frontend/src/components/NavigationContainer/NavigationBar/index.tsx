@@ -10,18 +10,13 @@ interface NavigationBarProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const NavigationBar: React.FC<NavigationBarProps> = ({
-    setOpen
-}) => {
-
+export const NavigationBar: React.FC<NavigationBarProps> = ({ setOpen }) => {
     return (
         <Surface
             level={5}
             className="fixed w-full top-0 left-0 h-20 z-20 flex justify-between items-center outline outline-1 outline-primary-80"
         >
-            <button
-                onClick={() => setOpen(true)}
-            >
+            <button onClick={() => setOpen(true)}>
                 {solidIcon('Bars3Icon', 'mx-8 w-8 h-8 text-primary-30')}
             </button>
 
@@ -31,7 +26,6 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
             <button>
                 {solidIcon('UserCircleIcon', 'mx-8 w-8 h-8 text-primary-30')}
             </button>
-            
         </Surface>
     );
 };

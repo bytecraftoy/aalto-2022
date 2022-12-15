@@ -1,8 +1,23 @@
 import classNames from 'classnames';
-import { PlusIcon, Bars3Icon, UserCircleIcon, InformationCircleIcon, Cog6ToothIcon, CubeIcon, WindowIcon } from '@heroicons/react/24/solid';
+import {
+    PlusIcon,
+    Bars3Icon,
+    UserCircleIcon,
+    InformationCircleIcon,
+    Cog6ToothIcon,
+    CubeIcon,
+    WindowIcon,
+} from '@heroicons/react/24/solid';
 
 /** Type containing predefined constants for common icons */
-export type Icon = 'PlusIcon' | 'Bars3Icon' | 'UserCircleIcon' | 'InformationCircleIcon' | 'SettingsIcon' | 'CubeIcon' | 'WindowIcon';
+export type Icon =
+    | 'PlusIcon'
+    | 'Bars3Icon'
+    | 'UserCircleIcon'
+    | 'InformationCircleIcon'
+    | 'SettingsIcon'
+    | 'CubeIcon'
+    | 'WindowIcon';
 
 /** Default sized Icon element using HeroIcons */
 export const solidIcon = (i?: Icon, className?: string) => {

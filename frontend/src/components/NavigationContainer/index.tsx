@@ -19,16 +19,14 @@ export const NavigationContainer: React.FC<NavigationProps> = ({
     // State of the navigation drawer
     const [open, setOpen] = useState(false);
 
-
     return (
         <div className="flex w-full min-h-screen flex-row">
-
             {/*  Navigation bar always at top */}
-            <NavigationBar setOpen={setOpen}/>
+            <NavigationBar setOpen={setOpen} />
             {/* Rest of the page goes below navigation bar */}
             <div className="w-full flex-1 mt-16">{children}</div>
             {/* Navigation drawer at the left side of the screen */}
-            <NavigationDrawer open={open} setOpen={setOpen}/>
+            <NavigationDrawer open={open} setOpen={setOpen} />
         </div>
     );
 };
