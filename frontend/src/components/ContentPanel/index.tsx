@@ -116,7 +116,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
             </div>
             {/* Loading spinner */}
             {loading && (
-                <div className="absolute inset-1/2">
+                <div className="fixed inset-1/2">
                     <Loader />
                 </div>
             )}
