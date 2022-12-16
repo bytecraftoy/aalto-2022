@@ -1,4 +1,4 @@
-import { ContentPanel } from '../components/ContentPanel';
+import { ContentPanel } from '../../components/ContentPanel';
 
 export const Home = () => {
     return (
