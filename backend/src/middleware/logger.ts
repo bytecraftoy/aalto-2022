@@ -11,15 +11,14 @@ const requestLogger = (
     const method = req.method;
     const url = req.url;
 
-    logger.info({ message: 'Request', method, url, body });
+    logger.info({ message: 'request', method, url, body });
 
     res.on('finish', () => {
         logger.info({
-            message: 'Response',
+            message: 'response',
             method,
             url,
             status: res.statusCode,
-            res.body,
         });
     });
 
@@ -32,7 +31,7 @@ function errorLogger(
     res: Response,
     next: (param?: unknown) => void
 ) {
-    logger.error({ message: 'Exception', err });
+    logger.error({ message: 'exception', err });
     next(err);
 }
 
