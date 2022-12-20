@@ -10,8 +10,17 @@ const requestLogger = (
 
     const method = req.method;
     const url = req.url;
+    const headers = req.headers;
+    const httpVersion = req.httpVersion;
 
-    logger.http({ message: 'request', method, url, body });
+    logger.http({
+        message: 'request',
+        method,
+        httpVersion,
+        url,
+        headers,
+        body,
+    });
 
     res.on('finish', () => {
         logger.http({
