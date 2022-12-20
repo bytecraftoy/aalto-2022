@@ -89,3 +89,6 @@ jobs:
 
             - name: Restart backend service
               run: ssh root@65.108.249.101 "systemctl restart aalto_2022_backend.service"
+
+            - name: Check that service started succesfully
+              run: ssh root@65.108.249.101 "systemctl is-active aalto_2022_backend.service"
