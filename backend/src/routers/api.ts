@@ -8,6 +8,7 @@ import {
     responseGen,
     createPrompt,
 } from '../services';
+import { logger } from '../utils/logger';
 
 const apiRouter = Router();
 
@@ -26,10 +27,10 @@ apiRouter.post(
                 res.json(responseGen(gpt, id));
             } catch (e) {
                 if (e instanceof ValidationError) {
-                    console.log(`Validation failed:\n${e}\nRequest:\n${body}`);
+                    logger.error(`Validation failed:\n${e}\nRequest:\n${body}`);
                     res.status(400).send(e.toString());
                 } else if (e instanceof ProxyError) {
-                    console.log(`Proxy service unavailable:\n${e}`);
+                    logger.error(`Proxy service unavailable:\n${e}`);
                     res.status(502).send(e.toString());
                 } else {
                     next(e);
