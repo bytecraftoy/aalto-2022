@@ -27,7 +27,7 @@ jobs:
                   cache: 'npm'
 
             - name: Install CI dependencies with apt-get
-              run: apt-get install --no-install-recommends -y jq
+              run: sudo apt-get install --no-install-recommends -y jq
 
             - name: Save apt-get cache
               uses: actions/cache@v3
