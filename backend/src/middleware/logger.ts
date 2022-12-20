@@ -6,15 +6,15 @@ const requestLogger = (
     res: Response,
     next: (param?: unknown) => void
 ): void => {
-    const body = req.body;
+    const body = req.body as string;
 
     const method = req.method;
     const url = req.url;
 
-    logger.info({ message: 'request', method, url, body });
+    logger.http({ message: 'request', method, url, body });
 
     res.on('finish', () => {
-        logger.info({
+        logger.http({
             message: 'response',
             method,
             url,
