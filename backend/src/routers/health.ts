@@ -1,11 +1,12 @@
 import express from 'express';
 import fs from 'fs';
+import { logger } from '../utils/logger';
 
 const version = (() => {
     try {
         return fs.readFileSync('./files/timestamp-commit').toString();
     } catch (e) {
-        console.error(e);
+        logger.error(e);
         return 'N/A';
     }
 })();
