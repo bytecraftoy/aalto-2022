@@ -26,11 +26,30 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
 
+            - name: Install CI dependencies with apt-get
+              run: apt-get install --no-install-recommends -y jq
+
+            - name: Save apt-get cache
+              uses: actions/cache@v3
+              with:
+                  path: /var/cache/apt
+                  key: ${{ runner.os }}-apt-${{ hashFiles('/var/cache/apt/pkgcache.bin') }}
+                  restore-keys: |
+                      ${{ runner.os }}-apt-
+
             - run: npm run setup-project
+
             - run: npm run prettier
+
+            - name: Root package.json should not have non-dev dependencies
+              run: jq --exit-status 'has("dependencies") != true' < package.json
+
             - run: npm run lint-project
+
             - run: npm run build-project
+
             - run: npm run test-project
+
             - run: npm run cypress-ci
 
             - name: Archive frontend build files
