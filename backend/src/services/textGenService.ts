@@ -1,5 +1,7 @@
 import { Gpt3Response, Prompt, ApiResponse } from '../types';
 import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
 class ProxyError extends SyntaxError {
     name = 'ProxyError';
