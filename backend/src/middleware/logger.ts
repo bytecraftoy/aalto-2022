@@ -1,6 +1,9 @@
 import { logger } from '../utils/logger';
 import { Request, Response } from 'express';
 
+/**
+ * Middleware function for logging incoming HTTP requests and responses to the Winston logger.
+ */
 const requestLogger = (
     req: Request,
     res: Response,
@@ -34,12 +37,15 @@ const requestLogger = (
     next();
 };
 
+/**
+ * Middleware function for logging errors to the Winston logger and passing the error to the next middleware.
+ */
 function errorLogger(
     err: unknown,
-    req: Request,
-    res: Response,
+    _req: Request,
+    _res: Response,
     next: (param?: unknown) => void
-) {
+): void {
     logger.error({ message: 'exception', err });
     next(err);
 }
