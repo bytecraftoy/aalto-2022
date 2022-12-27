@@ -2,6 +2,9 @@ import winston from 'winston';
 
 /**
  * Determines the logging level based on the current environment.
+ * NODE_ENV is a variable used by Express to configure runtime behaviour. In
+ * production we only want http (and above) level of logging, but in development
+ * all logs are enabled.
  * @return {string} The logging level to use.
  */
 const level = (): string => {
