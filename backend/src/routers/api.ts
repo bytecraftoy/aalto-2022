@@ -2,12 +2,12 @@ import { Router, Request, Response, NextFunction } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import {
     validateApiRequest,
-    ValidationError,
     sendToProxy,
     ProxyError,
     responseGen,
     createPrompt,
 } from '../services';
+import { ZodError } from 'zod';
 
 const apiRouter = Router();
 
@@ -25,7 +25,7 @@ apiRouter.post(
                 const gpt = await sendToProxy(createPrompt(contexts, prompt));
                 res.json(responseGen(gpt, id));
             } catch (e) {
-                if (e instanceof ValidationError) {
+                if (e instanceof ZodError) {
                     console.log(`Validation failed:\n${e}\nRequest:\n${body}`);
                     res.status(400).send(e.toString());
                 } else if (e instanceof ProxyError) {
