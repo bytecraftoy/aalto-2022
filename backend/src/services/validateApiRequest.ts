@@ -8,6 +8,12 @@ import { ApiRequest, apiRequestSchema } from '../types';
  * Also checks that the prompt is not empty. not accounting for whitespace.
  * This error should not be seen while interacting with the UI. i.e. it should
  * also be handled on the frontend.
+ *
+ * @throws {@link SyntaxError}
+ * On invalid JSON
+ *
+ * @throws {@link ZodError}
+ * On validation error
  */
 // eslint-disable-next-line @typescript-eslint/require-await
 const validateApiRequest = async (body: string): Promise<ApiRequest> => {

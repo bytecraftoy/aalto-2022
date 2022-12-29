@@ -25,7 +25,7 @@ apiRouter.post(
                 const gpt = await sendToProxy(createPrompt(contexts, prompt));
                 res.json(responseGen(gpt, id));
             } catch (e) {
-                if (e instanceof ZodError) {
+                if (e instanceof ZodError || e instanceof SyntaxError) {
                     console.log(`Validation failed:\n${e}\nRequest:\n${body}`);
                     res.status(400).send(e.toString());
                 } else if (e instanceof ProxyError) {

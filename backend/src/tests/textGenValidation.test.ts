@@ -8,8 +8,11 @@ const example = {
     id: '4deafcdc-7207-4c12-8193-59eeb82f1d0f',
 };
 
-const validate = async (args: ApiRequest): Promise<ApiRequest> => {
-    return await validateApiRequest(JSON.stringify(args));
+const validate = async (args: ApiRequest | string): Promise<ApiRequest> => {
+    if (typeof args !== 'string') {
+        args = JSON.stringify(args);
+    }
+    return await validateApiRequest(args);
 };
 
 describe('Textgen request validation', () => {
@@ -74,5 +77,9 @@ describe('Textgen request validation', () => {
         await expect(validate(dict as unknown as ApiRequest)).rejects.toThrow(
             ZodError
         );
+    });
+
+    test('Invalid json throws SyntaxError', async () => {
+        await expect(validate('{asd')).rejects.toThrow(SyntaxError);
     });
 });
