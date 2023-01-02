@@ -1,4 +1,4 @@
-import winston from 'winston';
+import { createLogger, transports, format } from 'winston';
 
 /**
  * Determines the logging level based on the current environment.
@@ -17,13 +17,13 @@ const level = (): string => {
  * Creates a Winston logger configured to log to the console and format messages as JSON.
  * The logging level is determined by the 'level' function.
  */
-const logger = winston.createLogger({
+const logger = createLogger({
     transports: [
-        new winston.transports.Console({
+        new transports.Console({
             level: level(),
         }),
     ],
-    format: winston.format.json(),
+    format: format.combine(format.timestamp(), format.json()),
 });
 
 export { logger };
