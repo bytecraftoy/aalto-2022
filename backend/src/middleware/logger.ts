@@ -46,7 +46,7 @@ function errorLogger(
     _res: Response,
     next: (param?: unknown) => void
 ): void {
-    logger.error({ message: 'exception', err });
+    logger.error('exception', { err });
     next(err);
 }
 
