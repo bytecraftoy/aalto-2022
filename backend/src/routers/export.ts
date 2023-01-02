@@ -41,7 +41,7 @@ exportRouter.post('/xlsx/:name', (req, res) => {
         const id = appendDataObject(fileName, data);
         res.send(id);
     } catch (e) {
-        logger.error('xlsx_generation', { e });
+        logger.error('xlsx_generation_fail', { e });
         res.status(400).end();
     }
 });

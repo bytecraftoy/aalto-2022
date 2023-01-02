@@ -6,7 +6,7 @@ const version = (() => {
     try {
         return fs.readFileSync('./files/timestamp-commit').toString();
     } catch (e) {
-        logger.error('version_file', { e });
+        logger.error('version_file_missing', { e });
         return 'N/A';
     }
 })();
