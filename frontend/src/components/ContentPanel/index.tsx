@@ -99,6 +99,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                     <ContentPanelHeader
                         category={category}
                         setCategory={setCategory}
+                        addPromptBoxes={addPromptBoxes}
                     />
 
                     {/* IO TExtfields: Prompts of the content panel */}
@@ -114,7 +115,6 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                     {/* Bottom bar containing content panel actions */}
                     <ContentPanelActions
                         generateAll={generateAll}
-                        addPromptBoxes={addPromptBoxes}
                         exportJson={jsonExport}
                         exportExcel={excelExport}
                     />

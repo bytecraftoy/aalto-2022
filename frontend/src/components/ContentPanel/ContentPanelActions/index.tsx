@@ -10,13 +10,11 @@ import { FilledButton, SegmentedButtons } from '../../Buttons';
 
 interface ContentPanelActionsProps {
     generateAll: () => void;
-    addPromptBoxes: (n: number) => void;
     exportJson: () => void;
     exportExcel: () => void;
 }
 export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
     generateAll,
-    addPromptBoxes,
     exportJson,
     exportExcel,
 }) => {
@@ -29,12 +27,6 @@ export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
                 onClick={generateAll}
                 name="Generate all"
                 colorPalette="primary"
-            />
-            <SegmentedButtons
-                actions={[
-                    { name: 'Add 5', onClick: event => addPromptBoxes(5) },
-                    { name: 'Add 10', onClick: event => addPromptBoxes(10) },
-                ]}
             />
             <SegmentedButtons
                 actions={[
