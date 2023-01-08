@@ -1,5 +1,10 @@
 import classNames from 'classnames';
-import { PlusIcon, Bars3Icon, UserCircleIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
+import {
+    PlusIcon,
+    Bars3Icon,
+    UserCircleIcon,
+    Cog6ToothIcon,
+} from '@heroicons/react/24/solid';
 
 /** Type containing predefined constants for common icons */
 export type Icon = 'PlusIcon' | 'Bars3Icon' | 'UserCircleIcon' | 'cog-6-tooth';

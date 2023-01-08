@@ -23,11 +23,16 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
         <div className="flex flex-row justify-around items-center mt-6">
             <div className="flex-1"></div>
             <div className="flex-1">
-            <PromptCategoryBox category={category} setCategory={setCategory} />
+                <PromptCategoryBox
+                    category={category}
+                    setCategory={setCategory}
+                />
             </div>
-            {<div className="flex-1 z-10">
-            <DropdownMenu addPromptBoxes={addPromptBoxes} />
-            </div>}
+            {
+                <div className="flex-1 z-10">
+                    <DropdownMenu addPromptBoxes={addPromptBoxes} />
+                </div>
+            }
         </div>
     );
 };

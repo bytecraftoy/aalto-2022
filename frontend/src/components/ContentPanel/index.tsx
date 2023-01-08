@@ -35,7 +35,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
 
     //Adds n ammount of new boxes in the panel instead of 1
     const addPromptBoxes = (n: number) => {
-        for (let i = 0; i < n ;i++){
+        for (let i = 0; i < n; i++) {
             addPromptBox();
         }
     };
