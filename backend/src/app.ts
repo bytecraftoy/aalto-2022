@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { mirrorRouter, exportRouter, apiRouter, healthRouter } from './routers';
+import { exportRouter, apiRouter, healthRouter } from './routers';
 import cors from 'cors';
 import { requestLogger, errorLogger } from './middleware/logger';
 
@@ -11,7 +11,6 @@ app.use(bodyParser.text({ type: '*/*' }));
 // Request logger before router
 app.use(requestLogger);
 
-app.use('/api/mirror', mirrorRouter);
 app.use('/api/export/', exportRouter);
 app.use('/api/textgen', apiRouter);
 app.use('/api/health', healthRouter);
