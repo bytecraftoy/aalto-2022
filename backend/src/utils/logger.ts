@@ -23,7 +23,11 @@ const logger = createLogger({
             level: level(),
         }),
     ],
-    format: format.combine(format.timestamp(), format.json()),
+    format: format.combine(
+        format.timestamp(),
+        format.json(),
+        format.prettyPrint()
+    ),
 });
 
 export { logger };
