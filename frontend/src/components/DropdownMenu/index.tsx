@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
-import { Icon, solidIcon } from '../../utils/icons';
+import { solidIcon } from '../../utils/icons';
+import { bgContainer, bgHover, Palette } from '../../utils/colors';
 
 /**
  * Content panel dropdown menu and its components
@@ -9,10 +10,12 @@ import { Icon, solidIcon } from '../../utils/icons';
 
 interface DropdownMenuProps {
     addPromptBoxes: (n: number) => void;
+    colorPalette: Palette;
 }
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
     addPromptBoxes,
+    colorPalette,
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -34,12 +37,14 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         };
     }, []);
 
+    // Adds multiple I/O boxes
     const addBoxes = (number: number) => {
         addPromptBoxes(number);
         setOpen(false);
     };
 
     return (
+        // Dropdown menu and its styling
         <div className="relative">
             <button onClick={() => setOpen(!open)} className={classNames('')}>
                 {solidIcon('cog-6-tooth', 'w-8 h-8 text-primary-30 ')}
@@ -47,21 +52,29 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             <div
                 ref={drawerRef}
                 className={classNames(
-                    'absolute bg-white divide-y divide-white-100 rounded shadow w-44 dark:bg-white',
+                    'absolute rounded shadow w-44 dark:bg-white',
+                    bgContainer(colorPalette),
+
                     { hidden: !open }
                 )}
             >
                 <a
                     href="#"
                     onClick={() => addBoxes(5)}
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className={classNames(
+                        'block px-4 py-2 dark:hover:text-white rounded',
+                        bgHover(colorPalette)
+                    )}
                 >
                     Add 5
                 </a>
                 <a
                     href="#"
                     onClick={() => addBoxes(10)}
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className={classNames(
+                        'block px-4 py-2 dark:hover:text-white rounded',
+                        bgHover(colorPalette)
+                    )}
                 >
                     Add 10
                 </a>
