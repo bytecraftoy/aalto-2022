@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationBar } from './NavigationBar';
+import { NavigationDrawer } from './NavigationDrawer';
 
 /**
  * Component for top app bar of the website
@@ -15,13 +16,17 @@ interface NavigationProps {
 export const NavigationContainer: React.FC<NavigationProps> = ({
     children,
 }) => {
+    // State of the navigation drawer
+    const [open, setOpen] = useState(false);
+
     return (
         <div className="flex w-full min-h-screen flex-row">
             {/*  Navigation bar always at top */}
-            <NavigationBar />
-
+            <NavigationBar setOpen={setOpen} />
             {/* Rest of the page goes below navigation bar */}
             <div className="w-full flex-1 mt-16">{children}</div>
+            {/* Navigation drawer at the left side of the screen */}
+            <NavigationDrawer open={open} setOpen={setOpen} />
         </div>
     );
 };
