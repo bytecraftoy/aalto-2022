@@ -1,6 +1,11 @@
 import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
-import { exportJson, downloadJson } from '../../utils/exportContent';
+import {
+    exportJson,
+    downloadJson,
+    exportXlsx,
+    downloadXlsx,
+} from '../../utils/exportContent';
 import { PromptData } from '../PromptIOBox';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
@@ -74,7 +79,8 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     //Callback to export outputs in excel
     //Not implemented, instead just call jsonExport
     const excelExport = async () => {
-        await jsonExport();
+        const link = await exportXlsx(category, promptBoxes);
+        if (link) downloadXlsx(link);
     };
 
     return (
