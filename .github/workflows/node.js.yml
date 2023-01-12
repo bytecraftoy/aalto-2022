@@ -60,6 +60,9 @@ jobs:
                   path: frontend/build
                   retention-days: 7
 
+            - name: Copy backend node_modules to build dir
+              run: cp -r backend/node_modules backend/build
+
             - name: Archive backend build files
               uses: actions/upload-artifact@v3
               if: ${{ matrix.node-version  == '18.x' }}
