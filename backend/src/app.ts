@@ -1,11 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { exportRouter, apiRouter, healthRouter } from './routers';
-import cors from 'cors';
+import { cors } from './middleware/cors';
 import { requestLogger, errorLogger } from './middleware/logger';
 
 const app = express();
-app.use(cors());
+app.use(cors);
 app.use(bodyParser.text({ type: '*/*' }));
 
 // Request logger before router
