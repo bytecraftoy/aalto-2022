@@ -1,5 +1,7 @@
 import { Gpt3Response, Prompt, ApiResponse } from '../types';
 import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
 class ProxyError extends SyntaxError {
     name = 'ProxyError';
@@ -38,7 +40,7 @@ const sendToProxy = async (json: Prompt): Promise<Gpt3Response> => {
 const responseGen = (gpt: Gpt3Response, id: string): ApiResponse => {
     const text = gpt.choices.length ? gpt.choices[0].text : 'No text generated';
     return {
-        result: text,
+        result: text.trim(),
         id: id,
     };
 };
