@@ -34,10 +34,14 @@ export const panelSlice = createSlice({
     reducers: {
         setPanels(state, action: PayloadAction<ContentPanelType[]>) {
             state.value = action.payload;
+        },
+        updatePanel(state, action: PayloadAction<ContentPanelType>) {
+            state.value = state.value.map( panel => panel.id == action.payload.id ? action.payload : panel);
+            console.log(state.value)
         }
     }
 });
 
-export const { setPanels } = panelSlice.actions;
+export const { setPanels, updatePanel } = panelSlice.actions;
 
 export default panelSlice.reducer;

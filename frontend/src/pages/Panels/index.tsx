@@ -12,11 +12,12 @@ export const Panels = () => {
     // Get all the panels of the user
     const panels = useAppSelector(state => state.panels.value);
 
+    // Currently only taking the first panel from the list
     const panel: ContentPanelType = panels[0]
-    console.log(panel)
+    
     return (
         <div className="App bg-neutral-99 h-full flex flex-col justify-start items-center">
-            <ContentPanel {...panel}/>
+            <ContentPanel id={panel.id} initialCategory={panel.category} initialPrompts={panel.prompts} />
         </div>
     );
 };
