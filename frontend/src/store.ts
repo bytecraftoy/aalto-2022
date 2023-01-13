@@ -5,13 +5,20 @@
  *
  */
 
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
+import panelReducer from './reducers/panelReducer';
 
-//Todo: create the store with reducers here
-const reducer = combineReducers({});
 
 const store = configureStore({
-    reducer,
+    reducer: {
+        panels: panelReducer
+    },
 });
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>
+// Inferred type: 
+export type AppDispatch = typeof store.dispatch
+
 
 export { store };

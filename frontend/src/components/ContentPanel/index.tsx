@@ -18,7 +18,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 //Provide access to MasterCategory through a parent callback
 interface ContentPanelProps {
-    getMasterCategory: () => string;
+    id: string;
+    category: string;
+    prompts: PromptData[]
 }
 
 /**
@@ -27,7 +29,7 @@ interface ContentPanelProps {
  */
 export const ContentPanel: FC<ContentPanelProps> = () => {
     //Component state consists of category prompt, and N multiprompts (id, input, output)
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState<string>('');
     const [promptBoxes, setPromptBoxes] = useState<PromptData[]>([
         { id: uuidv4(), input: '', output: '', locked: false },
     ]);
