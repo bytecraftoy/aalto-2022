@@ -1,6 +1,8 @@
 import { NavigationContainer } from './components/NavigationContainer';
 import { Routes } from './Routes';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 /**
  * The base react component
@@ -13,11 +15,13 @@ function App() {
     //const [masterCategory, setMasterCategory] = useState('');
 
     return (
-        <BrowserRouter>
-            <NavigationContainer>
-                <Routes />
-            </NavigationContainer>
-        </BrowserRouter>
+        <Provider store={store}>
+            <BrowserRouter>
+                <NavigationContainer>
+                    <Routes />
+                </NavigationContainer>
+            </BrowserRouter>
+        </Provider>
     );
 }
 
