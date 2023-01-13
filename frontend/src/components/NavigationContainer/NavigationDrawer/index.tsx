@@ -59,12 +59,12 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     <NavigationLink
                         label="About"
                         icon={solidIcon('InformationCircleIcon')}
-                        onClick={() => console.log('ping')}
+                        to="/about"
                     />
                     <NavigationLink
                         label="Settings"
                         icon={solidIcon('SettingsIcon')}
-                        onClick={() => console.log('pong')}
+                        to="/settings"
                     />
                     <div className="h-[1px] bg-neutral-70 mx-4" />
 
@@ -73,17 +73,17 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     <NavigationLink
                         label="Main"
                         icon={solidIcon('CubeIcon')}
-                        onClick={() => console.log('main')}
+                        to="/"
                     />
                     <NavigationLink
                         label="Panel-2"
                         icon={solidIcon('CubeIcon')}
-                        onClick={() => console.log('panel-2')}
+                        to="#"
                     />
                     <NavigationLink
                         label="Panel-3"
                         icon={solidIcon('CubeIcon')}
-                        onClick={() => console.log('panel-3')}
+                        to="#"
                     />
 
                     <div className="h-[1px] bg-neutral-70 mx-4" />
@@ -92,7 +92,7 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     <NavigationLink
                         label="Overall view"
                         icon={solidIcon('WindowIcon')}
-                        onClick={() => undefined}
+                        to="#"
                     />
                 </div>
             </Surface>
