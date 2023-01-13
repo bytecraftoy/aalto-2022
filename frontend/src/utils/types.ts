@@ -1,10 +1,8 @@
-import { PromptData } from "../components/PromptIOBox";
+import { PromptData } from '../components/PromptIOBox';
 
 /**
  * Convinience file containing type definitions for readability
-*/
-
-
+ */
 
 /** Type returned by useState() : (A | (prev: A) => A) => void */
 export type StateHook<A> = React.Dispatch<React.SetStateAction<A>>;
@@ -23,7 +21,7 @@ export interface ApiResponse {
 }
 
 export interface ContentPanelType {
-    id: string,
-    category: string,
-    prompts: PromptData[]
+    id: string;
+    category: string;
+    prompts: PromptData[];
 }

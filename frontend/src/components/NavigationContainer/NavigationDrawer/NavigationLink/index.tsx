@@ -15,7 +15,7 @@ interface NavigationLinkProps {
 export const NavigationLink: React.FC<NavigationLinkProps> = ({
     label,
     icon,
-    to
+    to,
 }) => {
     return (
         <Link to={to}>

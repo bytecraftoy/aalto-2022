@@ -22,7 +22,7 @@ import { updatePanel } from '../../reducers/panelReducer';
 interface ContentPanelProps {
     id: string;
     initialCategory: string;
-    initialPrompts: PromptData[]
+    initialPrompts: PromptData[];
 }
 
 /**
@@ -32,15 +32,15 @@ interface ContentPanelProps {
 export const ContentPanel: FC<ContentPanelProps> = ({
     id,
     initialCategory,
-    initialPrompts
+    initialPrompts,
 }) => {
-
     // Redux dispatch
     const dispatch = useAppDispatch();
 
     //Component state consists of category prompt, and N multiprompts (id, input, output)
     const [category, setCategory] = useState<string>(initialCategory);
-    const [promptBoxes, setPromptBoxes] = useState<PromptData[]>(initialPrompts);
+    const [promptBoxes, setPromptBoxes] =
+        useState<PromptData[]>(initialPrompts);
     const [loading, setLoading] = useState<boolean>(false);
 
     //Callback to create new boxes in the panel
@@ -60,8 +60,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         const panel = {
             id,
             category,
-            prompts: promptBoxes
-        }
+            prompts: promptBoxes,
+        };
         dispatch(updatePanel(panel));
     };
     const generateOutput = async (p: PromptData) => {

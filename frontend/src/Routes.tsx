@@ -7,10 +7,7 @@ export const Routes = () => {
     return (
         <Switch>
             <Route path="/about" element={<About />} />
-            <Route
-                path="/panels/:panelId"
-                element={<Panels />}
-            />
+            <Route path="/panels/:panelId" element={<Panels />} />
             <Route path="/" element={<Panels />} />
         </Switch>
     );
