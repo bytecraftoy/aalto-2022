@@ -10,7 +10,7 @@ const cors = (
     //the front should be allowed to send any requests in the development mode
     res.header('Access-Control-Allow-Methods', '*');
     res.header('Access-Control-Allow-Headers', '*');
-    //cache the CORS information only for 1 minute so changes will take an effect quicly
+    //cache the CORS information only for 1 minute so changes will take effect quickly
     res.header('Access-Control-Max-Age', '60');
     next();
 };
