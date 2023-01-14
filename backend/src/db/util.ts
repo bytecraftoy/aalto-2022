@@ -15,9 +15,9 @@ const waitForDatabase = async (db: Pool | Client, timeout_secs = 60) => {
 
         try {
             await db.connect();
-        } catch (err) {
+        } catch (e) {
             await new Promise((resolve) => setTimeout(resolve, 500));
-            logger.debug('db_startup_timeout', { taken: taken[0] });
+            logger.warn('db_startup_timeout', { taken: taken[0], error: e });
             continue;
         }
 
