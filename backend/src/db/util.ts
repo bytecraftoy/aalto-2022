@@ -20,7 +20,6 @@ const waitForDatabase = async (db: Pool | Client, timeout_secs = 60) => {
         }
 
         logger.info('db_startup_done', { taken: taken[0] });
-        await db.end();
         break;
     }
 };
