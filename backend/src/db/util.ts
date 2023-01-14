@@ -2,6 +2,8 @@ import { Pool, Client } from 'pg';
 import { logger } from '../utils/logger';
 
 const waitForDatabase = async (db: Pool | Client, timeout_secs = 60) => {
+    logger.info('db_startup');
+
     const start = process.hrtime();
 
     for (;;) {
@@ -15,7 +17,7 @@ const waitForDatabase = async (db: Pool | Client, timeout_secs = 60) => {
             await db.connect();
         } catch (err) {
             await new Promise((resolve) => setTimeout(resolve, 500));
-            logger.warn('db_startup_timeout', { taken: taken[0] });
+            logger.debug('db_startup_timeout', { taken: taken[0] });
             continue;
         }
 
