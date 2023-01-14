@@ -1,11 +1,17 @@
 import { useState, FC } from 'react';
 import { generateText } from '../../utils/generateContent';
-import { exportJson, downloadJson } from '../../utils/exportContent';
+import {
+    exportJson,
+    downloadJson,
+    exportXlsx,
+    downloadXlsx,
+} from '../../utils/exportContent';
 import { PromptData } from '../PromptIOBox';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
 import { ContentPanelActions } from './ContentPanelActions';
+import { InputSchema } from '../PromptIOBox';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { v4 as uuidv4 } from 'uuid';
@@ -37,7 +43,8 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     //Callbacks to asynchronously fetch AI data from backend
     const generateAll = () => {
         promptBoxes.forEach((p) => {
-            if (!p.locked) {
+            // Generate if the prompt is not locked and input is valid
+            if (!p.locked && InputSchema.safeParse(p.input).success) {
                 generateOutput(p);
             }
         });
@@ -73,7 +80,8 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     //Callback to export outputs in excel
     //Not implemented, instead just call jsonExport
     const excelExport = async () => {
-        await jsonExport();
+        const link = await exportXlsx(category, promptBoxes);
+        if (link) downloadXlsx(link);
     };
 
     return (
@@ -115,7 +123,7 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
             </div>
             {/* Loading spinner */}
             {loading && (
-                <div className="absolute inset-1/2">
+                <div className="fixed inset-1/2">
                     <Loader />
                 </div>
             )}

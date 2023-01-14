@@ -64,7 +64,7 @@
         "model": "text-davinci-002",
         "choices": [
             {
-                "text": "Diary of Otto Heinrich\nAugust 17th, 1941\n\nDear Diary,\n\nI can't believe what I'm seeing. The battlefield is full of blood and guts. I just saw my friend get his limbs blown off by a landmine. I can't believe this is happening. I feel like I'm in a nightmare. I just want to go home.",
+                "text": "\n\nDiary of Otto Heinrich\nAugust 17th, 1941\n\nDear Diary,\n\nI can't believe what I'm seeing. The battlefield is full of blood and guts. I just saw my friend get his limbs blown off by a landmine. I can't believe this is happening. I feel like I'm in a nightmare. I just want to go home.",
                 "index": 0,
                 "logprobs": null,
                 "finish_reason": "stop"

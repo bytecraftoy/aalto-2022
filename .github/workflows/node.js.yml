@@ -26,12 +26,30 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
 
+            - name: Root package.json should not have non-dev dependencies
+              run: jq --exit-status 'has("dependencies") != true' < package.json
+
             - run: npm run setup-project
+
             - run: npm run prettier
+
             - run: npm run lint-project
+
             - run: npm run build-project
+
             - run: npm run test-project
-            - run: npm run cypress-ci
+
+            - name: Cypress E2E testing
+              id: cypress
+              run: npm run cypress-ci
+
+            - name: Archive Cypress videos on fail
+              uses: actions/upload-artifact@v3
+              # Only upload artifacts if Cypress failed
+              if: ${{ failure() && steps.cypress.conclusion == 'failure' }}
+              with:
+                  name: cypress-videos
+                  path: cypress/videos
 
             - name: Archive frontend build files
               uses: actions/upload-artifact@v3
@@ -41,6 +59,9 @@ jobs:
                   name: build-frontend
                   path: frontend/build
                   retention-days: 7
+
+            - name: Copy backend node_modules to build dir
+              run: cp -r backend/node_modules backend/build
 
             - name: Archive backend build files
               uses: actions/upload-artifact@v3
@@ -89,3 +110,6 @@ jobs:
 
             - name: Restart backend service
               run: ssh root@65.108.249.101 "systemctl restart aalto_2022_backend.service"
+
+            - name: Check that service started succesfully
+              run: ssh root@65.108.249.101 "systemctl is-active aalto_2022_backend.service"

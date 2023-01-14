@@ -14,6 +14,7 @@ interface TextInputProps {
     value: string;
     label: string;
     onInput: React.FormEventHandler<HTMLTextAreaElement> | undefined;
+    errors?: string;
 }
 
 export const TextArea: React.FC<TextInputProps> = ({
@@ -21,9 +22,18 @@ export const TextArea: React.FC<TextInputProps> = ({
     label,
     value,
     onInput,
+    errors,
 }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [touched, setTouched] = useState(false);
+
+    // Show error when input contains error and user has touched the input
+    const showError: boolean =
+        touched && errors != undefined && errors.length > 0;
+    // Show placeholder when there are no user input and not showing error
+    const showPlaceholder: boolean = !showError && !value;
+    // Else show the label
+    const showLabel: boolean = !showError && value.length > 0;
 
     return (
         <label className="relative w-full h-full">
@@ -35,7 +45,8 @@ export const TextArea: React.FC<TextInputProps> = ({
                     'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
                     'rounded-t-lg transition-colors ',
                     'bg-neutral-90 hover:bg-onSurface hover:bg-opacity-10',
-                    'placeholder:text-transparent placeholder:select-none cursor-text'
+                    'placeholder:text-transparent placeholder:select-none cursor-text',
+                    { 'focus:border-red border-red': touched && errors }
                 )}
                 value={value}
                 onInput={onInput}
@@ -46,10 +57,16 @@ export const TextArea: React.FC<TextInputProps> = ({
                 className={classNames(
                     'absolute select-none left-0 top-0 pl-4 peer-placeholder-shown:top-3.5',
                     'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base',
-                    'transition-all'
+                    'transition-all',
+                    {
+                        'text-red peer-placeholder-shown:text-red':
+                            touched && errors,
+                    }
                 )}
             >
-                {value ? label : placeholder}
+                {showError && errors}
+                {showPlaceholder && placeholder}
+                {showLabel && label}
             </span>
         </label>
     );

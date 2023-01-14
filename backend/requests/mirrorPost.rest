@@ -1,4 +1,0 @@
-POST http://localhost:3030/api/mirror/
-Content-Type: text/plain
-
-hello there

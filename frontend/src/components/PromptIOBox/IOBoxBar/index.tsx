@@ -17,7 +17,7 @@ export const IOBoxBar: React.FC<IOBoxBarProps> = ({
     lock,
 }) => {
     return (
-        <div className="absolute top-10 flex flex-row">
+        <div className="absolute top-10 flex flex-row z-1">
             {deleteSelf ? (
                 <IOBoxButton
                     onClick={() => deleteSelf?.()}
