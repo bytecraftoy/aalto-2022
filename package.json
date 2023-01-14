@@ -42,7 +42,7 @@
         "prettier": "npx prettier --check .",
         "prettier-write": "npx prettier --write .",
         "cypress": "npx cypress run",
-        "cypress-ci": "DUMMYURL='http://localhost:8080' npm run ds >/dev/null & wait-on --timeout 30000 http://127.0.0.1:3000 http://127.0.0.1:3030/api/health && npm run cypress"
+        "cypress-ci": "DUMMYURL='http://localhost:8080' npm run ds >/dev/null & wait-on --timeout 180000 http://127.0.0.1:3000 http://127.0.0.1:3030/api/health && npm run cypress"
     },
     "devDependencies": {
         "cpy-cli": "^4.2.0",
