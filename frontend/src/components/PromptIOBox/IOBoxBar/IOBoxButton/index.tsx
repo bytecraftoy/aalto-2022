@@ -7,24 +7,23 @@ export interface IOBoxButtonProps extends ButtonProps {
     //Other properties
     name: string;
     visible: boolean;
+    errors?: string;
 }
 
 export const IOBoxButton: React.FC<IOBoxButtonProps> = ({
     name,
     icon,
     colorPalette,
-    disabled,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    className,
     onClick,
     visible,
+    errors,
 }) => {
     return (
         <ExtendedFAB
             name={name}
             icon={icon ?? 'PlusIcon'}
             colorPalette={colorPalette}
-            disabled={disabled ?? false}
+            disabled={errors ? true : false}
             onClick={onClick}
             className={classNames(
                 'transition-all',

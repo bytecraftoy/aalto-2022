@@ -7,6 +7,7 @@ interface IOBoxBarProps {
     generate: () => void;
     deleteSelf: (() => void) | null; //null --> don't show button
     lock: () => void;
+    errors: string;
 }
 
 export const IOBoxBar: React.FC<IOBoxBarProps> = ({
@@ -15,6 +16,7 @@ export const IOBoxBar: React.FC<IOBoxBarProps> = ({
     generate,
     deleteSelf,
     lock,
+    errors,
 }) => {
     return (
         <div className="absolute top-10 flex flex-row z-1">
@@ -40,6 +42,7 @@ export const IOBoxBar: React.FC<IOBoxBarProps> = ({
                     name="Generate"
                     colorPalette="primary"
                     visible={showButtons}
+                    errors={errors}
                 />
             ) : (
                 <></>

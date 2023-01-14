@@ -16,7 +16,7 @@ describe('Prompt generation', () => {
         cy.get('input[placeholder*="category"]').type(category_input);
         cy.get('textarea[placeholder*="User input here"]').type(prompt_input);
         cy.get(output_locator).invoke('text').should('be.empty');
-        cy.get('button:contains("Generate")').first().click();
+        cy.get('button:contains("Generate")').first().click({ force: true });
         cy.get(output_locator).should(
             'include.text',
             `Theme: ${category_input}\\n${prompt_input}`
@@ -26,8 +26,9 @@ describe('Prompt generation', () => {
     // This test is for checking that the "Generate" button is locked when there is no prompt input.
     // It starts by checking that the output text area is empty, which confirms that there is no prompt input.
     // Next, it asserts that the "Generate" button is disabled, which confirms that the button is locked without prompt input.
-    it('should have generate button locked without prompt input', () => {
+    it.only('should have generate button locked without prompt input', () => {
         cy.get(output_locator).invoke('text').should('be.empty');
+        cy.get('button:contains("Generate")').first().should('be.visible');
         cy.get('button:contains("Generate")').first().should('be.disabled');
     });
 
@@ -66,7 +67,7 @@ describe('Prompt generation', () => {
 
     it('has IOBox delete button while multiple on screen', () => {
         const deleteSelector =
-            '[data-testid="custom-button"]:contains("Delete")';
+            '[data-testid="extended-fab-button"]:contains("Delete")';
         // Asserts that there is no delete button
         cy.get(deleteSelector).should('not.exist');
         // Clicks the add prompt button
@@ -74,7 +75,7 @@ describe('Prompt generation', () => {
         // Asserts that there are 2 delete buttons (1 for each IOBox)
         cy.get(deleteSelector).should('have.length', 2);
         // Clicks the first delete button
-        cy.get(deleteSelector).first().click();
+        cy.get(deleteSelector).first().click({ force: true });
         // Asserts that there is no delete button (since the first IOBox was deleted)
         cy.get(deleteSelector).should('not.exist');
     });

@@ -71,7 +71,8 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
     return (
         <div
             //IOBoxBar is absolute so use relative here
-            className="mt-6 pt-10 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around relative"
+            className="mt-6 pt-10 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around relative hover:bg-black"
+            data-testid="hover-area"
             onMouseEnter={() => {
                 setShowButtons(true);
             }}
@@ -85,6 +86,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 generate={generate}
                 deleteSelf={deleteSelf}
                 lock={() => lock(id)}
+                errors={errors}
             />
             <div
                 className="w-full flex flex-col items-center justify-between z-10 bg-primary-90"
