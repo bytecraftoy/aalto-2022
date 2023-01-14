@@ -2,12 +2,26 @@
 
 In the backend directory, you can run:
 
+### `npm run copy-sample-env`
+
+Copy the sample `.env-sample` to `.env`. If your computer has untrusted users or no firewall you may need to change the default PostgreSQL password.
+
 ### `npm run dev`
 
-Runs the app in the development mode.\
+Runs the app and database in the development mode.\
 Open [http://localhost:3030](http://localhost:3030) to view it in the browser.
 
 The server will restart if you make edits.
+
+If the database fails to start and backend is timed out, the `.env` file most likely is outdated or does not exist. If it is missing, copy `.env-sample` to `.env` or run `npm run copy-sample-env`. If you already have one, add the missing values from `.env-sample`.
+
+### `npm run start-dev`
+
+Start only backend in development mode.
+
+### `npm run start-dev-database`
+
+Start only database in development mode.
 
 ### `npm run lint`
 
