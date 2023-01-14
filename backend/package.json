@@ -4,12 +4,16 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "setup": "npm install && npm run copy-sample-env",
         "test": "jest --verbose --runInBand --forceExit",
         "tsc": "tsc",
-        "dev": "ts-node-dev src/index.ts",
+        "dev": "run-p start-dev-database start-dev",
         "lint": "eslint --ext .ts .",
         "build": "tsc",
-        "start": "node build/index.js"
+        "start": "node build/index.js",
+        "start-dev": "ts-node-dev src/index.ts",
+        "start-dev-database": "docker-compose down || true; docker-compose up",
+        "copy-sample-env": "cpy .env-sample . --no-overwrite --rename=.env"
     },
     "keywords": [],
     "author": "",

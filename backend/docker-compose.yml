@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+    db:
+        # keep version in sync with production
+        image: 'docker.io/postgres:14'
+
+        # keep in sync with .env
+        ports:
+            - '5432:5432'
+
+        env_file: '.env'
