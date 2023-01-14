@@ -26,7 +26,7 @@ describe('Prompt generation', () => {
     // This test is for checking that the "Generate" button is locked when there is no prompt input.
     // It starts by checking that the output text area is empty, which confirms that there is no prompt input.
     // Next, it asserts that the "Generate" button is disabled, which confirms that the button is locked without prompt input.
-    it.only('should have generate button locked without prompt input', () => {
+    it('should have generate button locked without prompt input', () => {
         cy.get(output_locator).invoke('text').should('be.empty');
         cy.get('button:contains("Generate")').first().should('be.visible');
         cy.get('button:contains("Generate")').first().should('be.disabled');
