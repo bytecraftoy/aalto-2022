@@ -8,5 +8,4 @@ const pool = new Pool({
     port: parseInt(process.env.POSTGRES_PORT ?? '5432'),
 });
 
-
 export { pool };
