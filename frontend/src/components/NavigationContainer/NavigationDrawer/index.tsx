@@ -4,7 +4,7 @@ import { Surface } from '../../Surface';
 import { NavigationSubHeader } from './NavigationSubHeader';
 import { NavigationLink } from './NavigationLink';
 import { solidIcon } from '../../../utils/icons';
-import { TextButton } from '../../Buttons';
+import { PanelSection } from './PanelSection';
 
 /**
  *
@@ -69,34 +69,8 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     />
                     <div className="h-[1px] bg-neutral-70 mx-4" />
 
-                    {/** Content panels (currently no functionality)*/}
-                    <NavigationSubHeader>Content Panels</NavigationSubHeader>
-                    <NavigationLink
-                        label="Main"
-                        icon={solidIcon('CubeIcon')}
-                        to="/"
-                    />
-                    <NavigationLink
-                        label="Panel-2"
-                        icon={solidIcon('CubeIcon')}
-                        to="#"
-                    />
-                    <NavigationLink
-                        label="Panel-3"
-                        icon={solidIcon('CubeIcon')}
-                        to="#"
-                    />
-                    <div className="py-2.5 h-14">
-                        <TextButton
-                            name="Add Panel"
-                            colorPalette="primary"
-                            icon="PlusIcon"
-                            className="w-full h-full justify-center m-0"
-                            onClick={() => console.log('hello')}
-                        />
-                    </div>
-
-                    <div className="h-[1px] bg-neutral-70 mx-4" />
+                    {/** Content panels */}
+                    <PanelSection />
 
                     {/** Others */}
                     <NavigationLink
