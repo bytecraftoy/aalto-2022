@@ -5,15 +5,15 @@ on:
     push:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-
+    check:
         strategy:
             matrix:
                 # https://nodejs.org/en/about/releases/
                 # LTS: 18.x
                 # Current: 19.x
                 node-version: [18.x, 19.x]
+
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v3
@@ -31,6 +31,26 @@ jobs:
             - run: npm run prettier
 
             - run: npm run lint-project
+
+    test:
+        strategy:
+            matrix:
+                # https://nodejs.org/en/about/releases/
+                # LTS: 18.x
+                # Current: 19.x
+                node-version: [18.x, 19.x]
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+
+            - run: npm run setup-project
 
             - run: npm run build-project
 
