@@ -12,7 +12,7 @@
         "build": "tsc",
         "start": "node build/index.js",
         "start-dev": "ts-node-dev src/index.ts",
-        "start-dev-database": "docker-compose down || true; docker-compose up",
+        "start-dev-database": "(docker-compose down || true) && docker-compose up",
         "copy-sample-env": "cpy .env-sample . --no-overwrite --rename=.env"
     },
     "keywords": [],
