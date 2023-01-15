@@ -26,11 +26,14 @@ jobs:
             - name: Root package.json should not have non-dev dependencies
               run: jq --exit-status 'has("dependencies") != true' < package.json
 
-            - run: npm run setup-project
+            - name: Setup project
+              run: npm run setup-project
 
-            - run: npm run prettier
+            - name: Check formatting
+              run: npm run prettier
 
-            - run: npm run lint-project
+            - name: Check linters
+              run: npm run lint-project
 
     test:
         strategy:
@@ -50,13 +53,16 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
 
-            - run: npm run setup-project
+            - name: Setup project
+              run: npm run setup-project
 
-            - run: npm run build-project
+            - name: Build project
+              run: npm run build-project
 
-            - run: npm run test-project
+            - name: Run unit tests
+              run: npm run test-project
 
-            - name: Cypress E2E testing
+            - name: Run end-to-end tests
               id: cypress
               run: npm run cypress-ci
 
