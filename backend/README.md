@@ -4,7 +4,7 @@ In the backend directory, you can run:
 
 ### `npm run copy-sample-env`
 
-Copy the sample `.env-sample` to `.env`. If your computer has untrusted users or no firewall you may need to change the default PostgreSQL password.
+Copies `.env-sample` to `.env` and generates a unique development database password.
 
 ### `npm run dev`
 
