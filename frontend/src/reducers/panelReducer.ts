@@ -41,9 +41,18 @@ export const panelSlice = createSlice({
                 panel.id == action.payload.id ? action.payload : panel
             );
         },
+        // Adds a new panel to the state
+        addPanel(state) {
+            const newPanel: ContentPanelType = {
+                id: generate(),
+                category: '',
+                prompts: [{ id: uuidv4(), input: '', output: '', locked: false }],
+            }
+            state.value.push(newPanel);
+        }
     },
 });
 
-export const { setPanels, updatePanel } = panelSlice.actions;
+export const { setPanels, updatePanel, addPanel } = panelSlice.actions;
 
 export default panelSlice.reducer;
