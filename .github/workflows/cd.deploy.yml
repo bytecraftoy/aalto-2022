@@ -1,0 +1,58 @@
+name: deploy
+
+concurrency:
+    group: main
+    cancel-in-progress: true
+
+on:
+    workflow_run:
+        workflows: ['CI']
+        branches: [main]
+        types:
+            - completed
+
+jobs:
+    deploy:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js 18.x
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '18.x'
+                  cache: 'npm'
+
+            - run: npm run setup-project
+
+            - run: npm run build-project
+
+            - name: Copy backend node_modules to build dir
+              run: cp -r backend/node_modules backend/build
+
+            - name: Add SSH key
+              env:
+                  SSH_KEY: ${{ secrets.SSH_KEY }}
+              run: mkdir -p ~/.ssh && printf "%s" "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+
+            - name: Add host to known_hosts
+              run: echo "|1|51Fg/gQzqNfhMkuBnxLBSWCrl+s=|TbUOHEmNxVDTGdkxvvlmlN761QM= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMV0unNHDl5cqDEDYe5ADTCgXMZxr02k5M4mcI9gFPtlrUiDjlE0UTZ8ejgPWhILtK3iETzNb8FD53dMn6Ck/vQ=" >> ~/.ssh/known_hosts
+
+            - name: Copy frontend files to server
+              run: rsync --recursive --verbose --chmod=755 frontend/build/ root@65.108.249.101:/srv/http
+
+            - name: Change ownership for frontend files
+              run: ssh root@65.108.249.101 "chown -R www-data:www-data /srv/http"
+
+            - name: Copy backend files to server
+              run: rsync --recursive --verbose --chmod=755 backend/build/ root@65.108.249.101:/home/app/live
+
+            - name: Change ownership for backend files
+              run: ssh root@65.108.249.101 "chown -R app:app /home/app/live"
+
+            - name: Restart backend service
+              run: ssh root@65.108.249.101 "systemctl restart aalto_2022_backend.service"
+
+            - name: Check that service started succesfully
+              run: ssh root@65.108.249.101 "systemctl is-active aalto_2022_backend.service"
