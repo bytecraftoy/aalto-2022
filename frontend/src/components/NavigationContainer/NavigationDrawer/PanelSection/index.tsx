@@ -12,18 +12,18 @@ import { addPanel } from '../../../../reducers/panelReducer';
  */
 
 export const PanelSection = () => {
-
     // Redux dispatch
     const dispatch = useAppDispatch();
 
     // All the panel ids of the application
-    const panelIds = useAppSelector(state => state.panels.value.map(panel => panel.id));
-    
+    const panelIds = useAppSelector((state) =>
+        state.panels.value.map((panel) => panel.id)
+    );
 
     // Add new content panel to the application
     const newPanel = () => {
-        dispatch(addPanel())
-    }
+        dispatch(addPanel());
+    };
 
     return (
         <React.Fragment>
@@ -32,7 +32,6 @@ export const PanelSection = () => {
 
             {/** The panels */}
             {panelIds.map((panelId, index) => {
-
                 if (!index) {
                     return (
                         <NavigationLink
@@ -52,9 +51,7 @@ export const PanelSection = () => {
                         />
                     );
                 }
-            })
-            }
-
+            })}
 
             {/** Adding new panels */}
             <div className="py-2.5 h-14">

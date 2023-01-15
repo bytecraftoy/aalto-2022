@@ -46,10 +46,12 @@ export const panelSlice = createSlice({
             const newPanel: ContentPanelType = {
                 id: generate(),
                 category: '',
-                prompts: [{ id: uuidv4(), input: '', output: '', locked: false }],
-            }
+                prompts: [
+                    { id: uuidv4(), input: '', output: '', locked: false },
+                ],
+            };
             state.value.push(newPanel);
-        }
+        },
     },
 });
 
