@@ -13,7 +13,7 @@
         "start": "node build/index.js",
         "start-dev": "ts-node-dev src/index.ts",
         "start-dev-database": "(docker-compose down || echo skipped docker-compose down) && docker-compose up",
-        "copy-sample-env": "ts-node-dev scripts/gen_dev_pw.ts"
+        "copy-sample-env": "cpy .env-sample . --no-overwrite --rename=.env || echo skipped copy-sample-env"
     },
     "keywords": [],
     "author": "",
