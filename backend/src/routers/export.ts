@@ -18,6 +18,7 @@ import {
     readDataObject,
     ExportData,
 } from './../services/exportService';
+import { logger } from '../utils/logger';
 
 const exportRouter = express.Router();
 
@@ -40,7 +41,7 @@ exportRouter.post('/xlsx/:name', (req, res) => {
         const id = appendDataObject(fileName, data);
         res.send(id);
     } catch (e) {
-        console.error(e);
+        logger.error('xlsx_generation_fail', { e });
         res.status(400).end();
     }
 });

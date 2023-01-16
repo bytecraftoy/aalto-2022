@@ -9,3 +9,5 @@ The request body should include the exported data in JSON format. Malformatted m
 ## Response
 
 Returns a random ID string of 30 characters including small and big letters and numbers. The ID can be used to fetch the exported data as a downloadable JSON file with `GET /export/json/:id`. The data may be removed from the server’s memory to make space for new exports.
+
+In the current implementation JSON and XLSX exports share the same ID pool. The format in which the data is returned is thus determined by the path to which the first POST request was sent. However, the front-end should not expect this to be the case in the future.
