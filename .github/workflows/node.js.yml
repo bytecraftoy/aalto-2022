@@ -1,22 +1,19 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: CI
 
 on:
     # Run on all branches
     push:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-
+    check:
         strategy:
             matrix:
                 # https://nodejs.org/en/about/releases/
                 # LTS: 18.x
                 # Current: 19.x
                 node-version: [18.x, 19.x]
+
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v3
@@ -29,17 +26,43 @@ jobs:
             - name: Root package.json should not have non-dev dependencies
               run: jq --exit-status 'has("dependencies") != true' < package.json
 
-            - run: npm run setup-project
+            - name: Setup project
+              run: npm run setup-project
 
-            - run: npm run prettier
+            - name: Check formatting
+              run: npm run prettier
 
-            - run: npm run lint-project
+            - name: Check linters
+              run: npm run lint-project
 
-            - run: npm run build-project
+    test:
+        strategy:
+            matrix:
+                # https://nodejs.org/en/about/releases/
+                # LTS: 18.x
+                # Current: 19.x
+                node-version: [18.x, 19.x]
 
-            - run: npm run test-project
+        runs-on: ubuntu-latest
 
-            - name: Cypress E2E testing
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+
+            - name: Setup project
+              run: npm run setup-project
+
+            - name: Build project
+              run: npm run build-project
+
+            - name: Run unit tests
+              run: npm run test-project
+
+            - name: Run end-to-end tests
               id: cypress
               run: npm run cypress-ci
 
@@ -50,66 +73,3 @@ jobs:
               with:
                   name: cypress-videos
                   path: cypress/videos
-
-            - name: Archive frontend build files
-              uses: actions/upload-artifact@v3
-              # Only upload artifacts on node 18, to make artifacts consistent with deploy server node version
-              if: ${{ matrix.node-version  == '18.x' }}
-              with:
-                  name: build-frontend
-                  path: frontend/build
-                  retention-days: 7
-
-            - name: Copy backend node_modules to build dir
-              run: cp -r backend/node_modules backend/build
-
-            - name: Archive backend build files
-              uses: actions/upload-artifact@v3
-              if: ${{ matrix.node-version  == '18.x' }}
-              with:
-                  name: build-backend
-                  path: backend/build
-                  retention-days: 7
-    deploy:
-        environment: main
-        if: github.ref == 'refs/heads/main'
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-            - name: Download frontend build files
-              uses: actions/download-artifact@v3
-              with:
-                  name: build-frontend
-                  path: frontend
-
-            - name: Download frontend build files
-              uses: actions/download-artifact@v3
-              with:
-                  name: build-backend
-                  path: backend
-
-            - name: Add SSH key
-              env:
-                  SSH_KEY: ${{ secrets.SSH_KEY }}
-              run: mkdir -p ~/.ssh && printf "%s" "$SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-
-            - name: Add host to known_hosts
-              run: echo "|1|51Fg/gQzqNfhMkuBnxLBSWCrl+s=|TbUOHEmNxVDTGdkxvvlmlN761QM= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMV0unNHDl5cqDEDYe5ADTCgXMZxr02k5M4mcI9gFPtlrUiDjlE0UTZ8ejgPWhILtK3iETzNb8FD53dMn6Ck/vQ=" >> ~/.ssh/known_hosts
-
-            - name: Copy frontend files to server
-              run: rsync --recursive --verbose --chmod=755 frontend/ root@65.108.249.101:/srv/http
-
-            - name: Change ownership for frontend files
-              run: ssh root@65.108.249.101 "chown -R www-data:www-data /srv/http"
-
-            - name: Copy backend files to server
-              run: rsync --recursive --verbose --chmod=755 backend/ root@65.108.249.101:/home/app/live
-
-            - name: Change ownership for backend files
-              run: ssh root@65.108.249.101 "chown -R app:app /home/app/live"
-
-            - name: Restart backend service
-              run: ssh root@65.108.249.101 "systemctl restart aalto_2022_backend.service"
-
-            - name: Check that service started succesfully
-              run: ssh root@65.108.249.101 "systemctl is-active aalto_2022_backend.service"
