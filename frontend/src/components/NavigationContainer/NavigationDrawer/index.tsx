@@ -4,6 +4,7 @@ import { Surface } from '../../Surface';
 import { NavigationSubHeader } from './NavigationSubHeader';
 import { NavigationLink } from './NavigationLink';
 import { solidIcon } from '../../../utils/icons';
+import { TextButton } from '../../Buttons';
 
 /**
  *
@@ -59,12 +60,12 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     <NavigationLink
                         label="About"
                         icon={solidIcon('InformationCircleIcon')}
-                        onClick={() => console.log('ping')}
+                        to="/about"
                     />
                     <NavigationLink
                         label="Settings"
                         icon={solidIcon('SettingsIcon')}
-                        onClick={() => console.log('pong')}
+                        to="/settings"
                     />
                     <div className="h-[1px] bg-neutral-70 mx-4" />
 
@@ -73,18 +74,27 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     <NavigationLink
                         label="Main"
                         icon={solidIcon('CubeIcon')}
-                        onClick={() => console.log('main')}
+                        to="/"
                     />
                     <NavigationLink
                         label="Panel-2"
                         icon={solidIcon('CubeIcon')}
-                        onClick={() => console.log('panel-2')}
+                        to="#"
                     />
                     <NavigationLink
                         label="Panel-3"
                         icon={solidIcon('CubeIcon')}
-                        onClick={() => console.log('panel-3')}
+                        to="#"
                     />
+                    <div className="py-2.5 h-14">
+                        <TextButton
+                            name="Add Panel"
+                            colorPalette="primary"
+                            icon="PlusIcon"
+                            className="w-full h-full justify-center m-0"
+                            onClick={() => console.log('hello')}
+                        />
+                    </div>
 
                     <div className="h-[1px] bg-neutral-70 mx-4" />
 
@@ -92,7 +102,7 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     <NavigationLink
                         label="Overall view"
                         icon={solidIcon('WindowIcon')}
-                        onClick={() => undefined}
+                        to="#"
                     />
                 </div>
             </Surface>

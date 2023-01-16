@@ -15,23 +15,32 @@ import { InputSchema } from '../PromptIOBox';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { v4 as uuidv4 } from 'uuid';
-//import { ExtendedFAB } from '../Buttons/ExtendedFab';
+import { useAppDispatch } from '../../utils/hooks';
+import { updatePanel } from '../../reducers/panelReducer';
 
 //Provide access to MasterCategory through a parent callback
 interface ContentPanelProps {
-    getMasterCategory: () => string;
+    id: string;
+    initialCategory: string;
+    initialPrompts: PromptData[];
 }
 
 /**
  * A standalone panel for creating AI content.
  *
  */
-export const ContentPanel: FC<ContentPanelProps> = () => {
+export const ContentPanel: FC<ContentPanelProps> = ({
+    id,
+    initialCategory,
+    initialPrompts,
+}) => {
+    // Redux dispatch
+    const dispatch = useAppDispatch();
+
     //Component state consists of category prompt, and N multiprompts (id, input, output)
-    const [category, setCategory] = useState('');
-    const [promptBoxes, setPromptBoxes] = useState<PromptData[]>([
-        { id: uuidv4(), input: '', output: '', locked: false },
-    ]);
+    const [category, setCategory] = useState<string>(initialCategory);
+    const [promptBoxes, setPromptBoxes] =
+        useState<PromptData[]>(initialPrompts);
     const [loading, setLoading] = useState<boolean>(false);
 
     //Callback to create new boxes in the panel
@@ -48,6 +57,12 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
                 generateOutput(p);
             }
         });
+        const panel = {
+            id,
+            category,
+            prompts: promptBoxes,
+        };
+        dispatch(updatePanel(panel));
     };
     const generateOutput = async (p: PromptData) => {
         setLoading(() => true);
