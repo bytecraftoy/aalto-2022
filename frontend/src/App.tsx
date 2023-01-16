@@ -1,5 +1,6 @@
-import { ContentPanel } from './components/ContentPanel';
 import { NavigationContainer } from './components/NavigationContainer';
+import { Routes } from './Routes';
+import { BrowserRouter } from 'react-router-dom';
 
 /**
  * The base react component
@@ -12,12 +13,11 @@ function App() {
     //const [masterCategory, setMasterCategory] = useState('');
 
     return (
-        <NavigationContainer>
-            {/* Current view of the page. Could be an about page or a ContentPanel */}
-            <div className="App bg-neutral-99 h-full flex flex-col justify-start items-center">
-                <ContentPanel getMasterCategory={() => ''} />
-            </div>
-        </NavigationContainer>
+        <BrowserRouter>
+            <NavigationContainer>
+                <Routes />
+            </NavigationContainer>
+        </BrowserRouter>
     );
 }
 
