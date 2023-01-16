@@ -1,13 +1,14 @@
 import React from 'react';
 import { Route, Routes as Switch } from 'react-router-dom';
-import { Home } from './pages/Home';
 import { About } from './pages/About';
+import { Panels } from './pages/Panels';
 
 export const Routes = () => {
     return (
         <Switch>
             <Route path="/about" element={<About />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/panels/:panelId" element={<Panels />} />
+            <Route path="/" element={<Panels />} />
         </Switch>
     );
 };
