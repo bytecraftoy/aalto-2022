@@ -4,6 +4,7 @@ import { Surface } from '../../Surface';
 import { NavigationSubHeader } from './NavigationSubHeader';
 import { NavigationLink } from './NavigationLink';
 import { solidIcon } from '../../../utils/icons';
+import { TextButton } from '../../Buttons';
 
 /**
  *
@@ -85,6 +86,15 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                         icon={solidIcon('CubeIcon')}
                         to="#"
                     />
+                    <div className="py-2.5 h-14">
+                        <TextButton
+                            name="Add Panel"
+                            colorPalette="primary"
+                            icon="PlusIcon"
+                            className="w-full h-full justify-center m-0"
+                            onClick={() => console.log('hello')}
+                        />
+                    </div>
 
                     <div className="h-[1px] bg-neutral-70 mx-4" />
 
