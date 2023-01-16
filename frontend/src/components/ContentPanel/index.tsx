@@ -1,4 +1,4 @@
-import { useState, FC } from 'react';
+import { useState, FC, useEffect } from 'react';
 import { generateText } from '../../utils/generateContent';
 import {
     exportJson,
@@ -49,25 +49,64 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         setPromptBoxes((prev) => [...prev, newBox]);
     };
 
-    //Callbacks to asynchronously fetch AI data from backend
-    const generateAll = () => {
-        promptBoxes.forEach((p) => {
+    // Generates all the IO boxes that are not locked
+    const generateAll = async () => {
+        // Start the loading spinner
+        setLoading(() => true);
+
+        // Map of <id, output> for content panels that are generated
+        const generated: Map<string, string> = new Map();
+
+        // Goes through the promptboxes and adds the map a new entry for ids which are not locked
+        for (const p of promptBoxes) {
             // Generate if the prompt is not locked and input is valid
             if (!p.locked && InputSchema.safeParse(p.input).success) {
-                generateOutput(p);
+                const output: string = await generateText(
+                    p.id,
+                    p.input,
+                    category
+                );
+                generated.set(p.id, output);
             }
-        });
-        const panel = {
-            id,
-            category,
-            prompts: promptBoxes,
-        };
-        dispatch(updatePanel(panel));
+        }
+
+        // Sets all the promptboxes in a 1 setState call.
+        setPromptBoxes((prev) =>
+            prev.map((p) => {
+                if (generated.has(p.id)) {
+                    const mapOutput = generated.get(p.id);
+                    if (mapOutput) return { ...p, output: mapOutput };
+                }
+
+                return p;
+            })
+        );
     };
+
+    /**
+     * A callback function for the setPromptBoxes which updates
+     * the redux store after the content generation
+     */
+    useEffect(() => {
+        if (loading) {
+            // Create the new panel object
+            const panel = {
+                id,
+                category,
+                prompts: promptBoxes,
+            };
+
+            // Update the redux store
+            dispatch(updatePanel(panel));
+            // Take out the loading spinner
+            setLoading(() => false);
+        }
+    }, [promptBoxes]);
+
+    // Generates single output
     const generateOutput = async (p: PromptData) => {
         setLoading(() => true);
         setPromptOutput(p.id, await generateText(p.id, p.input, category));
-        setLoading(() => false);
     };
 
     //Callback to modify the input area of a PromptIOBox by id
