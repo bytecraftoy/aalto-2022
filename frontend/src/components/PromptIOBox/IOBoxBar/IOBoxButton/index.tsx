@@ -3,6 +3,11 @@ import classNames from 'classnames';
 import { ButtonProps } from '../../../Buttons';
 import { ExtendedFAB } from '../../../Buttons/ExtendedFab';
 
+/**
+ * Individual IOBux action button component
+ * e.g. individual iobox generation
+ */
+
 export interface IOBoxButtonProps extends ButtonProps {
     //Other properties
     name: string;

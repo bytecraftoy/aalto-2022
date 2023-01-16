@@ -1,6 +1,11 @@
 import React from 'react';
 import { IOBoxButton } from './IOBoxButton';
 
+/**
+ * Compoennt containing all the actions of the Input/Output boxes
+ * e.g., locking, generation, and deleting ioboxes.
+ */
+
 interface IOBoxBarProps {
     showButtons: boolean;
     locked: boolean;
