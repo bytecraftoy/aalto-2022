@@ -71,7 +71,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
     return (
         <div
             //IOBoxBar is absolute so use relative here
-            className="mt-6 pt-10 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around relative hover:bg-black"
+            className="mt-6 pt-10 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around relative"
             data-testid="hover-area"
             onMouseEnter={() => {
                 setShowButtons(true);
