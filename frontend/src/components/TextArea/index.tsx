@@ -24,6 +24,7 @@ export const TextArea: React.FC<TextInputProps> = ({
     onInput,
     errors,
 }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [touched, setTouched] = useState(false);
 
     // Show error when input contains error and user has touched the input
@@ -42,7 +43,7 @@ export const TextArea: React.FC<TextInputProps> = ({
                 className={classNames(
                     'form-control peer h-40 block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding  resize-none',
                     'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
-                    ' rounded-t-lg transition-colors ',
+                    'rounded-t-lg transition-colors ',
                     'bg-neutral-90 hover:bg-onSurface hover:bg-opacity-10',
                     'placeholder:text-transparent placeholder:select-none cursor-text',
                     { 'focus:border-red border-red': touched && errors }

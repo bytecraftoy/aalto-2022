@@ -1,3 +1,4 @@
+import { Transition } from '@headlessui/react';
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { Surface } from '../../Surface';
@@ -39,12 +40,22 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
     }, []);
 
     return (
-        <div ref={drawerRef}>
+        <Transition
+            ref={drawerRef}
+            show={open}
+            unmount={false}
+            enter="transition-all duration-200"
+            enterFrom="opacity-0 -translate-x-20"
+            enterTo="opacity-100 translate-x-0"
+            leave="transition-all duration-200"
+            leaveFrom="opacity-100 translate-x-0"
+            leaveTo="opacity-0 -translate-x-20"
+            className="z-30 fixed top-1 left-0 h-full"
+        >
             <Surface
                 level={1}
                 className={classNames(
-                    'fixed top-1 left-0 w-[360px] h-full z-30 rounded-2xl shadow-lg',
-                    { hidden: !open }
+                    'w-[360px] h-full z-30 rounded-2xl shadow-lg'
                 )}
             >
                 {/* The data area */}
@@ -80,6 +91,6 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     />
                 </div>
             </Surface>
-        </div>
+        </Transition>
     );
 };
