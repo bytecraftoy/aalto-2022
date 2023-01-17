@@ -42,8 +42,9 @@ jobs:
                 # LTS: 18.x
                 # Current: 19.x
                 node-version: [18.x, 19.x]
+                os: [ubuntu-latest, windows-latest]
 
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.os }}
 
         steps:
             - uses: actions/checkout@v3
