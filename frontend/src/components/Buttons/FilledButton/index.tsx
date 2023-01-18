@@ -32,7 +32,7 @@ export const FilledButton: React.FC<ButtonProps> = ({
                 bgActive(colorPalette),
                 className
             )}
-            type={type ? type : 'button'}
+            type={type && type}
             onClick={onClick}
             disabled={disabled}
             data-testid="custom-button"

@@ -8,11 +8,11 @@ import React, { useState } from 'react';
 
 interface InputProps {
     type: React.HTMLInputTypeAttribute;
-    value: string | number | readonly string[] | undefined;
+    value: string | number | readonly string[];
     onInput: React.FormEventHandler<HTMLInputElement>;
     label?: string;
     textHelper?: string;
-    required?: true;
+    errors?: string;
 }
 
 // Input template with predefined styles
@@ -22,15 +22,13 @@ export const CustomInput: React.FC<InputProps> = ({
     onInput,
     label,
     textHelper,
-    required,
+    errors,
 }) => {
     const [touched, setTouched] = useState(false);
-    let error = '';
 
-    //Simple validation
-    if (touched && required && value === '') {
-        error = '*Required';
-    }
+    // Show error when input contains error and user has touched the input
+    const showError: boolean =
+        touched && errors != undefined && errors.length > 0;
 
     return (
         <label className="relative">
@@ -53,7 +51,6 @@ export const CustomInput: React.FC<InputProps> = ({
                 placeholder="category"
                 onInput={onInput}
                 onChange={() => setTouched(true)}
-                required
             />
             <span
                 className={classNames(
@@ -67,15 +64,16 @@ export const CustomInput: React.FC<InputProps> = ({
             >
                 {label}
             </span>
-            {!error ? (
-                <div className=" pt-1 px-4 text-xs max-w-[280px] text-neutral-30 ">
-                    {textHelper}
-                </div>
-            ) : (
-                <div className=" pt-1 px-4 text-xs max-w-[280px] text-red-40">
-                    {error}
-                </div>
-            )}
+            <div
+                className={classNames(
+                    'pl-4 text-primary text-xs transition-all',
+                    {
+                        'text-red': showError,
+                    }
+                )}
+            >
+                {showError ? errors : textHelper}
+            </div>
         </label>
     );
 };

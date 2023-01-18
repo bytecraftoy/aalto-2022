@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
  */
 
 export const LoginForm = () => {
-    const { username, changeUsername } = useUsername();
+    const { username, usernameErrors, changeUsername } = useUsername();
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
@@ -30,18 +30,17 @@ export const LoginForm = () => {
             <h1 className=" font-semibold text-3xl text-center">Log in</h1>
             <CustomInput
                 type="text"
-                label="Username"
+                label="Username*"
                 textHelper="Please enter your username"
                 value={username}
-                required
                 onInput={changeUsername}
+                errors={usernameErrors}
             />
             <CustomInput
                 type="password"
-                label="Password"
+                label="Password*"
                 textHelper="Please enter your password"
                 value={password}
-                required
                 onInput={({ target }) =>
                     setPassword((target as HTMLInputElement).value)
                 }
