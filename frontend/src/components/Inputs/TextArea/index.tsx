@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/dedupe';
+import { InputProps } from '../index';
 
 /**
  * Props for textfield
@@ -9,12 +10,10 @@ import classNames from 'classnames/dedupe';
  * label = helper label that user sees when starting to type in the text area
  * onInput = function to change the value
  */
-interface TextInputProps {
+interface TextInputProps extends InputProps {
     placeholder: string;
     value: string;
-    label: string;
-    onInput: React.FormEventHandler<HTMLTextAreaElement> | undefined;
-    errors?: string;
+    onInput: React.FormEventHandler<HTMLTextAreaElement>;
 }
 
 export const TextArea: React.FC<TextInputProps> = ({

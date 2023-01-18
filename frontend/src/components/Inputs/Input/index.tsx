@@ -1,22 +1,19 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
+import { InputProps } from '..';
 
 /**
  * Reusable input component with predefined style.
  *
  */
 
-interface InputProps {
-    type: React.HTMLInputTypeAttribute;
-    value: string | number | readonly string[];
+interface CustomInputProps extends InputProps {
     onInput: React.FormEventHandler<HTMLInputElement>;
-    label?: string;
     textHelper?: string;
-    errors?: string;
 }
 
 // Input template with predefined styles
-export const CustomInput: React.FC<InputProps> = ({
+export const CustomInput: React.FC<CustomInputProps> = ({
     type,
     value,
     onInput,
