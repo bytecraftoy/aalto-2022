@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames/dedupe';
 import { InputProps } from '../index';
 import { useError } from '../hooks';
