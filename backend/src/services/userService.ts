@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import {logger} from './../utils/logger';
+import { logger } from './../utils/logger';
+import { TokenPayload } from '../types/TokenPayload';
 
 /**
  * The secret used for signing the web tokens.
@@ -11,23 +12,30 @@ import {logger} from './../utils/logger';
  * The secret must be cryptographically high quality random string.
  * If an attacker can guess the secret they can sign their own tokens.
  */
-const secret = process.env.JWT_SECRET || crypto.randomBytes(32).toString('base64');
+const secret =
+    process.env.JWT_SECRET || crypto.randomBytes(32).toString('base64');
 
 /**
  * The lifetime for a token.
  */
-const tokenLifetime = Number.parseInt(process.env.JWT_LIFETIME as string) || 14400; //4 hours
+const tokenLifetime =
+    Number.parseInt(process.env.JWT_LIFETIME as string) || 14400; //4 hours
 
 /**
  * Throws an error if anything is wrong.
  */
-const parseLoginInfo = (body: string): {name: string, password: string} => {
-    const {name, password} = JSON.parse(body) as {name: string, password: string};
-    if(typeof name !== 'string')
+const parseLoginRequestBody = (
+    body: string
+): { name: string; password: string } => {
+    const { name, password } = JSON.parse(body) as {
+        name: string;
+        password: string;
+    };
+    if (typeof name !== 'string')
         throw new TypeError('Name should be a string');
-    if(typeof password !== 'string')
+    if (typeof password !== 'string')
         throw new TypeError('Password should be a string');
-    return {name, password};
+    return { name, password };
 };
 
 /**
@@ -35,9 +43,8 @@ const parseLoginInfo = (body: string): {name: string, password: string} => {
  */
 const getPasswordHash = async (userName: string): Promise<string | null> => {
     //TODO: real implementation
-    await new Promise(r => setTimeout(r, 1));
-    if(userName === 'nonexistent')
-        return null;
+    await new Promise((r) => setTimeout(r, 1));
+    if (userName === 'nonexistent') return null;
     return '$2b$10$Jmn4NFCMntrUCRJXDFVmtuZJNBwpjGY1sXwgSQwL6icD72nHUaGeq'; //password1234
 };
 
@@ -46,12 +53,15 @@ const getPasswordHash = async (userName: string): Promise<string | null> => {
  * Resolves to true if everything matches.
  * Never rejects.
  */
-const checkPassword = async (userName: string, password: string): Promise<boolean> => {
+const checkPassword = async (
+    userName: string,
+    password: string
+): Promise<boolean> => {
     const hash = await getPasswordHash(userName);
-    if(hash === null) return false;
-    try{
+    if (hash === null) return false;
+    try {
         return await bcrypt.compare(password, hash);
-    }catch(e){
+    } catch (e) {
         logger.error(e);
         return false;
     }
@@ -61,17 +71,21 @@ const checkPassword = async (userName: string, password: string): Promise<boolea
  * Creates a JWT.
  * Can reject.
  */
-const createToken = (userName: string): Promise<string> => {
+const createToken = (payload: TokenPayload): Promise<string> => {
     return new Promise((resolve, reject) =>
-        jwt.sign({userName}, secret, {expiresIn: tokenLifetime}, (err, token) => 
+        jwt.sign(payload, secret, { expiresIn: tokenLifetime }, (err, token) =>
             //the token should be a string if err is undefined
             err ? reject(err) : resolve(token as string)
         )
     );
 };
 
-export {
-    parseLoginInfo,
-    checkPassword,
-    createToken
+const parseToken = (token: string): Promise<TokenPayload> => {
+    return new Promise((resolve, reject) =>
+        jwt.verify(token, secret, (err, payload) =>
+            err ? reject(err) : resolve(payload as TokenPayload)
+        )
+    );
 };
+
+export { parseLoginRequestBody, checkPassword, createToken, parseToken };

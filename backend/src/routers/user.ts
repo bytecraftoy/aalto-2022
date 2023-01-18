@@ -1,43 +1,65 @@
-import express, { CookieOptions } from 'express';
+import express, { CookieOptions, Request } from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import {logger} from './../utils/logger';
+import { logger } from './../utils/logger';
 import {
-    parseLoginInfo,
+    parseLoginRequestBody,
     checkPassword,
-    createToken
+    createToken,
+    parseToken,
 } from './../services/userService';
+import { TokenPayload } from '../types/TokenPayload';
+
+const devMode = process.env.NODE_ENV === 'development';
 
 const tokenCookieName = 'user-token';
 
-const getTokenCookieOptions = (subdomain: string | undefined): CookieOptions => {
-    return {
-        domain: subdomain,
-        secure: true,
-        httpOnly: true,
-        sameSite: 'strict'
-    };
+const tokenCookieOptions: CookieOptions = {
+    //the cookie must be unsecure in development
+    //since otherwise browser won't send it over unsecure http
+    secure: !devMode,
+    httpOnly: true,
+    sameSite: 'strict',
+};
+
+const readToken = async (req: Request): Promise<TokenPayload | null> => {
+    const token: unknown = req.cookies[tokenCookieName];
+    if (typeof token !== 'string') return null;
+    try {
+        return await parseToken(token);
+    } catch (e) {
+        logger.error(e);
+    }
+    return null;
 };
 
 const userRouter = express.Router();
 
-userRouter.post('/login/', expressAsyncHandler(async (req, res) => {
-    try{
-        const info = parseLoginInfo(req.body as string);
-        if(await checkPassword(info.name, info.password)){
-            const token = await createToken(info.name);
-            const options = getTokenCookieOptions(req.headers.host);
-            res.cookie(tokenCookieName, token, options);
-            res.status(204).end();
-            return;
+userRouter.post(
+    '/login/',
+    expressAsyncHandler(async (req, res) => {
+        try {
+            const info = parseLoginRequestBody(req.body as string);
+            if (await checkPassword(info.name, info.password)) {
+                const payload: TokenPayload = { userName: info.name };
+                const token = await createToken(payload);
+                res.cookie(tokenCookieName, token, tokenCookieOptions);
+                res.status(204).end();
+                return;
+            }
+        } catch (e) {
+            logger.error(e);
         }
-    }catch(e){
-        logger.error(e);
-    }
-    res.status(400).end();
-}));
+        res.status(400).end();
+    })
+);
 
-export {
-    userRouter,
-    tokenCookieName,
-    getTokenCookieOptions
-};
+userRouter.get(
+    '/',
+    expressAsyncHandler(async (req, res) => {
+        //this router is only for testing
+        const payload = await readToken(req);
+        res.send(JSON.stringify(payload));
+    })
+);
+
+export { userRouter };
