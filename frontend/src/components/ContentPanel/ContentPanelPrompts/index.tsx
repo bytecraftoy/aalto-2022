@@ -1,6 +1,6 @@
 import React from 'react';
-import { PromptIOBox } from '../../PromptIOBox';
-import { PromptData } from '../../PromptIOBox';
+import { PromptIOBox } from './PromptIOBox';
+import { PromptData } from './PromptIOBox';
 import { FAB } from '../../Buttons';
 
 /**

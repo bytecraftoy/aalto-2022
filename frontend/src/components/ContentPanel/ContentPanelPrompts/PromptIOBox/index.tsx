@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IOBoxBar } from './IOBoxBar';
-import { TextArea } from '../Inputs';
+import { TextArea } from '../../../Inputs';
 import { z } from 'zod';
 
 /**
