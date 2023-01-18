@@ -30,10 +30,7 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
             </div>
             {
                 <div className="flex-1 z-10">
-                    <DropdownMenu
-                        addPromptBoxes={addPromptBoxes}
-                        colorPalette="primary"
-                    />
+                    <DropdownMenu addPromptBoxes={addPromptBoxes} />
                 </div>
             }
         </div>
