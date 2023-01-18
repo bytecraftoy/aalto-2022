@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { StateHook } from '../utils/types';
-import { CustomInput } from './Input';
+import { CustomInput } from './Inputs';
 
 interface PromptCategoryBoxProps {
     category: string;

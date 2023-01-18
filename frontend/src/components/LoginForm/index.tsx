@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CustomInput } from '../Input';
+import { CustomInput } from '../Inputs';
 import { FilledButton, TextButton } from '../Buttons';
 import { useUsername } from './hook';
 import { useNavigate } from 'react-router-dom';
