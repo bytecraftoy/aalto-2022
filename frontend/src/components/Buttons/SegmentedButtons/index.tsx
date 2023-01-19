@@ -17,9 +17,13 @@ interface SegmentedButtonsProps {
 export const SegmentedButtons: React.FC<SegmentedButtonsProps> = ({
     actions,
 }) => {
+    const length = actions.length;
+
     return (
         <div className="inline-block">
-            <div className="grid grid-cols-3">
+            <div
+                className={`grid  grid-cols-[repeat(${length},minmax(0px,1fr))]`}
+            >
                 {actions.map((action, index) => {
                     let position: 'left' | 'right' | undefined;
                     if (index == 0) position = 'left';
