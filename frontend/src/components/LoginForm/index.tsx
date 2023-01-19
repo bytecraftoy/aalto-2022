@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CustomInput } from '../Inputs';
 import { FilledButton, TextButton } from '../Buttons';
-import { useUsername } from './hook';
 import { useNavigate } from 'react-router-dom';
+import { useValue } from '../../utils/hooks';
+import { usernameSchema } from './validation';
 
 /**
  *
@@ -11,23 +12,29 @@ import { useNavigate } from 'react-router-dom';
  */
 
 export const LoginForm = () => {
-    const { username, usernameErrors, changeUsername } = useUsername();
-    const [password, setPassword] = useState('');
+    const {
+        value: username,
+        errors: usernameErrors,
+        changeValue: changeUsername,
+    } = useValue(usernameSchema);
+    const { value: password, changeValue: changePassword } =
+        useValue(usernameSchema);
 
     const navigate = useNavigate();
 
     //Submits the login form
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(username, password);
     };
 
     return (
-        <form
-            className="flex flex-col w-72 justify-between gap-10"
-            onSubmit={submitForm}
-        >
-            <h1 className=" font-semibold text-3xl text-center">Log in</h1>
+        <form className="flex flex-col w-72 gap-10" onSubmit={submitForm}>
+            <div>
+                <h1 className=" font-semibold text-3xl text-center pb-3">
+                    Log in
+                </h1>
+                <div className="w-full h-px bg-black" />
+            </div>
             <CustomInput
                 type="text"
                 label="Username*"
@@ -41,16 +48,14 @@ export const LoginForm = () => {
                 label="Password*"
                 textHelper="Please enter your password"
                 value={password}
-                onInput={({ target }) =>
-                    setPassword((target as HTMLInputElement).value)
-                }
+                onInput={changePassword}
             />
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2">
                 <FilledButton
                     name="Log in"
                     colorPalette="primary"
                     onClick={() => undefined}
-                    className="justify-center m-0"
+                    className="justify-center"
                     type="submit"
                 />
                 <TextButton
