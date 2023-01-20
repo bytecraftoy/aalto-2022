@@ -1,5 +1,4 @@
 import React from 'react';
-import { resolvePath } from 'react-router-dom';
 import { SegmentedButton } from './SegmentedButton';
 
 /**
