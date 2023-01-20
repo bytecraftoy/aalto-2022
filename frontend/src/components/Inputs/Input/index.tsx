@@ -49,7 +49,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
             <span
                 className={classNames(
                     // Positions
-                    'absolute select-none left-0 top-0 peer-placeholder-shown:top-4',
+                    'absolute select-none pointer-events-none left-0 top-0 peer-placeholder-shown:top-4',
                     // Text
                     'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base ',
                     // other
