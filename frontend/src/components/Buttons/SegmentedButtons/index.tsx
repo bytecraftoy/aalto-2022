@@ -1,4 +1,5 @@
 import React from 'react';
+import { resolvePath } from 'react-router-dom';
 import { SegmentedButton } from './SegmentedButton';
 
 /**
@@ -17,12 +18,13 @@ interface SegmentedButtonsProps {
 export const SegmentedButtons: React.FC<SegmentedButtonsProps> = ({
     actions,
 }) => {
-    const length = actions.length;
-
     return (
         <div className="inline-block">
             <div
-                className={`grid  grid-cols-[repeat(${length},minmax(0px,1fr))]`}
+                className={`grid`}
+                style={{
+                    gridTemplateColumns: `repeat(${actions.length}, minmax(0px, 1fr))`,
+                }}
             >
                 {actions.map((action, index) => {
                     let position: 'left' | 'right' | undefined;
