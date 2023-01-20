@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CustomInput } from '../Inputs';
 import { FilledButton, TextButton } from '../Buttons';
 import { useNavigate } from 'react-router-dom';
 import { useValue } from '../../utils/hooks';
 import { usernameSchema } from './validation';
 import { Notification } from './Notification';
+import { useOpen } from './hooks';
 
 /**
  *
@@ -22,7 +23,7 @@ export const LoginForm = () => {
         useValue(usernameSchema);
 
     // If the error message of the user is shown
-    const [open, setOpen] = useState(false);
+    const { open, setOpen } = useOpen();
 
     // Navigation
     const navigate = useNavigate();
