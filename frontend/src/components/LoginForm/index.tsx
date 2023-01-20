@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CustomInput } from '../Inputs';
 import { FilledButton, TextButton } from '../Buttons';
 import { useNavigate } from 'react-router-dom';
 import { useValue } from '../../utils/hooks';
 import { usernameSchema } from './validation';
+import { Notification } from './Notification';
 
 /**
  *
@@ -20,11 +21,23 @@ export const LoginForm = () => {
     const { value: password, changeValue: changePassword } =
         useValue(usernameSchema);
 
+    // If the error message of the user is shown
+    const [open, setOpen] = useState(false);
+
+    // Navigation
     const navigate = useNavigate();
 
     //Submits the login form
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        //TODO API call for the backend to login
+        // Now just mock log in
+        if (username === 'hello' && password === 'world') {
+            console.log('Logged in!');
+        } else {
+            setOpen(true);
+        }
     };
 
     return (
@@ -35,6 +48,7 @@ export const LoginForm = () => {
                 </h1>
                 <div className="w-full h-px bg-black" />
             </div>
+            <Notification isOpen={open} close={() => setOpen(false)} />
             <CustomInput
                 type="text"
                 label="Username*"
