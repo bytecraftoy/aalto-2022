@@ -1,9 +1,11 @@
+import { Transition } from '@headlessui/react';
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { Surface } from '../../Surface';
 import { NavigationSubHeader } from './NavigationSubHeader';
 import { NavigationLink } from './NavigationLink';
 import { solidIcon } from '../../../utils/icons';
+import { PanelSection } from './PanelSection';
 
 /**
  *
@@ -38,12 +40,22 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
     }, []);
 
     return (
-        <div ref={drawerRef}>
+        <Transition
+            ref={drawerRef}
+            show={open}
+            unmount={false}
+            enter="transition-all duration-200"
+            enterFrom="opacity-0 -translate-x-20"
+            enterTo="opacity-100 translate-x-0"
+            leave="transition-all duration-200"
+            leaveFrom="opacity-100 translate-x-0"
+            leaveTo="opacity-0 -translate-x-20"
+            className="z-30 fixed top-1 left-0 h-full"
+        >
             <Surface
                 level={1}
                 className={classNames(
-                    'fixed top-1 left-0 w-[360px] h-full z-30 rounded-2xl shadow-lg',
-                    { hidden: !open }
+                    'w-[360px] h-full z-30 rounded-2xl shadow-lg'
                 )}
             >
                 {/* The data area */}
@@ -59,43 +71,26 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     <NavigationLink
                         label="About"
                         icon={solidIcon('InformationCircleIcon')}
-                        onClick={() => console.log('ping')}
+                        to="/about"
                     />
                     <NavigationLink
                         label="Settings"
                         icon={solidIcon('SettingsIcon')}
-                        onClick={() => console.log('pong')}
+                        to="/settings"
                     />
                     <div className="h-[1px] bg-neutral-70 mx-4" />
 
-                    {/** Content panels (currently no functionality)*/}
-                    <NavigationSubHeader>Content Panels</NavigationSubHeader>
-                    <NavigationLink
-                        label="Main"
-                        icon={solidIcon('CubeIcon')}
-                        onClick={() => console.log('main')}
-                    />
-                    <NavigationLink
-                        label="Panel-2"
-                        icon={solidIcon('CubeIcon')}
-                        onClick={() => console.log('panel-2')}
-                    />
-                    <NavigationLink
-                        label="Panel-3"
-                        icon={solidIcon('CubeIcon')}
-                        onClick={() => console.log('panel-3')}
-                    />
-
-                    <div className="h-[1px] bg-neutral-70 mx-4" />
+                    {/** Content panels */}
+                    <PanelSection />
 
                     {/** Others */}
                     <NavigationLink
                         label="Overall view"
                         icon={solidIcon('WindowIcon')}
-                        onClick={() => undefined}
+                        to="#"
                     />
                 </div>
             </Surface>
-        </div>
+        </Transition>
     );
 };

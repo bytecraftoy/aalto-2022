@@ -29,6 +29,7 @@ module.exports = {
                 90: '#E3DFFF',
                 95: '#F2EFFF',
                 99: '#FFFBFF',
+                'state-layer': '#6750A4',
             },
             secondary: {
                 10: '#1A1A2C',

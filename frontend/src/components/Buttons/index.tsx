@@ -3,6 +3,7 @@ import { Icon } from '../../utils/icons';
 import { Palette } from '../../utils/colors';
 export { FilledButton } from './FilledButton';
 export { SegmentedButtons } from './SegmentedButtons';
+export { TextButton } from './TextButton';
 export { FAB } from './FAB';
 
 /**
