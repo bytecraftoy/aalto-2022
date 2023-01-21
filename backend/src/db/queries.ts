@@ -15,8 +15,7 @@ const executeQuery = async (text: string, values: string[]) => {
 };
 
 const addUser = async (name: string, passwordHash: string) => {
-    const text =
-        'INSERT INTO users(name, password_hash, settings) VALUES ($1, $2)';
+    const text = 'INSERT INTO users(name, password_hash) VALUES ($1, $2)';
     const values = [name, passwordHash];
     await executeQuery(text, values);
 };
@@ -46,6 +45,12 @@ const addProject = async (userID: string, name: string, data: string) => {
     await executeQuery(text, values);
 };
 
+const updateProject = async (id: string, data: string) => {
+    const text = 'UPDATE projects SET data = $2 WHERE id = $1';
+    const values = [id, data];
+    await executeQuery(text, values);
+};
+
 const deleteProject = async (id: string) => {
     const text = 'DELETE FROM projects WHERE id = $1';
     const values = [id];
@@ -59,4 +64,5 @@ export {
     updateUserSettings,
     addProject,
     deleteProject,
+    updateProject,
 };
