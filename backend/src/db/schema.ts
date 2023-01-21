@@ -5,6 +5,7 @@ import { databaseConfig } from './pool';
 
 const runMigrations = async () => {
     logger.info('migrations_start');
+
     const client = new Client(databaseConfig());
 
     const options: RunnerOption = {
@@ -15,8 +16,9 @@ const runMigrations = async () => {
     };
 
     await client.connect();
-
     const res = await migrate(options);
+    await client.end();
+
     logger.info('migrations_done', { res });
 };
 
