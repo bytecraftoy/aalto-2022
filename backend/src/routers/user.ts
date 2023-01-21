@@ -13,8 +13,10 @@ import {
     parseToken,
 } from './../services/userService';
 import { TokenPayload } from '../types/TokenPayload';
+import { checkRequestOrigin } from './../utils/checkRequestOrigin';
 
 const devMode = process.env.NODE_ENV === 'development';
+const testMode = process.env.NODE_ENV === 'test';
 
 const tokenCookieName = 'user-token';
 
@@ -47,6 +49,11 @@ const userRouter = express.Router();
 userRouter.post(
     '/login/',
     expressAsyncHandler(async (req, res) => {
+        //in production we wan't to check origin to prevent CSRF attacks
+        if (!devMode && !testMode && !checkRequestOrigin(req)) {
+            res.status(400).end();
+            return;
+        }
         try {
             const info = parseLoginRequestBody(req.body as string);
             if (await checkPassword(info.name, info.password)) {
@@ -66,6 +73,11 @@ userRouter.post(
 userRouter.post(
     '/logout/',
     expressAsyncHandler(async (req, res) => {
+        //in production we wan't to check origin to prevent CSRF attacks
+        if (!devMode && !testMode && !checkRequestOrigin(req)) {
+            res.status(400).end();
+            return;
+        }
         if ((await readToken(req)) === null) res.status(401).end();
         else
             res.cookie(tokenCookieName, '-', tokenCookieOptions)
