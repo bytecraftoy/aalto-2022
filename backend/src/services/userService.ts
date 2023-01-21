@@ -1,19 +1,19 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
 import { logger } from './../utils/logger';
 import { TokenPayload } from '../types/TokenPayload';
 
 /**
  * The secret used for signing the web tokens.
- * If we want the secret to remain same over runtimes
- * (meaning that the te tokens from previous runtime will still be valid)
- * the JWT_SECRET environment variable should be defined.
- * The secret must be cryptographically high quality random string.
+ * The secret must be a cryptographically high quality random string.
  * If an attacker can guess the secret they can sign their own tokens.
  */
-const secret =
-    process.env.JWT_SECRET || crypto.randomBytes(32).toString('base64');
+const secret = process.env.JWT_SECRET;
+if (!secret) {
+    const message = 'JWT_SECRET environment variable is not defined';
+    logger.error(message);
+    throw new Error(message);
+}
 
 /**
  * The lifetime for a token.
