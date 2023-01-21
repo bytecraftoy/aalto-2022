@@ -80,6 +80,10 @@ const createToken = (payload: TokenPayload): Promise<string> => {
     );
 };
 
+/**
+ * Validates and parses the token.
+ * Rejects if something is wrong.
+ */
 const parseToken = (token: string): Promise<TokenPayload> => {
     return new Promise((resolve, reject) =>
         jwt.verify(token, secret, (err, payload) =>

@@ -1,3 +1,8 @@
+/**
+ * A router for handling user logins, logouts, registrations,
+ * and all user related information.
+ */
+
 import express, { CookieOptions, Request } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { logger } from './../utils/logger';
@@ -21,6 +26,11 @@ const tokenCookieOptions: CookieOptions = {
     sameSite: 'strict',
 };
 
+/**
+ * Read token payload from a request object.
+ * Returns null if the token is not found or is invalid.
+ * Never rejects.
+ */
 const readToken = async (req: Request): Promise<TokenPayload | null> => {
     const token: unknown = req.cookies[tokenCookieName];
     if (typeof token !== 'string') return null;
