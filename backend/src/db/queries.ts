@@ -8,7 +8,10 @@ const executeQuery = async (text: string, values: string[]) => {
     };
     await pool.connect();
     pool.query(query, (err, res) => {
-        if (err) throw err;
+        if (err) {
+            logger.error('db_query_fail', { error: err, query: text, values });
+            throw err;
+        }
         logger.info(res);
     });
     await pool.end();
