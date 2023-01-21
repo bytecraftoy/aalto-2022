@@ -13,7 +13,8 @@
         "start": "node build/index.js",
         "start-dev": "ts-node-dev src/index.ts",
         "start-dev-database": "(docker-compose down || echo skipped docker-compose down) && docker-compose up",
-        "copy-sample-env": "cpy .env-sample . --no-overwrite --rename=.env || echo skipped copy-sample-env"
+        "copy-sample-env": "cpy .env-sample . --no-overwrite --rename=.env || echo skipped copy-sample-env",
+        "migrate": "node-pg-migrate"
     },
     "keywords": [],
     "author": "",
@@ -24,6 +25,7 @@
         "dotenv": "^16.0.3",
         "express": "^4.18.2",
         "express-async-handler": "^1.2.0",
+        "node-pg-migrate": "^6.2.2",
         "pg": "^8.8.0",
         "winston": "^3.8.2",
         "xlsx": "^0.18.5"

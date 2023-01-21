@@ -1,5 +1,6 @@
 import { Pool, Client } from 'pg';
 import { logger } from '../utils/logger';
+import { runMigrations } from './schema';
 
 const waitForDatabase = async (db: Pool | Client, timeout_secs = 60) => {
     logger.info('db_startup');
@@ -24,6 +25,8 @@ const waitForDatabase = async (db: Pool | Client, timeout_secs = 60) => {
         logger.info('db_startup_done', { taken: taken[0] });
         break;
     }
+
+    await runMigrations();
 };
 
 export { waitForDatabase };
