@@ -63,6 +63,17 @@ userRouter.post(
     })
 );
 
+userRouter.post(
+    '/logout/',
+    expressAsyncHandler(async (req, res) => {
+        if ((await readToken(req)) === null) res.status(401).end();
+        else
+            res.cookie(tokenCookieName, '-', tokenCookieOptions)
+                .status(204)
+                .end();
+    })
+);
+
 userRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
