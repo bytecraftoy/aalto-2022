@@ -40,7 +40,8 @@ const updateUserSettings = async (id: string, settings: string) => {
 };
 
 const addProject = async (userID: string, name: string, data: string) => {
-    const text = 'INSERT INTO projects(user_id, name, data) VALUES ($1, $2, $3)';
+    const text =
+        'INSERT INTO projects(user_id, name, data) VALUES ($1, $2, $3)';
     const values = [userID, name, data];
     await executeQuery(text, values);
 };
