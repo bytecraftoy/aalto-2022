@@ -6,14 +6,14 @@ CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(50) NOT NULL,
     password_hash CHAR(60) NOT NULL,
-    settings JSON
+    settings JSONB
 );
 
 CREATE TABLE projects (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID,
     name VARCHAR(100) NOT NULL,
-    data JSON NOT NULL,
+    data JSONB NOT NULL,
 
     CONSTRAINT projects_fk_user
     FOREIGN KEY(user_id)
