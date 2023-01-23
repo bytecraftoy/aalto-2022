@@ -17,14 +17,16 @@ const executeQuery = async (text: string, values: string[]) => {
     } catch (e) {
         client.release();
         logger.error('db_query_fail', { error: e, query });
+        throw e;
     }
 };
 
 const selectProjectsbyUserID = async (userID: string) => {
     const text = 'SELECT name FROM projects WHERE user_id = $1';
     const values = [userID];
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const res = await executeQuery(text, values);
-    return res;
+    //return res;
 };
 
 const selectProjectData = async (projectID: string) => {
