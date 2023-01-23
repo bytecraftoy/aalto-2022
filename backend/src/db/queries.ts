@@ -1,7 +1,7 @@
 import { pool } from './pool';
 import { logger } from '../utils/logger';
 
-const executeQuery = async (text: string, values: string[]) => {
+const executeQuery = async (text: string, values: string[]): Promise<string[]> => {
     const query = {
         text: text,
         values: values,
@@ -15,6 +15,29 @@ const executeQuery = async (text: string, values: string[]) => {
         logger.info(res);
     });
     await pool.end();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return res.rows;
+};
+
+const selectProjectsbyUserID = async (userID: string) => {
+    const text = 'SELECT Name FROM Projects WHERE UserID = $1';
+    const values = [userID];
+    const res = await executeQuery(text, values);
+    return res;
+};
+
+const selectProjectData = async (projectID: string) => {
+    const text = 'SELECT Data FROM Projects WHERE ID = $1';
+    const values = [projectID];
+    const res = await executeQuery(text, values);
+    return res[0];
+};
+
+const selectUserSettings = async (userID: string) => {
+    const text = 'SELECT Settings FROM Users WHERE UserID = $1';
+    const values = [userID];
+    const res = await executeQuery(text, values);
+    return res[0];
 };
 
 const addUser = async (name: string, passwordHash: string) => {
@@ -68,4 +91,7 @@ export {
     addProject,
     deleteProject,
     updateProject,
+    selectProjectData,
+    selectUserSettings,
+    selectProjectsbyUserID,
 };

@@ -5,7 +5,7 @@ import {
     exportXlsx,
     downloadXlsx,
 } from '../../utils/exportContent';
-import { PromptData, InputSchema } from './ContentPanelPrompts/PromptIOBox';
+import { PromptData } from './ContentPanelPrompts/PromptIOBox';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';

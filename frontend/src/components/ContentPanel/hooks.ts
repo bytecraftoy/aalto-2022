@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PromptData } from '../PromptIOBox';
+import { PromptData } from './ContentPanelPrompts/PromptIOBox';
 import { v4 as uuidv4 } from 'uuid';
 import { generateText } from '../../utils/generateContent';
 import { useAppDispatch } from '../../utils/hooks';
