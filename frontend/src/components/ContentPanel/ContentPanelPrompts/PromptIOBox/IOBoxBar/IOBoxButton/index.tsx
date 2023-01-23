@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
-import { ButtonProps, FilledButton } from '../../../../../Buttons';
+/* import { ButtonProps } from '../../../Buttons';
+import { ExtendedFAB } from '../../../Buttons/ExtendedFab'; */
+import { ButtonProps } from '../../../../../Buttons';
+import { ExtendedFAB } from '../../../../../Buttons/ExtendedFab';
 
 /**
- * Individual IOBox action button component
- * e.g. "Generate" or "Lock"
+ * Individual IOBux action button component
+ * e.g. individual iobox generation
  */
 
 export interface IOBoxButtonProps extends ButtonProps {
     //Other properties
+    name: string;
     visible: boolean;
     errors?: string;
 }
@@ -19,31 +23,20 @@ export const IOBoxButton: React.FC<IOBoxButtonProps> = ({
     colorPalette,
     onClick,
     visible,
+    errors,
 }) => {
-    const [nameVisible, setNameVisible] = useState(false);
-
     return (
-        <div
-            data-testid={`iobox-${name}`}
-            onMouseEnter={() => setNameVisible(true)}
-            onMouseLeave={() => setNameVisible(false)}
+        <ExtendedFAB
+            name={name}
+            icon={icon ?? 'PlusIcon'}
+            colorPalette={colorPalette}
+            disabled={errors ? true : false}
+            onClick={onClick}
             className={classNames(
-                'transition-all mb-0 mr-0',
-                { '-translate-y-[11.5em]': visible },
-                { '': !visible },
-                { 'mr-0 scale-105': nameVisible }
+                'transition-all',
+                { '-translate-y-16': visible },
+                { '': !visible }
             )}
-        >
-            <FilledButton
-                name={nameVisible ? name : ''}
-                icon={icon}
-                colorPalette={colorPalette}
-                onClick={onClick}
-                className={classNames(
-                    'h-12 rounded-md outline outline-1 outline-white/20',
-                    { 'pr-3': !nameVisible }
-                )}
-            />
-        </div>
+        />
     );
 };
