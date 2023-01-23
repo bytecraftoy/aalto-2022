@@ -74,8 +74,7 @@ userRouter.post(
             const info = registerRequestSchema.parse(
                 JSON.parse(req.body as string)
             );
-            const success = await createUser(info.name, info.password);
-            if (success) {
+            if (await createUser(info.name, info.password)) {
                 const payload: TokenPayload = { userName: info.name };
                 const token = await createToken(payload);
                 res.cookie(tokenCookieName, token, tokenCookieOptions);
