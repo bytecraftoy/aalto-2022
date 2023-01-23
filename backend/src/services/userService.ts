@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { logger } from './../utils/logger';
 import { TokenPayload } from '../types/TokenPayload';
+import { z } from 'zod';
+import { userExists } from '../db/queries';
 
 /**
  * The secret used for signing the web tokens.
@@ -21,22 +23,22 @@ if (!secret) {
 const tokenLifetime =
     Number.parseInt(process.env.JWT_LIFETIME as string) || 14400; //4 hours
 
-/**
- * Throws an error if anything is wrong.
- */
-const parseLoginRequestBody = (
-    body: string
-): { name: string; password: string } => {
-    const { name, password } = JSON.parse(body) as {
-        name: string;
-        password: string;
-    };
-    if (typeof name !== 'string')
-        throw new TypeError('Name should be a string');
-    if (typeof password !== 'string')
-        throw new TypeError('Password should be a string');
-    return { name, password };
-};
+const loginRequestSchema = z.object({
+    name: z.string(),
+    password: z.string(),
+});
+
+type LoginRequest = z.infer<typeof loginRequestSchema>;
+
+const registerRequestSchema = z.object({
+    name: z.string(),
+    password: z
+        .string()
+        .min(6, 'Password should be at least 6 characters')
+        .max(49, 'Password can be 49 characters maximum'),
+});
+
+type RegisterRequest = z.infer<typeof loginRequestSchema>;
 
 /**
  * Resolves to null if there is no matching user in the database.
@@ -92,4 +94,24 @@ const parseToken = (token: string): Promise<TokenPayload> => {
     );
 };
 
-export { parseLoginRequestBody, checkPassword, createToken, parseToken };
+const createUser = async (
+    name: string,
+    _password: string
+): Promise<boolean> => {
+    const exists = await userExists(name);
+    if (exists) {
+        return false;
+    }
+    return true;
+};
+
+export {
+    loginRequestSchema,
+    LoginRequest,
+    registerRequestSchema,
+    RegisterRequest,
+    checkPassword,
+    createUser,
+    createToken,
+    parseToken,
+};
