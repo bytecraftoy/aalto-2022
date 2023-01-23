@@ -7,10 +7,10 @@ export const Header = () => {
             <h1 className="font-semibold text-3xl text-center">
                 Create account
             </h1>
-            <div className="flex flex-row gap-2">
-                ALREADY HAVE AN ACCOUNT?
+            <div className="flex flex-row gap-2 text-center">
+                Already have an account?
                 <div className="text-primary underline">
-                    <Link to="/login">LOG IN</Link>
+                    <Link to="/login">Log in</Link>
                 </div>
             </div>
         </div>
