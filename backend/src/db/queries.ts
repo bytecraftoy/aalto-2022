@@ -1,17 +1,37 @@
 import { pool } from './pool';
 import { logger } from '../utils/logger';
 
-const executeQuery = async (text: string, values: string[]) => {
+const executeQuery = async (text: string, values: string[]): Promise<any[]> => {
     const query = {
         text: text,
         values: values,
     };
     await pool.connect();
-    pool.query(query, (err, res) => {
-        if (err) throw err;
-        logger.info(res);
-    });
+    const res = await pool.query(query);
+    logger.info(res);
     await pool.end();
+    return res.rows;
+};
+
+const selectProjectsbyUserID = async (userID: string) => {
+    const text = 'SELECT Name FROM Projects WHERE UserID = $1';
+    const values = [userID];
+    const res = await executeQuery(text, values);
+    return res;
+};
+
+const selectProjectData = async (projectID: string) => {
+    const text = 'SELECT Data FROM Projects WHERE ID = $1';
+    const values = [projectID];
+    const res = await executeQuery(text, values);
+    return res[0];
+};
+
+const selectUserSettings = async (userID: string) => {
+    const text = 'SELECT Settings FROM Users WHERE UserID = $1';
+    const values = [userID];
+    const res = await executeQuery(text, values);
+    return res[0];
 };
 
 const addUser = async (name: string, passwordHash: string) => {
@@ -58,4 +78,7 @@ export {
     updateUserSettings,
     addProject,
     deleteProject,
+    selectProjectData,
+    selectUserSettings,
+    selectProjectsbyUserID,
 };
