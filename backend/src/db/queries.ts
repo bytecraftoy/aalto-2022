@@ -15,6 +15,7 @@ const executeQuery = async (text: string, values: string[]) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return res.rows;
     } catch (e) {
+        client.release();
         logger.error('db_query_fail', { error: e, query });
     }
 };
