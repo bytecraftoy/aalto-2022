@@ -1,5 +1,5 @@
 import React from 'react';
-import { PromptCategoryBox } from '../../PromptCategoryBox';
+import { PromptCategoryBox } from './PromptCategoryBox';
 
 /**
  * Top most part of the whole content panel.

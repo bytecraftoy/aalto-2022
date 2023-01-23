@@ -1,22 +1,20 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
+import { InputProps } from '..';
+import { useError } from '../hooks';
 
 /**
  * Reusable input component with predefined style.
  *
  */
 
-interface InputProps {
-    type: React.HTMLInputTypeAttribute;
-    value: string | number | readonly string[];
+interface CustomInputProps extends InputProps {
     onInput: React.FormEventHandler<HTMLInputElement>;
-    label?: string;
     textHelper?: string;
-    errors?: string;
 }
 
 // Input template with predefined styles
-export const CustomInput: React.FC<InputProps> = ({
+export const CustomInput: React.FC<CustomInputProps> = ({
     type,
     value,
     onInput,
@@ -24,11 +22,7 @@ export const CustomInput: React.FC<InputProps> = ({
     textHelper,
     errors,
 }) => {
-    const [touched, setTouched] = useState(false);
-
-    // Show error when input contains error and user has touched the input
-    const showError: boolean =
-        touched && errors != undefined && errors.length > 0;
+    const { showError, touchInput } = useError(errors);
 
     return (
         <label className="relative">
@@ -50,7 +44,7 @@ export const CustomInput: React.FC<InputProps> = ({
                 )}
                 placeholder="category"
                 onInput={onInput}
-                onChange={() => setTouched(true)}
+                onChange={touchInput}
             />
             <span
                 className={classNames(

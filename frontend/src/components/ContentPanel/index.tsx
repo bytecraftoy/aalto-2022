@@ -6,12 +6,11 @@ import {
     exportXlsx,
     downloadXlsx,
 } from '../../utils/exportContent';
-import { PromptData } from '../PromptIOBox';
+import { PromptData, InputSchema } from './ContentPanelPrompts/PromptIOBox';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
 import { ContentPanelActions } from './ContentPanelActions';
-import { InputSchema } from '../PromptIOBox';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { v4 as uuidv4 } from 'uuid';
