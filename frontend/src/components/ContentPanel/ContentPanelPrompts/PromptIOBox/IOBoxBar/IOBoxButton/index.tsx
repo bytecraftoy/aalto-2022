@@ -1,7 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { ButtonProps } from '../../../Buttons';
-import { ExtendedFAB } from '../../../Buttons/ExtendedFab';
+/* import { ButtonProps } from '../../../Buttons';
+import { ExtendedFAB } from '../../../Buttons/ExtendedFab'; */
+import { ButtonProps } from '../../../../../Buttons';
+import { ExtendedFAB } from '../../../../../Buttons/ExtendedFab';
 
 /**
  * Individual IOBux action button component

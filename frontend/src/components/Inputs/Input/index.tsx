@@ -1,36 +1,28 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
+import { InputProps } from '..';
+import { useError } from '../hooks';
 
 /**
  * Reusable input component with predefined style.
  *
  */
 
-interface InputProps {
-    type: React.HTMLInputTypeAttribute;
-    value: string | number | readonly string[] | undefined;
+interface CustomInputProps extends InputProps {
     onInput: React.FormEventHandler<HTMLInputElement>;
-    label?: string;
     textHelper?: string;
-    required?: true;
 }
 
 // Input template with predefined styles
-export const CustomInput: React.FC<InputProps> = ({
+export const CustomInput: React.FC<CustomInputProps> = ({
     type,
     value,
     onInput,
     label,
     textHelper,
-    required,
+    errors,
 }) => {
-    const [touched, setTouched] = useState(false);
-    let error = '';
-
-    //Simple validation
-    if (touched && required && value === '') {
-        error = '*Required';
-    }
+    const { showError, touchInput } = useError(errors);
 
     return (
         <label className="relative">
@@ -52,8 +44,7 @@ export const CustomInput: React.FC<InputProps> = ({
                 )}
                 placeholder="category"
                 onInput={onInput}
-                onChange={() => setTouched(true)}
-                required
+                onChange={touchInput}
             />
             <span
                 className={classNames(
@@ -67,15 +58,16 @@ export const CustomInput: React.FC<InputProps> = ({
             >
                 {label}
             </span>
-            {!error ? (
-                <div className=" pt-1 px-4 text-xs max-w-[280px] text-neutral-30 ">
-                    {textHelper}
-                </div>
-            ) : (
-                <div className=" pt-1 px-4 text-xs max-w-[280px] text-red-40">
-                    {error}
-                </div>
-            )}
+            <div
+                className={classNames(
+                    'pl-4 text-primary text-xs transition-all',
+                    {
+                        'text-red': showError,
+                    }
+                )}
+            >
+                {showError ? errors : textHelper}
+            </div>
         </label>
     );
 };

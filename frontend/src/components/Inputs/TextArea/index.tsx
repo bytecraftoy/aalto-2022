@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames/dedupe';
+import { InputProps } from '../index';
+import { useError } from '../hooks';
 
 /**
  * Props for textfield
@@ -9,12 +11,10 @@ import classNames from 'classnames/dedupe';
  * label = helper label that user sees when starting to type in the text area
  * onInput = function to change the value
  */
-interface TextInputProps {
+interface TextInputProps extends InputProps {
     placeholder: string;
     value: string;
-    label: string;
-    onInput: React.FormEventHandler<HTMLTextAreaElement> | undefined;
-    errors?: string;
+    onInput: React.FormEventHandler<HTMLTextAreaElement>;
 }
 
 export const TextArea: React.FC<TextInputProps> = ({
@@ -24,12 +24,7 @@ export const TextArea: React.FC<TextInputProps> = ({
     onInput,
     errors,
 }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [touched, setTouched] = useState(false);
-
-    // Show error when input contains error and user has touched the input
-    const showError: boolean =
-        touched && errors != undefined && errors.length > 0;
+    const { showError, touchInput } = useError(errors);
     // Show placeholder when there are no user input and not showing error
     const showPlaceholder: boolean = !showError && !value;
     // Else show the label
@@ -46,11 +41,11 @@ export const TextArea: React.FC<TextInputProps> = ({
                     'rounded-t-lg transition-colors ',
                     'bg-neutral-90 hover:bg-onSurface hover:bg-opacity-10',
                     'placeholder:text-transparent placeholder:select-none cursor-text',
-                    { 'focus:border-red border-red': touched && errors }
+                    { 'focus:border-red border-red': showError }
                 )}
                 value={value}
                 onInput={onInput}
-                onChange={() => setTouched(true)}
+                onChange={touchInput}
             />
 
             <span
@@ -59,8 +54,7 @@ export const TextArea: React.FC<TextInputProps> = ({
                     'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base',
                     'transition-all',
                     {
-                        'text-red peer-placeholder-shown:text-red':
-                            touched && errors,
+                        'text-red peer-placeholder-shown:text-red': showError,
                     }
                 )}
             >
