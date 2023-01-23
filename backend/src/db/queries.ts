@@ -1,7 +1,10 @@
 import { pool } from './pool';
 import { logger } from '../utils/logger';
 
-const executeQuery = async (text: string, values: string[]): Promise<string[]> => {
+const executeQuery = async (
+    text: string,
+    values: string[]
+): Promise<string[]> => {
     const query = {
         text: text,
         values: values,
