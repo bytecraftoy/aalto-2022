@@ -19,7 +19,6 @@ export const IOBoxButton: React.FC<IOBoxButtonProps> = ({
     colorPalette,
     onClick,
     visible,
-    errors,
 }) => {
     const [nameVisible, setNameVisible] = useState(false);
 
@@ -39,7 +38,6 @@ export const IOBoxButton: React.FC<IOBoxButtonProps> = ({
                 name={nameVisible ? name : ''}
                 icon={icon}
                 colorPalette={colorPalette}
-                disabled={errors ? true : false}
                 onClick={onClick}
                 className={classNames(
                     'h-12 rounded-md outline outline-1 outline-white/20',

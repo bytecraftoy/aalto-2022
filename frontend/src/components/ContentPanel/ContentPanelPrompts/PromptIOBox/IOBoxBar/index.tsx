@@ -32,7 +32,6 @@ export const IOBoxBar: React.FC<IOBoxBarProps> = ({
                     name="Generate"
                     colorPalette="primary"
                     visible={showButtons}
-                    errors={errors}
                 />
             ) : (
                 <></>
