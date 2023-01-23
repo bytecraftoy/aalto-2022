@@ -1,5 +1,5 @@
 import { generateText } from '../../utils/generateContent';
-import { InputSchema, PromptData } from '../PromptIOBox';
+import { InputSchema, PromptData } from './ContentPanelPrompts/PromptIOBox';
 /**
  * Creates an <id, output> map of generated prompts
  * @param prompts
