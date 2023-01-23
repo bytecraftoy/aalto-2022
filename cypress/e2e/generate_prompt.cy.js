@@ -76,11 +76,7 @@ describe('Prompt generation', () => {
         // Hovers and clicks the first delete button
         cy.get('[data-testid="hover-area"]').first().realHover();
         // Clicks the first delete button
-        cy.get(deleteSelector)
-            .first()
-            .children()
-            .first()
-            .click();
+        cy.get(deleteSelector).first().children().first().click();
         // Asserts that there is no delete button (since the first IOBox was deleted)
         cy.get(deleteSelector).should('not.exist');
     });
