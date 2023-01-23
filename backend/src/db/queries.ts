@@ -59,7 +59,7 @@ export const selectUserSettings = async (
     const res = await executeQuery(text, values);
     return res[0] as { settings: object };
     //return res[0];
-}
+};
 
 export const userExists = async (name: string): Promise<boolean> => {
     const text = 'SELECT COUNT(*) from users WHERE name = $1';
