@@ -1,4 +1,4 @@
-import { PromptData } from '../components/PromptIOBox';
+import { PromptData } from '../components/ContentPanel/ContentPanelPrompts/PromptIOBox';
 
 /**
  * Convinience file containing type definitions for readability
