@@ -3,11 +3,7 @@ import { CustomInput } from '../Inputs';
 import { FilledButton, TextButton } from '../Buttons';
 import { useNavigate } from 'react-router-dom';
 import { useValue } from '../../utils/hooks';
-<<<<<<< HEAD
-import { usernameSchema } from './validation';
-=======
 import { usernameSchema, passwordSchema } from './validation';
->>>>>>> ee4579cafcfdc3c9dbc20edc8aa6ad016f444f1d
 import { Notification } from './Notification';
 import { useOpen } from './hooks';
 
@@ -23,26 +19,18 @@ export const LoginForm = () => {
         errors: usernameErrors,
         changeValue: changeUsername,
     } = useValue(usernameSchema);
-<<<<<<< HEAD
-    const { value: password, changeValue: changePassword } =
-        useValue(usernameSchema);
-=======
     const {
         value: password,
         errors: passwordErrors,
         changeValue: changePassword,
     } = useValue(passwordSchema);
->>>>>>> ee4579cafcfdc3c9dbc20edc8aa6ad016f444f1d
 
     // If the error message of the user is shown
     const { open, setOpen } = useOpen();
 
-<<<<<<< HEAD
-=======
     // Disables the submit button
     const disabled = usernameErrors !== '' || passwordErrors !== '';
 
->>>>>>> ee4579cafcfdc3c9dbc20edc8aa6ad016f444f1d
     // Navigation
     const navigate = useNavigate();
 
@@ -53,11 +41,7 @@ export const LoginForm = () => {
         //TODO API call for the backend to login
         // Now just mock log in
         if (username === 'hello' && password === 'world') {
-<<<<<<< HEAD
-            console.log('Logged in!');
-=======
             navigate('/');
->>>>>>> ee4579cafcfdc3c9dbc20edc8aa6ad016f444f1d
         } else {
             setOpen(true);
         }
@@ -86,10 +70,7 @@ export const LoginForm = () => {
                 textHelper="Please enter your password"
                 value={password}
                 onInput={changePassword}
-<<<<<<< HEAD
-=======
                 errors={passwordErrors}
->>>>>>> ee4579cafcfdc3c9dbc20edc8aa6ad016f444f1d
             />
             <div className="flex flex-col gap-2">
                 <FilledButton
@@ -98,10 +79,7 @@ export const LoginForm = () => {
                     onClick={() => undefined}
                     className="justify-center"
                     type="submit"
-<<<<<<< HEAD
-=======
                     disabled={disabled}
->>>>>>> ee4579cafcfdc3c9dbc20edc8aa6ad016f444f1d
                 />
                 <TextButton
                     name="Click here to register"
