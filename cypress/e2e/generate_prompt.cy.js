@@ -16,7 +16,8 @@ describe('Prompt generation', () => {
         cy.get('input[placeholder*="category"]').type(category_input);
         cy.get('textarea[placeholder*="User input here"]').type(prompt_input);
         cy.get(output_locator).invoke('text').should('be.empty');
-        cy.get('button:contains("Generate")').first().click({ force: true });
+        cy.get('[data-testid="hover-area"]').realHover();
+        cy.get('button:contains("Generate")').first().click();
         cy.get(output_locator).should(
             'include.text',
             `Theme: ${category_input}\\n${prompt_input}`
@@ -74,8 +75,9 @@ describe('Prompt generation', () => {
         cy.get('[data-testid="fab-button"]').click();
         // Asserts that there are 2 delete buttons (1 for each IOBox)
         cy.get(deleteSelector).should('have.length', 2);
-        // Clicks the first delete button
-        cy.get(deleteSelector).first().click({ force: true });
+        // Hovers and clicks the first delete button
+        cy.get('[data-testid="hover-area"]').first().realHover();
+        cy.get(deleteSelector).first().click();
         // Asserts that there is no delete button (since the first IOBox was deleted)
         cy.get(deleteSelector).should('not.exist');
     });
