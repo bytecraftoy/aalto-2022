@@ -13,6 +13,7 @@ export interface ButtonProps {
     name: string;
     colorPalette: Palette;
     icon?: Icon;
+    type?: 'submit';
     disabled?: boolean;
     className?: string;
     onClick: React.MouseEventHandler<HTMLButtonElement>;

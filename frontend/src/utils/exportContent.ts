@@ -1,6 +1,6 @@
 import { apiFetch } from './apiFetch';
 import { backendURL } from './backendURL';
-import { PromptData } from '../components/PromptIOBox';
+import { PromptData } from '../components/ContentPanel/ContentPanelPrompts/PromptIOBox';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
