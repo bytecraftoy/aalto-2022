@@ -19,7 +19,12 @@ export const SegmentedButtons: React.FC<SegmentedButtonsProps> = ({
 }) => {
     return (
         <div className="inline-block">
-            <div className="grid grid-cols-3">
+            <div
+                className={`grid`}
+                style={{
+                    gridTemplateColumns: `repeat(${actions.length}, minmax(0px, 1fr))`,
+                }}
+            >
                 {actions.map((action, index) => {
                     let position: 'left' | 'right' | undefined;
                     if (index == 0) position = 'left';
