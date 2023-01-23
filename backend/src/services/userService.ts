@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { logger } from './../utils/logger';
 import { TokenPayload } from '../types/TokenPayload';
 import { z } from 'zod';
-import { userExists } from '../db/queries';
+import { addUser, userExists } from '../db/queries';
 
 /**
  * The secret used for signing the web tokens.
@@ -94,14 +94,14 @@ const parseToken = (token: string): Promise<TokenPayload> => {
     );
 };
 
-const createUser = async (
-    name: string,
-    _password: string
-): Promise<boolean> => {
+const createUser = async (name: string, password: string): Promise<boolean> => {
     const exists = await userExists(name);
     if (exists) {
         return false;
     }
+
+    await addUser(name, password);
+
     return true;
 };
 
