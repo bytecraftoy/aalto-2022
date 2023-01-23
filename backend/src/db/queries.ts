@@ -1,7 +1,7 @@
 import { pool } from './pool';
 import { logger } from '../utils/logger';
 
-const executeQuery = async (text: string, values: string[]): Promise<any[]> => {
+const executeQuery = async (text: string, values: string[]): Promise<string[]> => {
     const query = {
         text: text,
         values: values,
@@ -10,6 +10,7 @@ const executeQuery = async (text: string, values: string[]): Promise<any[]> => {
     const res = await pool.query(query);
     logger.info(res);
     await pool.end();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return res.rows;
 };
 
