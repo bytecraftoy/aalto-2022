@@ -78,10 +78,10 @@ userRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
         const payload = await readToken(req);
-        if(payload === null){
+        if (payload === null) {
             res.status(401).end();
-        }else{
-            const response = {name: payload.userName};
+        } else {
+            const response = { name: payload.userName };
             res.json(response);
         }
     })
