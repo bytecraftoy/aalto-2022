@@ -67,7 +67,7 @@ export const userExists = async (name: string): Promise<boolean> => {
     const res = await executeQuery(text, values);
     const row = res[0] as { count: string };
     const count = parseInt(row.count);
-    return count === 1;
+    return count >= 1;
 };
 
 export const addUser = async (name: string, passwordHash: string) => {
