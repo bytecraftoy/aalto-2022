@@ -15,61 +15,63 @@ import { logger } from '../utils/logger';
  */
 const executeQuery = async (
     text: string,
-    values: string[]
-): Promise<string[]> => {
+    values: unknown[]
+): Promise<unknown[]> => {
     const query = { text, values };
     await pool.connect();
     const res = await pool.query(query);
     logger.info(res);
     await pool.end();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return res.rows;
+    return res.rows as unknown[];
 };
 
 export const selectProjectsbyUserID = async (
     userID: string
-): Promise<string[]> => {
-    const text = 'SELECT Name FROM Projects WHERE UserID = $1';
+): Promise<{ id: string; name: string }[]> => {
+    const text = 'SELECT id, name FROM projects WHERE user_id = $1';
     const values = [userID];
     const res = await executeQuery(text, values);
-    return res;
+    return res as { id: string; name: string }[];
 };
 
-export const selectProjectData = async (projectID: string): Promise<string> => {
-    const text = 'SELECT Data FROM Projects WHERE ID = $1';
+export const selectProjectData = async (
+    projectID: string
+): Promise<{ data: object }> => {
+    const text = 'SELECT data FROM projects WHERE id = $1';
     const values = [projectID];
     const res = await executeQuery(text, values);
-    return res[0];
+    return res[0] as { data: object };
 };
 
-export const selectUserSettings = async (userID: string): Promise<string> => {
-    const text = 'SELECT Settings FROM Users WHERE UserID = $1';
+export const selectUserSettings = async (
+    userID: string
+): Promise<{ settings: object }> => {
+    const text = 'SELECT settings FROM users WHERE id = $1';
     const values = [userID];
     const res = await executeQuery(text, values);
-    return res[0];
+    return res[0] as { settings: object };
 };
 
 export const addUser = async (name: string, passwordHash: string) => {
-    const text =
-        'INSERT INTO Users(Name, PasswordHash, Settings) VALUES ($1, $2)';
+    const text = 'INSERT INTO users(name, password_hash) VALUES ($1, $2)';
     const values = [name, passwordHash];
     await executeQuery(text, values);
 };
 
 export const deleteUser = async (id: string) => {
-    const text = 'DELETE FROM Users WHERE ID = $1';
+    const text = 'DELETE FROM users WHERE id = $1';
     const values = [id];
     await executeQuery(text, values);
 };
 
 export const updatePassword = async (id: string, passwordHash: string) => {
-    const text = 'UPDATE Users SET PasswordHash = $1 WHERE ID = $2';
+    const text = 'UPDATE users SET password_hash = $1 WHERE id = $2';
     const values = [id, passwordHash];
     await executeQuery(text, values);
 };
 
-export const updateUserSettings = async (id: string, settings: string) => {
-    const text = 'UPDATE Users SET Settings = $1 WHERE ID = $2';
+export const updateUserSettings = async (id: string, settings: object) => {
+    const text = 'UPDATE users SET settings = $1 WHERE id = $2';
     const values = [id, settings];
     await executeQuery(text, values);
 };
@@ -77,15 +79,16 @@ export const updateUserSettings = async (id: string, settings: string) => {
 export const addProject = async (
     userID: string,
     name: string,
-    data: string
+    data: object
 ) => {
-    const text = 'INSERT INTO Projects(UserID, Name, Data) VALUES ($1, $2, $3)';
+    const text =
+        'INSERT INTO projects(user_id, name, data) VALUES ($1, $2, $3)';
     const values = [userID, name, data];
     await executeQuery(text, values);
 };
 
 export const deleteProject = async (id: string) => {
-    const text = 'DELETE FROM Projects WHERE ID = $1';
+    const text = 'DELETE FROM projects WHERE id = $1';
     const values = [id];
     await executeQuery(text, values);
 };
