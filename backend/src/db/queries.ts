@@ -7,11 +7,10 @@ import { logger } from '../utils/logger';
  *  depending on the query.
  *
  * @param {string} text The query to be executed without the input values
- * @param {string} values The input values seperated from the query
+ * @param {unknown[]} values The input values seperated from the query
  *                        to mitigate SQL injection
  *
- * @returns {string[]} node-postgres.com/apis/result. Currently returns result.rows.
- * If there is a reason to return the full result, it should be a simple change
+ * @returns {unknown[]} https://node-postgres.com/apis/result. Currently returns result.rows.
  */
 const executeQuery = async (
     text: string,
