@@ -77,9 +77,13 @@ userRouter.post(
 userRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
-        //this router is only for testing
         const payload = await readToken(req);
-        res.send(JSON.stringify(payload));
+        if (payload === null) {
+            res.status(401).end();
+        } else {
+            const response = { name: payload.userName };
+            res.json(response);
+        }
     })
 );
 
