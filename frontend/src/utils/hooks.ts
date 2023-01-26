@@ -1,5 +1,5 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { RootState, AppDispatch } from '../store';
 
 // Used instead of plain `useDispatch` and `useSelector`
@@ -29,8 +29,5 @@ export const useValue = (schema?: Zod.ZodType) => {
         }
     }
 
-    const changeValue = (e: React.ChangeEvent<HTMLInputElement>) =>
-        setValue(e.target.value);
-
-    return { value, errors, changeValue };
+    return { value, errors, setValue };
 };

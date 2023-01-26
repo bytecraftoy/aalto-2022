@@ -89,12 +89,27 @@ userRouter.post(
     })
 );
 
+userRouter.post(
+    '/logout/',
+    expressAsyncHandler(async (req, res) => {
+        if ((await readToken(req)) === null) res.status(401).end();
+        else
+            res.cookie(tokenCookieName, '-', tokenCookieOptions)
+                .status(204)
+                .end();
+    })
+);
+
 userRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
-        //this router is only for testing
         const payload = await readToken(req);
-        res.send(JSON.stringify(payload));
+        if (payload === null) {
+            res.status(401).end();
+        } else {
+            const response = { name: payload.userName };
+            res.json(response);
+        }
     })
 );
 
