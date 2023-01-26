@@ -58,6 +58,16 @@ export const selectUserSettings = async (
     const values = [userID];
     const res = await executeQuery(text, values);
     return res[0] as { settings: object };
+    //return res[0];
+};
+
+export const userExists = async (name: string): Promise<boolean> => {
+    const text = 'SELECT COUNT(*) from users WHERE name = $1';
+    const values = [name];
+    const res = await executeQuery(text, values);
+    const row = res[0] as { count: string };
+    const count = parseInt(row.count);
+    return count >= 1;
 };
 
 export const addUser = async (name: string, passwordHash: string) => {
