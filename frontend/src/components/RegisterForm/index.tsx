@@ -14,12 +14,12 @@ export const RegisterForm = () => {
     const {
         value: username,
         errors: usernameErrors,
-        changeValue: setUsername,
+        setValue: setUsername,
     } = useValue(usernameSchema);
     const {
         value: password,
         errors: passwordErrors,
-        changeValue: setPassword,
+        setValue: setPassword,
     } = useValue(passwordSchema);
     const { repeatedPassword, repeatErrors, changeRepeated } =
         useRepeatPassword(password);
@@ -39,14 +39,18 @@ export const RegisterForm = () => {
             <CustomInput
                 value={username}
                 label="Username"
-                onInput={setUsername}
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setUsername(e.target.value)
+                }
                 textHelper="Choose your username"
                 errors={usernameErrors}
             />
             <CustomInput
                 value={password}
                 label="Password"
-                onInput={setPassword}
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPassword(e.target.value)
+                }
                 textHelper="Choose your password"
                 errors={passwordErrors}
             />
