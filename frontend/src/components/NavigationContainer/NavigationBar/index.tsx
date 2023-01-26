@@ -3,6 +3,7 @@ import { Surface } from '../../Surface';
 import { solidIcon } from '../../../utils/icons';
 import { TextButton } from '../../Buttons';
 import { useNavigate } from 'react-router-dom';
+import { EventBus } from '../../../utils/eventBus';
 
 /**
  * Component for elements inside the actual navigation bar
@@ -14,6 +15,11 @@ interface NavigationBarProps {
 
 export const NavigationBar: React.FC<NavigationBarProps> = ({ setOpen }) => {
     const navigate = useNavigate();
+
+    // Log out the user
+    const logout = async () => {
+        EventBus.dispatch('logout', 'logging out');
+    };
 
     return (
         <Surface
@@ -28,6 +34,12 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ setOpen }) => {
                 AI-assisted game content creator
             </h1>
             <div className="flex flex-row">
+                <TextButton
+                    name="Log out"
+                    colorPalette="primary"
+                    onClick={logout}
+                    className="m-0"
+                />
                 <TextButton
                     name="Sign up"
                     colorPalette="primary"

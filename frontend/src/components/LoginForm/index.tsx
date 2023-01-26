@@ -6,6 +6,7 @@ import { useValue } from '../../utils/hooks';
 import { usernameSchema, passwordSchema } from './validation';
 import { Notification } from './Notification';
 import { useOpen } from './hooks';
+import { backendURL } from '../../utils/backendURL';
 
 /**
  *
@@ -17,12 +18,12 @@ export const LoginForm = () => {
     const {
         value: username,
         errors: usernameErrors,
-        changeValue: changeUsername,
+        setValue: setUsername,
     } = useValue(usernameSchema);
     const {
         value: password,
         errors: passwordErrors,
-        changeValue: changePassword,
+        setValue: setPassword,
     } = useValue(passwordSchema);
 
     // If the error message of the user is shown
@@ -35,15 +36,21 @@ export const LoginForm = () => {
     const navigate = useNavigate();
 
     //Submits the login form
-    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        //TODO API call for the backend to login
-        // Now just mock log in
-        if (username === 'hello' && password === 'world') {
+        // Sends the credentials to the backend
+        const res = await fetch(`${backendURL}/api/user/login`, {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({ name: username, password }),
+        });
+
+        // If correct username and password then navigate to the project
+        if (res.status === 204) {
             navigate('/');
         } else {
-            setOpen(true);
+            setPassword('');
         }
     };
 
@@ -58,18 +65,22 @@ export const LoginForm = () => {
             <Notification isOpen={open} close={() => setOpen(false)} />
             <CustomInput
                 type="text"
-                label="Username*"
+                label="Username"
                 textHelper="Please enter your username"
                 value={username}
-                onInput={changeUsername}
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setUsername(e.target.value)
+                }
                 errors={usernameErrors}
             />
             <CustomInput
                 type="password"
-                label="Password*"
+                label="Password"
                 textHelper="Please enter your password"
                 value={password}
-                onInput={changePassword}
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPassword(e.target.value)
+                }
                 errors={passwordErrors}
             />
             <div className="flex flex-col gap-2">
