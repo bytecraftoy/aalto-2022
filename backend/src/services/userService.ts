@@ -3,7 +3,13 @@ import jwt from 'jsonwebtoken';
 import { logger } from './../utils/logger';
 import { TokenPayload } from '../types/TokenPayload';
 import { z } from 'zod';
-import { addUser, userExists } from '../db/queries';
+import {
+    addUser,
+    userExists,
+    selectProjectsbyUserID,
+    projectExists,
+    selectProjectData,
+} from '../db/queries';
 
 /**
  * The secret used for signing the web tokens.
@@ -105,6 +111,26 @@ const createUser = async (name: string, password: string): Promise<boolean> => {
     return true;
 };
 
+const getProjects = async (
+    id: string
+): Promise<{ id: string; name: string }[]> => {
+    const projects = await selectProjectsbyUserID(id);
+    return projects;
+};
+
+const getProject = async (
+    projectID: string
+): Promise<[boolean, { data: object }]> => {
+    const exists = await projectExists(projectID);
+    if (exists) {
+        const response = await selectProjectData(projectID);
+
+        return [true, response];
+    }
+
+    return [false, { data: {} }];
+};
+
 export {
     loginRequestSchema,
     LoginRequest,
@@ -114,4 +140,6 @@ export {
     createUser,
     createToken,
     parseToken,
+    getProjects,
+    getProject,
 };
