@@ -7,6 +7,8 @@ import { usernameSchema, passwordSchema } from './validation';
 import { Notification } from './Notification';
 import { useOpen } from './hooks';
 import { backendURL } from '../../utils/backendURL';
+import { useAppDispatch } from '../../utils/hooks';
+import { logIn } from '../../reducers/userReducer';
 
 /**
  *
@@ -34,6 +36,7 @@ export const LoginForm = () => {
 
     // Navigation
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     //Submits the login form
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,6 +51,7 @@ export const LoginForm = () => {
 
         // If correct username and password then navigate to the project
         if (res.status === 204) {
+            dispatch(logIn());
             navigate('/');
         } else {
             setPassword('');
