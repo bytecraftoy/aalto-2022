@@ -27,7 +27,8 @@ export type Icon =
     | 'ArrowPathIcon'
     | 'LockClosedIcon'
     | 'LockOpenIcon'
-    | 'LogoutIcon';
+    | 'LogoutIcon'
+    | 'Cog6Tooth';
 
 /** Default sized Icon element using HeroIcons */
 export const solidIcon = (i?: Icon, className?: string) => {
@@ -57,6 +58,8 @@ export const solidIcon = (i?: Icon, className?: string) => {
             return <LockOpenIcon className={classN} />;
         case 'LogoutIcon':
             return <ArrowLeftOnRectangleIcon className={classN} />;
+        case 'Cog6Tooth':
+            return <Cog6ToothIcon className={classN} />;
         default:
             return <></>;
     }

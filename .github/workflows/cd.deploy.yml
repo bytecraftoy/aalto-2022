@@ -32,6 +32,9 @@ jobs:
             - name: Copy backend node_modules to build dir
               run: cp -r backend/node_modules backend/build
 
+            - name: Copy backend migrations to build dir
+              run: cp -r backend/migrations backend/build
+
             - name: Add SSH key
               env:
                   SSH_KEY: ${{ secrets.SSH_KEY }}
