@@ -1,6 +1,9 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
-dotenv.config();
+
+if (process.env.NODE_ENV === 'test') {
+    dotenv.config();
+}
 
 const databaseConfig = {
     user: process.env.POSTGRES_USER,
