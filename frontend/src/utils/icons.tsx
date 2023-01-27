@@ -7,6 +7,10 @@ import {
     Cog6ToothIcon,
     CubeIcon,
     WindowIcon,
+    XMarkIcon,
+    ArrowPathIcon,
+    LockClosedIcon,
+    LockOpenIcon,
 } from '@heroicons/react/24/solid';
 
 /** Type containing predefined constants for common icons */
@@ -17,7 +21,12 @@ export type Icon =
     | 'InformationCircleIcon'
     | 'SettingsIcon'
     | 'CubeIcon'
-    | 'WindowIcon';
+    | 'WindowIcon'
+    | 'XMarkIcon'
+    | 'ArrowPathIcon'
+    | 'LockClosedIcon'
+    | 'LockOpenIcon'
+    | 'Cog6Tooth';
 
 /** Default sized Icon element using HeroIcons */
 export const solidIcon = (i?: Icon, className?: string) => {
@@ -37,6 +46,16 @@ export const solidIcon = (i?: Icon, className?: string) => {
             return <CubeIcon className={classN} />;
         case 'WindowIcon':
             return <WindowIcon className={classN} />;
+        case 'XMarkIcon':
+            return <XMarkIcon className={classN} />;
+        case 'ArrowPathIcon':
+            return <ArrowPathIcon className={classN} />;
+        case 'LockClosedIcon':
+            return <LockClosedIcon className={classN} />;
+        case 'LockOpenIcon':
+            return <LockOpenIcon className={classN} />;
+        case 'Cog6Tooth':
+            return <Cog6ToothIcon className={classN} />;
         default:
             return <></>;
     }

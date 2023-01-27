@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'test') {
             server.listen(PORT, () => logger.info('started', { port: PORT }));
         })
         .catch((e: unknown) => {
-            logger.error('startup_failed', { e });
+            logger.error('startup_failed', { error: '' + e });
         });
 }
 
