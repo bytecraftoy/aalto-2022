@@ -54,6 +54,7 @@ export const LoginForm = () => {
             dispatch(logIn());
             navigate('/');
         } else {
+            setOpen(true);
             setPassword('');
         }
     };
