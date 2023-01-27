@@ -1,18 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
-/* import { ButtonProps } from '../../../Buttons';
-import { ExtendedFAB } from '../../../Buttons/ExtendedFab'; */
-import { ButtonProps } from '../../../../../Buttons';
-import { ExtendedFAB } from '../../../../../Buttons/ExtendedFab';
+import { ButtonProps, FilledButton } from '../../../../../Buttons';
 
 /**
- * Individual IOBux action button component
- * e.g. individual iobox generation
+ * Individual IOBox action button component
+ * e.g. "Generate" or "Lock"
  */
 
 export interface IOBoxButtonProps extends ButtonProps {
     //Other properties
-    name: string;
     visible: boolean;
     errors?: string;
 }
@@ -25,18 +21,31 @@ export const IOBoxButton: React.FC<IOBoxButtonProps> = ({
     visible,
     errors,
 }) => {
+    const [nameVisible, setNameVisible] = useState(false);
+
     return (
-        <ExtendedFAB
-            name={name}
-            icon={icon ?? 'PlusIcon'}
-            colorPalette={colorPalette}
-            disabled={errors ? true : false}
-            onClick={onClick}
+        <div
+            data-testid={`iobox-${name}`}
+            onMouseEnter={() => setNameVisible(true)}
+            onMouseLeave={() => setNameVisible(false)}
             className={classNames(
-                'transition-all',
-                { '-translate-y-16': visible },
-                { '': !visible }
+                'transition-all mb-0 mr-0',
+                { '-translate-y-[11.5em]': visible },
+                { '': !visible },
+                { 'mr-0 scale-105': nameVisible }
             )}
-        />
+        >
+            <FilledButton
+                name={nameVisible ? name : ''}
+                icon={icon}
+                colorPalette={colorPalette}
+                disabled={errors ? true : false}
+                onClick={onClick}
+                className={classNames(
+                    'h-12 rounded-md outline outline-1 outline-white/20',
+                    { 'pr-3': !nameVisible }
+                )}
+            />
+        </div>
     );
 };
