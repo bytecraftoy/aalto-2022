@@ -61,6 +61,22 @@ export const selectUserSettings = async (
     //return res[0];
 };
 
+export const selectUserID = async (name: string): Promise<string | null> => {
+    const text = 'SELECT id FROM users WHERE name = $1';
+    const values = [name];
+    const res = await executeQuery(text, values);
+    return res.length ? (res[0] as { id: string }).id : null;
+};
+
+export const selectPassword = async (name: string): Promise<string | null> => {
+    const text = 'SELECT password_hash FROM users WHERE name = $1';
+    const values = [name];
+    const res = await executeQuery(text, values);
+    return res.length
+        ? (res[0] as { password_hash: string }).password_hash
+        : null;
+};
+
 export const userExists = async (name: string): Promise<boolean> => {
     const text = 'SELECT COUNT(*) from users WHERE name = $1';
     const values = [name];

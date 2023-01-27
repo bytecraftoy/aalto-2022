@@ -2,7 +2,7 @@ import React from 'react';
 import { IOBoxButton } from './IOBoxButton';
 
 /**
- * Compoennt containing all the actions of the Input/Output boxes
+ * Component containing all the actions of the Input/Output boxes
  * e.g., locking, generation, and deleting ioboxes.
  */
 
@@ -24,30 +24,32 @@ export const IOBoxBar: React.FC<IOBoxBarProps> = ({
     errors,
 }) => {
     return (
-        <div className="absolute top-10 flex flex-row z-1">
-            {deleteSelf ? (
+        <div className="absolute w-full px-5 flex flex-row justify-end items-center z-1">
+            {!locked && !errors ? (
                 <IOBoxButton
-                    onClick={() => deleteSelf?.()}
-                    name="Delete"
-                    colorPalette="red"
+                    icon="ArrowPathIcon"
+                    onClick={generate}
+                    name="Generate"
+                    colorPalette="primary"
                     visible={showButtons}
                 />
             ) : (
                 <></>
             )}
             <IOBoxButton
+                icon="LockClosedIcon"
                 onClick={lock}
                 name={locked ? 'Unlock' : 'Lock'}
-                colorPalette={locked ? 'tertiary' : 'secondary'}
+                colorPalette={locked ? 'secondary' : 'tertiary'}
                 visible={locked || showButtons}
             />
-            {!locked ? (
+            {deleteSelf ? (
                 <IOBoxButton
-                    onClick={generate}
-                    name="Generate"
-                    colorPalette="primary"
+                    icon="XMarkIcon"
+                    onClick={() => deleteSelf?.()}
+                    name="Delete"
+                    colorPalette="red"
                     visible={showButtons}
-                    errors={errors}
                 />
             ) : (
                 <></>
