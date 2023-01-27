@@ -5,6 +5,10 @@ import { CustomInput } from '../Inputs';
 import { FilledButton } from '../Buttons';
 import { usernameSchema, passwordSchema } from './validation';
 import { useRepeatPassword } from './hooks';
+import { backendURL } from '../../utils/backendURL';
+import { useAppDispatch } from '../../utils/hooks';
+import { useNavigate } from 'react-router-dom';
+import { logIn } from '../../reducers/userReducer';
 
 /**
  *  Form for registering the user
@@ -24,12 +28,31 @@ export const RegisterForm = () => {
     const { repeatedPassword, repeatErrors, changeRepeated } =
         useRepeatPassword(password);
 
+    // Navigation
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
     // Disabled the submit button
     const disabled =
         usernameErrors !== '' || passwordErrors !== '' || repeatErrors !== '';
 
-    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        // Send register information to the backend
+        const res = await fetch(`${backendURL}/api/user/register`, {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({ name: username, password }),
+        });
+
+        if (res.status === 204) {
+            dispatch(logIn());
+            navigate('/');
+        } else {
+            // TODO show error message to the user, for example, when username already taken.
+            console.log('failed');
+        }
     };
 
     return (
