@@ -8,7 +8,7 @@ export const useOpen = () => {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        const timer = setTimeout(() => setOpen(false), 5000);
+        const timer = setTimeout(() => setOpen(false), 10000);
 
         return () => {
             clearTimeout(timer);

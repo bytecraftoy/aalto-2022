@@ -4,7 +4,7 @@ import { FilledButton, TextButton } from '../Buttons';
 import { useNavigate } from 'react-router-dom';
 import { useValue } from '../../utils/hooks';
 import { usernameSchema, passwordSchema } from './validation';
-import { Notification } from './Notification';
+import { Notification } from '../Notification';
 import { useOpen } from './hooks';
 import { backendURL } from '../../utils/backendURL';
 import { useAppDispatch } from '../../utils/hooks';
@@ -67,7 +67,11 @@ export const LoginForm = () => {
                 </h1>
                 <div className="w-full h-px bg-black" />
             </div>
-            <Notification isOpen={open} close={() => setOpen(false)} />
+            <Notification
+                isOpen={open}
+                close={() => setOpen(false)}
+                message="Invalid username or password"
+            />
             <CustomInput
                 type="text"
                 label="Username"

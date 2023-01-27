@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Header } from './Header';
 import { useValue } from '../../utils/hooks';
 import { CustomInput } from '../Inputs';
@@ -9,6 +9,8 @@ import { backendURL } from '../../utils/backendURL';
 import { useAppDispatch } from '../../utils/hooks';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '../../reducers/userReducer';
+import { Notification } from '../Notification';
+import { useOpen } from '../LoginForm/hooks';
 
 /**
  *  Form for registering the user
@@ -27,6 +29,10 @@ export const RegisterForm = () => {
     } = useValue(passwordSchema);
     const { repeatedPassword, repeatErrors, changeRepeated } =
         useRepeatPassword(password);
+
+    // Open the notification
+    const { open, setOpen } = useOpen();
+    const [error, setError] = useState('');
 
     // Navigation
     const navigate = useNavigate();
@@ -50,14 +56,21 @@ export const RegisterForm = () => {
             dispatch(logIn());
             navigate('/');
         } else {
-            // TODO show error message to the user, for example, when username already taken.
-            console.log('failed');
+            // Set the error notification
+            // TODO! Get the real error reason from backend and show to user
+            setError('Username already taken');
+            setOpen(true);
         }
     };
 
     return (
         <form className="flex flex-col w-72 gap-10" onSubmit={submitForm}>
             <Header />
+            <Notification
+                isOpen={open}
+                close={() => setOpen(false)}
+                message={error}
+            />
 
             <CustomInput
                 value={username}
@@ -71,6 +84,7 @@ export const RegisterForm = () => {
             <CustomInput
                 value={password}
                 label="Password"
+                type="password"
                 onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setPassword(e.target.value)
                 }
@@ -80,6 +94,7 @@ export const RegisterForm = () => {
             <CustomInput
                 value={repeatedPassword}
                 label="Repeat password"
+                type="password"
                 onInput={changeRepeated}
                 textHelper="Please enter your password again"
                 errors={repeatErrors}
