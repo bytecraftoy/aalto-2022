@@ -32,27 +32,30 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ setOpen }) => {
                 {solidIcon('Bars3Icon', 'mx-8 w-8 h-8 text-primary-30')}
             </button>
 
-            <h1 className="text-2xl font-medium mx-4 text-center text-neutral-10">
+            {/* Only show title on large screens */}
+            <h1 className="text-2xl font-medium mx-4 text-center text-neutral-10 max-lg:hidden">
                 AI-assisted game content creator
             </h1>
+
+            {/* User actions, TODO: show log out and user icon conditionally */}
             <div className="flex flex-row">
                 <TextButton
                     name="Log out"
                     colorPalette="primary"
                     onClick={logout}
-                    className="m-0"
+                    className="m-0 max-sm:text-sm"
                 />
                 <TextButton
                     name="Sign up"
                     colorPalette="primary"
                     onClick={() => navigate('/register')}
-                    className="m-0"
+                    className="m-0 max-sm:text-sm"
                 />
                 <TextButton
                     name="Log in"
                     colorPalette="primary"
                     onClick={() => navigate('/login')}
-                    className="m-0"
+                    className="m-0 max-sm:text-sm"
                 />
                 <button>
                     {solidIcon(
