@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useAppDispatch } from '../../utils/hooks';
 import { EventBus } from '../../utils/eventBus';
 import { backendURL } from '../../utils/backendURL';
-import { logOut } from '../../reducers/userReducer';
+import { logOut, logIn } from '../../reducers/userReducer';
 
 /**
  * Wrapped component for logging out of the user from the application.
@@ -26,6 +26,22 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
         // Empty user logged in state from redux store
         dispatch(logOut());
     }
+
+    // Logs in after refresh
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await fetch(`${backendURL}/api/user`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (res.status === 200) {
+                dispatch(logIn());
+            }
+        };
+
+        fetchData();
+    }, []);
 
     // Adds event listener for logout events and logouts user when the evne tis fired
     useEffect(() => {
