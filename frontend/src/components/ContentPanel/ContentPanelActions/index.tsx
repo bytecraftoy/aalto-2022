@@ -21,7 +21,7 @@ export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
     return (
         <Surface
             level={5}
-            className="h-20 w-full rounded-2xl flex flex-row justify-between items-center pr-4"
+            className="h-20 w-full rounded-2xl flex flex-row justify-between items-center px-4"
         >
             <FilledButton
                 onClick={generateAll}

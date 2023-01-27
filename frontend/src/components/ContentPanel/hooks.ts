@@ -33,6 +33,13 @@ export const usePanel = (
         setPromptBoxes((prev) => [...prev, newBox]);
     };
 
+    //Callback to create multiple boxes
+    const addPromptBoxes = (n: number) => {
+        for (let i = 0; i < n; i++) {
+            addPromptBox();
+        }
+    };
+
     // Generates all the IO boxes that are not locked
     const generateAll = async () => {
         // Start the loading spinner
@@ -109,6 +116,7 @@ export const usePanel = (
         generateAll,
         setPromptOutput,
         addPromptBox,
+        addPromptBoxes,
         lockPrompt,
     };
 };
