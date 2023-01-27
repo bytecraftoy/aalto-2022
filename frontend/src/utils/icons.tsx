@@ -11,6 +11,7 @@ import {
     ArrowPathIcon,
     LockClosedIcon,
     LockOpenIcon,
+    ArrowLeftOnRectangleIcon,
 } from '@heroicons/react/24/solid';
 
 /** Type containing predefined constants for common icons */
@@ -25,7 +26,8 @@ export type Icon =
     | 'XMarkIcon'
     | 'ArrowPathIcon'
     | 'LockClosedIcon'
-    | 'LockOpenIcon';
+    | 'LockOpenIcon'
+    | 'LogoutIcon';
 
 /** Default sized Icon element using HeroIcons */
 export const solidIcon = (i?: Icon, className?: string) => {
@@ -53,6 +55,8 @@ export const solidIcon = (i?: Icon, className?: string) => {
             return <LockClosedIcon className={classN} />;
         case 'LockOpenIcon':
             return <LockOpenIcon className={classN} />;
+        case 'LogoutIcon':
+            return <ArrowLeftOnRectangleIcon className={classN} />;
         default:
             return <></>;
     }
