@@ -1,6 +1,6 @@
-import React from 'react';
-import { FilledButton } from './Buttons';
-import { TextArea } from './TextArea';
+import React, { useState } from 'react';
+import { IOBoxBar } from './IOBoxBar';
+import { TextArea } from '../../../Inputs';
 import { z } from 'zod';
 
 /**
@@ -22,6 +22,7 @@ interface PromptIOBoxProps {
     id: string;
     input: string;
     output: string;
+    locked: boolean;
     setInput: (s: string) => void;
     setOutput: (s: string) => void;
     generate: () => void;
@@ -49,12 +50,15 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
     id,
     input,
     output,
+    locked,
     setInput,
     setOutput,
     generate,
     deleteSelf,
     lock,
 }) => {
+    const [showButtons, setShowButtons] = useState(false);
+
     // All the errors of the input
     let errors = '';
     // Set all the validation errors
@@ -65,9 +69,27 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
     }
 
     return (
-        <div className="mt-10 pt-4 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around">
+        <div
+            //IOBoxBar is absolute so use relative here
+            className="mt-6 pt-10 px-8 w-1/2 min-w-fit flex flex-col items-center justify-around relative"
+            data-testid="hover-area"
+            onMouseEnter={() => {
+                setShowButtons(true);
+            }}
+            onMouseLeave={() => {
+                setShowButtons(false);
+            }}
+        >
+            <IOBoxBar
+                showButtons={showButtons}
+                locked={locked}
+                generate={generate}
+                deleteSelf={deleteSelf}
+                lock={() => lock(id)}
+                errors={errors}
+            />
             <div
-                className="w-full flex flex-col items-center justify-between"
+                className="w-full flex flex-col items-center justify-between z-10 bg-primary-90"
                 data-testid="prompt"
             >
                 <TextArea
@@ -87,29 +109,6 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                         setOutput((target as HTMLTextAreaElement).value);
                     }}
                 />
-
-                <div className="flex flex-row">
-                    <FilledButton
-                        onClick={generate}
-                        name="Generate"
-                        colorPalette="primary"
-                        disabled={errors ? true : false}
-                    />
-                    <FilledButton
-                        onClick={() => lock(id)}
-                        name="lock"
-                        colorPalette="primary"
-                    />
-                    {deleteSelf ? (
-                        <FilledButton
-                            onClick={() => deleteSelf?.()}
-                            name="Delete"
-                            colorPalette="red"
-                        />
-                    ) : (
-                        <></>
-                    )}
-                </div>
             </div>
         </div>
     );

@@ -1,69 +1,47 @@
-import { useState, FC } from 'react';
-import { generateText } from '../../utils/generateContent';
-import { exportJson, downloadJson } from '../../utils/exportContent';
-import { PromptData } from '../PromptIOBox';
+import { FC } from 'react';
+import {
+    exportJson,
+    downloadJson,
+    exportXlsx,
+    downloadXlsx,
+} from '../../utils/exportContent';
+import { PromptData } from './ContentPanelPrompts/PromptIOBox';
 import { Surface } from '../Surface';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
 import { ContentPanelActions } from './ContentPanelActions';
-import { InputSchema } from '../PromptIOBox';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
-import { v4 as uuidv4 } from 'uuid';
+import { usePanel } from './hooks';
 
 //Provide access to MasterCategory through a parent callback
 interface ContentPanelProps {
-    getMasterCategory: () => string;
+    id: string;
+    initialCategory: string;
+    initialPrompts: PromptData[];
 }
 
 /**
  * A standalone panel for creating AI content.
  *
  */
-export const ContentPanel: FC<ContentPanelProps> = () => {
-    //Component state consists of category prompt, and N multiprompts (id, input, output)
-    const [category, setCategory] = useState('');
-    const [promptBoxes, setPromptBoxes] = useState<PromptData[]>([
-        { id: uuidv4(), input: '', output: '', locked: false },
-    ]);
-    const [loading, setLoading] = useState<boolean>(false);
-
-    //Callback to create new boxes in the panel
-    const addPromptBox = () => {
-        const newBox = { id: uuidv4(), input: '', output: '', locked: false };
-        setPromptBoxes((prev) => [...prev, newBox]);
-    };
-
-    //Callbacks to asynchronously fetch AI data from backend
-    const generateAll = () => {
-        promptBoxes.forEach((p) => {
-            // Generate if the prompt is not locked and input is valid
-            if (!p.locked && InputSchema.safeParse(p.input).success) {
-                generateOutput(p);
-            }
-        });
-    };
-    const generateOutput = async (p: PromptData) => {
-        setLoading(() => true);
-        setPromptOutput(p.id, await generateText(p.id, p.input, category));
-        setLoading(() => false);
-    };
-
-    //Callback to modify the input area of a PromptIOBox by id
-    const setPromptOutput = (id: string, output: string) => {
-        setPromptBoxes((prev) =>
-            prev.map((o) => (o.id === id ? { ...o, output: output } : o))
-        );
-    };
-
-    // Locks a prompt box, so that it is not generated with generate all
-    const lockPrompt = (id: string) => {
-        setPromptBoxes((prev) =>
-            prev.map((box) =>
-                box.id === id ? { ...box, locked: !box.locked } : box
-            )
-        );
-    };
+export const ContentPanel: FC<ContentPanelProps> = ({
+    id,
+    initialCategory,
+    initialPrompts,
+}) => {
+    const {
+        category,
+        promptBoxes,
+        loading,
+        setCategory,
+        setPromptBoxes,
+        generateAll,
+        generateOutput,
+        setPromptOutput,
+        lockPrompt,
+        addPromptBox,
+    } = usePanel(initialPrompts, initialCategory, id);
 
     //Callback to export the category, and all inputs / outputs in json
     const jsonExport = async () => {
@@ -74,7 +52,8 @@ export const ContentPanel: FC<ContentPanelProps> = () => {
     //Callback to export outputs in excel
     //Not implemented, instead just call jsonExport
     const excelExport = async () => {
-        await jsonExport();
+        const link = await exportXlsx(category, promptBoxes);
+        if (link) downloadXlsx(link);
     };
 
     return (

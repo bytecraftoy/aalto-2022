@@ -1,3 +1,5 @@
+import { PromptData } from '../components/ContentPanel/ContentPanelPrompts/PromptIOBox';
+
 /**
  * Convinience file containing type definitions for readability
  */
@@ -16,4 +18,10 @@ export interface ApiRequest {
 export interface ApiResponse {
     result: string;
     id: string;
+}
+
+export interface ContentPanelType {
+    id: string;
+    category: string;
+    prompts: PromptData[];
 }

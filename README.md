@@ -7,6 +7,10 @@ This web application provides an efficient and easy-to-use interface for various
 
 To build the project and install dependencies, make sure that node.js and npm are installed. Refer to https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
+### Docker
+
+Development requires [Docker](https://www.docker.com/) for running a developer database. Your account should have permission to start new Docker containers using docker-compose.
+
 ### Quick start using npm scripts
 
 The project contains npm scripts to make setting up and deploying easier. These shouldn't require any additional work, and can be run straight after cloning the repository (provided that node.js and npm are installed correctly) The scripts are designed to be run from a single terminal.

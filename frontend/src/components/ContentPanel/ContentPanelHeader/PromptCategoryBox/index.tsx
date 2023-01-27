@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { StateHook } from '../utils/types';
-import { CustomInput } from './Input';
+import { StateHook } from '../../../../utils/types';
+import { CustomInput } from '../../../Inputs';
 
 interface PromptCategoryBoxProps {
     category: string;
@@ -13,12 +13,11 @@ export const PromptCategoryBox: FC<PromptCategoryBoxProps> = ({
     setCategory,
 }) => {
     return (
-        <div className="w-full flex flex-col min-h-fit justify-start items-center mt-4 mb-4">
+        <div className="w-full flex flex-col min-h-fit justify-start items-center">
             <CustomInput
                 type={'text'}
                 value={category}
                 label={'Category'}
-                required
                 textHelper={'Type the category of the prompt'}
                 onInput={({ target }) =>
                     setCategory((target as HTMLInputElement).value)

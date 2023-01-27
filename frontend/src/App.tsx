@@ -1,5 +1,11 @@
-import { ContentPanel } from './components/ContentPanel';
 import { NavigationContainer } from './components/NavigationContainer';
+import { Routes } from './Routes';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './store';
+import { useEffect } from 'react';
+import { EventBus } from './utils/eventBus';
+import { backendURL } from './utils/backendURL';
 
 /**
  * The base react component
@@ -8,16 +14,31 @@ import { NavigationContainer } from './components/NavigationContainer';
  * layout of the page.
  */
 function App() {
-    //Unused for now, will be important later
-    //const [masterCategory, setMasterCategory] = useState('');
+    // Function for log out, i.e., emptying the cookies.
+    async function onCustomEvent() {
+        await fetch(`${backendURL}/api/user/logout`, {
+            method: 'POST',
+            credentials: 'include',
+        });
+    }
+
+    // Adds event listener for logout events and logouts user when the evne tis fired
+    useEffect(() => {
+        EventBus.on('logout', onCustomEvent);
+
+        return () => {
+            EventBus.remove('logout', onCustomEvent);
+        };
+    }, []);
 
     return (
-        <NavigationContainer>
-            {/* Current view of the page. Could be an about page or a ContentPanel */}
-            <div className="App bg-neutral-99 h-full flex flex-col justify-start items-center">
-                <ContentPanel getMasterCategory={() => ''} />
-            </div>
-        </NavigationContainer>
+        <Provider store={store}>
+            <BrowserRouter>
+                <NavigationContainer>
+                    <Routes />
+                </NavigationContainer>
+            </BrowserRouter>
+        </Provider>
     );
 }
 

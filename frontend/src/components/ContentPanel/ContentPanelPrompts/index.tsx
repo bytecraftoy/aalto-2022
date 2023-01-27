@@ -1,13 +1,12 @@
 import React from 'react';
-import { PromptIOBox } from '../../PromptIOBox';
-import { PromptData } from '../../PromptIOBox';
+import { PromptIOBox } from './PromptIOBox';
+import { PromptData } from './PromptIOBox';
 import { FAB } from '../../Buttons';
 
 /**
  * Component of Content panel.
  * Contains all the prompt boxes, i.e., contains PromoptIO boxes.
  */
-
 interface ContentPanelPromptsProps {
     promptBoxes: PromptData[];
     setPromptBoxes: React.Dispatch<React.SetStateAction<PromptData[]>>;
@@ -45,6 +44,7 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
                     <PromptIOBox
                         key={p.id}
                         id={p.id}
+                        locked={p.locked}
                         input={p.input}
                         output={p.output}
                         setInput={(s: string) => setPromptInput(p.id, s)}
