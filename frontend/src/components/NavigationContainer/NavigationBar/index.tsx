@@ -3,6 +3,8 @@ import { Surface } from '../../Surface';
 import { solidIcon } from '../../../utils/icons';
 import { TextButton } from '../../Buttons';
 import { useNavigate } from 'react-router-dom';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { EventBus } from '../../../utils/eventBus';
 
 /**
