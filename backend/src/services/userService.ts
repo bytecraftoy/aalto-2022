@@ -100,10 +100,16 @@ const createUser = async (
     name: string,
     password: string
 ): Promise<string | null> => {
-    const exists = await userExists(name);
-    if (exists) return null;
-    await addUser(name, password);
-    return await selectUserID(name);
+    try {
+        const exists = await userExists(name);
+        if (exists) return null;
+        const passwordHash = await bcrypt.hash(password, 10);
+        await addUser(name, passwordHash);
+        return await selectUserID(name);
+    } catch (e) {
+        logger.error(e);
+        return null;
+    }
 };
 
 export {
