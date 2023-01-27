@@ -25,7 +25,8 @@ export type Icon =
     | 'XMarkIcon'
     | 'ArrowPathIcon'
     | 'LockClosedIcon'
-    | 'LockOpenIcon';
+    | 'LockOpenIcon'
+    | 'Cog6Tooth';
 
 /** Default sized Icon element using HeroIcons */
 export const solidIcon = (i?: Icon, className?: string) => {
@@ -53,6 +54,8 @@ export const solidIcon = (i?: Icon, className?: string) => {
             return <LockClosedIcon className={classN} />;
         case 'LockOpenIcon':
             return <LockOpenIcon className={classN} />;
+        case 'Cog6Tooth':
+            return <Cog6ToothIcon className={classN} />;
         default:
             return <></>;
     }
