@@ -7,10 +7,12 @@ import express, { CookieOptions, Request } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { logger } from './../utils/logger';
 import {
-    parseLoginRequestBody,
+    loginRequestSchema,
     checkPassword,
     createToken,
     parseToken,
+    registerRequestSchema,
+    createUser,
 } from './../services/userService';
 import { TokenPayload } from '../types/TokenPayload';
 
@@ -48,7 +50,9 @@ userRouter.post(
     '/login/',
     expressAsyncHandler(async (req, res) => {
         try {
-            const info = parseLoginRequestBody(req.body as string);
+            const info = loginRequestSchema.parse(
+                JSON.parse(req.body as string)
+            );
             if (await checkPassword(info.name, info.password)) {
                 const payload: TokenPayload = { userName: info.name };
                 const token = await createToken(payload);
@@ -57,18 +61,55 @@ userRouter.post(
                 return;
             }
         } catch (e) {
-            logger.error(e);
+            logger.error('login_fail', { error: e });
         }
         res.status(400).end();
+    })
+);
+
+userRouter.post(
+    '/register/',
+    expressAsyncHandler(async (req, res) => {
+        try {
+            const info = registerRequestSchema.parse(
+                JSON.parse(req.body as string)
+            );
+            if (await createUser(info.name, info.password)) {
+                const payload: TokenPayload = { userName: info.name };
+                const token = await createToken(payload);
+                res.cookie(tokenCookieName, token, tokenCookieOptions);
+                res.status(204).end();
+                logger.info('register_done', { user: info.name });
+                return;
+            }
+        } catch (e) {
+            logger.error('register_fail', { error: e });
+        }
+        res.status(400).end();
+    })
+);
+
+userRouter.post(
+    '/logout/',
+    expressAsyncHandler(async (req, res) => {
+        if ((await readToken(req)) === null) res.status(401).end();
+        else
+            res.cookie(tokenCookieName, '-', tokenCookieOptions)
+                .status(204)
+                .end();
     })
 );
 
 userRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
-        //this router is only for testing
         const payload = await readToken(req);
-        res.send(JSON.stringify(payload));
+        if (payload === null) {
+            res.status(401).end();
+        } else {
+            const response = { name: payload.userName };
+            res.json(response);
+        }
     })
 );
 
