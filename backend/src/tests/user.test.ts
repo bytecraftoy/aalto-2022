@@ -4,7 +4,7 @@
  */
 
 import supertest from 'supertest';
-//import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { app } from './../app';
 //import { TokenPayload } from '../types/TokenPayload';
 
@@ -53,8 +53,18 @@ describe('user router login', () => {
 
 describe('user router logout', () => {
     test('handles anonymous users correctly', async () => {
-        const res = await api.post('/api/user/logout/').expect(401);
-        expect(res.headers['set-cookie']).toBe(undefined);
+        const res = await api.post('/api/user/logout/').expect(204);
+        //the user-token cookie should be set
+        const setCookie: string[] = res.headers['set-cookie'] as string[];
+        expect(typeof setCookie).toBe('object');
+        const tokenCookie = setCookie.find((e) => e.startsWith('user-token='));
+        expect(typeof tokenCookie).toBe('string');
+        const splitted = (tokenCookie as string).split('; ');
+        expect(splitted.includes('HttpOnly')).toBe(true);
+        expect(splitted.includes('Secure')).toBe(true);
+        expect(splitted.includes('SameSite=Strict')).toBe(true);
+        const token = splitted[0].slice('user-token='.length);
+        expect(jwt.decode(token)).toBe(null);
     });
 
     /*test('handles logged-in and logged-out users correctly', async () => {
@@ -85,8 +95,18 @@ describe('user router logout', () => {
         res = await api
             .post('/api/user/logout/')
             .set('Cookie', setCookie)
-            .expect(401);
-        expect(res.headers['set-cookie']).toBe(undefined);
+            .expect(204);
+        setCookie = res.headers['set-cookie'] as string[];
+        expect(typeof setCookie).toBe('object');
+        //check that the cookie is overwritten properly
+        const tokenCookie = setCookie.find((e) => e.startsWith('user-token='));
+        expect(typeof tokenCookie).toBe('string');
+        const splitted = (tokenCookie as string).split('; ');
+        expect(splitted.includes('HttpOnly')).toBe(true);
+        expect(splitted.includes('Secure')).toBe(true);
+        expect(splitted.includes('SameSite=Strict')).toBe(true);
+        const token = splitted[0].slice('user-token='.length);
+        expect(jwt.decode(token)).toBe(null);
     });*/
 });
 

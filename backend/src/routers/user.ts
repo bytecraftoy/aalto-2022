@@ -91,7 +91,7 @@ userRouter.post(
     })
 );
 
-userRouter.post('/logout/', (req, res) => 
+userRouter.post('/logout/', (req, res) =>
     res.cookie(tokenCookieName, '-', tokenCookieOptions).status(204).end()
 );
 
