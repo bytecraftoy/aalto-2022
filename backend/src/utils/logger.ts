@@ -13,6 +13,10 @@ const level = (): string => {
     return isDevelopment ? 'debug' : 'http';
 };
 
+// Use pretty printing only for development environment, otherwise print on one line
+const formats = [format.timestamp(), format.json()];
+if (process.env.NODE_ENV === 'development') formats.push(format.prettyPrint());
+
 /**
  * Creates a Winston logger configured to log to the console and format messages as JSON.
  * The logging level is determined by the 'level' function.
@@ -23,11 +27,7 @@ const logger = createLogger({
             level: level(),
         }),
     ],
-    format: format.combine(
-        format.timestamp(),
-        format.json(),
-        format.prettyPrint()
-    ),
+    format: format.combine(...formats),
 });
 
 export { logger };
