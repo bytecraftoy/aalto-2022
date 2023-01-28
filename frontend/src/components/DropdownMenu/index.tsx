@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import { solidIcon } from '../../utils/icons';
+import { MenuItem } from './MenuItem';
 
 /**
  * Content panel dropdown menu and its functionality
@@ -9,10 +10,12 @@ import { solidIcon } from '../../utils/icons';
 
 interface DropdownMenuProps {
     addPromptBoxes: (n: number) => void;
+    saveState: () => void;
 }
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
     addPromptBoxes,
+    saveState,
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -49,24 +52,13 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             <div
                 ref={menuRef}
                 className={classNames(
-                    'absolute -right-6 top-12 rounded shadow w-44 bg-surface-1',
+                    'absolute -right-6 top-12 rounded shadow w-44 bg-surface-2',
                     { hidden: !open }
                 )}
             >
-                <a
-                    href="#"
-                    onClick={() => addBoxes(5)}
-                    className="block px-4 py-2 rounded hover:bg-neutral-10 hover:bg-opacity-8"
-                >
-                    Add 5
-                </a>
-                <a
-                    href="#"
-                    onClick={() => addBoxes(10)}
-                    className="block px-4 py-2 rounded hover:bg-neutral-10 hover:bg-opacity-8"
-                >
-                    Add 10
-                </a>
+                <MenuItem onClick={() => addBoxes(5)} message="Add 5" />
+                <MenuItem onClick={() => addBoxes(10)} message="Add 10" />
+                <MenuItem onClick={saveState} message="Save" />
             </div>
         </div>
     );
