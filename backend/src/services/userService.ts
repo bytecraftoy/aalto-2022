@@ -9,6 +9,8 @@ import {
     selectProjectsbyUserID,
     projectExists,
     selectProjectData,
+    selectUserID,
+    selectPassword,
 } from '../db/queries';
 
 /**
@@ -46,32 +48,25 @@ const registerRequestSchema = z.object({
 
 type RegisterRequest = z.infer<typeof loginRequestSchema>;
 
-/**
- * Resolves to null if there is no matching user in the database.
- */
-const getPasswordHash = async (userName: string): Promise<string | null> => {
-    //TODO: real implementation
-    await new Promise((r) => setTimeout(r, 1));
-    if (userName === 'nonexistent') return null;
-    return '$2b$10$Jmn4NFCMntrUCRJXDFVmtuZJNBwpjGY1sXwgSQwL6icD72nHUaGeq'; //password1234
-};
 
 /**
  * Checks if the user exists and the password is correct.
- * Resolves to true if everything matches.
+ * Resolves to user id if everything matches and null otherwise.
  * Never rejects.
  */
 const checkPassword = async (
     userName: string,
     password: string
-): Promise<boolean> => {
-    const hash = await getPasswordHash(userName);
-    if (hash === null) return false;
+): Promise<string | null> => {
+    const hash = await selectPassword(userName);
+    if (hash === null) return null;
     try {
-        return await bcrypt.compare(password, hash);
+        if (await bcrypt.compare(password, hash))
+            return await selectUserID(userName);
+        else return null;
     } catch (e) {
         logger.error(e);
-        return false;
+        return null;
     }
 };
 
@@ -100,15 +95,25 @@ const parseToken = (token: string): Promise<TokenPayload> => {
     );
 };
 
-const createUser = async (name: string, password: string): Promise<boolean> => {
-    const exists = await userExists(name);
-    if (exists) {
-        return false;
+/**
+ * Creates a new user.
+ * Returns the id of the newly created user
+ * if successful and null otherwise.
+ */
+const createUser = async (
+    name: string,
+    password: string
+): Promise<string | null> => {
+    try {
+        const exists = await userExists(name);
+        if (exists) return null;
+        const passwordHash = await bcrypt.hash(password, 10);
+        await addUser(name, passwordHash);
+        return await selectUserID(name);
+    } catch (e) {
+        logger.error(e);
+        return null;
     }
-
-    await addUser(name, password);
-
-    return true;
 };
 
 const getProjects = async (

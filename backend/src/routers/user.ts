@@ -55,8 +55,9 @@ userRouter.post(
             const info = loginRequestSchema.parse(
                 JSON.parse(req.body as string)
             );
-            if (await checkPassword(info.name, info.password)) {
-                const payload: TokenPayload = { userName: info.name };
+            const userID = await checkPassword(info.name, info.password);
+            if (userID !== null) {
+                const payload: TokenPayload = { userName: info.name, userID };
                 const token = await createToken(payload);
                 res.cookie(tokenCookieName, token, tokenCookieOptions);
                 res.status(204).end();
@@ -76,8 +77,9 @@ userRouter.post(
             const info = registerRequestSchema.parse(
                 JSON.parse(req.body as string)
             );
-            if (await createUser(info.name, info.password)) {
-                const payload: TokenPayload = { userName: info.name };
+            const userID = await createUser(info.name, info.password);
+            if (userID !== null) {
+                const payload: TokenPayload = { userName: info.name, userID };
                 const token = await createToken(payload);
                 res.cookie(tokenCookieName, token, tokenCookieOptions);
                 res.status(204).end();
@@ -109,7 +111,10 @@ userRouter.get(
         if (payload === null) {
             res.status(401).end();
         } else {
-            const response = { name: payload.userName };
+            const response = {
+                name: payload.userName,
+                id: payload.userID,
+            };
             res.json(response);
         }
     })
