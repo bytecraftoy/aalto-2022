@@ -5,6 +5,7 @@ import { generateText } from '../../utils/generateContent';
 import { useAppDispatch } from '../../utils/hooks';
 import { updatePanel } from '../../reducers/panelReducer';
 import { generatePrompts } from './promptUtil';
+import { EventBus } from '../../utils/eventBus';
 
 /**
  * Custom hook which return prompts, category and loading information + all the action functions related to prompts and category
@@ -77,6 +78,11 @@ export const usePanel = (
 
         // Update the redux store
         dispatch(updatePanel(panel));
+
+        EventBus.dispatch('notification', {
+            type: 'success',
+            message: 'Your progress has been saved.',
+        });
     };
 
     /**
