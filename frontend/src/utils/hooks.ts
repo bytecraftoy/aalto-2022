@@ -1,7 +1,6 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import type { RootState, AppDispatch } from '../store';
-import { clear } from 'console';
 
 // Used instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch: () => AppDispatch = useDispatch;

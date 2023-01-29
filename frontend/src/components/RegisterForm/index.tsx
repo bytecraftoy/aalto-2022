@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../utils/hooks';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '../../reducers/userReducer';
 import { Notification } from '../Notification';
-import { useOpen } from '../LoginForm/hooks';
+import { useOpen } from '../../utils/hooks';
 
 /**
  *  Form for registering the user
@@ -31,7 +31,7 @@ export const RegisterForm = () => {
         useRepeatPassword(password);
 
     // Open the notification
-    const { open, setOpen } = useOpen();
+    const { open, setOpen } = useOpen(7000);
     const [error, setError] = useState('');
 
     // Navigation
