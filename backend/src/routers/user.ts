@@ -123,10 +123,10 @@ userRouter.get(
 userRouter.get(
     '/projects/',
     expressAsyncHandler(async (req, res) => {
-        if ((await readToken(req)) === null) res.status(401).end();
+        const payload = await readToken(req);
+        if (payload === null) res.status(401).end();
         else {
-            const id = '1'; //TODO: add id
-            const response = getProjects(id);
+            const response = getProjects(payload.userID);
             res.json(response).status(200);
         }
     })
@@ -136,11 +136,11 @@ userRouter.get(
 userRouter.get(
     '/projects/:id',
     expressAsyncHandler(async (req, res) => {
-        if ((await readToken(req)) === null) res.status(401).end();
+        const payload = await readToken(req);
+        if (payload === null) res.status(401).end();
         else {
-            //TODO: check if user owns project
             const projectID = req.params.id;
-            const response = await getProject(projectID);
+            const response = await getProject(payload.userID, projectID);
             if (response[0]) {
                 res.json(response[1]).status(200);
             } else {

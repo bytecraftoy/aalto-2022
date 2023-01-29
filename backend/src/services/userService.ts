@@ -11,6 +11,7 @@ import {
     selectProjectData,
     selectUserID,
     selectPassword,
+    selectProjectOwner,
 } from '../db/queries';
 
 /**
@@ -47,7 +48,6 @@ const registerRequestSchema = z.object({
 });
 
 type RegisterRequest = z.infer<typeof loginRequestSchema>;
-
 
 /**
  * Checks if the user exists and the password is correct.
@@ -124,10 +124,13 @@ const getProjects = async (
 };
 
 const getProject = async (
-    projectID: string
+    projectID: string,
+    userID: string
 ): Promise<[boolean, { data: object }]> => {
     const exists = await projectExists(projectID);
-    if (exists) {
+    const ownerID = await selectProjectOwner(projectID);
+    const isOwner = ownerID.userid == userID;
+    if (exists && isOwner) {
         const response = await selectProjectData(projectID);
 
         return [true, response];

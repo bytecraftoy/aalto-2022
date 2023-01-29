@@ -51,6 +51,15 @@ export const selectProjectData = async (
     return res[0] as { data: object };
 };
 
+export const selectProjectOwner = async (
+    projectID: string
+): Promise<{ userid: string }> => {
+    const text = 'SELECT UserID FROM projects WHERE id = $1';
+    const values = [projectID];
+    const res = await executeQuery(text, values);
+    return res[0] as { userid: string };
+};
+
 export const selectUserSettings = async (
     userID: string
 ): Promise<{ settings: object }> => {
