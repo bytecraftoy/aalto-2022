@@ -34,7 +34,10 @@ export const Snackbar: React.FC<SnackbarProps> = ({ children }) => {
             {open && (
                 <div className="fixed flex flex-row items-center justify-between pl-4 pr-2 bottom-4 right-6 w-80 h-12 bg-surface-inverse z-50 shadow-md rounded">
                     <div className="text-white ">{message}</div>
-                    <div>
+                    <div
+                        onClick={() => setOpen(false)}
+                        className=" rounded-full bg-primary-99 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-8"
+                    >
                         <XMarkIcon className="text-white h-6 w-6" />
                     </div>
                 </div>
