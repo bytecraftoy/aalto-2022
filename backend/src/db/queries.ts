@@ -12,7 +12,7 @@ import { logger } from '../utils/logger';
  *
  * @returns {unknown[]} https://node-postgres.com/apis/result. Currently returns result.rows.
  */
-const executeQuery = async (
+export const executeQuery = async (
     text: string,
     values: unknown[]
 ): Promise<unknown[]> => {

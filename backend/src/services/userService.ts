@@ -9,6 +9,7 @@ import {
     selectUserID,
     selectPassword,
 } from '../db/queries';
+import { RequestInfo, DEFAULT_ERROR } from '../types/ServiceTypes';
 
 /**
  * The secret used for signing the web tokens.
@@ -53,16 +54,23 @@ type RegisterRequest = z.infer<typeof loginRequestSchema>;
 const checkPassword = async (
     userName: string,
     password: string
-): Promise<string | null> => {
+): Promise<RequestInfo> => {
     const hash = await selectPassword(userName);
-    if (hash === null) return null;
+    if (hash === null) return DEFAULT_ERROR;
     try {
-        if (await bcrypt.compare(password, hash))
-            return await selectUserID(userName);
-        else return null;
+        if (await bcrypt.compare(password, hash)) {
+            const userID = await selectUserID(userName);
+            if (!userID) return DEFAULT_ERROR;
+            return { success: true, message: userID };
+        } else {
+            return {
+                success: false,
+                message: 'Incorrect username or password. Please try again.',
+            };
+        }
     } catch (e) {
         logger.error(e);
-        return null;
+        return DEFAULT_ERROR;
     }
 };
 
@@ -99,16 +107,23 @@ const parseToken = (token: string): Promise<TokenPayload> => {
 const createUser = async (
     name: string,
     password: string
-): Promise<string | null> => {
+): Promise<RequestInfo> => {
     try {
         const exists = await userExists(name);
-        if (exists) return null;
+        if (exists)
+            return {
+                success: false,
+                message:
+                    'Username already exists, please choose a different one.',
+            };
         const passwordHash = await bcrypt.hash(password, 10);
         await addUser(name, passwordHash);
-        return await selectUserID(name);
+        const userId = await selectUserID(name);
+        if (!userId) return DEFAULT_ERROR;
+        return { success: true, message: userId };
     } catch (e) {
         logger.error(e);
-        return null;
+        return DEFAULT_ERROR;
     }
 };
 

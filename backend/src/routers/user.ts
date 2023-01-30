@@ -53,13 +53,16 @@ userRouter.post(
             const info = loginRequestSchema.parse(
                 JSON.parse(req.body as string)
             );
-            const userID = await checkPassword(info.name, info.password);
-            if (userID !== null) {
+            const reqInfo = await checkPassword(info.name, info.password);
+            if (reqInfo.success) {
+                const userID = reqInfo.message;
                 const payload: TokenPayload = { userName: info.name, userID };
                 const token = await createToken(payload);
                 res.cookie(tokenCookieName, token, tokenCookieOptions);
                 res.status(204).end();
                 return;
+            } else {
+                res.status(400).send(reqInfo.message);
             }
         } catch (e) {
             logger.error('login_fail', { error: e });
@@ -75,19 +78,22 @@ userRouter.post(
             const info = registerRequestSchema.parse(
                 JSON.parse(req.body as string)
             );
-            const userID = await createUser(info.name, info.password);
-            if (userID !== null) {
+            const created = await createUser(info.name, info.password);
+            if (created.success) {
+                const userID = created.message;
                 const payload: TokenPayload = { userName: info.name, userID };
                 const token = await createToken(payload);
                 res.cookie(tokenCookieName, token, tokenCookieOptions);
                 res.status(204).end();
                 logger.info('register_done', { user: info.name });
                 return;
+            } else {
+                res.status(400).send(created.message);
             }
         } catch (e) {
             logger.error('register_fail', { error: e });
         }
-        res.status(400).end();
+        res.status(400).send('Error on saving the user');
     })
 );
 
@@ -107,7 +113,7 @@ userRouter.get(
     expressAsyncHandler(async (req, res) => {
         const payload = await readToken(req);
         if (payload === null) {
-            res.status(401).end();
+            res.status(401).send('No token on the request found');
         } else {
             const response = {
                 name: payload.userName,
