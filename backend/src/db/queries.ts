@@ -123,11 +123,12 @@ export const addProject = async (
     userID: string,
     name: string,
     data: object
-) => {
+): Promise<{ id: string }> => {
     const text =
-        'INSERT INTO projects(user_id, name, data) VALUES ($1, $2, $3)';
+        'INSERT INTO projects(user_id, name, data) VALUES ($1, $2, $3) RETURNING id';
     const values = [userID, name, data];
-    await executeQuery(text, values);
+    const res = await executeQuery(text, values);
+    return res[0] as { id: string };
 };
 
 export const deleteProject = async (id: string) => {

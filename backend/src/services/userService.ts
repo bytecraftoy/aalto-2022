@@ -12,6 +12,7 @@ import {
     selectUserID,
     selectPassword,
     selectProjectOwner,
+    addProject,
 } from '../db/queries';
 
 /**
@@ -48,6 +49,11 @@ const registerRequestSchema = z.object({
 });
 
 type RegisterRequest = z.infer<typeof loginRequestSchema>;
+
+const newProjectRequestSchema = z.object({
+    name: z.string(),
+    json: z.string(),
+});
 
 /**
  * Checks if the user exists and the password is correct.
@@ -139,15 +145,27 @@ const getProject = async (
     return [false, { data: {} }];
 };
 
+const createProject = async (
+    userID: string,
+    projectName: string,
+    data: string
+): Promise<string> => {
+    const obj = JSON.parse(data) as object;
+    const project = await addProject(userID, projectName, obj);
+    return project.id;
+};
+
 export {
     loginRequestSchema,
     LoginRequest,
     registerRequestSchema,
     RegisterRequest,
+    newProjectRequestSchema,
     checkPassword,
     createUser,
     createToken,
     parseToken,
     getProjects,
     getProject,
+    createProject,
 };

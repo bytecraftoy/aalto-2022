@@ -12,9 +12,11 @@ import {
     createToken,
     parseToken,
     registerRequestSchema,
+    newProjectRequestSchema,
     createUser,
     getProjects,
     getProject,
+    createProject,
 } from './../services/userService';
 import { TokenPayload } from '../types/TokenPayload';
 
@@ -146,6 +148,25 @@ userRouter.get(
             } else {
                 res.status(404).end();
             }
+        }
+    })
+);
+
+userRouter.post(
+    '/projects/new',
+    expressAsyncHandler(async (req, res) => {
+        const payload = await readToken(req);
+        if (payload === null) res.status(401).end();
+        else {
+            const info = newProjectRequestSchema.parse(
+                JSON.parse(req.body as string)
+            );
+            const id = await createProject(
+                payload.userID,
+                info.name,
+                info.json
+            );
+            res.send(id).status(200);
         }
     })
 );
