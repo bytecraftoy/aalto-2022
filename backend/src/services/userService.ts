@@ -124,65 +124,118 @@ const createUser = async (
     }
 };
 
+/**
+ * Fetches and returns list of projects by user id.
+ * returns null on failure
+ */
 const getProjects = async (
     id: string
-): Promise<{ id: string; name: string }[]> => {
-    const projects = await selectProjectsbyUserID(id);
-    return projects;
+): Promise<{ id: string; name: string }[] | null> => {
+    try {
+        const projects = await selectProjectsbyUserID(id);
+        return projects;
+    } catch (e) {
+        logger.error(e);
+        return null;
+    }
 };
 
+/**
+ * Fetches data of a specific project
+ * along with a boolean value, which is
+ * true if successful or false
+ * if project does not exist or user id
+ * does not match or on failure
+ */
 const getProject = async (
     projectID: string,
     userID: string
 ): Promise<[boolean, { data: object }]> => {
-    const exists = await projectExists(projectID);
-    const ownerID = await selectProjectOwner(projectID);
-    const isOwner = ownerID.userid == userID;
-    if (exists && isOwner) {
-        const response = await selectProjectData(projectID);
+    try {
+        const exists = await projectExists(projectID);
+        const ownerID = await selectProjectOwner(projectID);
+        const isOwner = ownerID.userid == userID;
+        if (exists && isOwner) {
+            const response = await selectProjectData(projectID);
 
-        return [true, response];
+            return [true, response];
+        }
+
+        return [false, { data: {} }];
+    } catch (e) {
+        logger.error(e);
+        return [false, { data: {} }];
     }
-
-    return [false, { data: {} }];
 };
 
+/**
+ * creates new projects and returns
+ * the projects id if successful
+ * null otherwise
+ */
 const createProject = async (
     userID: string,
     projectName: string,
     data: string
-): Promise<string> => {
-    const obj = JSON.parse(data) as object;
-    const project = await addProject(userID, projectName, obj);
-    return project.id;
+): Promise<string | null> => {
+    try {
+        const obj = JSON.parse(data) as object;
+        const project = await addProject(userID, projectName, obj);
+        return project.id;
+    } catch (e) {
+        logger.error(e);
+        return null;
+    }
 };
 
+/**
+ * Updates name and data of project and returns
+ * true if successful, false otherwise
+ */
 const saveProject = async (
     userID: string,
     projectID: string,
     projectName: string,
     data: string
-) => {
-    const exists = await projectExists(projectID);
-    const ownerID = await selectProjectOwner(projectID);
-    const isOwner = ownerID.userid == userID;
-    if (exists && isOwner) {
-        const obj = JSON.parse(data) as object;
-        await updateProject(projectName, obj, projectID);
-        return true;
+): Promise<boolean> => {
+    try {
+        const exists = await projectExists(projectID);
+        const ownerID = await selectProjectOwner(projectID);
+        const isOwner = ownerID.userid == userID;
+        if (exists && isOwner) {
+            const obj = JSON.parse(data) as object;
+            await updateProject(projectName, obj, projectID);
+            return true;
+        }
+        return false;
+    } catch (e) {
+        logger.error(e);
+        return false;
     }
-    return false;
 };
 
-const removeProject = async (userID: string, projectID: string) => {
-    const exists = await projectExists(projectID);
-    const ownerID = await selectProjectOwner(projectID);
-    const isOwner = ownerID.userid == userID;
-    if (exists && isOwner) {
-        await deleteProject(projectID);
-        return true;
+/**
+ * deletes project from database,
+ * returns true if successful
+ * false otherwise
+ */
+const removeProject = async (
+    userID: string,
+    projectID: string
+): Promise<boolean> => {
+    try {
+        const exists = await projectExists(projectID);
+        const ownerID = await selectProjectOwner(projectID);
+        const isOwner = ownerID.userid == userID;
+        if (exists && isOwner) {
+            await deleteProject(projectID);
+            return true;
+        }
+        return false;
+    } catch (e) {
+        logger.error(e);
+        return false;
     }
-    return false;
 };
 
 export {
