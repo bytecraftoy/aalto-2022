@@ -12,11 +12,12 @@ import {
     createToken,
     parseToken,
     registerRequestSchema,
-    newProjectRequestSchema,
+    projectRequestSchema,
     createUser,
     getProjects,
     getProject,
     createProject,
+    saveProject,
 } from './../services/userService';
 import { TokenPayload } from '../types/TokenPayload';
 
@@ -158,7 +159,7 @@ userRouter.post(
         const payload = await readToken(req);
         if (payload === null) res.status(401).end();
         else {
-            const info = newProjectRequestSchema.parse(
+            const info = projectRequestSchema.parse(
                 JSON.parse(req.body as string)
             );
             const id = await createProject(
@@ -167,6 +168,31 @@ userRouter.post(
                 info.json
             );
             res.send(id).status(200);
+        }
+    })
+);
+
+userRouter.put(
+    '/projects/:id',
+    expressAsyncHandler(async (req, res) => {
+        const payload = await readToken(req);
+        if (payload === null) res.status(401).end();
+        else {
+            const info = projectRequestSchema.parse(
+                JSON.parse(req.body as string)
+            );
+            const projectID = req.params.id;
+            const response = await saveProject(
+                payload.userID,
+                projectID,
+                info.name,
+                info.json
+            );
+            if (response) {
+                res.status(204).end();
+            } else {
+                res.status(404).end();
+            }
         }
     })
 );

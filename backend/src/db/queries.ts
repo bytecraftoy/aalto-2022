@@ -131,6 +131,12 @@ export const addProject = async (
     return res[0] as { id: string };
 };
 
+export const updateProject = async (name: string, data: object, id: string) => {
+    const text = 'UPDATE projects SET name = $1, json = $2 WHERE id = $3';
+    const values = [name, data, id];
+    await executeQuery(text, values);
+};
+
 export const deleteProject = async (id: string) => {
     const text = 'DELETE FROM projects WHERE id = $1';
     const values = [id];
