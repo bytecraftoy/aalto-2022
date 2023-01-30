@@ -9,7 +9,7 @@ const server = http.createServer(app);
 if (process.env.NODE_ENV !== 'test') {
     const PORT = process.env.PORT || 3030;
 
-    waitForDatabase(pool)
+    waitForDatabase(pool, true)
         .then(() => {
             logger.info('starting');
             server.listen(PORT, () => logger.info('started', { port: PORT }));
