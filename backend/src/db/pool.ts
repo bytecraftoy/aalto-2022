@@ -1,4 +1,11 @@
 import { Pool } from 'pg';
+import dotenv from 'dotenv';
+
+// dotenv may not be properly loaded for tests because the source file it's
+// normally called in isn't loaded
+if (process.env.NODE_ENV === 'test') {
+    dotenv.config();
+}
 
 const databaseConfig = {
     user: process.env.POSTGRES_USER,
