@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import supertest from 'supertest';
 import { app } from '../app';
-import { executeQuery } from '../db/queries';
+import { userExists } from '../db/queries';
 import { initializeUsers } from '../services/testService';
 
 const api = supertest(app);
@@ -16,11 +16,8 @@ beforeEach(async () => {
 
 describe('/user/register', () => {
     test('The test user should be in the db', async () => {
-        const query = await executeQuery(
-            'SELECT * FROM users WHERE name = $1',
-            ['tester']
-        );
-        expect(query).toHaveLength(1);
+        const value = await userExists('tester');
+        expect(value).toBe(true);
     });
 
     test('With new username, gives no errors', async () => {
@@ -32,11 +29,8 @@ describe('/user/register', () => {
 
         expect(res.status).toBe(204);
 
-        const query = await executeQuery(
-            'SELECT * FROM users WHERE name = $1',
-            ['new_tester']
-        );
-        expect(query).toHaveLength(1);
+        const value = await userExists('new_tester');
+        expect(value).toBe(true);
     });
 
     test('Backend should tell user if username is already defined', async () => {
