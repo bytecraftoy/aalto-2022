@@ -14,6 +14,7 @@ import {
     selectProjectOwner,
     addProject,
     updateProject,
+    deleteProject,
 } from '../db/queries';
 
 /**
@@ -170,7 +171,17 @@ const saveProject = async (
         await updateProject(projectName, obj, projectID);
         return true;
     }
+    return false;
+};
 
+const removeProject = async (userID: string, projectID: string) => {
+    const exists = await projectExists(projectID);
+    const ownerID = await selectProjectOwner(projectID);
+    const isOwner = ownerID.userid == userID;
+    if (exists && isOwner) {
+        await deleteProject(projectID);
+        return true;
+    }
     return false;
 };
 
@@ -188,4 +199,5 @@ export {
     getProject,
     createProject,
     saveProject,
+    removeProject,
 };

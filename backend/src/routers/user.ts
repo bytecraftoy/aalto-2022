@@ -18,6 +18,7 @@ import {
     getProject,
     createProject,
     saveProject,
+    removeProject,
 } from './../services/userService';
 import { TokenPayload } from '../types/TokenPayload';
 
@@ -188,6 +189,23 @@ userRouter.put(
                 info.name,
                 info.json
             );
+            if (response) {
+                res.status(204).end();
+            } else {
+                res.status(404).end();
+            }
+        }
+    })
+);
+
+userRouter.delete(
+    '/projects/:id',
+    expressAsyncHandler(async (req, res) => {
+        const payload = await readToken(req);
+        if (payload === null) res.status(401).end();
+        else {
+            const projectID = req.params.id;
+            const response = await removeProject(payload.userID, projectID);
             if (response) {
                 res.status(204).end();
             } else {
