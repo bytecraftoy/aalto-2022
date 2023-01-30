@@ -1,38 +1,19 @@
 const ch = require('child_process');
-
-let timestamp, commit;
-
-ch.exec('git show -s --format=%ci HEAD', (error, stdout, stderr) => {
-    console.log(stderr);
-    console.log(stdout);
-    if (error) {
-        console.error(`exec error: ${error}`);
-        return;
-    }
-    timestamp = stdout;
-});
-
-ch.exec('git rev-parse --short HEAD', (error, stdout, stderr) => {
-    console.log(stderr);
-    console.log(stdout);
-    if (error) {
-        console.error(`exec error: ${error}`);
-        return;
-    }
-    commit = stdout;
-});
-
-console.log(timestamp);
-console.log(commit);
+const fs = require('fs');
+const timestamp = ch.execSync('git show -s --format=%ci HEAD');
+const commit = ch.execSync('git rev-parse --short HEAD');
 
 if (timestamp && commit) {
-    ch.exec(
-        `${timestamp}-${commit} > ./backend/files/timestamp-commit`,
-        (error, stdout, stderr) => {
-            if (error) {
-                console.error(`exec error: ${error}`);
-                return;
-            }
+    const t = timestamp.toString().trim().split(' ');
+    const c = commit.toString().trim();
+    const tc = `${t[0]}T${t[1]}${t[2]}-${c}`;
+    fs.writeFile(
+        './backend/files/timestamp-commit',
+        tc,
+        { flag: 'w' },
+        (err) => {
+            if (err) throw err;
+            console.log(`timestamp-commit: ${tc}`);
         }
     );
 }
