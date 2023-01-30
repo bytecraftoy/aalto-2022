@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonProps } from '..';
-import { bg, bgActive, bgHover, textOnBg } from '../../../utils/colors';
+import { bg, bgActive, textOnBg } from '../../../utils/colors';
 import { solidIcon } from '../../../utils/icons';
 import classNames from 'classnames/dedupe';
 
