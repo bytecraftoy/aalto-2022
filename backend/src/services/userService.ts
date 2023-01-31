@@ -48,8 +48,9 @@ type RegisterRequest = z.infer<typeof loginRequestSchema>;
 
 /**
  * Checks if the user exists and the password is correct.
- * Resolves to user id if everything matches and null otherwise.
- * Never rejects.
+ * Returns the RequestInfo
+ * When method fails gives: { success: false, message: error message}
+ * otherwize returns: { success: true, message: userID }
  */
 const checkPassword = async (
     userName: string,
@@ -101,8 +102,8 @@ const parseToken = (token: string): Promise<TokenPayload> => {
 
 /**
  * Creates a new user.
- * Returns the id of the newly created user
- * if successful and null otherwise.
+ * If function fails it returns { success: false, message: error message }
+ * otherwize returns { success: true, message: userID }
  */
 const createUser = async (
     name: string,
