@@ -279,4 +279,43 @@ describe('user router register', () => {
         await api.head('/api/user/register/').expect(404);
         await api.put('/api/user/register/').expect(404);
     });
+
+    // basic concurrent data-race test
+    test('return 204 for 1 request and 400 for rest for multiple concurrent requests', async () => {
+        const promises = [];
+        const num_requests = 10;
+        for (let i = 0; i < num_requests; i++) {
+            promises.push(
+                api.post('/api/user/register/').send(
+                    JSON.stringify({
+                        name: 'testuser',
+                        password: 'password1234',
+                    })
+                )
+            );
+        }
+        const res = await Promise.all(promises);
+        const res204 = res.filter((e) => e.status === 204).length;
+        const res400 = res.filter((e) => e.status === 400).length;
+        expect(res204).toBe(1);
+        expect(res400).toBe(num_requests - 1);
+    });
+
+    test('can create 100 users succesfully', async () => {
+        const promises = [];
+        const num_requests = 100;
+        for (let i = 0; i < num_requests; i++) {
+            promises.push(
+                api.post('/api/user/register/').send(
+                    JSON.stringify({
+                        name: crypto.randomUUID(),
+                        password: crypto.randomUUID(),
+                    })
+                )
+            );
+        }
+        const res = await Promise.all(promises);
+        const res204 = res.filter((e) => e.status === 204).length;
+        expect(res204).toBe(num_requests);
+    });
 });
