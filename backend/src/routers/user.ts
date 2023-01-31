@@ -132,11 +132,10 @@ userRouter.get(
             if (payload === null) {
                 res.status(401).end();
                 return;
-            } else {
-                const response = getProjects(payload.userID);
-                res.json(response).status(200);
-                return;
             }
+            const response = getProjects(payload.userID);
+            res.json(response).status(200);
+            return;
         } catch (e) {
             logger.error('fetch_all_projects_fail', { error: e });
         }
@@ -152,17 +151,15 @@ userRouter.get(
             if (payload === null) {
                 res.status(401).end();
                 return;
-            } else {
-                const projectID = req.params.id;
-                const response = await getProject(payload.userID, projectID);
-                if (response.success) {
-                    res.json(response.data).status(200);
-                    return;
-                } else {
-                    res.status(404).end();
-                    return;
-                }
             }
+            const projectID = req.params.id;
+            const response = await getProject(payload.userID, projectID);
+            if (response.success) {
+                res.json(response.data).status(200);
+                return;
+            }
+            res.status(404).end();
+            return;
         } catch (e) {
             logger.error('fetch_project_fail', { error: e });
         }
@@ -178,18 +175,17 @@ userRouter.post(
             if (payload === null) {
                 res.status(401).end();
                 return;
-            } else {
-                const info = projectRequestSchema.parse(
-                    JSON.parse(req.body as string)
-                );
-                const id = await createProject(
-                    payload.userID,
-                    info.name,
-                    info.json
-                );
-                res.send(id).status(200);
-                return;
             }
+            const info = projectRequestSchema.parse(
+                JSON.parse(req.body as string)
+            );
+            const id = await createProject(
+                payload.userID,
+                info.name,
+                info.json
+            );
+            res.send(id).status(200);
+            return;
         } catch (e) {
             logger.error('new_project_fail', { error: e });
         }
@@ -205,25 +201,23 @@ userRouter.put(
             if (payload === null) {
                 res.status(401).end();
                 return;
-            } else {
-                const info = projectRequestSchema.parse(
-                    JSON.parse(req.body as string)
-                );
-                const projectID = req.params.id;
-                const response = await saveProject(
-                    payload.userID,
-                    projectID,
-                    info.name,
-                    info.json
-                );
-                if (response) {
-                    res.status(204).end();
-                    return;
-                } else {
-                    res.status(404).end();
-                    return;
-                }
             }
+            const info = projectRequestSchema.parse(
+                JSON.parse(req.body as string)
+            );
+            const projectID = req.params.id;
+            const response = await saveProject(
+                payload.userID,
+                projectID,
+                info.name,
+                info.json
+            );
+            if (response) {
+                res.status(204).end();
+                return;
+            }
+            res.status(404).end();
+            return;
         } catch (e) {
             logger.error('save_project_fail', { error: e });
         }
@@ -239,17 +233,15 @@ userRouter.delete(
             if (payload === null) {
                 res.status(401).end();
                 return;
-            } else {
-                const projectID = req.params.id;
-                const response = await removeProject(payload.userID, projectID);
-                if (response) {
-                    res.status(204).end();
-                    return;
-                } else {
-                    res.status(404).end();
-                    return;
-                }
             }
+            const projectID = req.params.id;
+            const response = await removeProject(payload.userID, projectID);
+            if (response) {
+                res.status(204).end();
+                return;
+            }
+            res.status(404).end();
+            return;
         } catch (e) {
             logger.error('delete_project_fail', { error: e });
         }
