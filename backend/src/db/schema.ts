@@ -6,13 +6,19 @@ import { databaseConfig } from './pool';
 const runMigrations = async () => {
     logger.info('migrations_start');
 
+    // we need to create a new client instead of using a pool because the
+    // migrations lock stays until the client is disconnected - but it would be
+    // released back to the pool instead
     const client = new Client(databaseConfig);
 
     const options: RunnerOption = {
-        direction: 'up',
-        dir: 'migrations',
-        migrationsTable: 'pgmigrations',
         dbClient: client,
+        dir: 'migrations',
+        direction: 'up',
+        log: (msg: string) => {
+            logger.info('migrate', { msg });
+        },
+        migrationsTable: 'pgmigrations',
     };
 
     await client.connect();
