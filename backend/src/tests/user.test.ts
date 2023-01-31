@@ -5,6 +5,7 @@
 
 import supertest from 'supertest';
 import { TokenPayload } from '../types/TokenPayload';
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { app } from './../app';
 
