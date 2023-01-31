@@ -27,7 +27,7 @@ export const Panels = () => {
     }
 
     return (
-        <div className="App bg-neutral-99 h-full flex flex-col justify-start items-center">
+        <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
             <ContentPanel
                 key={panel.id}
                 id={panel.id}

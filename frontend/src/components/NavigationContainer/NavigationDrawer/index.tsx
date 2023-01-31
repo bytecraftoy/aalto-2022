@@ -59,7 +59,7 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                 )}
             >
                 {/* The data area */}
-                <div className="h-full w-full p-3">
+                <div className="h-full w-full p-3 overflow-y-auto scrollbar-hide">
                     {/* Drawer header */}
                     <div className="py-2 pl-4 pr-2 h-14">
                         <h2 className="text-xl">Navigation</h2>

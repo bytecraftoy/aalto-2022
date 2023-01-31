@@ -15,7 +15,7 @@ export const Home = () => {
     const panel: ContentPanelType = panels[0];
 
     return (
-        <div className="App bg-neutral-99 h-full flex flex-col justify-start items-center">
+        <div className="App flex-1 bg-neutral-99 h-full flex flex-col justify-start items-center">
             <ContentPanel
                 id={panel.id}
                 initialCategory={panel.category}
