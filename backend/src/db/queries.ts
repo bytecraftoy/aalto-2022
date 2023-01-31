@@ -54,7 +54,7 @@ export const selectProjectData = async (
 export const selectProjectOwner = async (
     projectID: string
 ): Promise<{ userid: string }> => {
-    const text = 'SELECT UserID FROM projects WHERE id = $1';
+    const text = 'SELECT user_id FROM projects WHERE id = $1';
     const values = [projectID];
     const res = await executeQuery(text, values);
     return res[0] as { userid: string };
@@ -132,7 +132,7 @@ export const addProject = async (
 };
 
 export const updateProject = async (name: string, data: object, id: string) => {
-    const text = 'UPDATE projects SET name = $1, json = $2 WHERE id = $3';
+    const text = 'UPDATE projects SET name = $1, data = $2 WHERE id = $3';
     const values = [name, data, id];
     await executeQuery(text, values);
 };
@@ -144,7 +144,7 @@ export const deleteProject = async (id: string) => {
 };
 
 export const projectExists = async (id: string): Promise<boolean> => {
-    const text = 'SELECT COUNT(*) from Projects WHERE id = $1';
+    const text = 'SELECT COUNT(*) from projects WHERE id = $1';
     const values = [id];
     const res = await executeQuery(text, values);
     const row = res[0] as { count: string };

@@ -129,10 +129,13 @@ userRouter.get(
     expressAsyncHandler(async (req, res) => {
         try {
             const payload = await readToken(req);
-            if (payload === null) res.status(401).end();
-            else {
+            if (payload === null) {
+                res.status(401).end();
+                return;
+            } else {
                 const response = getProjects(payload.userID);
                 res.json(response).status(200);
+                return;
             }
         } catch (e) {
             logger.error('fetch_all_projects_fail', { error: e });
@@ -141,20 +144,23 @@ userRouter.get(
     })
 );
 
-//response[0] == true if project exists
 userRouter.get(
     '/projects/:id',
     expressAsyncHandler(async (req, res) => {
         try {
             const payload = await readToken(req);
-            if (payload === null) res.status(401).end();
-            else {
+            if (payload === null) {
+                res.status(401).end();
+                return;
+            } else {
                 const projectID = req.params.id;
                 const response = await getProject(payload.userID, projectID);
-                if (response[0]) {
-                    res.json(response[1]).status(200);
+                if (response.success) {
+                    res.json(response.data).status(200);
+                    return;
                 } else {
                     res.status(404).end();
+                    return;
                 }
             }
         } catch (e) {
@@ -169,8 +175,10 @@ userRouter.post(
     expressAsyncHandler(async (req, res) => {
         try {
             const payload = await readToken(req);
-            if (payload === null) res.status(401).end();
-            else {
+            if (payload === null) {
+                res.status(401).end();
+                return;
+            } else {
                 const info = projectRequestSchema.parse(
                     JSON.parse(req.body as string)
                 );
@@ -180,6 +188,7 @@ userRouter.post(
                     info.json
                 );
                 res.send(id).status(200);
+                return;
             }
         } catch (e) {
             logger.error('new_project_fail', { error: e });
@@ -193,8 +202,10 @@ userRouter.put(
     expressAsyncHandler(async (req, res) => {
         try {
             const payload = await readToken(req);
-            if (payload === null) res.status(401).end();
-            else {
+            if (payload === null) {
+                res.status(401).end();
+                return;
+            } else {
                 const info = projectRequestSchema.parse(
                     JSON.parse(req.body as string)
                 );
@@ -207,8 +218,10 @@ userRouter.put(
                 );
                 if (response) {
                     res.status(204).end();
+                    return;
                 } else {
                     res.status(404).end();
+                    return;
                 }
             }
         } catch (e) {
@@ -223,14 +236,18 @@ userRouter.delete(
     expressAsyncHandler(async (req, res) => {
         try {
             const payload = await readToken(req);
-            if (payload === null) res.status(401).end();
-            else {
+            if (payload === null) {
+                res.status(401).end();
+                return;
+            } else {
                 const projectID = req.params.id;
                 const response = await removeProject(payload.userID, projectID);
                 if (response) {
                     res.status(204).end();
+                    return;
                 } else {
                     res.status(404).end();
+                    return;
                 }
             }
         } catch (e) {

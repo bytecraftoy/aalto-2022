@@ -150,7 +150,7 @@ const getProjects = async (
 const getProject = async (
     projectID: string,
     userID: string
-): Promise<[boolean, { data: object }]> => {
+): Promise<{ success: boolean; data: object }> => {
     try {
         const exists = await projectExists(projectID);
         const ownerID = await selectProjectOwner(projectID);
@@ -158,13 +158,13 @@ const getProject = async (
         if (exists && isOwner) {
             const response = await selectProjectData(projectID);
 
-            return [true, response];
+            return { success: true, data: response };
         }
 
-        return [false, { data: {} }];
+        return { success: false, data: {} };
     } catch (e) {
         logger.error(e);
-        return [false, { data: {} }];
+        return { success: false, data: {} };
     }
 };
 
@@ -201,7 +201,7 @@ const saveProject = async (
     try {
         const exists = await projectExists(projectID);
         const ownerID = await selectProjectOwner(projectID);
-        const isOwner = ownerID.userid == userID;
+        const isOwner = ownerID.userid === userID;
         if (exists && isOwner) {
             const obj = JSON.parse(data) as object;
             await updateProject(projectName, obj, projectID);
@@ -226,7 +226,7 @@ const removeProject = async (
     try {
         const exists = await projectExists(projectID);
         const ownerID = await selectProjectOwner(projectID);
-        const isOwner = ownerID.userid == userID;
+        const isOwner = ownerID.userid === userID;
         if (exists && isOwner) {
             await deleteProject(projectID);
             return true;
