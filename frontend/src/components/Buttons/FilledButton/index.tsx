@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonProps } from '..';
-import { bg, bgActive, textOnBg } from '../../../utils/colors';
+import { bg, bgActive, bgHover, textOnBg } from '../../../utils/colors';
 import { solidIcon } from '../../../utils/icons';
 import classNames from 'classnames/dedupe';
 
@@ -28,6 +28,7 @@ export const FilledButton: React.FC<ButtonProps> = ({
                 { 'px-6': !icon },
                 bg(colorPalette),
                 textOnBg(colorPalette),
+                !disabled && bgHover(colorPalette),
                 bgActive(colorPalette),
                 className
             )}
