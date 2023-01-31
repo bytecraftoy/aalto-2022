@@ -50,7 +50,7 @@ describe('/user', () => {
         const res = await api.get('/api/user/');
 
         expect(res.status).toBe(401);
-        expect(res.text).toBe('No token on the request found');
+        expect(res.text).toBe('No valid token on the request found');
     });
 });
 
