@@ -6,9 +6,14 @@
 import supertest from 'supertest';
 import jwt from 'jsonwebtoken';
 import { app } from './../app';
-//import { TokenPayload } from '../types/TokenPayload';
+import { TokenPayload } from '../types/TokenPayload';
+import { initializeUsers } from './../services/testService';
 
 const api = supertest(app);
+
+beforeEach(async () => {
+    await initializeUsers();
+});
 
 describe('user router login', () => {
     test('handles incorrect user names', async () => {
@@ -17,7 +22,7 @@ describe('user router login', () => {
             .send(
                 JSON.stringify({
                     name: 'nonexistent',
-                    password: 'password1234',
+                    password: 'salainen',
                 })
             )
             .expect(400);
@@ -26,14 +31,14 @@ describe('user router login', () => {
     test('handles incorrect passwords', async () => {
         await api
             .post('/api/user/login/')
-            .send(JSON.stringify({ name: 'dev', password: 'password1235' }))
+            .send(JSON.stringify({ name: 'tester', password: 'incorrect' }))
             .expect(400);
     });
 
-    /*test('sets token cookie correctly', async () => {
+    test('sets token cookie correctly', async () => {
         const res = await api
             .post('/api/user/login/')
-            .send(JSON.stringify({ name: 'dev', password: 'password1234' }))
+            .send(JSON.stringify({ name: 'tester', password: 'salainen' }))
             .expect(204);
         const setCookie: unknown = res.headers['set-cookie'];
         expect(typeof setCookie).toBe('object');
@@ -47,8 +52,8 @@ describe('user router login', () => {
         expect(splitted.includes('SameSite=Strict')).toBe(true);
         const token = splitted[0].slice('user-token='.length);
         const payload = jwt.decode(token) as TokenPayload;
-        expect(payload.userName).toBe('dev');
-    });*/
+        expect(payload.userName).toBe('tester');
+    });
 });
 
 describe('user router logout', () => {
@@ -67,11 +72,11 @@ describe('user router logout', () => {
         expect(jwt.decode(token)).toBe(null);
     });
 
-    /*test('handles logged-in and logged-out users correctly', async () => {
+    test('handles logged-in and logged-out users correctly', async () => {
         //log in
         let res = await api
             .post('/api/user/login/')
-            .send(JSON.stringify({ name: 'dev', password: 'password1234' }))
+            .send(JSON.stringify({ name: 'tester', password: 'salainen' }))
             .expect(204);
         let setCookie: string[] = res.headers['set-cookie'] as string[];
         expect(typeof setCookie).toBe('object');
@@ -83,13 +88,13 @@ describe('user router logout', () => {
         setCookie = res.headers['set-cookie'] as string[];
         expect(typeof setCookie).toBe('object');
         //check that the cookie is overwritten properly
-        const tokenCookie = setCookie.find((e) => e.startsWith('user-token='));
+        let tokenCookie = setCookie.find((e) => e.startsWith('user-token='));
         expect(typeof tokenCookie).toBe('string');
-        const splitted = (tokenCookie as string).split('; ');
+        let splitted = (tokenCookie as string).split('; ');
         expect(splitted.includes('HttpOnly')).toBe(true);
         expect(splitted.includes('Secure')).toBe(true);
         expect(splitted.includes('SameSite=Strict')).toBe(true);
-        const token = splitted[0].slice('user-token='.length);
+        let token = splitted[0].slice('user-token='.length);
         expect(jwt.decode(token)).toBe(null);
         //try log out again
         res = await api
@@ -99,15 +104,15 @@ describe('user router logout', () => {
         setCookie = res.headers['set-cookie'] as string[];
         expect(typeof setCookie).toBe('object');
         //check that the cookie is overwritten properly
-        const tokenCookie = setCookie.find((e) => e.startsWith('user-token='));
+        tokenCookie = setCookie.find((e) => e.startsWith('user-token='));
         expect(typeof tokenCookie).toBe('string');
-        const splitted = (tokenCookie as string).split('; ');
+        splitted = (tokenCookie as string).split('; ');
         expect(splitted.includes('HttpOnly')).toBe(true);
         expect(splitted.includes('Secure')).toBe(true);
         expect(splitted.includes('SameSite=Strict')).toBe(true);
-        const token = splitted[0].slice('user-token='.length);
+        token = splitted[0].slice('user-token='.length);
         expect(jwt.decode(token)).toBe(null);
-    });*/
+    });
 });
 
 describe('user router info', () => {
@@ -115,24 +120,24 @@ describe('user router info', () => {
         await api.get('/api/user/').expect(401);
     });
 
-    /*test('handles logged-in users correctly', async () => {
+    test('handles logged-in users correctly', async () => {
         //log in
         let res = await api
             .post('/api/user/login/')
-            .send(JSON.stringify({ name: 'dev', password: 'password1234' }))
+            .send(JSON.stringify({ name: 'tester', password: 'salainen' }))
             .expect(204);
         const setCookie: string[] = res.headers['set-cookie'] as string[];
         expect(typeof setCookie).toBe('object');
         //try after logging in
         res = await api.get('/api/user/').set('Cookie', setCookie).expect(200);
-        expect(res.body.name).toBe('dev');
+        expect(res.body.name).toBe('tester');
     });
 
     test('handles logged-out users correctly', async () => {
         //log in
         let res = await api
             .post('/api/user/login/')
-            .send(JSON.stringify({ name: 'dev', password: 'password1234' }))
+            .send(JSON.stringify({ name: 'tester', password: 'salainen' }))
             .expect(204);
         let setCookie: string[] = res.headers['set-cookie'] as string[];
         expect(typeof setCookie).toBe('object');
@@ -145,7 +150,7 @@ describe('user router info', () => {
         expect(typeof setCookie).toBe('object');
         //try after logging out
         await api.get('/api/user/').set('Cookie', setCookie).expect(401);
-    });*/
+    });
 
     test('handles invalid tokens correctly', async () => {
         const setCookie = [
