@@ -30,7 +30,7 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
                         setCategory={setCategory}
                     />
                 </div>
-                <div className="flex-1 z-30 pl-8">
+                <div className="flex-1 z-[15] pl-8">
                     <DropdownMenu
                         addPromptBoxes={addPromptBoxes}
                         saveState={saveState}
