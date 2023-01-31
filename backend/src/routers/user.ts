@@ -113,7 +113,7 @@ userRouter.get(
     expressAsyncHandler(async (req, res) => {
         const payload = await readToken(req);
         if (payload === null) {
-            res.status(401).send('No token on the request found');
+            res.status(401).send('No valid token on the request found');
         } else {
             const response = {
                 name: payload.userName,
