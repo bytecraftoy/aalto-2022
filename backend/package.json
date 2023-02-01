@@ -8,6 +8,7 @@
         "test-pre": "(docker-compose down || echo skipped docker-compose down) && docker-compose up -d",
         "test-run": "jest --verbose --runInBand --forceExit",
         "test-post": "docker-compose down",
+        "test-watch": "jest --verbose --runInBand --forceExit --watch",
         "test": "npm run test-pre && npm run test-run && npm run test-post",
         "tsc": "tsc",
         "dev": "run-p start-dev-database start-dev",

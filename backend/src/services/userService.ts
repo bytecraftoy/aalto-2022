@@ -37,19 +37,23 @@ const loginRequestSchema = z.object({
 type LoginRequest = z.infer<typeof loginRequestSchema>;
 
 const registerRequestSchema = z.object({
-    name: z.string(),
+    name: z
+        .string()
+        .min(1, 'Username should not be empty')
+        .max(50, 'Username can be at most 50 characters'),
     password: z
         .string()
         .min(6, 'Password should be at least 6 characters')
-        .max(49, 'Password can be 49 characters maximum'),
+        .max(50, 'Password can be 50 characters maximum'),
 });
 
 type RegisterRequest = z.infer<typeof loginRequestSchema>;
 
 /**
  * Checks if the user exists and the password is correct.
- * Resolves to user id if everything matches and null otherwise.
- * Never rejects.
+ * Returns the RequestInfo
+ * When method fails gives: { success: false, message: error message}
+ * otherwize returns: { success: true, message: userID }
  */
 const checkPassword = async (
     userName: string,
@@ -101,8 +105,8 @@ const parseToken = (token: string): Promise<TokenPayload> => {
 
 /**
  * Creates a new user.
- * Returns the id of the newly created user
- * if successful and null otherwise.
+ * If function fails it returns { success: false, message: error message }
+ * otherwize returns { success: true, message: userID }
  */
 const createUser = async (
     name: string,

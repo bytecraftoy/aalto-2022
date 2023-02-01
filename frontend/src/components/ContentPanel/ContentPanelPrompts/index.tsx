@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PromptIOBox } from './PromptIOBox';
 import { PromptData } from './PromptIOBox';
 import { FAB } from '../../Buttons';
@@ -14,6 +14,7 @@ interface ContentPanelPromptsProps {
     setPromptOutput: (id: string, output: string) => void;
     addPromptBox: () => void;
     lockPrompt: (id: string) => void;
+    saveState: () => void;
 }
 
 export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
@@ -23,6 +24,7 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
     setPromptOutput,
     addPromptBox,
     lockPrompt,
+    saveState,
 }) => {
     //Callback to modify the output area of a PromptIOBox by id
     const setPromptInput = (id: string, input: string) => {
@@ -31,6 +33,16 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
             prev.map((o) => (o.id === id ? { ...o, input: input } : o))
         );
     };
+
+    // Updates the input when user stops writing
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            // Save state only if not all prompts inputs are empty
+            if (promptBoxes.some((p) => p.input !== '')) saveState();
+        }, 4000);
+
+        return () => clearTimeout(timer);
+    }, [...promptBoxes.map((p) => p.input)]);
 
     //Callbacks to add or remove PromptIOBoxes to the panels
     const deletePromptBox = (id: string) => {
