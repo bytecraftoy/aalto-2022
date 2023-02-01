@@ -8,6 +8,8 @@ import { TokenPayload } from '../types/TokenPayload';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { app } from './../app';
+import { createUser } from '../services/userService';
+import { updateUserSettings } from '../db/queries';
 
 const api = supertest(app);
 
@@ -331,5 +333,43 @@ describe('user router register', () => {
         const res = await Promise.all(promises);
         const res204 = res.filter((e) => e.status === 204).length;
         expect(res204).toBe(num_requests);
+    });
+});
+
+describe('user router get settings', () => {
+    beforeEach(async () => {
+        const id = await createUser('testuser', 'password1234');
+        expect(id.success).toBe(true);
+        await updateUserSettings(id.message, { testdata: 2 });
+    });
+
+    test('can fetch user data succesfully', async () => {
+        const res = await api
+            .post('/api/user/login/')
+            .send(
+                JSON.stringify({ name: 'testuser', password: 'password1234' })
+            )
+            .expect(204);
+        const cookie = res.headers['set-cookie'] as string[];
+        const settings = await api
+            .get('/api/user/settings/')
+            .set('Cookie', `${cookie}`);
+        expect(settings.status).toBe(200);
+        expect(settings.body).toEqual({ testdata: 3 });
+    });
+
+    test('missing settings returns 404', async () => {
+        await createUser('testuser2', 'password4321');
+        const res = await api
+            .post('/api/user/login/')
+            .send(
+                JSON.stringify({ name: 'testuser2', password: 'password4321' })
+            )
+            .expect(204);
+        const cookie = res.headers['set-cookie'] as string[];
+        await api
+            .get('/api/user/settings/')
+            .set('Cookie', `${cookie}`)
+            .expect(404);
     });
 });

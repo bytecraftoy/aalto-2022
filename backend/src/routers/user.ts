@@ -19,6 +19,7 @@ import {
     tokenCookieOptions,
     readToken,
 } from './../services/tokenService';
+import { selectUserSettings } from '../db/queries';
 
 const userRouter = express.Router();
 
@@ -89,6 +90,26 @@ userRouter.get(
                 id: payload.userID,
             };
             res.json(response);
+        }
+    })
+);
+
+userRouter.get(
+    '/settings/',
+    expressAsyncHandler(async (req, res) => {
+        const payload = await readToken(req);
+        if (payload === null) {
+            res.status(401).send('No valid token on the request found');
+            return;
+        }
+
+        const data = await selectUserSettings(payload.userID);
+        if (data === null) {
+            logger.warn('user_settings_missing', { payload });
+            res.status(404).send('No settings found');
+        } else {
+            const json = JSON.stringify(data);
+            res.status(200).send(json);
         }
     })
 );
