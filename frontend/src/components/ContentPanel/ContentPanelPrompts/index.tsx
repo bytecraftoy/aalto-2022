@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { PromptIOBox } from './PromptIOBox';
 import { PromptData } from './PromptIOBox';
 import { FAB } from '../../Buttons';
+import { useDebounce } from './hooks';
 
 /**
  * Component of Content panel.
@@ -34,15 +35,13 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
         );
     };
 
-    // Updates the input when user stops writing
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            // Save state only if not all prompts inputs are empty
-            if (promptBoxes.some((p) => p.input !== '')) saveState();
-        }, 4000);
+    // Debounce the inputs to prevent too many requests
+    const debouncedInputs = useDebounce(promptBoxes, 4000);
 
-        return () => clearTimeout(timer);
-    }, [...promptBoxes.map((p) => p.input)]);
+    // Saves state when debouncedInputs changes
+    useEffect(() => {
+        saveState();
+    }, [debouncedInputs]);
 
     //Callbacks to add or remove PromptIOBoxes to the panels
     const deletePromptBox = (id: string) => {
