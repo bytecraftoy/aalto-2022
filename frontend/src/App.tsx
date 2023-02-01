@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { UserContainer } from './components/UserContainer';
+import { Snackbar } from './components/Snackbar';
 
 /**
  * The base react component
@@ -17,7 +18,9 @@ function App() {
             <BrowserRouter>
                 <NavigationContainer>
                     <UserContainer>
-                        <Routes />
+                        <Snackbar>
+                            <Routes />
+                        </Snackbar>
                     </UserContainer>
                 </NavigationContainer>
             </BrowserRouter>
