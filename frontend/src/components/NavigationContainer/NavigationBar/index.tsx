@@ -1,9 +1,7 @@
 import React from 'react';
 import { Surface } from '../../Surface';
 import { solidIcon } from '../../../utils/icons';
-import { TextButton } from '../../Buttons';
-import { useNavigate } from 'react-router-dom';
-import { EventBus } from '../../../utils/eventBus';
+import { UserButtons } from './UserButtons';
 
 /**
  * Component for elements inside the actual navigation bar
@@ -14,13 +12,6 @@ interface NavigationBarProps {
 }
 
 export const NavigationBar: React.FC<NavigationBarProps> = ({ setOpen }) => {
-    const navigate = useNavigate();
-
-    // Log out the user
-    const logout = async () => {
-        EventBus.dispatch('logout', 'logging out');
-    };
-
     return (
         <Surface
             level={5}
@@ -35,33 +26,8 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ setOpen }) => {
                 AI-assisted game content creator
             </h1>
 
-            {/* User actions, TODO: show log out and user icon conditionally */}
-            <div className="flex flex-row">
-                <TextButton
-                    name="Log out"
-                    colorPalette="primary"
-                    onClick={logout}
-                    className="m-0 max-sm:text-sm"
-                />
-                <TextButton
-                    name="Sign up"
-                    colorPalette="primary"
-                    onClick={() => navigate('/register')}
-                    className="m-0 max-sm:text-sm"
-                />
-                <TextButton
-                    name="Log in"
-                    colorPalette="primary"
-                    onClick={() => navigate('/login')}
-                    className="m-0 max-sm:text-sm"
-                />
-                <button>
-                    {solidIcon(
-                        'UserCircleIcon',
-                        'mx-8 w-8 h-8 text-primary-30'
-                    )}
-                </button>
-            </div>
+            {/* User actions */}
+            <UserButtons />
         </Surface>
     );
 };
