@@ -13,6 +13,7 @@ import { ContentPanelActions } from './ContentPanelActions';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { usePanel } from './hooks';
+import { PopUpWindow } from './ContentPanelPrompts/PopUpWindow';
 
 //Provide access to MasterCategory through a parent callback
 interface ContentPanelProps {
@@ -75,6 +76,11 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                         category={category}
                         setCategory={setCategory}
                         addPromptBoxes={addPromptBoxes}
+                    />
+
+                    {/* Pop-up window used to add n boxes. Hidden by default*/}
+                    <PopUpWindow
+                    addPromptBoxes={addPromptBoxes}
                     />
 
                     {/* IO TExtfields: Prompts of the content panel */}
