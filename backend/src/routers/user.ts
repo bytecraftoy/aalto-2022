@@ -126,7 +126,7 @@ userRouter.put(
 
         try {
             const body_json = JSON.parse(req.body as string) as unknown;
-            // we do not know the data contains, use passthrough
+            // we do not know what the data contains, use passthrough
             const data = updateSettingsRequestSchema
                 .passthrough()
                 .parse(body_json);
