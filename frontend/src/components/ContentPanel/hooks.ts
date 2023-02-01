@@ -5,6 +5,7 @@ import { generateText } from '../../utils/generateContent';
 import { useAppDispatch } from '../../utils/hooks';
 import { updatePanel } from '../../reducers/panelReducer';
 import { generatePrompts } from './promptUtil';
+import { EventBus } from '../../utils/eventBus';
 
 /**
  * Custom hook which return prompts, category and loading information + all the action functions related to prompts and category
@@ -65,20 +66,32 @@ export const usePanel = (
     };
 
     /**
+     * Saves the panel state
+     */
+    const saveState = () => {
+        // Create the new panel object
+        const panel = {
+            id,
+            category,
+            prompts: promptBoxes,
+        };
+
+        // Update the redux store
+        dispatch(updatePanel(panel));
+
+        EventBus.dispatch('notification', {
+            type: 'success',
+            message: 'Your progress has been saved.',
+        });
+    };
+
+    /**
      * A callback function for the setPromptBoxes which updates
      * the redux store after the content generation
      */
     useEffect(() => {
         if (loading) {
-            // Create the new panel object
-            const panel = {
-                id,
-                category,
-                prompts: promptBoxes,
-            };
-
-            // Update the redux store
-            dispatch(updatePanel(panel));
+            saveState();
             // Take out the loading spinner
             setLoading(() => false);
         }
@@ -118,5 +131,6 @@ export const usePanel = (
         addPromptBox,
         addPromptBoxes,
         lockPrompt,
+        saveState,
     };
 };
