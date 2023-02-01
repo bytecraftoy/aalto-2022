@@ -9,6 +9,7 @@ import {
     selectUserID,
     selectPassword,
 } from '../db/queries';
+import { RequestInfo, DEFAULT_ERROR } from '../types/ServiceTypes';
 
 /**
  * The secret used for signing the web tokens.
@@ -36,33 +37,44 @@ const loginRequestSchema = z.object({
 type LoginRequest = z.infer<typeof loginRequestSchema>;
 
 const registerRequestSchema = z.object({
-    name: z.string(),
+    name: z
+        .string()
+        .min(1, 'Username should not be empty')
+        .max(50, 'Username can be at most 50 characters'),
     password: z
         .string()
         .min(6, 'Password should be at least 6 characters')
-        .max(49, 'Password can be 49 characters maximum'),
+        .max(50, 'Password can be 50 characters maximum'),
 });
 
 type RegisterRequest = z.infer<typeof loginRequestSchema>;
 
 /**
  * Checks if the user exists and the password is correct.
- * Resolves to user id if everything matches and null otherwise.
- * Never rejects.
+ * Returns the RequestInfo
+ * When method fails gives: { success: false, message: error message}
+ * otherwize returns: { success: true, message: userID }
  */
 const checkPassword = async (
     userName: string,
     password: string
-): Promise<string | null> => {
+): Promise<RequestInfo> => {
     const hash = await selectPassword(userName);
-    if (hash === null) return null;
+    if (hash === null) return DEFAULT_ERROR;
     try {
-        if (await bcrypt.compare(password, hash))
-            return await selectUserID(userName);
-        else return null;
+        if (await bcrypt.compare(password, hash)) {
+            const userID = await selectUserID(userName);
+            if (!userID) return DEFAULT_ERROR;
+            return { success: true, message: userID };
+        } else {
+            return {
+                success: false,
+                message: 'Incorrect username or password. Please try again.',
+            };
+        }
     } catch (e) {
         logger.error(e);
-        return null;
+        return DEFAULT_ERROR;
     }
 };
 
@@ -93,22 +105,29 @@ const parseToken = (token: string): Promise<TokenPayload> => {
 
 /**
  * Creates a new user.
- * Returns the id of the newly created user
- * if successful and null otherwise.
+ * If function fails it returns { success: false, message: error message }
+ * otherwize returns { success: true, message: userID }
  */
 const createUser = async (
     name: string,
     password: string
-): Promise<string | null> => {
+): Promise<RequestInfo> => {
     try {
         const exists = await userExists(name);
-        if (exists) return null;
+        if (exists)
+            return {
+                success: false,
+                message:
+                    'Username already exists, please choose a different one.',
+            };
         const passwordHash = await bcrypt.hash(password, 10);
         await addUser(name, passwordHash);
-        return await selectUserID(name);
+        const userId = await selectUserID(name);
+        if (!userId) return DEFAULT_ERROR;
+        return { success: true, message: userId };
     } catch (e) {
         logger.error(e);
-        return null;
+        return DEFAULT_ERROR;
     }
 };
 
