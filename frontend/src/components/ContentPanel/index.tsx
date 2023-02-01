@@ -42,6 +42,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         lockPrompt,
         addPromptBox,
         addPromptBoxes,
+        saveState,
     } = usePanel(initialPrompts, initialCategory, id);
 
     //Callback to export the category, and all inputs / outputs in json
@@ -75,6 +76,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                         category={category}
                         setCategory={setCategory}
                         addPromptBoxes={addPromptBoxes}
+                        saveState={saveState}
                     />
 
                     {/* IO TExtfields: Prompts of the content panel */}

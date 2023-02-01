@@ -4,8 +4,8 @@ import { FilledButton, TextButton } from '../Buttons';
 import { useNavigate } from 'react-router-dom';
 import { useValue } from '../../utils/hooks';
 import { usernameSchema, passwordSchema } from './validation';
-import { Notification } from './Notification';
-import { useOpen } from './hooks';
+import { Notification } from '../Notification';
+import { useOpen } from '../../utils/hooks';
 import { backendURL } from '../../utils/backendURL';
 import { useAppDispatch } from '../../utils/hooks';
 import { logIn } from '../../reducers/userReducer';
@@ -29,7 +29,7 @@ export const LoginForm = () => {
     } = useValue(passwordSchema);
 
     // If the error message of the user is shown
-    const { open, setOpen } = useOpen();
+    const { open, setOpen } = useOpen(7000);
 
     // Disables the submit button
     const disabled = usernameErrors !== '' || passwordErrors !== '';
@@ -54,6 +54,7 @@ export const LoginForm = () => {
             dispatch(logIn());
             navigate('/');
         } else {
+            setOpen(true);
             setPassword('');
         }
     };
@@ -66,7 +67,11 @@ export const LoginForm = () => {
                 </h1>
                 <div className="w-full h-px bg-black" />
             </div>
-            <Notification isOpen={open} close={() => setOpen(false)} />
+            <Notification
+                isOpen={open}
+                close={() => setOpen(false)}
+                message="Invalid username or password"
+            />
             <CustomInput
                 type="text"
                 label="Username"
