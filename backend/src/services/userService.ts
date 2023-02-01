@@ -34,8 +34,6 @@ const loginRequestSchema = z.object({
     password: z.string(),
 });
 
-type LoginRequest = z.infer<typeof loginRequestSchema>;
-
 const registerRequestSchema = z.object({
     name: z
         .string()
@@ -47,7 +45,7 @@ const registerRequestSchema = z.object({
         .max(50, 'Password can be 50 characters maximum'),
 });
 
-type RegisterRequest = z.infer<typeof loginRequestSchema>;
+const updateSettingsRequestSchema = z.object({});
 
 /**
  * Checks if the user exists and the password is correct.
@@ -133,9 +131,8 @@ const createUser = async (
 
 export {
     loginRequestSchema,
-    LoginRequest,
     registerRequestSchema,
-    RegisterRequest,
+    updateSettingsRequestSchema,
     checkPassword,
     createUser,
     createToken,

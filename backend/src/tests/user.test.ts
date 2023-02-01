@@ -8,7 +8,7 @@ import { TokenPayload } from '../types/TokenPayload';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { app } from './../app';
-import { createUser } from '../services/userService';
+import { createToken, createUser } from '../services/userService';
 import { updateUserSettings } from '../db/queries';
 
 const api = supertest(app);
@@ -337,39 +337,121 @@ describe('user router register', () => {
 });
 
 describe('user router get settings', () => {
+    let token: string;
+    let user_id: string;
+
     beforeEach(async () => {
-        const id = await createUser('testuser', 'password1234');
-        expect(id.success).toBe(true);
-        await updateUserSettings(id.message, { testdata: 2 });
+        user_id = (await createUser('testuser', 'password1234')).message;
+        const payload: TokenPayload = {
+            userName: 'testuser',
+            userID: user_id,
+        };
+        token = await createToken(payload);
     });
 
     test('can fetch user data succesfully', async () => {
-        const res = await api
-            .post('/api/user/login/')
-            .send(
-                JSON.stringify({ name: 'testuser', password: 'password1234' })
-            )
-            .expect(204);
-        const cookie = res.headers['set-cookie'] as string[];
+        await updateUserSettings(user_id, { testdata: 2 });
         const settings = await api
             .get('/api/user/settings/')
-            .set('Cookie', `${cookie}`);
+            .set('Cookie', `user-token=${token}`);
         expect(settings.status).toBe(200);
-        expect(settings.body).toEqual({ testdata: 3 });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const data = JSON.parse(settings.text);
+        expect(data).toStrictEqual({ testdata: 2 });
     });
 
-    test('missing settings returns 404', async () => {
-        await createUser('testuser2', 'password4321');
-        const res = await api
-            .post('/api/user/login/')
-            .send(
-                JSON.stringify({ name: 'testuser2', password: 'password4321' })
-            )
-            .expect(204);
-        const cookie = res.headers['set-cookie'] as string[];
+    test('returns 401 without jwt token', async () => {
+        await api.get('/api/user/settings/').expect(401);
+    });
+
+    test('returns 401 with bad jwt token', async () => {
         await api
             .get('/api/user/settings/')
-            .set('Cookie', `${cookie}`)
+            .set('Cookie', 'user-token=badtoken')
+            .expect(401);
+    });
+
+    test('return 404 on missing settings', async () => {
+        await api
+            .get('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`)
             .expect(404);
+    });
+});
+
+describe('user router update settings', () => {
+    let token: string;
+    let user_id: string;
+
+    beforeEach(async () => {
+        user_id = (await createUser('testuser', 'password1234')).message;
+        const payload: TokenPayload = {
+            userName: 'testuser',
+            userID: user_id,
+        };
+        token = await createToken(payload);
+    });
+
+    test('updating settings works when uninitialized', async () => {
+        await api
+            .put('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`)
+            .send(JSON.stringify({ testdata: 2 }))
+            .expect(204);
+    });
+
+    test('updating settings works when already set', async () => {
+        await updateUserSettings(user_id, { testdata: 2 });
+        await api
+            .put('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`)
+            .send(JSON.stringify({ testdata: 3 }))
+            .expect(204);
+        const settings = await api
+            .get('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`);
+        expect(settings.status).toBe(200);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const data = JSON.parse(settings.text);
+        expect(data).toStrictEqual({ testdata: 3 });
+    });
+
+    test('returns 400 with malformed body', async () => {
+        await api
+            .put('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`)
+            .send('asd{')
+            .expect(400);
+    });
+
+    test('malformed update does not modify previous state', async () => {
+        await updateUserSettings(user_id, { testdata: 2 });
+        await api
+            .put('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`)
+            .send('asd{')
+            .expect(400);
+        const settings = await api
+            .get('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`);
+        expect(settings.status).toBe(200);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const data = JSON.parse(settings.text);
+        expect(data).toStrictEqual({ testdata: 2 });
+    });
+
+    test('returns 401 with missing jwt token', async () => {
+        await api.put('/api/user/settings/').expect(401);
+        await api
+            .put('/api/user/settings/')
+            .send(JSON.stringify({ testdata: 2 }))
+            .expect(401);
+    });
+
+    test('returns 401 with malformed jwt token', async () => {
+        await api
+            .put('/api/user/settings/')
+            .set('Cookie', 'user-token=badtoken')
+            .expect(401);
     });
 });
