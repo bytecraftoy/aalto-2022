@@ -31,7 +31,7 @@ export const TextArea: React.FC<TextInputProps> = ({
     const showLabel: boolean = !showError && value.length > 0;
 
     return (
-        <label className="relative w-full h-full">
+        <label className="relative w-full h-full group">
             <textarea
                 spellCheck={'false'}
                 placeholder={placeholder}
@@ -39,7 +39,7 @@ export const TextArea: React.FC<TextInputProps> = ({
                     'form-control peer h-40 block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding  resize-none',
                     'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
                     'rounded-t-lg transition-colors ',
-                    'bg-neutral-90 hover:bg-onSurface hover:bg-opacity-10',
+                    'bg-neutral-90  group-hover:bg-onSurface group-hover:bg-neutral-70',
                     'placeholder:text-transparent placeholder:select-none cursor-text',
                     { 'focus:border-red border-red': showError }
                 )}
@@ -52,7 +52,8 @@ export const TextArea: React.FC<TextInputProps> = ({
                 className={classNames(
                     'absolute select-none left-0 top-0 pl-4 peer-placeholder-shown:top-3.5',
                     'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base',
-                    'transition-all',
+                    'transition-all w-full bg-neutral-90 group-hover:bg-neutral-70',
+                    'peer-placeholder-shown:bg-transparent',
                     {
                         'text-red peer-placeholder-shown:text-red': showError,
                     }
