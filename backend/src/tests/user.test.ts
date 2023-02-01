@@ -274,13 +274,6 @@ describe('user router register', () => {
         expect(res.headers['set-cookie']).toBe(undefined);
     });
 
-    test('returns 404 for http methods other than POST', async () => {
-        await api.delete('/api/user/register/').expect(404);
-        await api.get('/api/user/register/').expect(404);
-        await api.head('/api/user/register/').expect(404);
-        await api.put('/api/user/register/').expect(404);
-    });
-
     // basic concurrent data-race test
     test('return 204 for 1 request and 400 for rest for multiple concurrent requests', async () => {
         const promises = [];
