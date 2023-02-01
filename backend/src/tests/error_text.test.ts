@@ -2,7 +2,11 @@
 import supertest from 'supertest';
 import { app } from '../app';
 import { userExists } from '../db/queries';
-import { initializeUsers } from '../services/testService';
+import {
+    initializeUsers,
+    testUserName,
+    testUserPassword,
+} from '../services/testService';
 
 const api = supertest(app);
 
@@ -16,7 +20,7 @@ beforeEach(async () => {
 
 describe('/user/register', () => {
     test('The test user should be in the db', async () => {
-        const value = await userExists('tester');
+        const value = await userExists(testUserName);
         expect(value).toBe(true);
     });
 
@@ -36,7 +40,9 @@ describe('/user/register', () => {
     test('Backend should tell user if username is already defined', async () => {
         const res = await api
             .post('/api/user/register')
-            .send(JSON.stringify({ name: 'tester', password: 'new_password' }));
+            .send(
+                JSON.stringify({ name: testUserName, password: 'new_password' })
+            );
 
         expect(res.status).toBe(400);
         expect(res.text).toBe(
@@ -58,7 +64,12 @@ describe('/user/login', () => {
     test('Can log in with right credentials', async () => {
         await api
             .post('/api/user/login')
-            .send(JSON.stringify({ name: 'tester', password: 'salainen' }))
+            .send(
+                JSON.stringify({
+                    name: testUserName,
+                    password: testUserPassword,
+                })
+            )
             .expect(204);
     });
 
@@ -66,7 +77,10 @@ describe('/user/login', () => {
         const res = await api
             .post('/api/user/login')
             .send(
-                JSON.stringify({ name: 'tester', password: 'wrong_passowrd' })
+                JSON.stringify({
+                    name: testUserName,
+                    password: 'wrong_passowrd',
+                })
             )
             .expect(400);
 

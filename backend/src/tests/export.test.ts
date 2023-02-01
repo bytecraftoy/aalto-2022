@@ -2,20 +2,35 @@ import supertest from 'supertest';
 import crypto from 'crypto';
 import xlsx from 'xlsx';
 import { app } from '../app';
+import { initializeUsers, getUserToken } from './../services/testService';
 
 const api = supertest(app);
+
+beforeEach(async () => {
+    await initializeUsers();
+});
 
 describe('json export router', () => {
     const data = '{"a":[1, 2],"b":true}';
     const fileName = 'file.json';
 
+    test('is not available for anonymous users', async () => {
+        await api.get('/api/export/json/abc/').expect(401);
+    });
+
     test('handles incorrect IDs', async () => {
-        await api.get('/api/export/json/abc/').expect(404);
+        const cookie = await getUserToken(api);
+        await api
+            .get('/api/export/json/abc/')
+            .set('Cookie', cookie)
+            .expect(404);
     });
 
     test('saves and servers and deletes data correctly', async () => {
+        const cookie = await getUserToken(api);
         let res = await api
             .post('/api/export/json/' + fileName)
+            .set('Cookie', cookie)
             .send(data)
             .expect(200);
 
@@ -24,13 +39,19 @@ describe('json export router', () => {
         expect(typeof id).toBe('string');
         expect(id.length >= 16).toBe(true);
 
-        res = await api.get(`/api/export/json/${id}/`).expect(200);
+        res = await api
+            .get(`/api/export/json/${id}/`)
+            .set('Cookie', cookie)
+            .expect(200);
         expect(res.headers['content-disposition']).toBe(
             `attachment; filename="${fileName}"`
         );
         expect(res.text).toBe(data);
 
-        await api.get(`/api/export/json/${id}/`).expect(404);
+        await api
+            .get(`/api/export/json/${id}/`)
+            .set('Cookie', cookie)
+            .expect(404);
     });
 });
 
@@ -171,13 +192,23 @@ const isCorrectXLSX = (file: Buffer): boolean => {
 describe('xlsx export router', () => {
     const fileName = 'file.xlsx';
 
+    test('is not available for anonymous users', async () => {
+        await api.get('/api/export/xlsx/abc/').expect(401);
+    });
+
     test('handles incorrect IDs', async () => {
-        await api.get('/api/export/xlsx/abc/').expect(404);
+        const cookie = await getUserToken(api);
+        await api
+            .get('/api/export/xlsx/abc/')
+            .set('Cookie', cookie)
+            .expect(404);
     });
 
     test('saves and servers and deletes data correctly', async () => {
+        const cookie = await getUserToken(api);
         let res = await api
             .post('/api/export/xlsx/' + fileName)
+            .set('Cookie', cookie)
             .send(JSON.stringify(exportData))
             .expect(200);
 
@@ -188,6 +219,7 @@ describe('xlsx export router', () => {
 
         res = await api
             .get(`/api/export/xlsx/${id}/`)
+            .set('Cookie', cookie)
             .responseType('blob')
             .expect(200);
         expect(res.headers['content-disposition']).toBe(
@@ -195,6 +227,9 @@ describe('xlsx export router', () => {
         );
         expect(isCorrectXLSX(res.body as Buffer)).toBe(true);
 
-        await api.get(`/api/export/xlsx/${id}/`).expect(404);
+        await api
+            .get(`/api/export/xlsx/${id}/`)
+            .set('Cookie', cookie)
+            .expect(404);
     });
 });
