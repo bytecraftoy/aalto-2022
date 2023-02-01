@@ -9,7 +9,7 @@ import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { app } from './../app';
 import { createToken, createUser } from '../services/userService';
-import { updateUserSettings } from '../db/queries';
+import { selectUserSettings, updateUserSettings } from '../db/queries';
 
 const api = supertest(app);
 
@@ -393,11 +393,14 @@ describe('user router update settings', () => {
     });
 
     test('updating settings works when uninitialized', async () => {
+        const data = { testdata: 2 };
         await api
             .put('/api/user/settings/')
             .set('Cookie', `user-token=${token}`)
-            .send(JSON.stringify({ testdata: 2 }))
+            .send(JSON.stringify(data))
             .expect(204);
+        const settings = await selectUserSettings(user_id);
+        expect(settings).toStrictEqual(data);
     });
 
     test('updating settings works when already set', async () => {
