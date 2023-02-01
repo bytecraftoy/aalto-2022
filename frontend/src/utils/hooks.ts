@@ -1,5 +1,5 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { RootState, AppDispatch } from '../store';
 
 // Used instead of plain `useDispatch` and `useSelector`
@@ -30,4 +30,21 @@ export const useValue = (schema?: Zod.ZodType) => {
     }
 
     return { value, errors, setValue };
+};
+
+/**
+ * Custom hook which closes after N milliseconds
+ */
+export const useOpen = (time: number) => {
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setOpen(false), time);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [open]);
+
+    return { open, setOpen };
 };
