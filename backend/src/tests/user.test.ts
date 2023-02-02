@@ -8,6 +8,12 @@ import { TokenPayload } from '../types/TokenPayload';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { app } from './../app';
+import { createToken, createUser } from '../services/userService';
+import {
+    addProject,
+    selectProjectsbyUserID,
+    selectProjectData
+} from '../db/queries';
 
 const api = supertest(app);
 
@@ -331,5 +337,137 @@ describe('user router register', () => {
         const res = await Promise.all(promises);
         const res204 = res.filter((e) => e.status === 204).length;
         expect(res204).toBe(num_requests);
+    });
+});
+
+describe('user router projects', () => {
+    let token: string;
+    let user_id: string;
+    let project_id_1: string;
+
+    beforeEach(async () => {
+        user_id = (await createUser('testuser', 'password1234')).message;
+        const payload: TokenPayload = {
+            userName: 'testuser',
+            userID: user_id,
+        };
+        token = await createToken(payload);
+        const projectquery1 = await addProject(user_id, 'name1', {
+            testdata: 1,
+        });
+        project_id_1 = projectquery1.id;
+        await addProject(user_id, 'name2', { testdata: 2 });
+    });
+
+    test('can fetch projects succesfully (GET api/user/projects)', async () => {
+        const res = await api
+            .get('/api/user/projects/')
+            .set('Cookie', `user-token=${token}`)
+            .expect(200);
+        expect(res.body).toHaveLength(2);
+        expect(res.body[0].name).toEqual('name1');
+        expect(res.body[1].name).toEqual('name2');
+    });
+
+    test('can fetch a project succesfully (GET /api/user/projects/:id)', async () => {
+        const res = await api
+            .get(`/api/user/projects/${project_id_1}`)
+            .set('Cookie', `user-token=${token}`)
+            .expect(200);
+        expect(res.body).toEqual({ testdata: 1 });
+    });
+
+    test('can post new project succesfully (POST api/user/projects/new)', async () => {
+        const data = {
+            name: 'name3',
+            json: { testdata: 3 },
+        };
+        await api
+            .post('/api/user/projects/new')
+            .set('Cookie', `user-token=${token}`)
+            .send(JSON.stringify(data))
+            .expect(200);
+
+        const projects = await selectProjectsbyUserID(user_id);
+        expect(projects).toHaveLength(3);
+    });
+
+    test('can edit project succesfully (PUT api/user/projects/:id)', async () => {
+        const data = {
+            name: 'name3',
+            json: { testdata: 3 },
+        };
+        const res = await api
+            .put(`/api/user/projects/${project_id_1}`)
+            .set('Cookie', `user-token=${token}`)
+            .send(JSON.stringify(data))
+            .expect(200);
+        expect(typeof res.body === 'string').toBe(true);
+
+        const projects = await selectProjectsbyUserID(user_id);
+        expect(projects[0].name).toEqual('name3');
+        const project = await selectProjectData(project_id_1);
+        expect(project).toEqual(data.json);
+    });
+
+    test('can delete project succesfully (DELETE api/user/projects/:id)', async () => {
+        await api
+            .delete(`/api/user/projects/${project_id_1}`)
+            .set('Cookie', `user-token=${token}`)
+            .expect(200);
+
+        const projects = await selectProjectsbyUserID(user_id);
+        expect(projects).toHaveLength(1);
+    });
+
+    test('requests return 404 when appropriate', async () => {
+        const user_id2 = (await createUser('testuser2', 'password1234'))
+            .message;
+        const payload: TokenPayload = {
+            userName: 'testuser2',
+            userID: user_id2,
+        };
+        const token2 = await createToken(payload);
+
+        await api
+            .get(`/api/user/projects/${project_id_1}`)
+            .set('Cookie', `user-token=${token2}`)
+            .expect(404);
+
+        const data = {
+            name: 'name3',
+            json: { testdata: 3 },
+        };
+        await api
+            .put(`/api/user/projects/${project_id_1}`)
+            .set('Cookie', `user-token=${token2}`)
+            .send(JSON.stringify(data))
+            .expect(404);
+
+        await api
+            .delete(`/api/user/projects/${project_id_1}`)
+            .set('Cookie', `user-token=${token2}`)
+            .expect(404);
+    });
+
+    test('returns 401 without jwt token', async () => {
+        await api.get('/api/user/projects/').expect(401);
+        await api.get(`/api/user/projects/${project_id_1}`).expect(401);
+        await api.post('/api/user/projects/new').expect(401);
+    });
+
+    test('returns 401 with bad jwt token', async () => {
+        await api
+            .get('/api/user/projects/')
+            .set('Cookie', 'user-token=badtoken')
+            .expect(401);
+        await api
+            .get(`/api/user/projects/${project_id_1}`)
+            .set('Cookie', `user-token=${token}`)
+            .expect(401);
+        await api
+            .post('/api/user/projects/new')
+            .set('Cookie', 'user-token=badtoken')
+            .expect(401);
     });
 });
