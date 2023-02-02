@@ -51,6 +51,12 @@ export const selectProjectData = async (
     return res[0] as { data: object };
 };
 
+/**
+ * This function returns the settings of a user.
+ * Throws an error if the user does not exist.
+ *
+ * @returns {object | null} settings if exists, null otherwise
+ */
 export const selectUserSettings = async (
     userID: string
 ): Promise<object | null> => {
