@@ -6,6 +6,11 @@
 declare global {
     interface CustomEventMap {
         logout: CustomEvent<string>;
+        notification: CustomEvent<NotificationObj>;
+    }
+    interface NotificationObj {
+        type: 'error' | 'success';
+        message: string;
     }
     interface Document {
         //adds definition to Document, but you can do the same with HTMLElement

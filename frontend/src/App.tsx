@@ -3,9 +3,8 @@ import { Routes } from './Routes';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { useEffect } from 'react';
-import { EventBus } from './utils/eventBus';
-import { backendURL } from './utils/backendURL';
+import { UserContainer } from './components/UserContainer';
+import { Snackbar } from './components/Snackbar';
 
 /**
  * The base react component
@@ -14,28 +13,15 @@ import { backendURL } from './utils/backendURL';
  * layout of the page.
  */
 function App() {
-    // Function for log out, i.e., emptying the cookies.
-    async function onCustomEvent() {
-        await fetch(`${backendURL}/api/user/logout`, {
-            method: 'POST',
-            credentials: 'include',
-        });
-    }
-
-    // Adds event listener for logout events and logouts user when the evne tis fired
-    useEffect(() => {
-        EventBus.on('logout', onCustomEvent);
-
-        return () => {
-            EventBus.remove('logout', onCustomEvent);
-        };
-    }, []);
-
     return (
         <Provider store={store}>
             <BrowserRouter>
                 <NavigationContainer>
-                    <Routes />
+                    <UserContainer>
+                        <Snackbar>
+                            <Routes />
+                        </Snackbar>
+                    </UserContainer>
                 </NavigationContainer>
             </BrowserRouter>
         </Provider>

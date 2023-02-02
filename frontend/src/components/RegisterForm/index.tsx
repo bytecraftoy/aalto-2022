@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Header } from './Header';
 import { useValue } from '../../utils/hooks';
 import { CustomInput } from '../Inputs';
 import { FilledButton } from '../Buttons';
 import { usernameSchema, passwordSchema } from './validation';
 import { useRepeatPassword } from './hooks';
+import { backendURL } from '../../utils/backendURL';
+import { useAppDispatch } from '../../utils/hooks';
+import { useNavigate } from 'react-router-dom';
+import { logIn } from '../../reducers/userReducer';
+import { Notification } from '../Notification';
+import { useOpen } from '../../utils/hooks';
 
 /**
  *  Form for registering the user
@@ -24,17 +30,47 @@ export const RegisterForm = () => {
     const { repeatedPassword, repeatErrors, changeRepeated } =
         useRepeatPassword(password);
 
+    // Open the notification
+    const { open, setOpen } = useOpen(7000);
+    const [error, setError] = useState('');
+
+    // Navigation
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
     // Disabled the submit button
     const disabled =
         usernameErrors !== '' || passwordErrors !== '' || repeatErrors !== '';
 
-    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        // Send register information to the backend
+        const res = await fetch(`${backendURL}/api/user/register`, {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({ name: username, password }),
+        });
+
+        if (res.status === 204) {
+            dispatch(logIn());
+            navigate('/');
+        } else {
+            // Set the error notification
+            // TODO! Get the real error reason from backend and show to user
+            setError('Username already taken');
+            setOpen(true);
+        }
     };
 
     return (
         <form className="flex flex-col w-72 gap-10" onSubmit={submitForm}>
             <Header />
+            <Notification
+                isOpen={open}
+                close={() => setOpen(false)}
+                message={error}
+            />
 
             <CustomInput
                 value={username}
@@ -48,6 +84,7 @@ export const RegisterForm = () => {
             <CustomInput
                 value={password}
                 label="Password"
+                type="password"
                 onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setPassword(e.target.value)
                 }
@@ -57,6 +94,7 @@ export const RegisterForm = () => {
             <CustomInput
                 value={repeatedPassword}
                 label="Repeat password"
+                type="password"
                 onInput={changeRepeated}
                 textHelper="Please enter your password again"
                 errors={repeatErrors}

@@ -103,6 +103,7 @@ module.exports = {
                 3: '#ECE8F5',
                 4: '#EBE7F4',
                 5: '#E4E0F1',
+                inverse: '#313034',
             },
 
             //OLD COLORS, delete these when color scheme changed to new one
