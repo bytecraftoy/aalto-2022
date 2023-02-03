@@ -68,7 +68,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Alert on failed deployment
-              uses: distributhor/workflow-webhook@v3
+              uses: distributhor/workflow-webhook@6684d6301159d8c6e1c6527f78d4db9b5d8e5fed
               env:
                   webhook_url: ${{ secrets.WEBHOOK_URL }}
                   data: '{"text":"Continuous deployment failed on main!"}'
