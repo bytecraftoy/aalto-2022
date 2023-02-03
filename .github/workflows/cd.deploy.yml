@@ -60,3 +60,15 @@ jobs:
 
             - name: Check that service started succesfully
               run: ssh root@65.108.249.101 "systemctl is-active aalto_2022_backend.service"
+
+    alert:
+        environment: main
+        needs: [deploy]
+        if: ${{ failure() && github.ref == 'refs/heads/main' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Alert on failed deployment
+              uses: distributhor/workflow-webhook@v3
+              env:
+                  webhook_url: ${{ secrets.WEBHOOK_URL }}
+                  data: '{"text":"Continuous deployment failed on main!"}'
