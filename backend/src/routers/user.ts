@@ -35,7 +35,7 @@ userRouter.post(
                 const payload: TokenPayload = { userName: info.name, userID };
                 const token = await createToken(payload);
                 res.cookie(tokenCookieName, token, tokenCookieOptions);
-                res.status(204).end();
+                res.status(200).json(payload);
                 return;
             } else {
                 res.status(400).send(reqInfo.message);
@@ -60,7 +60,7 @@ userRouter.post(
                 const payload: TokenPayload = { userName: info.name, userID };
                 const token = await createToken(payload);
                 res.cookie(tokenCookieName, token, tokenCookieOptions);
-                res.status(204).end();
+                res.status(200).json(payload);
                 logger.info('register_done', { user: info.name });
                 return;
             } else {
