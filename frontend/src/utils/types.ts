@@ -1,4 +1,5 @@
 import { PromptData } from '../components/ContentPanel/ContentPanelPrompts/PromptIOBox';
+import { z } from 'zod';
 
 /**
  * Convinience file containing type definitions for readability
@@ -25,3 +26,10 @@ export interface ContentPanelType {
     category: string;
     prompts: PromptData[];
 }
+
+export const AccountSchema = z.object({
+    username: z.string(),
+    id: z.string(),
+});
+
+export type Account = z.infer<typeof AccountSchema>;
