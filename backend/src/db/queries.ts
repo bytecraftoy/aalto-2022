@@ -51,14 +51,23 @@ export const selectProjectData = async (
     return res[0] as { data: object };
 };
 
+/**
+ * This function returns the settings of a user.
+ * Throws an error if the user does not exist.
+ *
+ * @returns {object | null} settings if exists, null otherwise
+ */
 export const selectUserSettings = async (
     userID: string
-): Promise<{ settings: object }> => {
+): Promise<object | null> => {
     const text = 'SELECT settings FROM users WHERE id = $1';
     const values = [userID];
-    const res = await executeQuery(text, values);
-    return res[0] as { settings: object };
-    //return res[0];
+    const res = (await executeQuery(text, values)) as {
+        settings: object | null;
+    }[];
+    const settings = res[0].settings;
+    // cast undefined to null
+    return settings ?? null;
 };
 
 export const selectUserID = async (name: string): Promise<string | null> => {
@@ -106,7 +115,7 @@ export const updatePassword = async (id: string, passwordHash: string) => {
 
 export const updateUserSettings = async (id: string, settings: object) => {
     const text = 'UPDATE users SET settings = $1 WHERE id = $2';
-    const values = [id, settings];
+    const values = [settings, id];
     await executeQuery(text, values);
 };
 
