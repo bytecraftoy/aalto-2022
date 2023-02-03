@@ -64,7 +64,7 @@ jobs:
     alert:
         environment: main
         needs: [deploy]
-        if: ${{ failure() && github.ref == 'refs/heads/main' }}
+        if: ${{ failure() }}
         runs-on: ubuntu-latest
         steps:
             - name: Alert on failed deployment
