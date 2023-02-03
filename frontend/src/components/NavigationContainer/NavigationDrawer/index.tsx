@@ -73,11 +73,6 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                         icon={solidIcon('InformationCircleIcon')}
                         to="/about"
                     />
-                    <NavigationLink
-                        label="Settings"
-                        icon={solidIcon('SettingsIcon')}
-                        to="/settings"
-                    />
                     <div className="h-[1px] bg-neutral-70 mx-4" />
 
                     {/** Content panels */}

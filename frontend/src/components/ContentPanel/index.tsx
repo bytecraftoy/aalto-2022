@@ -87,6 +87,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                         setPromptOutput={setPromptOutput}
                         addPromptBox={addPromptBox}
                         lockPrompt={lockPrompt}
+                        saveState={saveState}
                     />
 
                     {/* Bottom bar containing content panel actions */}
