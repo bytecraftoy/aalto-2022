@@ -66,7 +66,7 @@ export const TextArea: React.FC<TextInputProps> = ({
 
             <span
                 className={classNames(
-                    'absolute select-none left-0 top-0 pl-4 peer-placeholder-shown:top-3.5',
+                    'absolute select-none left-0 top-0 pl-4 peer-placeholder-shown:top-3.5 rounded-t-lg',
                     'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base',
                     'transition-all bg-neutral-90 group-hover:bg-neutral-80 peer-focus-within:bg-neutral-80',
                     'peer-placeholder-shown:bg-transparent',
