@@ -73,3 +73,15 @@ jobs:
               with:
                   name: cypress-videos
                   path: cypress/videos
+
+    alert:
+        environment: main
+        needs: [check, test]
+        if: ${{ failure() && github.ref == 'refs/heads/main' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Alert on failed CI in main
+              uses: distributhor/workflow-webhook@6684d6301159d8c6e1c6527f78d4db9b5d8e5fed
+              env:
+                  webhook_url: ${{ secrets.WEBHOOK_URL }}
+                  data: '{"text":"Deployment failed!"}'
