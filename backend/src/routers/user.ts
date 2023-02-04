@@ -21,6 +21,7 @@ import {
     readToken,
 } from './../services/tokenService';
 import { selectUserSettings, updateUserSettings } from '../db/queries';
+import { isValidRegisterKey } from '../services/registerKeyService';
 
 const userRouter = express.Router();
 
@@ -56,22 +57,29 @@ userRouter.post(
             const info = registerRequestSchema.parse(
                 JSON.parse(req.body as string)
             );
-            const created = await createUser(info.name, info.password);
-            if (created.success) {
-                const userID = created.message;
-                const payload: TokenPayload = { userName: info.name, userID };
-                const token = await createToken(payload);
-                res.cookie(tokenCookieName, token, tokenCookieOptions);
-                res.status(204).end();
-                logger.info('register_done', { user: info.name });
+
+            const valid = await isValidRegisterKey(info.key);
+            if (!valid) {
+                res.status(401).send('Invalid key');
                 return;
-            } else {
-                res.status(400).send(created.message);
             }
+
+            const created = await createUser(info.name, info.password);
+            if (!created.success) {
+                res.status(400).send(created.message);
+                return;
+            }
+
+            const userID = created.message;
+            const payload: TokenPayload = { userName: info.name, userID };
+            const token = await createToken(payload);
+            res.cookie(tokenCookieName, token, tokenCookieOptions);
+            res.status(204).end();
+            logger.info('register_done', { user: info.name });
         } catch (e) {
             logger.error('register_fail', { error: e });
+            res.status(400).send('Error on saving the user');
         }
-        res.status(400).send('Error on saving the user');
     })
 );
 

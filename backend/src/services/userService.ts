@@ -43,6 +43,9 @@ const registerRequestSchema = z.object({
         .string()
         .min(6, 'Password should be at least 6 characters')
         .max(50, 'Password can be 50 characters maximum'),
+    key: z
+        .string({ required_error: 'Register key required' })
+        .min(1, 'Register key may not be empty'),
 });
 
 const updateSettingsRequestSchema = z.object({});

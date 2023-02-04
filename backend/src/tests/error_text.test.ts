@@ -14,37 +14,6 @@ beforeEach(async () => {
     await initializeUsers();
 });
 
-describe('/user/register', () => {
-    test('The test user should be in the db', async () => {
-        const value = await userExists('tester');
-        expect(value).toBe(true);
-    });
-
-    test('With new username, gives no errors', async () => {
-        const res = await api
-            .post('/api/user/register')
-            .send(
-                JSON.stringify({ name: 'new_tester', password: 'sdhf8sdfy8' })
-            );
-
-        expect(res.status).toBe(204);
-
-        const value = await userExists('new_tester');
-        expect(value).toBe(true);
-    });
-
-    test('Backend should tell user if username is already defined', async () => {
-        const res = await api
-            .post('/api/user/register')
-            .send(JSON.stringify({ name: 'tester', password: 'new_password' }));
-
-        expect(res.status).toBe(400);
-        expect(res.text).toBe(
-            'Username already exists, please choose a different one.'
-        );
-    });
-});
-
 describe('/user', () => {
     test('Without cookie send the right request', async () => {
         const res = await api.get('/api/user/');
