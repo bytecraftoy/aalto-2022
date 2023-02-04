@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { logIn } from '../../reducers/userReducer';
 import { Notification } from '../Notification';
 import { useOpen } from '../../utils/hooks';
+import { Account } from '../../utils/types';
 
 /**
  *  Form for registering the user
@@ -52,13 +53,19 @@ export const RegisterForm = () => {
             body: JSON.stringify({ name: username, password }),
         });
 
-        if (res.status === 204) {
-            dispatch(logIn());
+        if (res.status === 200) {
+            const body = await res.json();
+
+            const acc: Account = {
+                username: body.userName,
+                id: body.userID,
+            };
+            dispatch(logIn(acc));
             navigate('/');
         } else {
             // Set the error notification
-            // TODO! Get the real error reason from backend and show to user
-            setError('Username already taken');
+            const text = await res.text();
+            setError(text);
             setOpen(true);
         }
     };

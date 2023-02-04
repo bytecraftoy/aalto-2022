@@ -3,6 +3,7 @@ import { useAppDispatch } from '../../utils/hooks';
 import { EventBus } from '../../utils/eventBus';
 import { backendURL } from '../../utils/backendURL';
 import { logOut, logIn } from '../../reducers/userReducer';
+import { Account } from '../../utils/types';
 
 /**
  * Wrapped component for logging out of the user from the application.
@@ -36,7 +37,13 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
             });
 
             if (res.status === 200) {
-                dispatch(logIn());
+                const body = await res.json();
+
+                const acc: Account = {
+                    username: body.name,
+                    id: body.id,
+                };
+                dispatch(logIn(acc));
             }
         };
 

@@ -8,6 +8,8 @@ import { TokenPayload } from '../types/TokenPayload';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { app } from './../app';
+import { createToken, createUser } from '../services/userService';
+import { selectUserSettings, updateUserSettings } from '../db/queries';
 
 const api = supertest(app);
 
@@ -161,13 +163,13 @@ describe('user router register', () => {
         await api.post('/api/user/register/').expect(400);
     });
 
-    test('returns 204 for valid input', async () => {
+    test('returns 200 for valid input', async () => {
         await api
             .post('/api/user/register/')
             .send(
                 JSON.stringify({ name: 'testuser', password: 'password1234' })
             )
-            .expect(204);
+            .expect(200);
     });
 
     test('returns 400 for short password', async () => {
@@ -214,7 +216,7 @@ describe('user router register', () => {
             .send(
                 JSON.stringify({ name: 'testuser', password: 'password1234' })
             )
-            .expect(204);
+            .expect(200);
         await api
             .post('/api/user/register/')
             .send(
@@ -238,7 +240,7 @@ describe('user router register', () => {
     });
 
     test('ignores extra fields', async () => {
-        await api
+        const res = await api
             .post('/api/user/register/')
             .send(
                 JSON.stringify({
@@ -247,7 +249,10 @@ describe('user router register', () => {
                     extra: 'lol',
                 })
             )
-            .expect(204);
+            .expect(200);
+
+        expect(res.body).toBeDefined();
+        expect(res.body.userName).toBe('testuser');
     });
 
     test('sends jwt token in response', async () => {
@@ -256,7 +261,7 @@ describe('user router register', () => {
             .send(
                 JSON.stringify({ name: 'testuser', password: 'password1234' })
             )
-            .expect(204);
+            .expect(200);
         const setCookie = res.headers['set-cookie'] as string[];
         expect(typeof setCookie).toBe('object');
         const tokenCookie = setCookie.find((e) => e.startsWith('user-token='));
@@ -284,7 +289,7 @@ describe('user router register', () => {
             .send(
                 JSON.stringify({ name: 'testuser', password: 'password1234' })
             )
-            .expect(204);
+            .expect(200);
         const res = await api
             .post('/api/user/register/')
             .send(
@@ -295,7 +300,7 @@ describe('user router register', () => {
     });
 
     // basic concurrent data-race test
-    test('return 204 for 1 request and 400 for rest for multiple concurrent requests', async () => {
+    test('return 200 for 1 request and 400 for rest for multiple concurrent requests', async () => {
         const promises = [];
         const num_requests = 10;
         for (let i = 0; i < num_requests; i++) {
@@ -309,9 +314,9 @@ describe('user router register', () => {
             );
         }
         const res = await Promise.all(promises);
-        const res204 = res.filter((e) => e.status === 204).length;
+        const res200 = res.filter((e) => e.status === 200).length;
         const res400 = res.filter((e) => e.status === 400).length;
-        expect(res204).toBe(1);
+        expect(res200).toBe(1);
         expect(res400).toBe(num_requests - 1);
     });
 
@@ -329,7 +334,130 @@ describe('user router register', () => {
             );
         }
         const res = await Promise.all(promises);
-        const res204 = res.filter((e) => e.status === 204).length;
-        expect(res204).toBe(num_requests);
+        const res200 = res.filter((e) => e.status === 200).length;
+        expect(res200).toBe(num_requests);
+    });
+});
+
+describe('user router get settings', () => {
+    let token: string;
+    let user_id: string;
+
+    beforeEach(async () => {
+        user_id = (await createUser('testuser', 'password1234')).message;
+        const payload: TokenPayload = {
+            userName: 'testuser',
+            userID: user_id,
+        };
+        token = await createToken(payload);
+    });
+
+    test('can fetch user data succesfully', async () => {
+        await updateUserSettings(user_id, { testdata: 2 });
+        const settings = await api
+            .get('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`);
+        expect(settings.status).toBe(200);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const data = JSON.parse(settings.text);
+        expect(data).toStrictEqual({ testdata: 2 });
+    });
+
+    test('returns 401 without jwt token', async () => {
+        await api.get('/api/user/settings/').expect(401);
+    });
+
+    test('returns 401 with bad jwt token', async () => {
+        await api
+            .get('/api/user/settings/')
+            .set('Cookie', 'user-token=badtoken')
+            .expect(401);
+    });
+
+    test('return 404 on missing settings', async () => {
+        await api
+            .get('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`)
+            .expect(404);
+    });
+});
+
+describe('user router update settings', () => {
+    let token: string;
+    let user_id: string;
+
+    beforeEach(async () => {
+        user_id = (await createUser('testuser', 'password1234')).message;
+        const payload: TokenPayload = {
+            userName: 'testuser',
+            userID: user_id,
+        };
+        token = await createToken(payload);
+    });
+
+    test('updating settings works when uninitialized', async () => {
+        const data = { testdata: 2 };
+        await api
+            .put('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`)
+            .send(JSON.stringify(data))
+            .expect(204);
+        const settings = await selectUserSettings(user_id);
+        expect(settings).toStrictEqual(data);
+    });
+
+    test('updating settings works when already set', async () => {
+        await updateUserSettings(user_id, { testdata: 2 });
+        await api
+            .put('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`)
+            .send(JSON.stringify({ testdata: 3 }))
+            .expect(204);
+        const settings = await api
+            .get('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`);
+        expect(settings.status).toBe(200);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const data = JSON.parse(settings.text);
+        expect(data).toStrictEqual({ testdata: 3 });
+    });
+
+    test('returns 400 with malformed body', async () => {
+        await api
+            .put('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`)
+            .send('asd{')
+            .expect(400);
+    });
+
+    test('malformed update does not modify previous state', async () => {
+        await updateUserSettings(user_id, { testdata: 2 });
+        await api
+            .put('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`)
+            .send('asd{')
+            .expect(400);
+        const settings = await api
+            .get('/api/user/settings/')
+            .set('Cookie', `user-token=${token}`);
+        expect(settings.status).toBe(200);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const data = JSON.parse(settings.text);
+        expect(data).toStrictEqual({ testdata: 2 });
+    });
+
+    test('returns 401 with missing jwt token', async () => {
+        await api.put('/api/user/settings/').expect(401);
+        await api
+            .put('/api/user/settings/')
+            .send(JSON.stringify({ testdata: 2 }))
+            .expect(401);
+    });
+
+    test('returns 401 with malformed jwt token', async () => {
+        await api
+            .put('/api/user/settings/')
+            .set('Cookie', 'user-token=badtoken')
+            .expect(401);
     });
 });

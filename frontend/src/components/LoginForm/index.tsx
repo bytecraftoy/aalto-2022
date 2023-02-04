@@ -9,6 +9,7 @@ import { useOpen } from '../../utils/hooks';
 import { backendURL } from '../../utils/backendURL';
 import { useAppDispatch } from '../../utils/hooks';
 import { logIn } from '../../reducers/userReducer';
+import { Account } from '../../utils/types';
 
 /**
  *
@@ -37,6 +38,7 @@ export const LoginForm = () => {
     // Navigation
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const [errorMsg, setErrorMsg] = React.useState<string>('');
 
     //Submits the login form
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -50,10 +52,18 @@ export const LoginForm = () => {
         });
 
         // If correct username and password then navigate to the project
-        if (res.status === 204) {
-            dispatch(logIn());
+        if (res.status === 200) {
+            const body = await res.json();
+
+            const acc: Account = {
+                username: body.userName,
+                id: body.userID,
+            };
+            dispatch(logIn(acc));
             navigate('/');
         } else {
+            const text = await res.text();
+            setErrorMsg(text);
             setOpen(true);
             setPassword('');
         }
@@ -70,7 +80,7 @@ export const LoginForm = () => {
             <Notification
                 isOpen={open}
                 close={() => setOpen(false)}
-                message="Invalid username or password"
+                message={errorMsg}
             />
             <CustomInput
                 type="text"

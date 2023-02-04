@@ -12,6 +12,7 @@ import {
     createToken,
     registerRequestSchema,
     createUser,
+    updateSettingsRequestSchema,
 } from './../services/userService';
 import { TokenPayload } from '../types/TokenPayload';
 import {
@@ -19,6 +20,7 @@ import {
     tokenCookieOptions,
     readToken,
 } from './../services/tokenService';
+import { selectUserSettings, updateUserSettings } from '../db/queries';
 
 const userRouter = express.Router();
 
@@ -35,7 +37,7 @@ userRouter.post(
                 const payload: TokenPayload = { userName: info.name, userID };
                 const token = await createToken(payload);
                 res.cookie(tokenCookieName, token, tokenCookieOptions);
-                res.status(204).end();
+                res.status(200).json(payload);
                 return;
             } else {
                 res.status(400).send(reqInfo.message);
@@ -60,7 +62,7 @@ userRouter.post(
                 const payload: TokenPayload = { userName: info.name, userID };
                 const token = await createToken(payload);
                 res.cookie(tokenCookieName, token, tokenCookieOptions);
-                res.status(204).end();
+                res.status(200).json(payload);
                 logger.info('register_done', { user: info.name });
                 return;
             } else {
@@ -89,6 +91,51 @@ userRouter.get(
                 id: payload.userID,
             };
             res.json(response);
+        }
+    })
+);
+
+userRouter.get(
+    '/settings/',
+    expressAsyncHandler(async (req, res) => {
+        const payload = await readToken(req);
+        if (payload === null) {
+            res.status(401).send('No valid token on the request found');
+            return;
+        }
+
+        const data = await selectUserSettings(payload.userID);
+        if (data === null) {
+            logger.warn('get_user_settings_missing', { payload });
+            res.status(404).send('No settings found');
+        } else {
+            const json = JSON.stringify(data);
+            res.status(200).send(json);
+        }
+    })
+);
+
+userRouter.put(
+    '/settings/',
+    expressAsyncHandler(async (req, res) => {
+        const payload = await readToken(req);
+        if (payload === null) {
+            res.status(401).send('No valid token on the request found');
+            return;
+        }
+
+        try {
+            const body_json = JSON.parse(req.body as string) as unknown;
+            // we do not know what the data contains, use passthrough
+            const data = updateSettingsRequestSchema
+                .passthrough()
+                .parse(body_json);
+
+            await updateUserSettings(payload.userID, data);
+            res.status(204).end();
+        } catch (e) {
+            logger.error('update_user_settings_fail', { payload, error: e });
+            res.status(400).send('Malformed body');
         }
     })
 );
