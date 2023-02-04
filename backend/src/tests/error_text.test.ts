@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import supertest from 'supertest';
 import { app } from '../app';
-import { userExists } from '../db/queries';
 import { initializeUsers } from '../services/testService';
 
 const api = supertest(app);
