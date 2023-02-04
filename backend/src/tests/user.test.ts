@@ -170,6 +170,11 @@ describe('user router register', () => {
         key: registerKey,
     };
 
+    const validateUserStatus = async (name: string, exists: boolean) => {
+        const res = await userExists(name);
+        expect(res).toBe(exists);
+    };
+
     test('returns 400 for empty body', async () => {
         await api.post('/api/user/register/').expect(400);
     });
@@ -182,9 +187,7 @@ describe('user router register', () => {
             .post('/api/user/register/')
             .send(JSON.stringify(validData))
             .expect(204);
-
-        const after = await userExists(validData.name);
-        expect(after).toBe(true);
+        await validateUserStatus(validData.name, true);
     });
 
     test('returns 400 for short password', async () => {
@@ -197,6 +200,7 @@ describe('user router register', () => {
                 })
             )
             .expect(400);
+        await validateUserStatus(validData.name, false);
     });
 
     test('returns 400 for empty username', async () => {
@@ -209,6 +213,7 @@ describe('user router register', () => {
                 })
             )
             .expect(400);
+        await validateUserStatus(validData.name, false);
     });
 
     test('returns 400 for password longer than 50 characters', async () => {
@@ -221,6 +226,7 @@ describe('user router register', () => {
                 })
             )
             .expect(400);
+        await validateUserStatus(validData.name, false);
     });
 
     test('returns 400 for username longer than 50 characters', async () => {
@@ -233,6 +239,7 @@ describe('user router register', () => {
                 })
             )
             .expect(400);
+        await validateUserStatus(validData.name, false);
     });
 
     test('returns 400 for user that already exists', async () => {
@@ -251,6 +258,7 @@ describe('user router register', () => {
             .post('/api/user/register/')
             .send(JSON.stringify({ password: 'password1234' }))
             .expect(400);
+        await validateUserStatus(validData.name, false);
     });
 
     test('returns 400 for missing password', async () => {
@@ -258,6 +266,7 @@ describe('user router register', () => {
             .post('/api/user/register/')
             .send(JSON.stringify({ username: 'testuser' }))
             .expect(400);
+        await validateUserStatus(validData.name, false);
     });
 
     test('ignores extra fields', async () => {
@@ -271,6 +280,7 @@ describe('user router register', () => {
                 })
             )
             .expect(204);
+        await validateUserStatus(validData.name, true);
     });
 
     test('sends jwt token in response', async () => {
@@ -289,6 +299,7 @@ describe('user router register', () => {
         const token = splitted[0].slice('user-token='.length);
         const payload = jwt.decode(token) as TokenPayload;
         expect(payload.userName).toBe('testuser');
+        await validateUserStatus(validData.name, true);
     });
 
     test('bad info with 400 response does not have jwt token', async () => {
@@ -302,6 +313,7 @@ describe('user router register', () => {
             )
             .expect(400);
         expect(res.headers['set-cookie']).toBe(undefined);
+        await validateUserStatus(validData.name, false);
     });
 
     test('existing user with 400 response does not have jwt token', async () => {
@@ -330,6 +342,7 @@ describe('user router register', () => {
         const res400 = res.filter((e) => e.status === 400).length;
         expect(res204).toBe(1);
         expect(res400).toBe(num_requests - 1);
+        await validateUserStatus(validData.name, true);
     });
 
     test('can create 100 users succesfully', async () => {
@@ -358,6 +371,7 @@ describe('user router register', () => {
                 JSON.stringify({ name: 'testuser', password: 'password1234' })
             )
             .expect(400);
+        await validateUserStatus(validData.name, false);
     });
 
     test('returns 401 for bad key', async () => {
@@ -370,6 +384,7 @@ describe('user router register', () => {
                 })
             )
             .expect(401);
+        await validateUserStatus(validData.name, false);
     });
 
     test('returns 400 for empty key', async () => {
@@ -382,6 +397,7 @@ describe('user router register', () => {
                 })
             )
             .expect(400);
+        await validateUserStatus(validData.name, false);
     });
 
     test('Backend should tell user if username is already defined', async () => {
