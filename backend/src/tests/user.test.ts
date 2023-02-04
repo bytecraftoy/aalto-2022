@@ -163,13 +163,13 @@ describe('user router register', () => {
         await api.post('/api/user/register/').expect(400);
     });
 
-    test('returns 204 for valid input', async () => {
+    test('returns 200 for valid input', async () => {
         await api
             .post('/api/user/register/')
             .send(
                 JSON.stringify({ name: 'testuser', password: 'password1234' })
             )
-            .expect(204);
+            .expect(200);
     });
 
     test('returns 400 for short password', async () => {
@@ -216,7 +216,7 @@ describe('user router register', () => {
             .send(
                 JSON.stringify({ name: 'testuser', password: 'password1234' })
             )
-            .expect(204);
+            .expect(200);
         await api
             .post('/api/user/register/')
             .send(
@@ -240,7 +240,7 @@ describe('user router register', () => {
     });
 
     test('ignores extra fields', async () => {
-        await api
+        const res = await api
             .post('/api/user/register/')
             .send(
                 JSON.stringify({
@@ -249,7 +249,10 @@ describe('user router register', () => {
                     extra: 'lol',
                 })
             )
-            .expect(204);
+            .expect(200);
+
+        expect(res.body).toBeDefined();
+        expect(res.body.userName).toBe('testuser');
     });
 
     test('sends jwt token in response', async () => {
@@ -258,7 +261,7 @@ describe('user router register', () => {
             .send(
                 JSON.stringify({ name: 'testuser', password: 'password1234' })
             )
-            .expect(204);
+            .expect(200);
         const setCookie = res.headers['set-cookie'] as string[];
         expect(typeof setCookie).toBe('object');
         const tokenCookie = setCookie.find((e) => e.startsWith('user-token='));
@@ -286,7 +289,7 @@ describe('user router register', () => {
             .send(
                 JSON.stringify({ name: 'testuser', password: 'password1234' })
             )
-            .expect(204);
+            .expect(200);
         const res = await api
             .post('/api/user/register/')
             .send(
@@ -297,7 +300,7 @@ describe('user router register', () => {
     });
 
     // basic concurrent data-race test
-    test('return 204 for 1 request and 400 for rest for multiple concurrent requests', async () => {
+    test('return 200 for 1 request and 400 for rest for multiple concurrent requests', async () => {
         const promises = [];
         const num_requests = 10;
         for (let i = 0; i < num_requests; i++) {
@@ -311,9 +314,9 @@ describe('user router register', () => {
             );
         }
         const res = await Promise.all(promises);
-        const res204 = res.filter((e) => e.status === 204).length;
+        const res200 = res.filter((e) => e.status === 200).length;
         const res400 = res.filter((e) => e.status === 400).length;
-        expect(res204).toBe(1);
+        expect(res200).toBe(1);
         expect(res400).toBe(num_requests - 1);
     });
 
@@ -331,8 +334,8 @@ describe('user router register', () => {
             );
         }
         const res = await Promise.all(promises);
-        const res204 = res.filter((e) => e.status === 204).length;
-        expect(res204).toBe(num_requests);
+        const res200 = res.filter((e) => e.status === 200).length;
+        expect(res200).toBe(num_requests);
     });
 });
 

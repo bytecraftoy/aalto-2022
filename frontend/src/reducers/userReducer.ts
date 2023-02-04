@@ -1,11 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Account } from '../utils/types';
 
 /**
- * Redux slice for storing the ifo about logged user
+ * Redux slice for storing the info about logged user
  */
 
 interface UserState {
     logged: boolean;
+    info: Account | null;
 }
 
 /**
@@ -13,6 +15,7 @@ interface UserState {
  */
 const initialState: UserState = {
     logged: false,
+    info: null,
 };
 
 // The redux slice
@@ -21,8 +24,9 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         // Log in
-        logIn(state) {
+        logIn(state, action: PayloadAction<Account>) {
             state.logged = true;
+            state.info = action.payload;
         },
         // Log out
         logOut(state) {

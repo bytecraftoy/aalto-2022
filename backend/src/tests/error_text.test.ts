@@ -27,7 +27,7 @@ describe('/user/register', () => {
                 JSON.stringify({ name: 'new_tester', password: 'sdhf8sdfy8' })
             );
 
-        expect(res.status).toBe(204);
+        expect(res.status).toBe(200);
 
         const value = await userExists('new_tester');
         expect(value).toBe(true);
@@ -59,7 +59,7 @@ describe('/user/login', () => {
         await api
             .post('/api/user/login')
             .send(JSON.stringify({ name: 'tester', password: 'salainen' }))
-            .expect(204);
+            .expect(200);
     });
 
     test('Shows error if logging with wrong credentials', async () => {
