@@ -8,11 +8,13 @@ import { solidIcon } from '../../utils/icons';
  */
 
 interface DropdownMenuProps {
-    addPromptBoxes: (n: number) => void;
+    setPopup: (b: boolean) => void;
+    popupOpen: boolean;
 }
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
-    addPromptBoxes,
+    setPopup,
+    popupOpen,
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -34,11 +36,10 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         };
     }, []);
 
-    // Adds multiple I/O boxes
-    const addBoxes = (number: number) => {
-        addPromptBoxes(number);
+    const popup = (number: number) => {
+        setPopup(true);
         setOpen(false);
-    };
+    }
 
     return (
         // Dropdown menu and its styling
@@ -55,17 +56,10 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             >
                 <a
                     href="#"
-                    onClick={() => addBoxes(5)}
+                    onClick={() => popup(1)}
                     className="block px-4 py-2 rounded hover:bg-neutral-10 hover:bg-opacity-8"
                 >
-                    Add 5
-                </a>
-                <a
-                    href="#"
-                    onClick={() => addBoxes(10)}
-                    className="block px-4 py-2 rounded hover:bg-neutral-10 hover:bg-opacity-8"
-                >
-                    Add 10
+                    Add Boxes
                 </a>
             </div>
         </div>

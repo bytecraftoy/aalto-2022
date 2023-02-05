@@ -35,6 +35,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         category,
         promptBoxes,
         loading,
+        popupOpen,
         setCategory,
         setPromptBoxes,
         generateAll,
@@ -43,6 +44,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         lockPrompt,
         addPromptBox,
         addPromptBoxes,
+        setPopup,
     } = usePanel(initialPrompts, initialCategory, id);
 
     //Callback to export the category, and all inputs / outputs in json
@@ -75,12 +77,16 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                     <ContentPanelHeader
                         category={category}
                         setCategory={setCategory}
-                        addPromptBoxes={addPromptBoxes}
+                        setPopup={setPopup}
+                        popupOpen={popupOpen}
+                        
                     />
 
                     {/* Pop-up window used to add n boxes. Hidden by default*/}
                     <PopUpWindow
                     addPromptBoxes={addPromptBoxes}
+                    setPopup={setPopup}
+                    popupOpen={popupOpen}
                     />
 
                     {/* IO TExtfields: Prompts of the content panel */}

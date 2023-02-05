@@ -27,6 +27,8 @@ export const usePanel = (
 
     const [loading, setLoading] = useState<boolean>(false);
 
+    const [popupOpen, setPopup] = useState<boolean>(false);
+
     //Callback to create new boxes in the panel
     const addPromptBox = () => {
         const newBox = { id: uuidv4(), input: '', output: '', locked: false };
@@ -110,6 +112,7 @@ export const usePanel = (
         category,
         promptBoxes,
         loading,
+        popupOpen,
         setCategory,
         setPromptBoxes,
         generateOutput,
@@ -118,5 +121,6 @@ export const usePanel = (
         addPromptBox,
         addPromptBoxes,
         lockPrompt,
+        setPopup,
     };
 };
