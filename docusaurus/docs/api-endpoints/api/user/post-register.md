@@ -4,7 +4,9 @@ Register a new user. Creates a new user to the database and logs the user in.
 
 ## Request
 
-```
+The register key is a secret token given to the user to allow registration.
+
+```json
 {
     name: string,
     password: string,
@@ -24,5 +26,5 @@ By following the link they get to the registration page. Front-end reads the reg
 
 ## Response
 
-200 on success and body contains { userName: string, id: string} and 400 if the name is already taken.
+200 on success and body contains { userName: string, id: string}, 400 if the name is already taken and 401 if the register key is invalid
 On success the "user-token" cookie is set with the session token just like when logging in.
