@@ -27,7 +27,7 @@ describe('/user/login', () => {
         await api
             .post('/api/user/login')
             .send(JSON.stringify({ name: 'tester', password: 'salainen' }))
-            .expect(204);
+            .expect(200);
     });
 
     test('Shows error if logging with wrong credentials', async () => {

@@ -38,7 +38,7 @@ userRouter.post(
                 const payload: TokenPayload = { userName: info.name, userID };
                 const token = await createToken(payload);
                 res.cookie(tokenCookieName, token, tokenCookieOptions);
-                res.status(204).end();
+                res.status(200).json(payload);
                 return;
             } else {
                 res.status(400).send(reqInfo.message);
@@ -64,26 +64,26 @@ userRouter.post(
                 );
                 return;
             }
-            const data = body.data;
+            const info = body.data;
 
-            const valid = await isValidRegisterKey(data.key);
+            const valid = await isValidRegisterKey(info.key);
             if (!valid) {
                 res.status(401).send('Invalid key');
                 return;
             }
 
-            const created = await createUser(data.name, data.password);
+            const created = await createUser(info.name, info.password);
             if (!created.success) {
                 res.status(400).send(created.message);
                 return;
             }
 
             const userID = created.message;
-            const payload: TokenPayload = { userName: data.name, userID };
+            const payload: TokenPayload = { userName: info.name, userID };
             const token = await createToken(payload);
             res.cookie(tokenCookieName, token, tokenCookieOptions);
-            logger.info('register_done', { user: data.name });
-            res.status(204).end();
+            res.status(200).json(payload);
+            logger.info('register_done', { user: info.name });
         } catch (e) {
             logger.error('register_fail', { error: e });
             res.status(400).send('Error on saving the user');

@@ -9,6 +9,7 @@ import { useOpen } from '../../utils/hooks';
 import { backendURL } from '../../utils/backendURL';
 import { useAppDispatch } from '../../utils/hooks';
 import { logIn } from '../../reducers/userReducer';
+import { Account } from '../../utils/types';
 
 /**
  *
@@ -50,8 +51,14 @@ export const LoginForm = () => {
         });
 
         // If correct username and password then navigate to the project
-        if (res.status === 204) {
-            dispatch(logIn());
+        if (res.status === 200) {
+            const body = await res.json();
+
+            const acc: Account = {
+                username: body.userName,
+                id: body.userID,
+            };
+            dispatch(logIn(acc));
             navigate('/');
         } else {
             setOpen(true);

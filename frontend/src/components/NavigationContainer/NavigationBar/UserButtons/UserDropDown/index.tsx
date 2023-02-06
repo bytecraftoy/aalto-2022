@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { EventBus } from '../../../../../utils/eventBus';
 import { solidIcon } from '../../../../../utils/icons';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../../../../utils/hooks';
+import { UserDropDownItem } from './UserDropDownItem';
 
 /**
  * Menu that open when clicking user account icon in navigation bar
@@ -9,11 +11,17 @@ import { useNavigate } from 'react-router-dom';
  */
 
 export const UserDropDown = () => {
+    // Username of the user
+    const username = useAppSelector((state) => state.user.info?.username);
+    // Navigation
     const navigate = useNavigate();
+    // If the drawer is open
     const [open, setOpen] = useState(false);
+    // Refs for the drawer and the button
     const drawerRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
 
+    // Closes the drawer if clicked outside of the drawer
     useEffect(() => {
         // Closes the drawer if clicked outside of the drawer
         const close = (e: MouseEvent) => {
@@ -60,7 +68,7 @@ export const UserDropDown = () => {
                     {/** User name */}
                     <div className="h-10 w-full">
                         <div className="w-full h-full px-3 text-lg flex items-center">
-                            Username
+                            {username}
                         </div>
                     </div>
 
@@ -72,26 +80,19 @@ export const UserDropDown = () => {
                     {/** Actions */}
                     <div className="flex flex-col gap-2 cursor-default">
                         {/** Settings */}
-                        <div className="h-10 w-full ">
-                            <div
-                                className="w-full h-full px-3 flex flex-row gap-2 justify-start items-center bg-neutral-10 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-8 text-lg"
-                                onClick={() => navigate('/settings')}
-                            >
-                                {solidIcon('SettingsIcon')}
-                                Settings
-                            </div>
-                        </div>
+                        <UserDropDownItem
+                            onClick={() => navigate('/settings')}
+                            icon="SettingsIcon"
+                            name="Settings"
+                        />
 
                         {/** Logout */}
-                        <div className=" h-10 w-full">
-                            <div
-                                className="w-full h-full px-3 flex flex-row gap-2 justify-start items-center bg-neutral-10 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-8 text-lg text-red"
-                                onClick={logout}
-                            >
-                                {solidIcon('LogoutIcon')}
-                                Log out
-                            </div>
-                        </div>
+                        <UserDropDownItem
+                            onClick={logout}
+                            icon="LogoutIcon"
+                            name="Logout"
+                            red
+                        />
                     </div>
                 </div>
             </div>
