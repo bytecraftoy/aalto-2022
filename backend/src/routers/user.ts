@@ -108,7 +108,7 @@ userRouter.get(
                 res.status(401).end();
                 return;
             }
-            const response = getProjects(payload.userID);
+            const response = await getProjects(payload.userID);
             res.json(response).status(200);
             return;
         } catch (e) {
@@ -159,7 +159,7 @@ userRouter.post(
                 info.name,
                 info.json
             );
-            res.send(id).status(200);
+            res.status(200).send(id);
             return;
         } catch (e) {
             logger.error('new_project_fail', { error: e });

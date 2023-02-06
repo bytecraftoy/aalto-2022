@@ -53,11 +53,11 @@ export const selectProjectData = async (
 
 export const selectProjectOwner = async (
     projectID: string
-): Promise<{ userid: string }> => {
+): Promise<{ user_id: string }> => {
     const text = 'SELECT user_id FROM projects WHERE id = $1';
     const values = [projectID];
     const res = await executeQuery(text, values);
-    return res[0] as { userid: string };
+    return res[0] as { user_id: string };
 };
 
 export const selectUserSettings = async (
