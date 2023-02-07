@@ -374,13 +374,13 @@ describe('user router projects', () => {
             .get(`/api/user/projects/${project_id_1}`)
             .set('Cookie', `user-token=${token}`)
             .expect(200);
-        expect(res.body).toEqual({ testdata: 1 });
+        expect(res.body).toEqual({ data: { testdata: 1 } });
     });
 
     test('can post new project succesfully (POST api/user/projects/new)', async () => {
         const data = {
             name: 'name3',
-            json: { testdata: 3 },
+            json: JSON.stringify({ testdata: 3 }),
         };
         await api
             .post('/api/user/projects/new')
@@ -395,26 +395,25 @@ describe('user router projects', () => {
     test('can edit project succesfully (PUT api/user/projects/:id)', async () => {
         const data = {
             name: 'name3',
-            json: { testdata: 3 },
+            json: JSON.stringify({ testdata: 3 }),
         };
-        const res = await api
+        await api
             .put(`/api/user/projects/${project_id_1}`)
             .set('Cookie', `user-token=${token}`)
             .send(JSON.stringify(data))
-            .expect(200);
-        expect(typeof res.body === 'string').toBe(true);
+            .expect(204);
 
         const projects = await selectProjectsbyUserID(user_id);
-        expect(projects[0].name).toEqual('name3');
+        expect(projects.map((p) => p.name)).toContain('name3');
         const project = await selectProjectData(project_id_1);
-        expect(project).toEqual(data.json);
+        expect(project.data).toEqual(JSON.parse(data.json));
     });
 
     test('can delete project succesfully (DELETE api/user/projects/:id)', async () => {
         await api
             .delete(`/api/user/projects/${project_id_1}`)
             .set('Cookie', `user-token=${token}`)
-            .expect(200);
+            .expect(204);
 
         const projects = await selectProjectsbyUserID(user_id);
         expect(projects).toHaveLength(1);
@@ -427,6 +426,7 @@ describe('user router projects', () => {
             userName: 'testuser2',
             userID: user_id2,
         };
+
         const token2 = await createToken(payload);
 
         await api
@@ -436,7 +436,7 @@ describe('user router projects', () => {
 
         const data = {
             name: 'name3',
-            json: { testdata: 3 },
+            json: JSON.stringify({ testdata: 3 }),
         };
         await api
             .put(`/api/user/projects/${project_id_1}`)
@@ -463,7 +463,7 @@ describe('user router projects', () => {
             .expect(401);
         await api
             .get(`/api/user/projects/${project_id_1}`)
-            .set('Cookie', `user-token=${token}`)
+            .set('Cookie', `user-token=badtoken`)
             .expect(401);
         await api
             .post('/api/user/projects/new')
