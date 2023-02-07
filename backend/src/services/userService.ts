@@ -171,7 +171,7 @@ const getProject = async (
 ): Promise<{ success: boolean; data: object }> => {
     try {
         const ownerID = await selectProjectOwner(projectID);
-        const isOwner = ownerID.user_id == userID;
+        const isOwner = ownerID.user_id === userID;
         if (isOwner) {
             const response = await selectProjectData(projectID);
 
