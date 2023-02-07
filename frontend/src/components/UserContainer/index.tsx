@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
-import { useAppDispatch } from '../../utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { EventBus } from '../../utils/eventBus';
 import { backendURL } from '../../utils/backendURL';
 import { logOut, logIn } from '../../reducers/userReducer';
+import { getProjects } from '../../utils/projects';
+import { setPanels } from '../../reducers/panelReducer';
+
 
 /**
  * Wrapped component for logging out of the user from the application.
@@ -14,6 +17,8 @@ interface ContainerProps {
 
 export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
     const dispatch = useAppDispatch();
+    const panels = useAppSelector((state) => state.panels.value);
+
 
     // Function for log out, i.e., emptying the cookies.
     async function onCustomEvent() {
@@ -37,6 +42,9 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
 
             if (res.status === 200) {
                 dispatch(logIn());
+                const newPanels =  await getProjects(panels);
+                console.log(newPanels)
+                dispatch(setPanels(newPanels));
             }
         };
 

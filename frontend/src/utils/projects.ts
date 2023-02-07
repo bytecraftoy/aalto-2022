@@ -1,6 +1,44 @@
 import { backendURL } from './backendURL';
 import { ContentPanelType } from './types';
 
+/**
+ * Functions for querying the projects in backend
+ */
+
+export const getProjects = async (
+    panels: ContentPanelType[]
+): Promise<ContentPanelType[]> => {
+    const response = await fetch(`${backendURL}/api/user/projects`, {
+        method: 'GET',
+        credentials: 'include',
+    });
+
+    // If the user is not logged in, return
+    if (response.status === 401) return panels;
+    
+    // If the user is logged in, get the projects
+    const data = await response.json() as { id: string; name: string }[]
+
+    if(!data.length) return panels;
+
+    const projectID = data.find(
+        (project: { id: string; name: string }) => project.name === 'main'
+    )?.id;
+
+    if(!projectID) return panels;
+
+    const backednPanels = await fetch(`${backendURL}/api/user/projects/${projectID}`, {
+        method: 'GET',
+        credentials: 'include',
+    });
+
+    if(backednPanels.status === 401) return panels;
+
+    const backendResponse = await backednPanels.json();
+    return backendResponse.data.panels as ContentPanelType[];
+}
+
+
 export const setProjects = async (
     panels: ContentPanelType[]
 ): Promise<ContentPanelType[]> => {
