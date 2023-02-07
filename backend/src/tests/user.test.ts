@@ -12,7 +12,7 @@ import { createToken, createUser } from '../services/userService';
 import {
     addProject,
     selectProjectsbyUserID,
-    selectProjectData
+    selectProjectData,
 } from '../db/queries';
 
 const api = supertest(app);
@@ -346,9 +346,9 @@ describe('user router projects', () => {
     let project_id_1: string;
 
     beforeEach(async () => {
-        user_id = (await createUser('testuser', 'password1234')).message;
+        user_id = (await createUser('projecttestuser', 'password1234')).message;
         const payload: TokenPayload = {
-            userName: 'testuser',
+            userName: 'projecttestuser',
             userID: user_id,
         };
         token = await createToken(payload);
@@ -380,7 +380,7 @@ describe('user router projects', () => {
     test('can post new project succesfully (POST api/user/projects/new)', async () => {
         const data = {
             name: 'name3',
-            json: { testdata: 3 },
+            json: JSON.stringify({ testdata: 3 }),
         };
         await api
             .post('/api/user/projects/new')
@@ -395,7 +395,7 @@ describe('user router projects', () => {
     test('can edit project succesfully (PUT api/user/projects/:id)', async () => {
         const data = {
             name: 'name3',
-            json: { testdata: 3 },
+            json: JSON.stringify({ testdata: 3 }),
         };
         const res = await api
             .put(`/api/user/projects/${project_id_1}`)
@@ -421,10 +421,10 @@ describe('user router projects', () => {
     });
 
     test('requests return 404 when appropriate', async () => {
-        const user_id2 = (await createUser('testuser2', 'password1234'))
+        const user_id2 = (await createUser('projecttestuser2', 'password1234'))
             .message;
         const payload: TokenPayload = {
-            userName: 'testuser2',
+            userName: 'projecttestuser2',
             userID: user_id2,
         };
         const token2 = await createToken(payload);

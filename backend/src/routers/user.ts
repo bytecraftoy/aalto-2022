@@ -108,7 +108,7 @@ userRouter.get(
                 res.status(401).end();
                 return;
             }
-            const response = getProjects(payload.userID);
+            const response = await getProjects(payload.userID);
             res.json(response).status(200);
             return;
         } catch (e) {
