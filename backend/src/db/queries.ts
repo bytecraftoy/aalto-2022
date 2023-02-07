@@ -142,12 +142,3 @@ export const deleteProject = async (id: string) => {
     const values = [id];
     await executeQuery(text, values);
 };
-
-export const projectExists = async (id: string): Promise<boolean> => {
-    const text = 'SELECT COUNT(*) from projects WHERE id = $1';
-    const values = [id];
-    const res = await executeQuery(text, values);
-    const row = res[0] as { count: string };
-    const count = parseInt(row.count);
-    return count >= 1;
-};

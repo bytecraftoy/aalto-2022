@@ -346,9 +346,9 @@ describe('user router projects', () => {
     let project_id_1: string;
 
     beforeEach(async () => {
-        user_id = (await createUser('testuser', 'password1234')).message;
+        user_id = (await createUser('projecttestuser', 'password1234')).message;
         const payload: TokenPayload = {
-            userName: 'testuser',
+            userName: 'projecttestuser',
             userID: user_id,
         };
         token = await createToken(payload);
@@ -420,10 +420,10 @@ describe('user router projects', () => {
     });
 
     test('requests return 404 when appropriate', async () => {
-        const user_id2 = (await createUser('testuser2', 'password1234'))
+        const user_id2 = (await createUser('projecttestuser2', 'password1234'))
             .message;
         const payload: TokenPayload = {
-            userName: 'testuser2',
+            userName: 'projecttestuser2',
             userID: user_id2,
         };
 
