@@ -38,6 +38,7 @@ export const LoginForm = () => {
     // Navigation
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const [errorMsg, setErrorMsg] = React.useState<string>('');
 
     //Submits the login form
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -61,6 +62,8 @@ export const LoginForm = () => {
             dispatch(logIn(acc));
             navigate('/');
         } else {
+            const text = await res.text();
+            setErrorMsg(text);
             setOpen(true);
             setPassword('');
         }
@@ -77,7 +80,7 @@ export const LoginForm = () => {
             <Notification
                 isOpen={open}
                 close={() => setOpen(false)}
-                message="Invalid username or password"
+                message={errorMsg}
             />
             <CustomInput
                 type="text"

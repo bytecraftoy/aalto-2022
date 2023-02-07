@@ -64,8 +64,8 @@ export const RegisterForm = () => {
             navigate('/');
         } else {
             // Set the error notification
-            // TODO! Get the real error reason from backend and show to user
-            setError('Username already taken');
+            const text = await res.text();
+            setError(text);
             setOpen(true);
         }
     };
