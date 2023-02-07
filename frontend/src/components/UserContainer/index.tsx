@@ -40,9 +40,14 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
             });
 
             if (res.status === 200) {
-                dispatch(logIn());
+                const body = await res.json();
+
+                const acc: Account = {
+                    username: body.name,
+                    id: body.id,
+                };
+                dispatch(logIn(acc));
                 const newPanels = await getProjects(panels);
-                console.log(newPanels);
                 dispatch(setPanels(newPanels));
             }
         };

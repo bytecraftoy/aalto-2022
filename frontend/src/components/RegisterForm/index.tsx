@@ -12,11 +12,8 @@ import { logIn } from '../../reducers/userReducer';
 import { setPanels } from '../../reducers/panelReducer';
 import { Notification } from '../Notification';
 import { useOpen } from '../../utils/hooks';
-<<<<<<< HEAD
 import { setProjects } from '../../utils/projects';
-=======
 import { Account } from '../../utils/types';
->>>>>>> main
 
 /**
  *  Form for registering the user
@@ -61,12 +58,6 @@ export const RegisterForm = () => {
             body: JSON.stringify({ name: username, password }),
         });
 
-<<<<<<< HEAD
-        if (res.status === 204) {
-            dispatch(logIn());
-            const backendPanels = await setProjects(panels);
-            dispatch(setPanels(backendPanels));
-=======
         if (res.status === 200) {
             const body = await res.json();
 
@@ -75,7 +66,8 @@ export const RegisterForm = () => {
                 id: body.userID,
             };
             dispatch(logIn(acc));
->>>>>>> main
+            const backendPanels = await setProjects(panels);
+            dispatch(setPanels(backendPanels));
             navigate('/');
         } else {
             // Set the error notification

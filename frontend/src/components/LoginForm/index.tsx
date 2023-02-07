@@ -9,12 +9,9 @@ import { useOpen } from '../../utils/hooks';
 import { backendURL } from '../../utils/backendURL';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { logIn } from '../../reducers/userReducer';
-<<<<<<< HEAD
 import { setPanels } from '../../reducers/panelReducer';
 import { setProjects } from '../../utils/projects';
-=======
 import { Account } from '../../utils/types';
->>>>>>> main
 
 /**
  *
@@ -60,12 +57,6 @@ export const LoginForm = () => {
         });
 
         // If correct username and password then navigate to the project
-<<<<<<< HEAD
-        if (res.status === 204) {
-            dispatch(logIn());
-            const backendPanels = await setProjects(panels);
-            dispatch(setPanels(backendPanels));
-=======
         if (res.status === 200) {
             const body = await res.json();
 
@@ -74,7 +65,8 @@ export const LoginForm = () => {
                 id: body.userID,
             };
             dispatch(logIn(acc));
->>>>>>> main
+            const backendPanels = await setProjects(panels);
+            dispatch(setPanels(backendPanels));
             navigate('/');
         } else {
             const text = await res.text();
