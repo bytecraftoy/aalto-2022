@@ -159,7 +159,7 @@ userRouter.post(
                 info.name,
                 info.json
             );
-            res.send(id).status(200);
+            res.status(200).send(id);
             return;
         } catch (e) {
             logger.error('new_project_fail', { error: e });

@@ -166,8 +166,8 @@ const getProjects = async (
  * does not match or on failure
  */
 const getProject = async (
-    projectID: string,
-    userID: string
+    userID: string,
+    projectID: string
 ): Promise<{ success: boolean; data: object }> => {
     try {
         const ownerID = await selectProjectOwner(projectID);
