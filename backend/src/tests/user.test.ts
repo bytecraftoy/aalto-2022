@@ -12,7 +12,7 @@ import { createToken, createUser } from '../services/userService';
 import {
     addProject,
     selectProjectsbyUserID,
-    selectProjectData
+    selectProjectData,
 } from '../db/queries';
 
 const api = supertest(app);

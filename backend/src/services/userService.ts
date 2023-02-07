@@ -168,7 +168,7 @@ const getProjects = async (
  */
 const getProject = async (
     userID: string,
-    projectID: string,
+    projectID: string
 ): Promise<{ success: boolean; data: object }> => {
     try {
         const exists = await projectExists(projectID);
