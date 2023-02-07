@@ -40,8 +40,6 @@ const loginRequestSchema = z.object({
     password: z.string(),
 });
 
-type LoginRequest = z.infer<typeof loginRequestSchema>;
-
 const registerRequestSchema = z.object({
     name: z
         .string()
@@ -51,9 +49,12 @@ const registerRequestSchema = z.object({
         .string()
         .min(6, 'Password should be at least 6 characters')
         .max(50, 'Password can be 50 characters maximum'),
+    key: z
+        .string({ required_error: 'Register key required' })
+        .min(1, 'Register key may not be empty'),
 });
 
-type RegisterRequest = z.infer<typeof loginRequestSchema>;
+const updateSettingsRequestSchema = z.object({});
 
 const projectRequestSchema = z.object({
     name: z.string(),
@@ -255,9 +256,8 @@ const removeProject = async (
 
 export {
     loginRequestSchema,
-    LoginRequest,
     registerRequestSchema,
-    RegisterRequest,
+    updateSettingsRequestSchema,
     projectRequestSchema,
     checkPassword,
     createUser,

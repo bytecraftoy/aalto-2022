@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { EventBus } from '../../utils/eventBus';
 import { backendURL } from '../../utils/backendURL';
 import { logOut, logIn } from '../../reducers/userReducer';
+import { Account } from '../../utils/types';
 import { getProjects } from '../../utils/projects';
 import { setPanels } from '../../reducers/panelReducer';
 

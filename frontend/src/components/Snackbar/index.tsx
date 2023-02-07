@@ -13,7 +13,7 @@ interface SnackbarProps {
 
 export const Snackbar: React.FC<SnackbarProps> = ({ children }) => {
     const [message, setMessage] = useState('');
-    const { open, setOpen } = useOpen(7500);
+    const { open, setOpen } = useOpen(3000);
 
     function onCustomEvent(e: CustomEvent<NotificationObj>) {
         setMessage(e.detail.message);

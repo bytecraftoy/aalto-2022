@@ -12,7 +12,11 @@ import { logIn } from '../../reducers/userReducer';
 import { setPanels } from '../../reducers/panelReducer';
 import { Notification } from '../Notification';
 import { useOpen } from '../../utils/hooks';
+<<<<<<< HEAD
 import { setProjects } from '../../utils/projects';
+=======
+import { Account } from '../../utils/types';
+>>>>>>> main
 
 /**
  *  Form for registering the user
@@ -57,15 +61,26 @@ export const RegisterForm = () => {
             body: JSON.stringify({ name: username, password }),
         });
 
+<<<<<<< HEAD
         if (res.status === 204) {
             dispatch(logIn());
             const backendPanels = await setProjects(panels);
             dispatch(setPanels(backendPanels));
+=======
+        if (res.status === 200) {
+            const body = await res.json();
+
+            const acc: Account = {
+                username: body.userName,
+                id: body.userID,
+            };
+            dispatch(logIn(acc));
+>>>>>>> main
             navigate('/');
         } else {
             // Set the error notification
-            // TODO! Get the real error reason from backend and show to user
-            setError('Username already taken');
+            const text = await res.text();
+            setError(text);
             setOpen(true);
         }
     };
