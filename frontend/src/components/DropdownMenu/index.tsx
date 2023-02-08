@@ -38,7 +38,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         };
     }, []);
 
-    const popup = (number: number) => {
+    const popup = () => {
         setPopup(true);
         setOpen(false);
     };
@@ -56,7 +56,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
                     { hidden: !open }
                 )}
             >
-                <MenuItem onClick={() => popup(1)} message="Add Boxes" />
+                <MenuItem onClick={popup} message="Add Boxes" />
                 <MenuItem onClick={saveState} message="Save" />
             </div>
         </div>
