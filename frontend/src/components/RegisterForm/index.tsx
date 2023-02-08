@@ -3,7 +3,7 @@ import { Header } from './Header';
 import { useValue } from '../../utils/hooks';
 import { CustomInput } from '../Inputs';
 import { FilledButton } from '../Buttons';
-import { usernameSchema, passwordSchema } from './validation';
+import { usernameSchema, passwordSchema, tokenSchema } from './validation';
 import { useRepeatPassword } from './hooks';
 import { backendURL } from '../../utils/backendURL';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
@@ -32,6 +32,11 @@ export const RegisterForm = () => {
     } = useValue(passwordSchema);
     const { repeatedPassword, repeatErrors, changeRepeated } =
         useRepeatPassword(password);
+    const {
+        value: token,
+        errors: tokenErrors,
+        setValue: setToken,
+    } = useValue(tokenSchema);
 
     // Get the panels from the store
     const panels = useAppSelector((state) => state.panels.value);
@@ -55,7 +60,7 @@ export const RegisterForm = () => {
         const res = await fetch(`${backendURL}/api/user/register`, {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify({ name: username, password }),
+            body: JSON.stringify({ name: username, password, key: token }),
         });
 
         if (res.status === 200) {
@@ -112,6 +117,15 @@ export const RegisterForm = () => {
                 onInput={changeRepeated}
                 textHelper="Please enter your password again"
                 errors={repeatErrors}
+            />
+            <CustomInput
+                value={token}
+                label="Key"
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setToken(e.target.value)
+                }
+                textHelper="Enter the key"
+                errors={tokenErrors}
             />
             <FilledButton
                 name="Create account"
