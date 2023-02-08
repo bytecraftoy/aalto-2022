@@ -4,9 +4,14 @@ import { FilledButton, TextButton } from '../Buttons';
 import { useNavigate } from 'react-router-dom';
 import { useValue } from '../../utils/hooks';
 import { usernameSchema, passwordSchema } from './validation';
-import { Notification } from './Notification';
-import { useOpen } from './hooks';
+import { Notification } from '../Notification';
+import { useOpen } from '../../utils/hooks';
 import { backendURL } from '../../utils/backendURL';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
+import { logIn } from '../../reducers/userReducer';
+import { setPanels } from '../../reducers/panelReducer';
+import { setProjects } from '../../utils/projects';
+import { Account } from '../../utils/types';
 
 /**
  *
@@ -27,13 +32,18 @@ export const LoginForm = () => {
     } = useValue(passwordSchema);
 
     // If the error message of the user is shown
-    const { open, setOpen } = useOpen();
+    const { open, setOpen } = useOpen(7000);
+
+    // Gets the project from the store
+    const panels = useAppSelector((state) => state.panels.value);
 
     // Disables the submit button
     const disabled = usernameErrors !== '' || passwordErrors !== '';
 
     // Navigation
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [errorMsg, setErrorMsg] = React.useState<string>('');
 
     //Submits the login form
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,9 +57,21 @@ export const LoginForm = () => {
         });
 
         // If correct username and password then navigate to the project
-        if (res.status === 204) {
+        if (res.status === 200) {
+            const body = await res.json();
+
+            const acc: Account = {
+                username: body.userName,
+                id: body.userID,
+            };
+            dispatch(logIn(acc));
+            const backendPanels = await setProjects(panels);
+            dispatch(setPanels(backendPanels));
             navigate('/');
         } else {
+            const text = await res.text();
+            setErrorMsg(text);
+            setOpen(true);
             setPassword('');
         }
     };
@@ -62,7 +84,11 @@ export const LoginForm = () => {
                 </h1>
                 <div className="w-full h-px bg-black" />
             </div>
-            <Notification isOpen={open} close={() => setOpen(false)} />
+            <Notification
+                isOpen={open}
+                close={() => setOpen(false)}
+                message={errorMsg}
+            />
             <CustomInput
                 type="text"
                 label="Username"

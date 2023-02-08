@@ -44,6 +44,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         lockPrompt,
         addPromptBox,
         addPromptBoxes,
+        saveState,
         setPopup,
     } = usePanel(initialPrompts, initialCategory, id);
 
@@ -87,6 +88,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                     addPromptBoxes={addPromptBoxes}
                     setPopup={setPopup}
                     popupOpen={popupOpen}
+                        saveState={saveState}
                     />
 
                     {/* IO TExtfields: Prompts of the content panel */}
@@ -97,6 +99,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                         setPromptOutput={setPromptOutput}
                         addPromptBox={addPromptBox}
                         lockPrompt={lockPrompt}
+                        saveState={saveState}
                     />
 
                     {/* Bottom bar containing content panel actions */}

@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 // State is all the ContentPanels of the application
 interface PanelState {
+    name: string;
     value: ContentPanelType[];
 }
 
@@ -17,6 +18,7 @@ interface PanelState {
  * Initial state of the panels is 1 empty panel
  */
 const initialState: PanelState = {
+    name: 'main',
     value: [
         {
             id: generate(),

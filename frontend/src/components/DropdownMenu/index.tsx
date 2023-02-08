@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import { solidIcon } from '../../utils/icons';
+import { MenuItem } from './MenuItem';
 
 /**
  * Content panel dropdown menu and its functionality
@@ -8,13 +9,9 @@ import { solidIcon } from '../../utils/icons';
  */
 
 interface DropdownMenuProps {
-    setPopup: (b: boolean) => void;
-    popupOpen: boolean;
 }
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
-    setPopup,
-    popupOpen,
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -50,17 +47,11 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             <div
                 ref={menuRef}
                 className={classNames(
-                    'absolute -right-6 top-12 rounded shadow w-44 bg-surface-1',
+                    'absolute -right-6 top-12 rounded shadow w-44 bg-surface-2',
                     { hidden: !open }
                 )}
             >
-                <a
-                    href="#"
-                    onClick={() => popup(1)}
-                    className="block px-4 py-2 rounded hover:bg-neutral-10 hover:bg-opacity-8"
-                >
-                    Add Boxes
-                </a>
+
             </div>
         </div>
     );
