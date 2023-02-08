@@ -9,9 +9,14 @@ import { MenuItem } from './MenuItem';
  */
 
 interface DropdownMenuProps {
+    setPopup: (b: boolean) => void;
+
+    saveState: () => void;
 }
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
+    saveState,
+    setPopup,
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -36,7 +41,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
     const popup = (number: number) => {
         setPopup(true);
         setOpen(false);
-    }
+    };
 
     return (
         // Dropdown menu and its styling
@@ -51,7 +56,8 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
                     { hidden: !open }
                 )}
             >
-
+                <MenuItem onClick={() => popup(1)} message="Add Boxes" />
+                <MenuItem onClick={saveState} message="Save" />
             </div>
         </div>
     );

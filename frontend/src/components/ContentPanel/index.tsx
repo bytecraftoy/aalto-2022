@@ -79,16 +79,14 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                         category={category}
                         setCategory={setCategory}
                         setPopup={setPopup}
-                        popupOpen={popupOpen}
-                        
+                        saveState={saveState}
                     />
 
                     {/* Pop-up window used to add n boxes. Hidden by default*/}
                     <PopUpWindow
-                    addPromptBoxes={addPromptBoxes}
-                    setPopup={setPopup}
-                    popupOpen={popupOpen}
-                        saveState={saveState}
+                        addPromptBoxes={addPromptBoxes}
+                        setPopup={setPopup}
+                        popupOpen={popupOpen}
                     />
 
                     {/* IO TExtfields: Prompts of the content panel */}

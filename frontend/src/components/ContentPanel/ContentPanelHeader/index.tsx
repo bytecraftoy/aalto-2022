@@ -11,23 +11,17 @@ import { DropdownMenu } from '../../DropdownMenu';
 interface ContentPanelHeaderProps {
     category: string;
     setCategory: React.Dispatch<React.SetStateAction<string>>;
-<<<<<<< HEAD
     setPopup: (b: boolean) => void;
-    popupOpen: boolean;
-=======
+
     saveState: () => void;
->>>>>>> main
 }
 
 export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
     category,
     setCategory,
-<<<<<<< HEAD
     setPopup,
-    popupOpen,
-=======
+
     saveState,
->>>>>>> main
 }) => {
     return (
         <div className="flex flex-row justify-around items-center mt-6">
@@ -38,17 +32,8 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
                         setCategory={setCategory}
                     />
                 </div>
-<<<<<<< HEAD
                 <div className="flex-1 z-10 pl-8">
-                    <DropdownMenu
-                    setPopup={setPopup}
-                    popupOpen={popupOpen} 
-=======
-                <div className="flex-1 z-[15] pl-8">
-                    <DropdownMenu
-                        saveState={saveState}
->>>>>>> main
-                    />
+                    <DropdownMenu setPopup={setPopup} saveState={saveState} />
                 </div>
             </div>
         </div>
