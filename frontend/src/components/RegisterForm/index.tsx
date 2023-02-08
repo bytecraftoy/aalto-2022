@@ -6,11 +6,13 @@ import { FilledButton } from '../Buttons';
 import { usernameSchema, passwordSchema } from './validation';
 import { useRepeatPassword } from './hooks';
 import { backendURL } from '../../utils/backendURL';
-import { useAppDispatch } from '../../utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '../../reducers/userReducer';
+import { setPanels } from '../../reducers/panelReducer';
 import { Notification } from '../Notification';
 import { useOpen } from '../../utils/hooks';
+import { setProjects } from '../../utils/projects';
 import { Account } from '../../utils/types';
 
 /**
@@ -30,6 +32,9 @@ export const RegisterForm = () => {
     } = useValue(passwordSchema);
     const { repeatedPassword, repeatErrors, changeRepeated } =
         useRepeatPassword(password);
+
+    // Get the panels from the store
+    const panels = useAppSelector((state) => state.panels.value);
 
     // Open the notification
     const { open, setOpen } = useOpen(7000);
@@ -61,6 +66,8 @@ export const RegisterForm = () => {
                 id: body.userID,
             };
             dispatch(logIn(acc));
+            const backendPanels = await setProjects(panels);
+            dispatch(setPanels(backendPanels));
             navigate('/');
         } else {
             // Set the error notification

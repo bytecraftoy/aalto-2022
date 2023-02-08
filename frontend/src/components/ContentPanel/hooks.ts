@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { PromptData } from './ContentPanelPrompts/PromptIOBox';
 import { v4 as uuidv4 } from 'uuid';
 import { generateText } from '../../utils/generateContent';
-import { useAppDispatch } from '../../utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { updatePanel } from '../../reducers/panelReducer';
 import { generatePrompts } from './promptUtil';
 import { EventBus } from '../../utils/eventBus';
+import { backendURL } from '../../utils/backendURL';
+import { ContentPanelType } from '../../utils/types';
 
 /**
  * Custom hook which return prompts, category and loading information + all the action functions related to prompts and category
@@ -21,6 +23,8 @@ export const usePanel = (
     id: string
 ) => {
     const dispatch = useAppDispatch();
+    const logged = useAppSelector((state) => state.user.logged);
+    const panels = useAppSelector((state) => state.panels.value);
 
     const [promptBoxes, setPromptBoxes] =
         useState<PromptData[]>(initialPrompts);
@@ -65,12 +69,55 @@ export const usePanel = (
         );
     };
 
+    // Get the main project from database and updates it
+    const updateDatabase = async (panel: ContentPanelType) => {
+        if (logged) {
+            // Get the projects
+            const response = await fetch(`${backendURL}/api/user/projects`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (response.status !== 200) return;
+
+            const data = await response.json();
+
+            // If the user has no projects, return
+            if (!data.length) return;
+
+            // Get the main project
+            const projectID = data.find(
+                (p: { id: string; name: string }) => p.name === 'main'
+            )?.id;
+
+            if (!projectID) return;
+
+            // Current state of the panels
+            const updatedPanels = panels.map((p: ContentPanelType) => {
+                if (p.id === panel.id) return panel;
+                return p;
+            });
+
+            const project = {
+                name: 'main',
+                json: JSON.stringify({ panels: updatedPanels }),
+            };
+
+            // Update the main project
+            await fetch(`${backendURL}/api/user/projects/${projectID}`, {
+                method: 'PUT',
+                credentials: 'include',
+                body: JSON.stringify(project),
+            });
+        }
+    };
+
     /**
      * Saves the panel state
      */
-    const saveState = () => {
+    const saveState = async () => {
         // Create the new panel object
-        const panel = {
+        const panel: ContentPanelType = {
             id,
             category,
             prompts: promptBoxes,
@@ -78,6 +125,8 @@ export const usePanel = (
 
         // Update the redux store
         dispatch(updatePanel(panel));
+
+        await updateDatabase(panel);
 
         EventBus.dispatch('notification', {
             type: 'success',

@@ -6,8 +6,14 @@ import { z } from 'zod';
 import {
     addUser,
     userExists,
+    selectProjectsbyUserID,
+    selectProjectData,
     selectUserID,
     selectPassword,
+    selectProjectOwner,
+    addProject,
+    updateProject,
+    deleteProject,
 } from '../db/queries';
 import { RequestInfo, DEFAULT_ERROR } from '../types/ServiceTypes';
 
@@ -49,6 +55,11 @@ const registerRequestSchema = z.object({
 });
 
 const updateSettingsRequestSchema = z.object({});
+
+const projectRequestSchema = z.object({
+    name: z.string(),
+    json: z.string(),
+});
 
 /**
  * Checks if the user exists and the password is correct.
@@ -132,12 +143,129 @@ const createUser = async (
     }
 };
 
+/**
+ * Fetches and returns list of projects by user id.
+ * returns null on failure
+ */
+const getProjects = async (
+    id: string
+): Promise<{ id: string; name: string }[] | null> => {
+    try {
+        const projects = await selectProjectsbyUserID(id);
+        return projects;
+    } catch (e) {
+        logger.error(e);
+        return null;
+    }
+};
+
+/**
+ * Fetches data of a specific project
+ * along with a boolean value, which is
+ * true if successful or false
+ * if project does not exist or user id
+ * does not match or on failure
+ */
+const getProject = async (
+    userID: string,
+    projectID: string
+): Promise<{ success: boolean; data: object }> => {
+    try {
+        const ownerID = await selectProjectOwner(projectID);
+        const isOwner = ownerID.user_id === userID;
+        if (isOwner) {
+            const response = await selectProjectData(projectID);
+
+            return { success: true, data: response };
+        }
+
+        return { success: false, data: {} };
+    } catch (e) {
+        logger.error(e);
+        return { success: false, data: { e: 'error' } };
+    }
+};
+
+/**
+ * creates new projects and returns
+ * the projects id if successful
+ * null otherwise
+ */
+const createProject = async (
+    userID: string,
+    projectName: string,
+    data: string
+): Promise<string | null> => {
+    try {
+        const obj = JSON.parse(data) as object;
+        const project = await addProject(userID, projectName, obj);
+        return project.id;
+    } catch (e) {
+        logger.error(e);
+        return null;
+    }
+};
+
+/**
+ * Updates name and data of project and returns
+ * true if successful, false otherwise
+ */
+const saveProject = async (
+    userID: string,
+    projectID: string,
+    projectName: string,
+    data: string
+): Promise<boolean> => {
+    try {
+        const ownerID = await selectProjectOwner(projectID);
+        const isOwner = ownerID.user_id === userID;
+        if (isOwner) {
+            const obj = JSON.parse(data) as object;
+            await updateProject(projectName, obj, projectID);
+            return true;
+        }
+        return false;
+    } catch (e) {
+        logger.error(e);
+        return false;
+    }
+};
+
+/**
+ * deletes project from database,
+ * returns true if successful
+ * false otherwise
+ */
+const removeProject = async (
+    userID: string,
+    projectID: string
+): Promise<boolean> => {
+    try {
+        const ownerID = await selectProjectOwner(projectID);
+        const isOwner = ownerID.user_id === userID;
+        if (isOwner) {
+            await deleteProject(projectID);
+            return true;
+        }
+        return false;
+    } catch (e) {
+        logger.error(e);
+        return false;
+    }
+};
+
 export {
     loginRequestSchema,
     registerRequestSchema,
     updateSettingsRequestSchema,
+    projectRequestSchema,
     checkPassword,
     createUser,
     createToken,
     parseToken,
+    getProjects,
+    getProject,
+    createProject,
+    saveProject,
+    removeProject,
 };

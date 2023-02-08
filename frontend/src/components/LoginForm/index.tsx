@@ -7,8 +7,10 @@ import { usernameSchema, passwordSchema } from './validation';
 import { Notification } from '../Notification';
 import { useOpen } from '../../utils/hooks';
 import { backendURL } from '../../utils/backendURL';
-import { useAppDispatch } from '../../utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { logIn } from '../../reducers/userReducer';
+import { setPanels } from '../../reducers/panelReducer';
+import { setProjects } from '../../utils/projects';
 import { Account } from '../../utils/types';
 
 /**
@@ -31,6 +33,9 @@ export const LoginForm = () => {
 
     // If the error message of the user is shown
     const { open, setOpen } = useOpen(7000);
+
+    // Gets the project from the store
+    const panels = useAppSelector((state) => state.panels.value);
 
     // Disables the submit button
     const disabled = usernameErrors !== '' || passwordErrors !== '';
@@ -60,6 +65,8 @@ export const LoginForm = () => {
                 id: body.userID,
             };
             dispatch(logIn(acc));
+            const backendPanels = await setProjects(panels);
+            dispatch(setPanels(backendPanels));
             navigate('/');
         } else {
             const text = await res.text();

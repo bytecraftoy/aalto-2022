@@ -51,6 +51,15 @@ export const selectProjectData = async (
     return res[0] as { data: object };
 };
 
+export const selectProjectOwner = async (
+    projectID: string
+): Promise<{ user_id: string }> => {
+    const text = 'SELECT user_id FROM projects WHERE id = $1';
+    const values = [projectID];
+    const res = await executeQuery(text, values);
+    return res[0] as { user_id: string };
+};
+
 /**
  * This function returns the settings of a user.
  * Throws an error if the user does not exist.
@@ -123,10 +132,17 @@ export const addProject = async (
     userID: string,
     name: string,
     data: object
-) => {
+): Promise<{ id: string }> => {
     const text =
-        'INSERT INTO projects(user_id, name, data) VALUES ($1, $2, $3)';
+        'INSERT INTO projects(user_id, name, data) VALUES ($1, $2, $3) RETURNING id';
     const values = [userID, name, data];
+    const res = await executeQuery(text, values);
+    return res[0] as { id: string };
+};
+
+export const updateProject = async (name: string, data: object, id: string) => {
+    const text = 'UPDATE projects SET name = $1, data = $2 WHERE id = $3';
+    const values = [name, data, id];
     await executeQuery(text, values);
 };
 
