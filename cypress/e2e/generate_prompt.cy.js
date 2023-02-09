@@ -18,19 +18,19 @@ describe('Prompt generation', () => {
             .children()
             .filter('input')
             .first()
-            .type('tester');
+            .type('testuser');
         cy.get('span:contains("Password")')
             .parent()
             .children()
             .filter('input')
             .first()
-            .type('salainen');
+            .type('salasana');
         cy.get('span:contains("Repeat password")')
             .parent()
             .children()
             .filter('input')
             .first()
-            .type('salainen');
+            .type('salasana');
         cy.get('span:contains("Key")')
             .parent()
             .children()
