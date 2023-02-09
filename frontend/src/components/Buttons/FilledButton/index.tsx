@@ -28,7 +28,7 @@ export const FilledButton: React.FC<ButtonProps> = ({
                 { 'px-6': !icon },
                 bg(colorPalette),
                 textOnBg(colorPalette),
-                bgHover(colorPalette),
+                !disabled && bgHover(colorPalette),
                 bgActive(colorPalette),
                 className
             )}
