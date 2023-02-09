@@ -18,25 +18,25 @@ describe('Prompt generation', () => {
             .children()
             .filter('input')
             .first()
-            .type('testuser');
+            .type('testuser', { force: true });
         cy.get('span:contains("Password")')
             .parent()
             .children()
             .filter('input')
             .first()
-            .type('salasana');
+            .type('salasana', { force: true });
         cy.get('span:contains("Repeat password")')
             .parent()
             .children()
             .filter('input')
             .first()
-            .type('salasana');
+            .type('salasana', { force: true });
         cy.get('span:contains("Key")')
             .parent()
             .children()
             .filter('input')
             .first()
-            .type('DEV-123');
+            .type('DEV-123', { force: true });
         cy.get('button:contains("Create account")')
             .get('[data-testid="custom-button"]')
             .first()
