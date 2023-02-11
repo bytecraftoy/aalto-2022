@@ -7,25 +7,25 @@ import { ContentPanelType, ProjectInfo } from './types';
 
 export const getProjects = async (
     panels: ContentPanelType[]
-): Promise<ContentPanelType[]> => {
+): Promise<[ContentPanelType[], ProjectInfo[]]> => {
     const response = await fetch(`${backendURL}/api/user/projects`, {
         method: 'GET',
         credentials: 'include',
     });
 
     // If the user is not logged in, return
-    if (response.status === 401) return panels;
+    if (response.status === 401) return [panels, []];
 
     // If the user is logged in, get the projects
-    const data = (await response.json()) as { id: string; name: string }[];
+    const projects = (await response.json()) as ProjectInfo[];
 
-    if (!data.length) return panels;
+    if (!projects.length) return [panels, []];
 
-    const projectID = data.find(
+    const projectID = projects.find(
         (project: { id: string; name: string }) => project.name === 'main'
     )?.id;
 
-    if (!projectID) return panels;
+    if (!projectID) return [panels, projects];
 
     const backednPanels = await fetch(
         `${backendURL}/api/user/projects/${projectID}`,
@@ -35,10 +35,10 @@ export const getProjects = async (
         }
     );
 
-    if (backednPanels.status === 401) return panels;
+    if (backednPanels.status === 401) return [panels, projects];
 
     const backendResponse = await backednPanels.json();
-    return backendResponse.data.panels as ContentPanelType[];
+    return [backendResponse.data.panels as ContentPanelType[], projects];
 };
 
 export const setProjects = async (
