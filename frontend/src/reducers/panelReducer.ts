@@ -54,9 +54,30 @@ export const panelSlice = createSlice({
             };
             state.value.push(newPanel);
         },
+        // Empties the reducer
+        clearPanels() {
+            return {
+                name: 'main',
+                value: [
+                    {
+                        id: generate(),
+                        category: '',
+                        prompts: [
+                            {
+                                id: uuidv4(),
+                                input: '',
+                                output: '',
+                                locked: false,
+                            },
+                        ],
+                    },
+                ],
+            };
+        },
     },
 });
 
-export const { setPanels, updatePanel, addPanel } = panelSlice.actions;
+export const { setPanels, updatePanel, addPanel, clearPanels } =
+    panelSlice.actions;
 
 export default panelSlice.reducer;
