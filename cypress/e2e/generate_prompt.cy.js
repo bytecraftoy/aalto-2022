@@ -118,7 +118,9 @@ describe('Prompt generation', () => {
         cy.get('textarea[placeholder*="User input here"]').each(
             (el, index, _list) => {
                 // Inputs a value for each prompt
-                cy.wrap(el).type(`{selectall}{backspace}${prompt_input} ${index}`);
+                cy.wrap(el).type(
+                    `{selectall}{backspace}${prompt_input} ${index}`
+                );
             }
         );
         // Clicks the generate all button
