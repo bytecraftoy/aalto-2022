@@ -7,7 +7,7 @@ import { backendURL } from './backendURL';
 const apiFetch = async (path: string, init: RequestInit | undefined) => {
     init = {
         credentials: 'include',
-        ...(init || {})
+        ...(init || {}),
     };
     const res = await fetch(`${backendURL}${path}`, init);
     if (!res.ok)
