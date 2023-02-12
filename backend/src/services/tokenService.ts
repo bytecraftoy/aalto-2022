@@ -26,7 +26,7 @@ const readToken = async (req: Request): Promise<TokenPayload | null> => {
     try {
         return await parseToken(token);
     } catch (e) {
-        logger.error(e);
+        logger.error('parse_token_fail', { e });
     }
     return null;
 };

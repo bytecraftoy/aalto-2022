@@ -3,14 +3,17 @@ import { Header } from './Header';
 import { useValue } from '../../utils/hooks';
 import { CustomInput } from '../Inputs';
 import { FilledButton } from '../Buttons';
-import { usernameSchema, passwordSchema } from './validation';
+import { usernameSchema, passwordSchema, tokenSchema } from './validation';
 import { useRepeatPassword } from './hooks';
 import { backendURL } from '../../utils/backendURL';
-import { useAppDispatch } from '../../utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '../../reducers/userReducer';
+import { setPanels } from '../../reducers/panelReducer';
 import { Notification } from '../Notification';
 import { useOpen } from '../../utils/hooks';
+import { setProjects } from '../../utils/projects';
+import { Account } from '../../utils/types';
 
 /**
  *  Form for registering the user
@@ -29,6 +32,14 @@ export const RegisterForm = () => {
     } = useValue(passwordSchema);
     const { repeatedPassword, repeatErrors, changeRepeated } =
         useRepeatPassword(password);
+    const {
+        value: token,
+        errors: tokenErrors,
+        setValue: setToken,
+    } = useValue(tokenSchema);
+
+    // Get the panels from the store
+    const panels = useAppSelector((state) => state.panels.value);
 
     // Open the notification
     const { open, setOpen } = useOpen(7000);
@@ -49,16 +60,24 @@ export const RegisterForm = () => {
         const res = await fetch(`${backendURL}/api/user/register`, {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify({ name: username, password }),
+            body: JSON.stringify({ name: username, password, key: token }),
         });
 
-        if (res.status === 204) {
-            dispatch(logIn());
+        if (res.status === 200) {
+            const body = await res.json();
+
+            const acc: Account = {
+                username: body.userName,
+                id: body.userID,
+            };
+            dispatch(logIn(acc));
+            const backendPanels = await setProjects(panels);
+            dispatch(setPanels(backendPanels));
             navigate('/');
         } else {
             // Set the error notification
-            // TODO! Get the real error reason from backend and show to user
-            setError('Username already taken');
+            const text = await res.text();
+            setError(text);
             setOpen(true);
         }
     };
@@ -98,6 +117,15 @@ export const RegisterForm = () => {
                 onInput={changeRepeated}
                 textHelper="Please enter your password again"
                 errors={repeatErrors}
+            />
+            <CustomInput
+                value={token}
+                label="Key"
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setToken(e.target.value)
+                }
+                textHelper="Enter the key"
+                errors={tokenErrors}
             />
             <FilledButton
                 name="Create account"

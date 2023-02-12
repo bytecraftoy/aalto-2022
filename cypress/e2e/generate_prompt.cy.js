@@ -9,6 +9,40 @@ describe('Prompt generation', () => {
         cy.visit('http://localhost:3000/');
     });
 
+    // This test is for checking the user registering and login functionality
+    // It is also prerequisite for testing prompt generation
+    it('should be able to register a new user', () => {
+        cy.get('button:contains("Sign up")').first().click();
+        cy.get('span:contains("Username")')
+            .parent()
+            .children()
+            .filter('input')
+            .first()
+            .type('testuser', { force: true });
+        cy.get('span:contains("Password")')
+            .parent()
+            .children()
+            .filter('input')
+            .first()
+            .type('salasana', { force: true });
+        cy.get('span:contains("Repeat password")')
+            .parent()
+            .children()
+            .filter('input')
+            .first()
+            .type('salasana', { force: true });
+        cy.get('span:contains("Key")')
+            .parent()
+            .children()
+            .filter('input')
+            .first()
+            .type('DEV-123', { force: true });
+        cy.get('button:contains("Create account")')
+            .get('[data-testid="custom-button"]')
+            .first()
+            .click();
+    });
+
     // This test is for checking the prompt generation feature on the application.
     // The test inputs a value for the category and prompt fields and checks that the output text area is empty.
     // Next, it clicks the "Generate" button and asserts that the output text area includes the input category and prompt.

@@ -31,7 +31,7 @@ export const getUserToken = async (
                 password: testUserPassword,
             })
         )
-        .expect(204);
+        .expect(200);
     const setCookie: unknown = res.headers['set-cookie'];
     expect(typeof setCookie).toBe('object');
     const cookie = (setCookie as string[]).filter((e) =>
