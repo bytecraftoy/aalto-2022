@@ -23,6 +23,7 @@ const tokenCookieOptions: CookieOptions = {
 const readToken = async (req: Request): Promise<TokenPayload | null> => {
     const token: unknown = req.cookies[tokenCookieName];
     if (typeof token !== 'string') return null;
+    if (token === '-') return null;
     try {
         return await parseToken(token);
     } catch (e) {
