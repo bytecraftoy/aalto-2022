@@ -5,6 +5,10 @@ import { backendURL } from './backendURL';
  * Throws an error if the request wasn't successful.
  */
 const apiFetch = async (path: string, init: RequestInit | undefined) => {
+    init = {
+        credentials: 'include',
+        ...(init || {}),
+    };
     const res = await fetch(`${backendURL}${path}`, init);
     if (!res.ok)
         throw new Error('request failed with status code ' + res.status);
