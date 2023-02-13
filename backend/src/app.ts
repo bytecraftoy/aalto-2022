@@ -17,10 +17,10 @@ app.use(requestLogger);
 
 app.use('/api/health', healthRouter);
 app.use('/api/user', userRouter);
+app.use(express.static('./public/'));
 app.use(expressAsyncHandler(checkToken));
 app.use('/api/export/', exportRouter);
 app.use('/api/textgen', apiRouter);
-app.use(express.static('./public/'));
 
 // Error logger after router
 app.use(errorLogger);

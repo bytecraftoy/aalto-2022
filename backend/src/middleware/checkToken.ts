@@ -16,8 +16,7 @@ const checkToken = async (
 ): Promise<void> => {
     //we want this to stop requests only to api endpoints
     //and not to express.static for example
-    if (req.path.startsWith('/api/') && !(await readToken(req)))
-        res.status(401).end();
+    if (!(await readToken(req))) res.status(401).end();
     else next();
 };
 

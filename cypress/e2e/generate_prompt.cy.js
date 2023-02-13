@@ -4,61 +4,65 @@ describe('Prompt generation', () => {
     const category_input = 'category input from cypress';
     const prompt_input = 'prompt input from cypress';
 
-    let userCreated = false;
+    before(() => {
+        cy.visit('http://localhost:3000/');
+        cy.get('button:contains("Sign up")').first().click();
+        cy.get('span:contains("Username")')
+            .parent()
+            .children()
+            .filter('input')
+            .first()
+            .type('testuser', { force: true });
+        cy.get('span:contains("Password")')
+            .parent()
+            .children()
+            .filter('input')
+            .first()
+            .type('salasana', { force: true });
+        cy.get('span:contains("Repeat password")')
+            .parent()
+            .children()
+            .filter('input')
+            .first()
+            .type('salasana', { force: true });
+        cy.get('span:contains("Key")')
+            .parent()
+            .children()
+            .filter('input')
+            .first()
+            .type(Cypress.env('REGISTER_KEY'), { force: true });
+        cy.get('button:contains("Create account")')
+            .get('[data-testid="custom-button"]')
+            .first()
+            .click();
+        cy.location('pathname').should('eq', '/');
+    });
 
+    let first = true;
     // The tests start by visiting the localhost URL for the application.
     beforeEach(() => {
-        cy.visit('http://localhost:3000/');
-        if (!userCreated) {
-            userCreated = true;
-            cy.get('button:contains("Sign up")').first().click();
-            cy.get('span:contains("Username")')
-                .parent()
-                .children()
-                .filter('input')
-                .first()
-                .type('testuser', { force: true });
-            cy.get('span:contains("Password")')
-                .parent()
-                .children()
-                .filter('input')
-                .first()
-                .type('salasana', { force: true });
-            cy.get('span:contains("Repeat password")')
-                .parent()
-                .children()
-                .filter('input')
-                .first()
-                .type('salasana', { force: true });
-            cy.get('span:contains("Key")')
-                .parent()
-                .children()
-                .filter('input')
-                .first()
-                .type('DEV-123', { force: true });
-            cy.get('button:contains("Create account")')
-                .get('[data-testid="custom-button"]')
-                .first()
-                .click();
-        } else {
-            cy.get('button:contains("Log in")').first().click();
-            cy.get('span:contains("Username")')
-                .parent()
-                .children()
-                .filter('input')
-                .first()
-                .type('testuser', { force: true });
-            cy.get('span:contains("Password")')
-                .parent()
-                .children()
-                .filter('input')
-                .first()
-                .type('salasana', { force: true });
-            cy.get('button:contains("Log in")')
-                .get('[data-testid="custom-button"]')
-                .first()
-                .click();
+        if (first) {
+            first = false;
+            return;
         }
+        cy.visit('http://localhost:3000/');
+        cy.get('button:contains("Log in")').first().click();
+        cy.get('span:contains("Username")')
+            .parent()
+            .children()
+            .filter('input')
+            .first()
+            .type('testuser', { force: true });
+        cy.get('span:contains("Password")')
+            .parent()
+            .children()
+            .filter('input')
+            .first()
+            .type('salasana', { force: true });
+        cy.get('button:contains("Log in")')
+            .get('[data-testid="custom-button"]')
+            .first()
+            .click();
         cy.location('pathname').should('eq', '/');
     });
 
