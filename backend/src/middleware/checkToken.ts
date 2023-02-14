@@ -13,7 +13,8 @@ const checkToken = (
     res: Response,
     next: (param?: unknown) => void
 ): void => {
-    if (req.token === null) res.status(401).end();
+    if (req.token === null)
+        res.status(401).send('No valid token on the request found');
     else next();
 };
 
