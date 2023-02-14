@@ -81,7 +81,11 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Alert on failed CI in main
-              uses: distributhor/workflow-webhook@6684d6301159d8c6e1c6527f78d4db9b5d8e5fed
+              uses: ravsamhq/notify-slack-action@v2
+              with:
+                  status: ${{ job.status }}
+                  notification_title: '{workflow} has {status_message}'
+                  message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
+                  footer: 'Linked Repo <{repo_url}|{repo}>'
               env:
-                  webhook_url: ${{ secrets.WEBHOOK_URL }}
-                  data: '{"text":"Deployment failed!"}'
+                  SLACK_WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
