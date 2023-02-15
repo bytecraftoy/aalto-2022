@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { readToken } from './../services/tokenService';
 
 /**
  * This middleware prevents anonymous users
@@ -9,14 +8,13 @@ import { readToken } from './../services/tokenService';
  * Endpoints that must be available for anonymous users
  * must be added before this middleware.
  */
-const checkToken = async (
+const checkToken = (
     req: Request,
     res: Response,
     next: (param?: unknown) => void
-): Promise<void> => {
-    //we want this to stop requests only to api endpoints
-    //and not to express.static for example
-    if (!(await readToken(req))) res.status(401).end();
+): void => {
+    if (req.token === null)
+        res.status(401).send('No valid token on the request found');
     else next();
 };
 
