@@ -1,13 +1,18 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { exportRouter, apiRouter, healthRouter, userRouter } from './routers';
+import {
+    exportRouter,
+    apiRouter,
+    healthRouter,
+    userRouter,
+    presetsRouter,
+} from './routers';
 import { cors } from './middleware/cors';
 import { requestLogger, errorLogger } from './middleware/logger';
 import cookieParser from 'cookie-parser';
 import { checkToken } from './middleware/checkToken';
 import expressAsyncHandler from 'express-async-handler';
 import { tokenReader } from './middleware/tokenReader';
-import { presetsRouter } from './routers/presets';
 
 const app = express();
 app.use(cors);
