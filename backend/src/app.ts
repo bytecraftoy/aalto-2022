@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import { checkToken } from './middleware/checkToken';
 import expressAsyncHandler from 'express-async-handler';
 import { tokenReader } from './middleware/tokenReader';
+import { presetsRouter } from './routers/presets';
 
 const app = express();
 app.use(cors);
@@ -23,6 +24,7 @@ app.use(express.static('./public/'));
 app.use(checkToken);
 app.use('/api/export/', exportRouter);
 app.use('/api/textgen', apiRouter);
+app.use('/api/presets', presetsRouter);
 
 // Error logger after router
 app.use(errorLogger);
