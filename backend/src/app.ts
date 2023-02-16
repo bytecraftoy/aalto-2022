@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import { checkToken } from './middleware/checkToken';
 import expressAsyncHandler from 'express-async-handler';
 import { tokenReader } from './middleware/tokenReader';
-import { isProduction } from './utils/env';
 
 const app = express();
 app.use(cors);
