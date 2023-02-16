@@ -10,7 +10,7 @@ presetsRouter.get(
     '/',
     // eslint-disable-next-line @typescript-eslint/require-await
     expressAsyncHandler(async (req: Request, res: Response) => {
-        res.status(200).json(data);
+        res.status(200).type('application/json').send(data);
     })
 );
 
