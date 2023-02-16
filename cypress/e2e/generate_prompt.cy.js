@@ -4,6 +4,9 @@ describe('Prompt generation', () => {
     const category_input = 'category input from cypress';
     const prompt_input = 'prompt input from cypress';
 
+    const uuid = () => Cypress._.random(0, 1e6);
+    const username = uuid();
+
     before(() => {
         cy.visit('http://localhost:3000/');
         cy.location('pathname').should('eq', '/login/');
@@ -16,7 +19,7 @@ describe('Prompt generation', () => {
             .children()
             .filter('input')
             .first()
-            .type('testuser', { force: true });
+            .type(username, { force: true });
         cy.get('span:contains("Password")')
             .parent()
             .children()
@@ -57,7 +60,7 @@ describe('Prompt generation', () => {
             .children()
             .filter('input')
             .first()
-            .type('testuser', { force: true });
+            .type(username, { force: true });
         cy.get('span:contains("Password")')
             .parent()
             .children()

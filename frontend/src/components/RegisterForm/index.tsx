@@ -14,6 +14,7 @@ import { Notification } from '../Notification';
 import { useOpen } from '../../utils/hooks';
 import { setProjects } from '../../utils/projects';
 import { Account } from '../../utils/types';
+import { saveProjects } from '../../reducers/projectReducer';
 
 /**
  *  Form for registering the user
@@ -71,7 +72,8 @@ export const RegisterForm = () => {
                 id: body.userID,
             };
             dispatch(logIn(acc));
-            const backendPanels = await setProjects(panels);
+            const [backendPanels, projects] = await setProjects(panels);
+            dispatch(saveProjects(projects));
             dispatch(setPanels(backendPanels));
             navigate('/');
         } else {
