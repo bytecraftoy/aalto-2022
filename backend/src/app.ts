@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import { checkToken } from './middleware/checkToken';
 import expressAsyncHandler from 'express-async-handler';
 import { tokenReader } from './middleware/tokenReader';
+import { isProduction } from './utils/env';
 
 const app = express();
 app.use(cors);
@@ -19,7 +20,10 @@ app.use(requestLogger);
 
 app.use('/api/health', healthRouter);
 app.use('/api/user', userRouter);
-app.use(express.static('./public/'));
+// Static files are served by NGINX in production
+if (!isProduction()) {
+    app.use(express.static('./public/'));
+}
 app.use(checkToken);
 app.use('/api/export/', exportRouter);
 app.use('/api/textgen', apiRouter);
