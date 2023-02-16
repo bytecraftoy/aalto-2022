@@ -15,7 +15,7 @@ describe('presets api', () => {
             .get('/api/presets')
             .set('Cookie', token)
             .expect(200)
-            .expect('Content-Type', 'application/json; charset=utf-8');
+            .expect('Content-Type', 'application/json; charset=UTF-8');
         JSON.parse(res.text);
     });
 
