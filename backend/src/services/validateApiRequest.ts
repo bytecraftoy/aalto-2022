@@ -24,7 +24,7 @@ const parseJSON = (json: string): ApiRequest => {
  * @returns {Boolean}
  */
 const correctPropertiesExist = (json: ApiRequest) => {
-    return 'contexts' in json && 'prompt' in json && 'id' in json;
+    return 'contexts' in json && 'prompt' in json && 'id' in json && 'creativity' in json && 'quality' in json && 'inputLength' in json && 'outputLength' in json;
 };
 
 /**
@@ -51,7 +51,7 @@ const validateApiRequest = async (body: string): Promise<ApiRequest> => {
         throw new ValidationError('Request prompt is empty');
     }
 
-    if (Object.keys(obj).length !== 3) {
+    if (Object.keys(obj).length !== 7) {
         throw new ValidationError(
             'Request contains the incorrect number of properties'
         );
