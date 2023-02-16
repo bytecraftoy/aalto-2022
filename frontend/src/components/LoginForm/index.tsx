@@ -10,6 +10,7 @@ import { backendURL } from '../../utils/backendURL';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { logIn } from '../../reducers/userReducer';
 import { setPanels } from '../../reducers/panelReducer';
+import { saveProjects } from '../../reducers/projectReducer';
 import { setProjects } from '../../utils/projects';
 import { Account } from '../../utils/types';
 
@@ -64,9 +65,13 @@ export const LoginForm = () => {
                 username: body.userName,
                 id: body.userID,
             };
+            // Sets the user in the store
             dispatch(logIn(acc));
-            const backendPanels = await setProjects(panels);
+            // Sets the project panels in the store
+            const [backendPanels, projects] = await setProjects(panels);
+            dispatch(saveProjects(projects));
             dispatch(setPanels(backendPanels));
+            // Navigates to the project main panel
             navigate('/');
         } else {
             const text = await res.text();

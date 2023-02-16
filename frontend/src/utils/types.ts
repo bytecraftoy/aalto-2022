@@ -33,3 +33,10 @@ export const AccountSchema = z.object({
 });
 
 export type Account = z.infer<typeof AccountSchema>;
+
+export const ProjectInfoSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+});
+
+export type ProjectInfo = z.infer<typeof ProjectInfoSchema>;
