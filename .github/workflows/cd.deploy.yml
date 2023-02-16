@@ -60,3 +60,21 @@ jobs:
 
             - name: Check that service started succesfully
               run: ssh root@65.108.249.101 "systemctl is-active aalto_2022_backend.service"
+
+    alert:
+        environment: main
+        needs: [deploy]
+        if: ${{ failure() }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Alert on failed deployment
+              uses: ravsamhq/notify-slack-action@v2
+              with:
+                  # explicit failure instead of ${{ job.status }} due to
+                  # different job (TODO: fix somehow? how about multiple dependencies?)
+                  status: 'failure'
+                  notification_title: '{workflow} has {status_message}'
+                  message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
+                  footer: 'Linked Repo <{repo_url}|{repo}>'
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}

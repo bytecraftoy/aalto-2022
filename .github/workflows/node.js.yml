@@ -73,3 +73,21 @@ jobs:
               with:
                   name: cypress-videos
                   path: cypress/videos
+
+    alert:
+        environment: main
+        needs: [check, test]
+        if: ${{ failure() && github.ref == 'refs/heads/main' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Alert on failed CI in main
+              uses: ravsamhq/notify-slack-action@v2
+              with:
+                  # explicit failure instead of ${{ job.status }} due to
+                  # different job (TODO: fix somehow? how about multiple dependencies?)
+                  status: 'failure'
+                  notification_title: '{workflow} has {status_message}'
+                  message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
+                  footer: 'Linked Repo <{repo_url}|{repo}>'
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}

@@ -7,10 +7,12 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import panelReducer from './reducers/panelReducer';
+import userReducer from './reducers/userReducer';
 
 const store = configureStore({
     reducer: {
         panels: panelReducer,
+        user: userReducer,
     },
 });
 

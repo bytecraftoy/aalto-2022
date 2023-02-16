@@ -12,7 +12,7 @@ import { logger } from '../utils/logger';
  *
  * @returns {unknown[]} https://node-postgres.com/apis/result. Currently returns result.rows.
  */
-export const executeQuery = async (
+const executeQuery = async (
     text: string,
     values: unknown[]
 ): Promise<unknown[]> => {
@@ -51,14 +51,32 @@ export const selectProjectData = async (
     return res[0] as { data: object };
 };
 
+export const selectProjectOwner = async (
+    projectID: string
+): Promise<{ user_id: string }> => {
+    const text = 'SELECT user_id FROM projects WHERE id = $1';
+    const values = [projectID];
+    const res = await executeQuery(text, values);
+    return res[0] as { user_id: string };
+};
+
+/**
+ * This function returns the settings of a user.
+ * Throws an error if the user does not exist.
+ *
+ * @returns {object | null} settings if exists, null otherwise
+ */
 export const selectUserSettings = async (
     userID: string
-): Promise<{ settings: object }> => {
+): Promise<object | null> => {
     const text = 'SELECT settings FROM users WHERE id = $1';
     const values = [userID];
-    const res = await executeQuery(text, values);
-    return res[0] as { settings: object };
-    //return res[0];
+    const res = (await executeQuery(text, values)) as {
+        settings: object | null;
+    }[];
+    const settings = res[0].settings;
+    // cast undefined to null
+    return settings ?? null;
 };
 
 export const selectUserID = async (name: string): Promise<string | null> => {
@@ -106,7 +124,7 @@ export const updatePassword = async (id: string, passwordHash: string) => {
 
 export const updateUserSettings = async (id: string, settings: object) => {
     const text = 'UPDATE users SET settings = $1 WHERE id = $2';
-    const values = [id, settings];
+    const values = [settings, id];
     await executeQuery(text, values);
 };
 
@@ -114,10 +132,17 @@ export const addProject = async (
     userID: string,
     name: string,
     data: object
-) => {
+): Promise<{ id: string }> => {
     const text =
-        'INSERT INTO projects(user_id, name, data) VALUES ($1, $2, $3)';
+        'INSERT INTO projects(user_id, name, data) VALUES ($1, $2, $3) RETURNING id';
     const values = [userID, name, data];
+    const res = await executeQuery(text, values);
+    return res[0] as { id: string };
+};
+
+export const updateProject = async (name: string, data: object, id: string) => {
+    const text = 'UPDATE projects SET name = $1, data = $2 WHERE id = $3';
+    const values = [name, data, id];
     await executeQuery(text, values);
 };
 
