@@ -4,7 +4,7 @@ import { isTesting } from '../utils/env';
 
 // dotenv may not be properly loaded for tests because the source file it's
 // normally called in isn't loaded
-if (isTesting()) {
+if (isTesting) {
     dotenv.config();
 }
 

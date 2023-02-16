@@ -9,7 +9,7 @@ const tokenCookieName = 'user-token';
 const tokenCookieOptions: CookieOptions = {
     //the cookie must be unsecure in development
     //since otherwise browser won't send it over unsecure http
-    secure: !isDevelopment(),
+    secure: !isDevelopment,
     httpOnly: true,
     sameSite: 'strict',
 };

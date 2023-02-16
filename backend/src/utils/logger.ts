@@ -8,12 +8,12 @@ import { isDevelopment } from './env';
  * @return {string} The logging level to use.
  */
 const level = (): string => {
-    return isDevelopment() ? 'debug' : 'http';
+    return isDevelopment ? 'debug' : 'http';
 };
 
 // Use pretty printing only for development environment, otherwise print on one line
 const formats = [format.timestamp(), format.json()];
-if (isDevelopment()) formats.push(format.prettyPrint());
+if (isDevelopment) formats.push(format.prettyPrint());
 
 /**
  * Creates a Winston logger configured to log to the console and format messages as JSON.

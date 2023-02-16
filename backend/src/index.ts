@@ -7,7 +7,7 @@ import { logger } from './utils/logger';
 
 const server = http.createServer(app);
 
-if (!isTesting()) {
+if (!isTesting) {
     const PORT = process.env.PORT || 3030;
 
     waitForDatabase(pool, true)
