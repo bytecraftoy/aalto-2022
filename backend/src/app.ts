@@ -20,10 +20,7 @@ app.use(requestLogger);
 
 app.use('/api/health', healthRouter);
 app.use('/api/user', userRouter);
-// Static files are served by NGINX in production
-if (!isProduction()) {
-    app.use(express.static('./public/'));
-}
+app.use(express.static('./public/'));
 app.use(checkToken);
 app.use('/api/export/', exportRouter);
 app.use('/api/textgen', apiRouter);
