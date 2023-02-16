@@ -1,6 +1,7 @@
 import { ContentPanel } from '../../components/ContentPanel';
 import { useAppSelector } from '../../utils/hooks';
 import { ContentPanelType } from '../../utils/types';
+import { useLoginRedirect } from './../../utils/hooks';
 
 /**
  * Home page of the application
@@ -8,6 +9,9 @@ import { ContentPanelType } from '../../utils/types';
  */
 
 export const Home = () => {
+    // Redirect anonymous users from this page to the login page
+    useLoginRedirect();
+
     // Get all the panels of the user
     const panels = useAppSelector((state) => state.panels.value);
 

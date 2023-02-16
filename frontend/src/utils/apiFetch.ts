@@ -4,7 +4,7 @@ import { backendURL } from './backendURL';
  * Fetch text data from backend using relative path.
  * Throws an error if the request wasn't successful.
  */
-const apiFetch = async (path: string, init: RequestInit | undefined) => {
+const apiFetch = async (path: string, init?: RequestInit | undefined) => {
     init = {
         credentials: 'include',
         ...(init || {}),
@@ -20,7 +20,7 @@ const apiFetch = async (path: string, init: RequestInit | undefined) => {
  * Parses the data before returning.
  * Throws an error if the request wasn't successful or if the parsing fails.
  */
-const apiFetchJSON = async (path: string, init: RequestInit | undefined) => {
+const apiFetchJSON = async (path: string, init?: RequestInit | undefined) => {
     const text = await apiFetch(path, init);
     return JSON.parse(text);
 };

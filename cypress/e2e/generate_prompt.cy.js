@@ -6,7 +6,9 @@ describe('Prompt generation', () => {
 
     before(() => {
         cy.visit('http://localhost:3000/');
+        cy.location('pathname').should('eq', '/login/');
         cy.get('button:contains("Sign up")').first().click();
+        cy.location('pathname').should('eq', '/register');
         cy.get('span:contains("Username")')
             .parent()
             .children()
@@ -46,7 +48,7 @@ describe('Prompt generation', () => {
             return;
         }
         cy.visit('http://localhost:3000/');
-        cy.get('button:contains("Log in")').first().click();
+        cy.location('pathname').should('eq', '/login/');
         cy.get('span:contains("Username")')
             .parent()
             .children()
