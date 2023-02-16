@@ -100,6 +100,7 @@ describe('Prompt generation', () => {
     // The test inputs a value for the category and prompt fields and checks that the output text area is empty.
     // Next, it clicks the "Generate" button and asserts that the output text area includes the input category and prompt.
     it('should generate a prompt and get result', () => {
+        cy.wait(100);
         cy.get('input[placeholder*="category"]').first().type(category_input);
         cy.get('textarea[placeholder*="User input here"]').type(prompt_input);
         cy.get(output_locator).invoke('text').should('be.empty');
