@@ -7,8 +7,10 @@ describe('Prompt generation', () => {
     before(() => {
         cy.visit('http://localhost:3000/');
         cy.location('pathname').should('eq', '/login/');
+        cy.wait(100);
         cy.get('button:contains("Sign up")').first().click();
         cy.location('pathname').should('eq', '/register');
+        cy.wait(100);
         cy.get('span:contains("Username")')
             .parent()
             .children()
@@ -33,6 +35,7 @@ describe('Prompt generation', () => {
             .filter('input')
             .first()
             .type(Cypress.env('REGISTER_KEY'), { force: true });
+        cy.wait(100);
         cy.get('button:contains("Create account")')
             .get('[data-testid="custom-button"]')
             .first()
@@ -61,6 +64,7 @@ describe('Prompt generation', () => {
             .filter('input')
             .first()
             .type('salasana', { force: true });
+        cy.wait(100);
         cy.get('button:contains("Log in")')
             .get('[data-testid="custom-button"]')
             .first()
@@ -100,7 +104,9 @@ describe('Prompt generation', () => {
         cy.get('textarea[placeholder*="User input here"]').type(prompt_input);
         cy.get(output_locator).invoke('text').should('be.empty');
         cy.get('[data-testid="hover-area"]').realHover();
+        cy.wait(100);
         cy.get('button:contains("Generate")').first().click();
+        cy.wait(100);
         cy.get(output_locator).should(
             'include.text',
             `Theme: ${category_input}\\n${prompt_input}`
@@ -130,9 +136,11 @@ describe('Prompt generation', () => {
             }
         );
         // Clicks the generate all button
+        cy.wait(100);
         cy.get(
             '[data-testid="custom-button"]:contains("Generate all")'
         ).click();
+        cy.wait(100);
         cy.get(output_locator).each((el, index, _list) => {
             // Asserts that each output text area includes the input category and prompt
             cy.wrap(el).should(
