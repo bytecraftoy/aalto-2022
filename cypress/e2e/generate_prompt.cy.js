@@ -10,8 +10,10 @@ describe('Prompt generation', () => {
     before(() => {
         cy.visit('http://localhost:3000/');
         cy.location('pathname').should('eq', '/login/');
+        cy.wait(100);
         cy.get('button:contains("Sign up")').first().click();
         cy.location('pathname').should('eq', '/register');
+        cy.wait(100);
         cy.get('span:contains("Username")')
             .parent()
             .children()
@@ -36,6 +38,7 @@ describe('Prompt generation', () => {
             .filter('input')
             .first()
             .type(Cypress.env('REGISTER_KEY'), { force: true });
+        cy.wait(100);
         cy.get('button:contains("Create account")')
             .get('[data-testid="custom-button"]')
             .first()
@@ -64,6 +67,7 @@ describe('Prompt generation', () => {
             .filter('input')
             .first()
             .type('salasana', { force: true });
+        cy.wait(100);
         cy.get('button:contains("Log in")')
             .get('[data-testid="custom-button"]')
             .first()
@@ -99,11 +103,14 @@ describe('Prompt generation', () => {
     // The test inputs a value for the category and prompt fields and checks that the output text area is empty.
     // Next, it clicks the "Generate" button and asserts that the output text area includes the input category and prompt.
     it('should generate a prompt and get result', () => {
-        cy.get('input[placeholder*="category"]').type(category_input);
+        cy.wait(100);
+        cy.get('input[placeholder*="category"]').first().type(category_input);
         cy.get('textarea[placeholder*="User input here"]').type(prompt_input);
         cy.get(output_locator).invoke('text').should('be.empty');
         cy.get('[data-testid="hover-area"]').realHover();
+        cy.wait(100);
         cy.get('button:contains("Generate")').first().click();
+        cy.wait(100);
         cy.get(output_locator).should(
             'include.text',
             `Theme: ${category_input}\\n${prompt_input}`
@@ -112,9 +119,7 @@ describe('Prompt generation', () => {
 
     it(
         'should generate all boxes with generate all button',
-        {
-            defaultCommandTimeout: 10000,
-        },
+        { defaultCommandTimeout: 10000 },
         () => {
             const numExtra = 3;
             // Inputs a value for category
@@ -141,12 +146,17 @@ describe('Prompt generation', () => {
                 }
             );
             // Clicks the generate all button
+            cy.wait(100);
             cy.get(
                 '[data-testid="custom-button"]:contains("Generate all")'
             ).click();
+            cy.wait(100);
             cy.get(output_locator).each((el, index, _list) => {
                 // Asserts that each output text area includes the input category and prompt
-                cy.wrap(el).should('contain', 'This is a demo');
+                cy.wrap(el).should(
+                    'include.text',
+                    `Theme: ${category_input}\\n${prompt_input} ${index}`
+                );
             });
         }
     );
