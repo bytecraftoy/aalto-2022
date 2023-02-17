@@ -1,15 +1,21 @@
 import { generateText } from '../../utils/generateContent';
-import { InputSchema, PromptData } from './ContentPanelPrompts/PromptIOBox';
+import { InputSchema } from './ContentPanelPrompts/PromptIOBox';
+import type { ContentPanelType } from '../../utils/types';
+
+type PanelNoId = Omit<ContentPanelType, 'id'>;
+
 /**
  * Creates an <id, output> map of generated prompts
  * @param prompts
  * @param category
+ * @param parameters
  * @returns {Promsie<Map<string,string>>} generatedPrompts
  */
-export const generatePrompts = async (
-    prompts: PromptData[],
-    category: string
-): Promise<Map<string, string>> => {
+export const generatePrompts = async ({
+    prompts,
+    category,
+    parameters,
+}: PanelNoId): Promise<Map<string, string>> => {
     // Map of <id, output> for content panels that are generated
     const generated: Map<string, string> = new Map();
 
@@ -17,7 +23,12 @@ export const generatePrompts = async (
     for (const p of prompts) {
         // Generate if the prompt is not locked and input is valid
         if (!p.locked && InputSchema.safeParse(p.input).success) {
-            const output: string = await generateText(p.id, p.input, category);
+            const output: string = await generateText({
+                id: p.id,
+                input: p.input,
+                category,
+                parameters,
+            });
             generated.set(p.id, output);
         }
     }

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ContentPanelType } from '../utils/types';
 import { generate } from 'shortid';
 import { v4 as uuidv4 } from 'uuid';
+import { DEFAULT_PARAMETERS } from '../utils/types';
 
 /**
  * Redux slice for storing all the content panels of the application
@@ -24,6 +25,7 @@ const initialState: PanelState = {
             id: generate(),
             category: '',
             prompts: [{ id: uuidv4(), input: '', output: '', locked: false }],
+            parameters: DEFAULT_PARAMETERS,
         },
     ],
 };
@@ -51,6 +53,7 @@ export const panelSlice = createSlice({
                 prompts: [
                     { id: uuidv4(), input: '', output: '', locked: false },
                 ],
+                parameters: DEFAULT_PARAMETERS,
             };
             state.value.push(newPanel);
         },
@@ -70,6 +73,7 @@ export const panelSlice = createSlice({
                                 locked: false,
                             },
                         ],
+                        parameters: DEFAULT_PARAMETERS,
                     },
                 ],
             };

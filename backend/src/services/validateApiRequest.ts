@@ -1,4 +1,6 @@
+import { selectProjectsbyUserID } from '../db/queries';
 import { ApiRequest } from '../types';
+import { GenerationRequestJsonSchema } from '../types/ApiTypes';
 
 class ValidationError extends SyntaxError {
     name = 'ValidationError';
@@ -17,17 +19,6 @@ const parseJSON = (json: string): ApiRequest => {
 };
 
 /**
- * Function assisting in prompt validation,
- * checks that all correct properties exist, returns boolean value
- *
- * @param {ApiRequest} json
- * @returns {Boolean}
- */
-const correctPropertiesExist = (json: ApiRequest) => {
-    return 'contexts' in json && 'prompt' in json && 'id' in json;
-};
-
-/**
  * Backend level validation.
  * Checks that body is json, and
  * contains the necessary fields for an ApiRequest
@@ -40,24 +31,9 @@ const correctPropertiesExist = (json: ApiRequest) => {
  */
 // eslint-disable-next-line @typescript-eslint/require-await
 const validateApiRequest = async (body: string): Promise<ApiRequest> => {
-    const obj = parseJSON(body);
-    if (!correctPropertiesExist(obj)) {
-        throw new ValidationError(
-            'Request does not contain all required properties'
-        );
-    }
-
-    if (obj.prompt.trim() == '') {
-        throw new ValidationError('Request prompt is empty');
-    }
-
-    if (Object.keys(obj).length !== 3) {
-        throw new ValidationError(
-            'Request contains the incorrect number of properties'
-        );
-    }
-
-    return JSON.parse(body) as ApiRequest;
+    const obj = JSON.parse(body);
+    GenerationRequestJsonSchema.parse(obj);
+    return obj as ApiRequest;
 };
 
 export { validateApiRequest, ValidationError };
