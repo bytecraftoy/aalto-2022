@@ -100,7 +100,7 @@ export const usePanel = (
 
             const project = {
                 name: 'main',
-                json: JSON.stringify({ panels: updatedPanels }),
+                data: { panels: updatedPanels },
             };
 
             // Update the main project

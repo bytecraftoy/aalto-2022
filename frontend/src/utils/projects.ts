@@ -82,7 +82,7 @@ const newProject = async (
 ): Promise<string | undefined> => {
     const project = {
         name,
-        json: JSON.stringify({ panels }),
+        data: { panels },
     };
 
     const res = await fetch(`${backendURL}/api/user/projects/new`, {
