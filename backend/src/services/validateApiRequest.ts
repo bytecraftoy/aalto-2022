@@ -18,8 +18,7 @@ class ValidationError extends SyntaxError {
  */
 // eslint-disable-next-line @typescript-eslint/require-await
 const validateApiRequest = async (body: string): Promise<ApiRequest> => {
-    const obj = JSON.parse(body);
-    const parsed = GenerationRequestJsonSchema.parse(obj);
+    const parsed = GenerationRequestJsonSchema.parse(JSON.parse(body));
     return parsed as ApiRequest;
 };
 
