@@ -7,11 +7,11 @@ Save the project by id.
 ```
 {
     name: string, //a name for the project
-    json: string //the project data in JSON format
+    data: object //the project
 }
 ```
 
-Back-end does not care how the JSON is structured but some redundant whitespaces may be removed.
+Back-end does not care what the data is as long it is an object or an array and not null.
 
 ## Response
 
