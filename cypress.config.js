@@ -4,4 +4,7 @@ module.exports = {
             // implement node event listeners here
         },
     },
+    env: {
+        REGISTER_KEY: 'DEV-123',
+    },
 };

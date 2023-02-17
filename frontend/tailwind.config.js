@@ -141,22 +141,24 @@ module.exports = {
         },
     },
     plugins: [
+        require('tailwind-scrollbar-hide'),
         plugin(({ addBase }) => {
-            addBase({
-                '.scrollbar': {},
-                '.scrollbar::-webkit-scrollbar': {
-                    width: '0.6rem',
-                    borderRadius: '1rem',
-                },
-                '.scrollbar::-webkit-scrollbar-thumb': {
-                    backgroundColor: '#D6D3D180',
-                    borderRadius: '0.25rem',
-                },
-                '.scrollbar::-webkit-scrollbar-track': {
-                    backgroundColor: '#33415540',
-                    borderRadius: '0.25rem',
-                },
-            });
+            require('tailwind-scrollbar-hide'),
+                addBase({
+                    '.scrollbar': {},
+                    '.scrollbar::-webkit-scrollbar': {
+                        width: '0.6rem',
+                        borderRadius: '1rem',
+                    },
+                    '.scrollbar::-webkit-scrollbar-thumb': {
+                        backgroundColor: '#D6D3D180',
+                        borderRadius: '0.25rem',
+                    },
+                    '.scrollbar::-webkit-scrollbar-track': {
+                        backgroundColor: '#33415540',
+                        borderRadius: '0.25rem',
+                    },
+                });
         }),
     ],
 };

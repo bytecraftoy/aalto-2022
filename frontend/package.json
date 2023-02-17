@@ -17,6 +17,7 @@
         "react-router-dom": "^6.4.5",
         "react-scripts": "5.0.1",
         "shortid": "^2.2.16",
+        "tailwind-scrollbar-hide": "^1.1.7",
         "typescript": "^4.8.4",
         "web-vitals": "^2.1.4",
         "zod": "^3.19.1"
