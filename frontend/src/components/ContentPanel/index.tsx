@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import {
     exportJson,
     downloadJson,
@@ -13,6 +13,7 @@ import { ContentPanelActions } from './ContentPanelActions';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { usePanel } from './hooks';
+import { ParameterDrawer } from '../ParameterDrawer';
 
 //Provide access to MasterCategory through a parent callback
 interface ContentPanelProps {
@@ -58,9 +59,13 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         if (link) downloadXlsx(link);
     };
 
+    // Opens ParameterDrawer
+    const [open, setOpen] = useState(false);
+
     return (
         //Take up full space, and center the content panel in it
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full flex-1">
+            <ParameterDrawer open={open} setOpen={setOpen} />
             <div
                 className={classNames(
                     'w-full px-4 py-16 flex flex-row justify-around items-center',
@@ -77,6 +82,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                         setCategory={setCategory}
                         addPromptBoxes={addPromptBoxes}
                         saveState={saveState}
+                        setOpen={setOpen}
                     />
 
                     {/* IO TExtfields: Prompts of the content panel */}
