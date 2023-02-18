@@ -24,7 +24,15 @@ const parseJSON = (json: string): ApiRequest => {
  * @returns {Boolean}
  */
 const correctPropertiesExist = (json: ApiRequest) => {
-    return 'contexts' in json && 'prompt' in json && 'id' in json && 'creativity' in json && 'quality' in json && 'inputLength' in json && 'outputLength' in json;
+    return (
+        'contexts' in json &&
+        'prompt' in json &&
+        'id' in json &&
+        'creativity' in json &&
+        'quality' in json &&
+        'inputLength' in json &&
+        'outputLength' in json
+    );
 };
 
 /**
