@@ -6,7 +6,11 @@ import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { updatePanel } from '../../reducers/panelReducer';
 import { generatePrompts } from './promptUtil';
 import { EventBus } from '../../utils/eventBus';
-import { ContentPanelType } from '../../utils/types';
+import {
+    ContentPanelType,
+    Parameters,
+    DEFAULT_PARAMETERS,
+} from '../../utils/types';
 import { getProjectIdByName, saveProject } from './../../utils/projects';
 
 /**
@@ -29,6 +33,8 @@ export const usePanel = (
     const [promptBoxes, setPromptBoxes] =
         useState<PromptData[]>(initialPrompts);
     const [category, setCategory] = useState<string>(initialCategory);
+    const [parameters, setParameters] =
+        useState<Parameters>(DEFAULT_PARAMETERS);
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -51,10 +57,11 @@ export const usePanel = (
         setLoading(() => true);
 
         // Map of <id, output> for content panels that are generated
-        const generated: Map<string, string> = await generatePrompts(
-            promptBoxes,
-            category
-        );
+        const generated: Map<string, string> = await generatePrompts({
+            prompts: promptBoxes,
+            category,
+            parameters,
+        } as Omit<ContentPanelType, 'id'>);
 
         // Sets all the promptboxes in a 1 setState call.
         setPromptBoxes((prev) =>
@@ -99,6 +106,7 @@ export const usePanel = (
             id,
             category,
             prompts: promptBoxes,
+            parameters,
         };
 
         // Update the redux store
@@ -127,7 +135,15 @@ export const usePanel = (
     // Generates single output
     const generateOutput = async (p: PromptData) => {
         setLoading(() => true);
-        setPromptOutput(p.id, await generateText(p.id, p.input, category));
+        setPromptOutput(
+            p.id,
+            await generateText({
+                id: p.id,
+                input: p.input,
+                category,
+                parameters,
+            })
+        );
     };
 
     //Callback to modify the input area of a PromptIOBox by id
@@ -159,5 +175,6 @@ export const usePanel = (
         addPromptBoxes,
         lockPrompt,
         saveState,
+        setParameters,
     };
 };

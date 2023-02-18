@@ -1,6 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { exportRouter, apiRouter, healthRouter, userRouter } from './routers';
+import {
+    exportRouter,
+    apiRouter,
+    healthRouter,
+    userRouter,
+    presetsRouter,
+} from './routers';
 import { cors } from './middleware/cors';
 import { requestLogger, errorLogger } from './middleware/logger';
 import cookieParser from 'cookie-parser';
@@ -23,6 +29,7 @@ app.use(express.static('./public/'));
 app.use(checkToken);
 app.use('/api/export/', exportRouter);
 app.use('/api/textgen', apiRouter);
+app.use('/api/presets', presetsRouter);
 
 // Error logger after router
 app.use(errorLogger);

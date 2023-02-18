@@ -13,6 +13,7 @@ interface ContentPanelHeaderProps {
     setCategory: React.Dispatch<React.SetStateAction<string>>;
     addPromptBoxes: (n: number) => void;
     saveState: () => void;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
@@ -20,6 +21,7 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
     setCategory,
     addPromptBoxes,
     saveState,
+    setOpen,
 }) => {
     return (
         <div className="flex flex-row justify-around items-center mt-6">
@@ -34,6 +36,7 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
                     <DropdownMenu
                         addPromptBoxes={addPromptBoxes}
                         saveState={saveState}
+                        openDrawer={setOpen}
                     />
                 </div>
             </div>
