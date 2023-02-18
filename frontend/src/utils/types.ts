@@ -27,6 +27,13 @@ export interface ContentPanelType {
     prompts: PromptData[];
 }
 
+export interface Project {
+    name: string;
+    data: {
+        panels: ContentPanelType[];
+    };
+}
+
 export const AccountSchema = z.object({
     username: z.string(),
     id: z.string(),

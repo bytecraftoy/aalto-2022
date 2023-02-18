@@ -1,108 +1,171 @@
-import { backendURL } from './backendURL';
-import { ContentPanelType, ProjectInfo } from './types';
+import { apiFetch, apiFetchJSON } from './apiFetch';
+import { Project, ProjectInfo, ContentPanelType } from './types';
 
 /**
- * Functions for querying the projects in backend
+ * A helper function for handling errors
  */
-
-export const getProjects = async (
-    panels: ContentPanelType[]
-): Promise<[ContentPanelType[], ProjectInfo[]]> => {
-    const response = await fetch(`${backendURL}/api/user/projects`, {
-        method: 'GET',
-        credentials: 'include',
-    });
-
-    // If the user is not logged in, return
-    if (response.status === 401) return [panels, []];
-
-    // If the user is logged in, get the projects
-    const projects = (await response.json()) as ProjectInfo[];
-
-    if (!projects.length) return [panels, []];
-
-    const projectID = projects.find(
-        (project: { id: string; name: string }) => project.name === 'main'
-    )?.id;
-
-    if (!projectID) return [panels, projects];
-
-    const backednPanels = await fetch(
-        `${backendURL}/api/user/projects/${projectID}`,
-        {
-            method: 'GET',
-            credentials: 'include',
-        }
-    );
-
-    if (backednPanels.status === 401) return [panels, projects];
-
-    const backendResponse = await backednPanels.json();
-    return [backendResponse.data.panels as ContentPanelType[], projects];
+const handleError = (err: unknown): { success: false; error: Error } => {
+    console.error(err);
+    return {
+        success: false,
+        error: err instanceof Error ? err : new Error(),
+    };
 };
 
-export const setProjects = async (
-    panels: ContentPanelType[]
+/**
+ * Get a list of user's projects.
+ * Never throws an error.
+ */
+export const getProjects = async (): Promise<
+    | { success: true; projects: ProjectInfo[] }
+    | { success: false; error: Error }
+> => {
+    try {
+        const projects = await apiFetchJSON('/api/user/projects');
+        return { success: true, projects };
+    } catch (err) {
+        return handleError(err);
+    }
+};
+
+/**
+ * Get a project by id.
+ * Never throws an error.
+ */
+export const getProject = async (
+    id: string
+): Promise<
+    { success: true; project: Project } | { success: false; error: Error }
+> => {
+    try {
+        const project = await apiFetchJSON(`/api/user/projects/${id}`);
+        return {
+            success: true,
+            project,
+        };
+    } catch (err) {
+        return handleError(err);
+    }
+};
+
+/**
+ * Save a project by id.
+ * Never throws an error.
+ */
+export const saveProject = async (
+    id: string,
+    project: Project
+): Promise<{ success: true } | { success: false; error: Error }> => {
+    try {
+        apiFetch(`/api/user/projects/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(project),
+        });
+        return { success: true };
+    } catch (err) {
+        return handleError(err);
+    }
+};
+
+/**
+ * Save a new project.
+ * The id for the new project will be in the returned object if successful.
+ * Never throws an error.
+ */
+export const saveNewProject = async (
+    project: Project
+): Promise<
+    { success: true; id: string } | { success: false; error: Error }
+> => {
+    try {
+        const id = await apiFetch('/api/user/projects/new', {
+            method: 'POST',
+            body: JSON.stringify(project),
+        });
+        return { success: true, id };
+    } catch (err) {
+        return handleError(err);
+    }
+};
+
+/**
+ * Get project's id by its name.
+ * Never throws an error.
+ */
+export const getProjectIdByName = async (
+    name: string
+): Promise<
+    { success: true; id: string } | { success: false; error: Error }
+> => {
+    const projects = await getProjects();
+    if (!projects.success) return projects;
+
+    const id = projects.projects.find((p) => p.name === name)?.id;
+    if (id === undefined)
+        return {
+            success: false,
+            error: new Error('Project not found'),
+        };
+
+    return { success: true, id };
+};
+
+/**
+ * Get a project by name.
+ * Never throws an error.
+ */
+export const getProjectByName = async (
+    name: string
+): Promise<
+    { success: true; project: Project } | { success: false; error: Error }
+> => {
+    const id = await getProjectIdByName(name);
+    if (!id.success) return id;
+
+    return await getProject(id.id);
+};
+
+/**
+ * Get initial the states for the current project (panels)
+ * and for the list of user's projects.
+ * Looks for existing projects in the database
+ * and creates a new one if 'main' project is not found and write is true.
+ * Never throws and error.
+ * Does not read or modify the redux store.
+ * @param {ContentPanelType[]} panels Default panels to use if the user has no saved projects.
+ * @param {boolean} write If true, add the default project to the database. Defaults to true.
+ */
+export const initializeUserProjects = async (
+    panels: ContentPanelType[],
+    write = true
 ): Promise<[ContentPanelType[], ProjectInfo[]]> => {
-    const response = await fetch(`${backendURL}/api/user/projects`, {
-        method: 'GET',
-        credentials: 'include',
-    });
+    const projectsRes = await getProjects();
 
-    // If the user is not logged in, return
-    if (response.status === 401) return [panels, []];
+    if (!projectsRes.success)
+        //user is not logged in or some error that we can not fix has occured
+        return [panels, []];
 
-    // If the user is logged in, get the projects
-    const projects = (await response.json()) as ProjectInfo[];
-    // If the user has no projects, create a new one
-    if (!projects.length) {
-        const id = await newProject('main', panels);
-
-        if (!id) return [panels, []];
-        // Id found, return the new panels and projects
-        return [panels, [{ id, name: 'main' }]];
+    if (projectsRes.projects.length === 0) {
+        if (write) {
+            //the user has now projects so create a new one
+            const name = 'main';
+            const saveRes = await saveNewProject({ name, data: { panels } });
+            if (saveRes.success) return [panels, [{ id: saveRes.id, name }]];
+            //an unrecoverable error
+        }
+        return [panels, []];
     }
 
-    const projectID = projects.find(
-        (project: { id: string; name: string }) => project.name === 'main'
-    )?.id;
+    //find the user's main project
+    const projectId = projectsRes.projects.find((p) => p.name === 'main')?.id;
 
-    // If the user has no project named 'main', return panels and projects
-    if (!projectID) return [panels, projects];
+    if (projectId) {
+        const projectRes = await getProject(projectId);
+        if (projectRes.success)
+            //if the main project was found and successfully fetched, return it
+            return [projectRes.project.data.panels, projectsRes.projects];
+    }
 
-    // If the user has a project named 'main', save it and return the new panels
-    const newPanels = await saveProject(projectID);
-    return [newPanels, projects];
-};
-
-// Create a new project
-const newProject = async (
-    name: string,
-    panels: ContentPanelType[]
-): Promise<string | undefined> => {
-    const project = {
-        name,
-        data: { panels },
-    };
-
-    const res = await fetch(`${backendURL}/api/user/projects/new`, {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify(project),
-    });
-
-    if (res.status === 401) return;
-    const id = await res.text();
-    return id;
-};
-
-// Save the project and return the new panels
-const saveProject = async (id: string): Promise<ContentPanelType[]> => {
-    const response = await fetch(`${backendURL}/api/user/projects/${id}`, {
-        method: 'GET',
-        credentials: 'include',
-    });
-
-    const backendResponse = await response.json();
-    return backendResponse.data.panels as ContentPanelType[];
+    //otherwise return the default project
+    return [panels, projectsRes.projects];
 };
