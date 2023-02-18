@@ -7,7 +7,7 @@ Save a project for the first time.
 ```
 {
     name: string, //a name for the project
-    data: object //the project
+    data: object //the project data
 }
 ```
 

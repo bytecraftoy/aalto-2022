@@ -57,7 +57,7 @@ export const saveProject = async (
     project: Project
 ): Promise<{ success: true } | { success: false; error: Error }> => {
     try {
-        apiFetch(`/api/user/projects/${id}`, {
+        await apiFetch(`/api/user/projects/${id}`, {
             method: 'PUT',
             body: JSON.stringify(project),
         });

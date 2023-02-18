@@ -7,7 +7,7 @@ Save the project by id.
 ```
 {
     name: string, //a name for the project
-    data: object //the project
+    data: object //the project data
 }
 ```
 
