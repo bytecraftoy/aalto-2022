@@ -67,7 +67,7 @@ export const PanelSection = () => {
                         {panels.length > 1 && (
                             <IconButton
                                 icon="XMarkIcon"
-                                colorPalette="primary"
+                                colorPalette="tertiary"
                                 onClick={() => deletePanel(panel)}
                                 className="opacity-0 group-hover:opacity-100"
                             />
