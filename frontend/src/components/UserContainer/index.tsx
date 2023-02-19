@@ -4,7 +4,7 @@ import { EventBus } from '../../utils/eventBus';
 import { backendURL } from '../../utils/backendURL';
 import { logOut, logIn } from '../../reducers/userReducer';
 import { Account } from '../../utils/types';
-import { getProjects } from '../../utils/projects';
+import { initializeUserProjects } from '../../utils/projects';
 import { setPanels, clearPanels } from '../../reducers/panelReducer';
 import { saveProjects } from '../../reducers/projectReducer';
 
@@ -49,7 +49,10 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
                     id: body.id,
                 };
                 dispatch(logIn(acc));
-                const [newPanels, projects] = await getProjects(panels);
+                const [newPanels, projects] = await initializeUserProjects(
+                    panels,
+                    false
+                );
                 dispatch(saveProjects(projects));
                 dispatch(setPanels(newPanels));
             }

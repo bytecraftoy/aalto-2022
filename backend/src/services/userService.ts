@@ -7,7 +7,7 @@ import {
     addUser,
     userExists,
     selectProjectsbyUserID,
-    selectProjectData,
+    selectProject,
     selectUserID,
     selectPassword,
     selectProjectOwner,
@@ -58,7 +58,7 @@ const updateSettingsRequestSchema = z.object({});
 
 const projectRequestSchema = z.object({
     name: z.string(),
-    json: z.string(),
+    data: z.object({}).passthrough(),
 });
 
 /**
@@ -174,7 +174,7 @@ const getProject = async (
         const ownerID = await selectProjectOwner(projectID);
         const isOwner = ownerID.user_id === userID;
         if (isOwner) {
-            const response = await selectProjectData(projectID);
+            const response = await selectProject(projectID);
 
             return { success: true, data: response };
         }
@@ -194,11 +194,10 @@ const getProject = async (
 const createProject = async (
     userID: string,
     projectName: string,
-    data: string
+    data: object
 ): Promise<string | null> => {
     try {
-        const obj = JSON.parse(data) as object;
-        const project = await addProject(userID, projectName, obj);
+        const project = await addProject(userID, projectName, data);
         return project.id;
     } catch (e) {
         logger.error(e);
@@ -214,14 +213,13 @@ const saveProject = async (
     userID: string,
     projectID: string,
     projectName: string,
-    data: string
+    data: object
 ): Promise<boolean> => {
     try {
         const ownerID = await selectProjectOwner(projectID);
         const isOwner = ownerID.user_id === userID;
         if (isOwner) {
-            const obj = JSON.parse(data) as object;
-            await updateProject(projectName, obj, projectID);
+            await updateProject(projectName, data, projectID);
             return true;
         }
         return false;
