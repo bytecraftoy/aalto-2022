@@ -6,12 +6,12 @@ import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { updatePanel } from '../../reducers/panelReducer';
 import { generatePrompts } from './promptUtil';
 import { EventBus } from '../../utils/eventBus';
-import { backendURL } from '../../utils/backendURL';
 import {
     ContentPanelType,
     Parameters,
     DEFAULT_PARAMETERS,
 } from '../../utils/types';
+import { getProjectIdByName, saveProject } from './../../utils/projects';
 
 /**
  * Custom hook which return prompts, category and loading information + all the action functions related to prompts and category
@@ -81,25 +81,8 @@ export const usePanel = (
     // Get the main project from database and updates it
     const updateDatabase = async (panel: ContentPanelType) => {
         if (logged) {
-            // Get the projects
-            const response = await fetch(`${backendURL}/api/user/projects`, {
-                method: 'GET',
-                credentials: 'include',
-            });
-
-            if (response.status !== 200) return;
-
-            const data = await response.json();
-
-            // If the user has no projects, return
-            if (!data.length) return;
-
-            // Get the main project
-            const projectID = data.find(
-                (p: { id: string; name: string }) => p.name === 'main'
-            )?.id;
-
-            if (!projectID) return;
+            const mainProject = await getProjectIdByName('main');
+            if (!mainProject.success) return;
 
             // Current state of the panels
             const updatedPanels = panels.map((p: ContentPanelType) => {
@@ -109,15 +92,10 @@ export const usePanel = (
 
             const project = {
                 name: 'main',
-                json: JSON.stringify({ panels: updatedPanels }),
+                data: { panels: updatedPanels },
             };
 
-            // Update the main project
-            await fetch(`${backendURL}/api/user/projects/${projectID}`, {
-                method: 'PUT',
-                credentials: 'include',
-                body: JSON.stringify(project),
-            });
+            await saveProject(mainProject.id, project);
         }
     };
 

@@ -29,6 +29,13 @@ export interface ContentPanelType {
     parameters: Parameters;
 }
 
+export interface Project {
+    name: string;
+    data: {
+        panels: ContentPanelType[];
+    };
+}
+
 export const AccountSchema = z.object({
     username: z.string(),
     id: z.string(),

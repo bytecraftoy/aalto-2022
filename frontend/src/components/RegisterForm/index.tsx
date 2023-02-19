@@ -12,7 +12,7 @@ import { logIn } from '../../reducers/userReducer';
 import { setPanels } from '../../reducers/panelReducer';
 import { Notification } from '../Notification';
 import { useOpen } from '../../utils/hooks';
-import { setProjects } from '../../utils/projects';
+import { initializeUserProjects } from '../../utils/projects';
 import { Account } from '../../utils/types';
 import { saveProjects } from '../../reducers/projectReducer';
 
@@ -72,7 +72,9 @@ export const RegisterForm = () => {
                 id: body.userID,
             };
             dispatch(logIn(acc));
-            const [backendPanels, projects] = await setProjects(panels);
+            const [backendPanels, projects] = await initializeUserProjects(
+                panels
+            );
             dispatch(saveProjects(projects));
             dispatch(setPanels(backendPanels));
             navigate('/');

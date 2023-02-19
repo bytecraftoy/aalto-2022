@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { logIn } from '../../reducers/userReducer';
 import { setPanels } from '../../reducers/panelReducer';
 import { saveProjects } from '../../reducers/projectReducer';
-import { setProjects } from '../../utils/projects';
+import { initializeUserProjects } from '../../utils/projects';
 import { Account } from '../../utils/types';
 
 /**
@@ -67,8 +67,10 @@ export const LoginForm = () => {
             };
             // Sets the user in the store
             dispatch(logIn(acc));
-            // Sets the project panels in the store
-            const [backendPanels, projects] = await setProjects(panels);
+            // Senonets the project panels in the store
+            const [backendPanels, projects] = await initializeUserProjects(
+                panels
+            );
             dispatch(saveProjects(projects));
             dispatch(setPanels(backendPanels));
             // Navigates to the project main panel

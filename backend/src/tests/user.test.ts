@@ -12,7 +12,7 @@ import {
     updateUserSettings,
     userExists,
     addProject,
-    selectProjectData,
+    selectProject,
     selectProjectsbyUserID,
 } from '../db/queries';
 import { registerKey } from '../services/registerKeyService';
@@ -577,13 +577,13 @@ describe('user router projects', () => {
             .get(`/api/user/projects/${project_id_1}`)
             .set('Cookie', `user-token=${token}`)
             .expect(200);
-        expect(res.body).toEqual({ data: { testdata: 1 } });
+        expect(res.body).toEqual({ name: 'name1', data: { testdata: 1 } });
     });
 
     test('can post new project succesfully (POST api/user/projects/new)', async () => {
         const data = {
             name: 'name3',
-            json: JSON.stringify({ testdata: 3 }),
+            data: { testdata: 3 },
         };
         await api
             .post('/api/user/projects/new')
@@ -598,7 +598,7 @@ describe('user router projects', () => {
     test('can edit project succesfully (PUT api/user/projects/:id)', async () => {
         const data = {
             name: 'name3',
-            json: JSON.stringify({ testdata: 3 }),
+            data: { testdata: 3 },
         };
         await api
             .put(`/api/user/projects/${project_id_1}`)
@@ -608,8 +608,8 @@ describe('user router projects', () => {
 
         const projects = await selectProjectsbyUserID(user_id);
         expect(projects.map((p) => p.name)).toContain('name3');
-        const project = await selectProjectData(project_id_1);
-        expect(project.data).toEqual(JSON.parse(data.json));
+        const project = await selectProject(project_id_1);
+        expect(project.data).toEqual(data.data);
     });
 
     test('can delete project succesfully (DELETE api/user/projects/:id)', async () => {
@@ -639,7 +639,7 @@ describe('user router projects', () => {
 
         const data = {
             name: 'name3',
-            json: JSON.stringify({ testdata: 3 }),
+            data: { testdata: 3 },
         };
         await api
             .put(`/api/user/projects/${project_id_1}`)
