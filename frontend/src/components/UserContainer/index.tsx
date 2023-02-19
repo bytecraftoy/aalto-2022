@@ -5,7 +5,8 @@ import { backendURL } from '../../utils/backendURL';
 import { logOut, logIn } from '../../reducers/userReducer';
 import { Account } from '../../utils/types';
 import { getProjects } from '../../utils/projects';
-import { setPanels } from '../../reducers/panelReducer';
+import { setPanels, clearPanels } from '../../reducers/panelReducer';
+import { saveProjects } from '../../reducers/projectReducer';
 
 /**
  * Wrapped component for logging out of the user from the application.
@@ -29,6 +30,7 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
 
         // Empty user logged in state from redux store
         dispatch(logOut());
+        dispatch(clearPanels());
     }
 
     // Logs in after refresh
@@ -47,7 +49,8 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
                     id: body.id,
                 };
                 dispatch(logIn(acc));
-                const newPanels = await getProjects(panels);
+                const [newPanels, projects] = await getProjects(panels);
+                dispatch(saveProjects(projects));
                 dispatch(setPanels(newPanels));
             }
         };

@@ -24,10 +24,10 @@ import { TokenPayload } from '../types/TokenPayload';
 import {
     tokenCookieName,
     tokenCookieOptions,
-    readToken,
 } from './../services/tokenService';
 import { selectUserSettings, updateUserSettings } from '../db/queries';
 import { isValidRegisterKey } from '../services/registerKeyService';
+import { checkToken } from '../middleware/checkToken';
 
 const userRouter = express.Router();
 
@@ -101,32 +101,22 @@ userRouter.post('/logout/', (req, res) =>
     res.cookie(tokenCookieName, '-', tokenCookieOptions).status(204).end()
 );
 
-userRouter.get(
-    '/',
-    expressAsyncHandler(async (req, res) => {
-        const payload = await readToken(req);
-        if (payload === null) {
-            res.status(401).send('No valid token on the request found');
-        } else {
-            const response = {
-                name: payload.userName,
-                id: payload.userID,
-            };
-            res.json(response);
-        }
-    })
-);
+userRouter.get('/', checkToken, (req, res) => {
+    const response = {
+        name: (req.token as TokenPayload).userName,
+        id: (req.token as TokenPayload).userID,
+    };
+    res.json(response);
+});
 
 userRouter.get(
     '/projects/',
+    checkToken,
     expressAsyncHandler(async (req, res) => {
         try {
-            const payload = await readToken(req);
-            if (payload === null) {
-                res.status(401).end();
-                return;
-            }
-            const response = await getProjects(payload.userID);
+            const response = await getProjects(
+                (req.token as TokenPayload).userID
+            );
             res.json(response).status(200);
             return;
         } catch (e) {
@@ -138,15 +128,14 @@ userRouter.get(
 
 userRouter.get(
     '/projects/:id',
+    checkToken,
     expressAsyncHandler(async (req, res) => {
         try {
-            const payload = await readToken(req);
-            if (payload === null) {
-                res.status(401).end();
-                return;
-            }
             const projectID = req.params.id;
-            const response = await getProject(payload.userID, projectID);
+            const response = await getProject(
+                (req.token as TokenPayload).userID,
+                projectID
+            );
             if (response.success) {
                 res.json(response.data).status(200);
                 return;
@@ -162,18 +151,14 @@ userRouter.get(
 
 userRouter.post(
     '/projects/new',
+    checkToken,
     expressAsyncHandler(async (req, res) => {
         try {
-            const payload = await readToken(req);
-            if (payload === null) {
-                res.status(401).end();
-                return;
-            }
             const info = projectRequestSchema.parse(
                 JSON.parse(req.body as string)
             );
             const id = await createProject(
-                payload.userID,
+                (req.token as TokenPayload).userID,
                 info.name,
                 info.json
             );
@@ -188,19 +173,15 @@ userRouter.post(
 
 userRouter.put(
     '/projects/:id',
+    checkToken,
     expressAsyncHandler(async (req, res) => {
         try {
-            const payload = await readToken(req);
-            if (payload === null) {
-                res.status(401).end();
-                return;
-            }
             const info = projectRequestSchema.parse(
                 JSON.parse(req.body as string)
             );
             const projectID = req.params.id;
             const response = await saveProject(
-                payload.userID,
+                (req.token as TokenPayload).userID,
                 projectID,
                 info.name,
                 info.json
@@ -220,15 +201,14 @@ userRouter.put(
 
 userRouter.delete(
     '/projects/:id',
+    checkToken,
     expressAsyncHandler(async (req, res) => {
         try {
-            const payload = await readToken(req);
-            if (payload === null) {
-                res.status(401).end();
-                return;
-            }
             const projectID = req.params.id;
-            const response = await removeProject(payload.userID, projectID);
+            const response = await removeProject(
+                (req.token as TokenPayload).userID,
+                projectID
+            );
             if (response) {
                 res.status(204).end();
                 return;
@@ -244,16 +224,13 @@ userRouter.delete(
 
 userRouter.get(
     '/settings/',
+    checkToken,
     expressAsyncHandler(async (req, res) => {
-        const payload = await readToken(req);
-        if (payload === null) {
-            res.status(401).send('No valid token on the request found');
-            return;
-        }
-
-        const data = await selectUserSettings(payload.userID);
+        const data = await selectUserSettings(
+            (req.token as TokenPayload).userID
+        );
         if (data === null) {
-            logger.warn('get_user_settings_missing', { payload });
+            logger.warn('get_user_settings_missing', { payload: req.token });
             res.status(404).send('No settings found');
         } else {
             const json = JSON.stringify(data);
@@ -264,13 +241,8 @@ userRouter.get(
 
 userRouter.put(
     '/settings/',
+    checkToken,
     expressAsyncHandler(async (req, res) => {
-        const payload = await readToken(req);
-        if (payload === null) {
-            res.status(401).send('No valid token on the request found');
-            return;
-        }
-
         try {
             const body_json = JSON.parse(req.body as string) as unknown;
             // we do not know what the data contains, use passthrough
@@ -278,10 +250,13 @@ userRouter.put(
                 .passthrough()
                 .parse(body_json);
 
-            await updateUserSettings(payload.userID, data);
+            await updateUserSettings((req.token as TokenPayload).userID, data);
             res.status(204).end();
         } catch (e) {
-            logger.error('update_user_settings_fail', { payload, error: e });
+            logger.error('update_user_settings_fail', {
+                payload: req.token,
+                error: e,
+            });
             res.status(400).send('Malformed body');
         }
     })

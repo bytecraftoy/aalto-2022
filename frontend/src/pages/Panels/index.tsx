@@ -2,6 +2,7 @@ import { ContentPanel } from '../../components/ContentPanel';
 import { useAppSelector } from '../../utils/hooks';
 import { ContentPanelType } from '../../utils/types';
 import { useParams } from 'react-router-dom';
+import { useLoginRedirect } from './../../utils/hooks';
 
 /**
  * Show's user the panel by the panel id
@@ -9,6 +10,9 @@ import { useParams } from 'react-router-dom';
  */
 
 export const Panels = () => {
+    // Redirect anonymous users from this page to the login page
+    useLoginRedirect();
+
     // Get all the panels of the user
     const panels = useAppSelector((state) => state.panels.value);
 
@@ -27,7 +31,7 @@ export const Panels = () => {
     }
 
     return (
-        <div className="App bg-neutral-99 h-full flex flex-col justify-start items-center">
+        <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
             <ContentPanel
                 key={panel.id}
                 id={panel.id}

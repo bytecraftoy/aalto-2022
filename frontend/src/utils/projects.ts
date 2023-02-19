@@ -1,5 +1,5 @@
 import { backendURL } from './backendURL';
-import { ContentPanelType } from './types';
+import { ContentPanelType, ProjectInfo } from './types';
 
 /**
  * Functions for querying the projects in backend
@@ -7,25 +7,25 @@ import { ContentPanelType } from './types';
 
 export const getProjects = async (
     panels: ContentPanelType[]
-): Promise<ContentPanelType[]> => {
+): Promise<[ContentPanelType[], ProjectInfo[]]> => {
     const response = await fetch(`${backendURL}/api/user/projects`, {
         method: 'GET',
         credentials: 'include',
     });
 
     // If the user is not logged in, return
-    if (response.status === 401) return panels;
+    if (response.status === 401) return [panels, []];
 
     // If the user is logged in, get the projects
-    const data = (await response.json()) as { id: string; name: string }[];
+    const projects = (await response.json()) as ProjectInfo[];
 
-    if (!data.length) return panels;
+    if (!projects.length) return [panels, []];
 
-    const projectID = data.find(
+    const projectID = projects.find(
         (project: { id: string; name: string }) => project.name === 'main'
     )?.id;
 
-    if (!projectID) return panels;
+    if (!projectID) return [panels, projects];
 
     const backednPanels = await fetch(
         `${backendURL}/api/user/projects/${projectID}`,
@@ -35,52 +35,65 @@ export const getProjects = async (
         }
     );
 
-    if (backednPanels.status === 401) return panels;
+    if (backednPanels.status === 401) return [panels, projects];
 
     const backendResponse = await backednPanels.json();
-    return backendResponse.data.panels as ContentPanelType[];
+    return [backendResponse.data.panels as ContentPanelType[], projects];
 };
 
 export const setProjects = async (
     panels: ContentPanelType[]
-): Promise<ContentPanelType[]> => {
+): Promise<[ContentPanelType[], ProjectInfo[]]> => {
     const response = await fetch(`${backendURL}/api/user/projects`, {
         method: 'GET',
         credentials: 'include',
     });
 
     // If the user is not logged in, return
-    if (response.status === 401) return panels;
+    if (response.status === 401) return [panels, []];
 
     // If the user is logged in, get the projects
-    const data = await response.json();
-
+    const projects = (await response.json()) as ProjectInfo[];
     // If the user has no projects, create a new one
-    if (!data.length) {
-        await newProject('main', panels);
-        return panels;
+    if (!projects.length) {
+        const id = await newProject('main', panels);
+
+        if (!id) return [panels, []];
+        // Id found, return the new panels and projects
+        return [panels, [{ id, name: 'main' }]];
     }
 
-    const projectID = data.find(
+    const projectID = projects.find(
         (project: { id: string; name: string }) => project.name === 'main'
     )?.id;
 
+    // If the user has no project named 'main', return panels and projects
+    if (!projectID) return [panels, projects];
+
+    // If the user has a project named 'main', save it and return the new panels
     const newPanels = await saveProject(projectID);
-    return newPanels;
+    return [newPanels, projects];
 };
 
 // Create a new project
-const newProject = async (name: string, panels: ContentPanelType[]) => {
+const newProject = async (
+    name: string,
+    panels: ContentPanelType[]
+): Promise<string | undefined> => {
     const project = {
         name,
         json: JSON.stringify({ panels }),
     };
 
-    await fetch(`${backendURL}/api/user/projects/new`, {
+    const res = await fetch(`${backendURL}/api/user/projects/new`, {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify(project),
     });
+
+    if (res.status === 401) return;
+    const id = await res.text();
+    return id;
 };
 
 // Save the project and return the new panels

@@ -80,8 +80,18 @@ jobs:
         if: ${{ failure() && github.ref == 'refs/heads/main' }}
         runs-on: ubuntu-latest
         steps:
-            - name: Alert on failed CI in main
-              uses: distributhor/workflow-webhook@6684d6301159d8c6e1c6527f78d4db9b5d8e5fed
+            - name: Dump GitHub context
+              run: echo $JSON
               env:
-                  webhook_url: ${{ secrets.WEBHOOK_URL }}
-                  data: '{"text":"Deployment failed!"}'
+                  JSON: ${{ toJSON(github) }}
+            - name: Alert on failed CI in main
+              uses: ravsamhq/notify-slack-action@v2
+              with:
+                  # explicit failure instead of ${{ job.status }} due to
+                  # different job (TODO: fix somehow? how about multiple dependencies?)
+                  status: 'failure'
+                  notification_title: '{workflow} has {status_message}'
+                  message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}@{branch}> on commit *${{ github.event.head_commit.message }}* <{commit_url}|{commit_sha}> by *${{ github.event.head_commit.author.name }}*'
+                  footer: 'Linked Repo <{repo_url}|{repo}>'
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}

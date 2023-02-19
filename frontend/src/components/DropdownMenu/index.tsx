@@ -12,11 +12,13 @@ interface DropdownMenuProps {
     setPopup: (b: boolean) => void;
 
     saveState: () => void;
+    openDrawer: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
     saveState,
     setPopup,
+    openDrawer,
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -58,6 +60,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             >
                 <MenuItem onClick={popup} message="Add Boxes" />
                 <MenuItem onClick={saveState} message="Save" />
+                <MenuItem onClick={() => openDrawer(true)} message="Settings" />
             </div>
         </div>
     );

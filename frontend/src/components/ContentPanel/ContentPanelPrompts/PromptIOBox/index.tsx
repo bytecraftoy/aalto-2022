@@ -89,7 +89,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 errors={errors}
             />
             <div
-                className="w-full flex flex-col items-center justify-between z-10 bg-primary-90"
+                className="w-full flex flex-col items-center justify-between z-10 bg-primary-90 rounded-t-lg"
                 data-testid="prompt"
             >
                 <TextArea

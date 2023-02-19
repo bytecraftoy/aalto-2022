@@ -12,7 +12,7 @@
         "test": "npm run test-pre && npm run test-run && npm run test-post",
         "tsc": "tsc",
         "dev": "run-p start-dev-database start-dev",
-        "lint": "eslint --ext .ts .",
+        "lint": "eslint --max-warnings=0 --ext .ts .",
         "build": "tsc",
         "start": "node build/index.js",
         "start-dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts",

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ContentPanelType } from '../utils/types';
 import { generate } from 'shortid';
 import { v4 as uuidv4 } from 'uuid';
+import { DEFAULT_PARAMETERS } from '../utils/types';
 
 /**
  * Redux slice for storing all the content panels of the application
@@ -24,6 +25,7 @@ const initialState: PanelState = {
             id: generate(),
             category: '',
             prompts: [{ id: uuidv4(), input: '', output: '', locked: false }],
+            parameters: DEFAULT_PARAMETERS,
         },
     ],
 };
@@ -51,12 +53,35 @@ export const panelSlice = createSlice({
                 prompts: [
                     { id: uuidv4(), input: '', output: '', locked: false },
                 ],
+                parameters: DEFAULT_PARAMETERS,
             };
             state.value.push(newPanel);
+        },
+        // Empties the reducer
+        clearPanels() {
+            return {
+                name: 'main',
+                value: [
+                    {
+                        id: generate(),
+                        category: '',
+                        prompts: [
+                            {
+                                id: uuidv4(),
+                                input: '',
+                                output: '',
+                                locked: false,
+                            },
+                        ],
+                        parameters: DEFAULT_PARAMETERS,
+                    },
+                ],
+            };
         },
     },
 });
 
-export const { setPanels, updatePanel, addPanel } = panelSlice.actions;
+export const { setPanels, updatePanel, addPanel, clearPanels } =
+    panelSlice.actions;
 
 export default panelSlice.reducer;
