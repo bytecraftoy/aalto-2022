@@ -13,6 +13,7 @@ import { ContentPanelActions } from './ContentPanelActions';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { usePanel } from './hooks';
+import { PopUpWindow } from './ContentPanelPrompts/PopUpWindow';
 import { ParameterDrawer } from '../ParameterDrawer';
 
 //Provide access to MasterCategory through a parent callback
@@ -35,6 +36,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         category,
         promptBoxes,
         loading,
+        popupOpen,
         setCategory,
         setPromptBoxes,
         generateAll,
@@ -44,6 +46,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         addPromptBox,
         addPromptBoxes,
         saveState,
+        setPopup,
     } = usePanel(initialPrompts, initialCategory, id);
 
     //Callback to export the category, and all inputs / outputs in json
@@ -80,9 +83,16 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                     <ContentPanelHeader
                         category={category}
                         setCategory={setCategory}
-                        addPromptBoxes={addPromptBoxes}
+                        setPopup={setPopup}
                         saveState={saveState}
                         setOpen={setOpen}
+                    />
+
+                    {/* Pop-up window used to add n boxes. Hidden by default*/}
+                    <PopUpWindow
+                        addPromptBoxes={addPromptBoxes}
+                        setPopup={setPopup}
+                        popupOpen={popupOpen}
                     />
 
                     {/* IO TExtfields: Prompts of the content panel */}
