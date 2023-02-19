@@ -11,7 +11,7 @@ Save a project for the first time.
 }
 ```
 
-Back-end does not care what the data is as long it is an object or an array and not null.
+Back-end requires the data to be an object but does not care what is inside it.
 
 ## Response
 

@@ -130,7 +130,7 @@ export const getProjectByName = async (
  * and for the list of user's projects.
  * Looks for existing projects in the database
  * and creates a new one if 'main' project is not found and write is true.
- * Never throws and error.
+ * Never throws an error.
  * Does not read or modify the redux store.
  * @param {ContentPanelType[]} panels Default panels to use if the user has no saved projects.
  * @param {boolean} write If true, add the default project to the database. Defaults to true.

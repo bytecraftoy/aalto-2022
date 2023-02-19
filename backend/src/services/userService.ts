@@ -58,9 +58,7 @@ const updateSettingsRequestSchema = z.object({});
 
 const projectRequestSchema = z.object({
     name: z.string(),
-    data: z.custom<object>(
-        (value) => typeof value === 'object' && value !== null
-    ),
+    data: z.object({}).passthrough(),
 });
 
 /**
