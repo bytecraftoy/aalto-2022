@@ -1,3 +1,7 @@
+/**
+ *
+ */
+
 import classNames from 'classnames';
 import {
     PlusIcon,

@@ -4,7 +4,6 @@ import { Surface } from '../Surface';
 import classNames from 'classnames';
 import { ParameterDrawer } from '../ParameterDrawer';
 
-
 /**
  * An about page explaining the usage of the application as well as
  * an input field for choosing a theme for the currently selected project
@@ -27,8 +26,6 @@ export const AboutPage = () => {
         saveState,
         setPopup,
     } = usePanel(initialPrompts, initialCategory, id);
-
-    
 
     //Callback to export the category, and all inputs / outputs in json
     const jsonExport = async () => {

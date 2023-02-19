@@ -67,7 +67,7 @@ export const LoginForm = () => {
             };
             // Sets the user in the store
             dispatch(logIn(acc));
-            // Senonets the project panels in the store
+            // Sets the project panels in the store
             const [backendPanels, projects] = await initializeUserProjects(
                 panels
             );

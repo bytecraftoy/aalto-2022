@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { PromptIOBox } from './PromptIOBox';
-import { PromptData } from './PromptIOBox';
 import { FAB } from '../../Buttons';
 import { useDebounce } from './hooks';
 
