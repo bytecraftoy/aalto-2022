@@ -36,7 +36,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
                     // Text styles
                     'font-sans text-base font-normal transition-colors',
                     //Color styles
-                    'bg-neutral-90 hover:bg-onSurface hover:bg-opacity-10 ',
+                    'bg-neutral-90 hover:bg-onSurface hover:bg-neutral-80 ',
                     // Borders
                     ' border-b border-onSurface focus:outline-none focus:border-b-2 focus:border-primary ',
                     //other
