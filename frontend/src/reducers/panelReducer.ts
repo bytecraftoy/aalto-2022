@@ -57,6 +57,12 @@ export const panelSlice = createSlice({
             };
             state.value.push(newPanel);
         },
+        // Remove a specific panel
+        removePanel(state, action: PayloadAction<ContentPanelType>) {
+            state.value = state.value.filter(
+                (panel) => panel.id !== action.payload.id
+            );
+        },
         // Empties the reducer
         clearPanels() {
             return {
@@ -81,7 +87,7 @@ export const panelSlice = createSlice({
     },
 });
 
-export const { setPanels, updatePanel, addPanel, clearPanels } =
+export const { setPanels, updatePanel, addPanel, removePanel, clearPanels } =
     panelSlice.actions;
 
 export default panelSlice.reducer;

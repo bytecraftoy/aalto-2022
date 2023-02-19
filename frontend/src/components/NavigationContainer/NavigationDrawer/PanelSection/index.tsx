@@ -1,10 +1,12 @@
 import React from 'react';
 import { NavigationSubHeader } from '../NavigationSubHeader';
-import { TextButton } from '../../../Buttons';
+import { TextButton, IconButton } from '../../../Buttons';
 import { NavigationLink } from '../NavigationLink';
 import { solidIcon } from '../../../../utils/icons';
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks';
-import { addPanel } from '../../../../reducers/panelReducer';
+import { addPanel, removePanel } from '../../../../reducers/panelReducer';
+import { ContentPanelType } from '../../../../utils/types';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 /**
  * Content panels part of the navigation drawer
@@ -15,14 +17,28 @@ export const PanelSection = () => {
     // Redux dispatch
     const dispatch = useAppDispatch();
 
-    // All the panel ids of the application
-    const panelIds = useAppSelector((state) =>
-        state.panels.value.map((panel) => panel.id)
-    );
+    // Current location and navigation
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    // All the panels of the application
+    const panels = useAppSelector((state) => state.panels.value);
 
     // Add new content panel to the application
     const newPanel = () => {
         dispatch(addPanel());
+    };
+
+    // Delete a content panel from the application
+    const deletePanel = (panel: ContentPanelType) => {
+        //TODO: ask for confirmation if the panel isn't empty
+
+        dispatch(removePanel(panel));
+
+        // Redirect to another panel if we deleted the panel we were currently on
+        if (location.pathname === `/panels/${panel.id}`) {
+            navigate('/');
+        }
     };
 
     return (
@@ -31,26 +47,33 @@ export const PanelSection = () => {
             <NavigationSubHeader>Content Panels</NavigationSubHeader>
 
             {/** The panels */}
-            {panelIds.map((panelId, index) => {
-                if (!index) {
-                    return (
+            {panels.map((panel, index) => {
+                const url = `/panels/${panel.id}`;
+                const name = panel.category || `Panel-${index + 1}`;
+
+                return (
+                    <div
+                        key={panel.id}
+                        className="w-full h-14 flex flex-row justify-between items-center group"
+                    >
                         <NavigationLink
-                            key={panelId}
-                            label="Main"
-                            to="/"
+                            key={panel.id}
+                            label={name}
+                            to={url}
                             icon={solidIcon('CubeIcon')}
                         />
-                    );
-                } else {
-                    return (
-                        <NavigationLink
-                            key={panelId}
-                            label={`Panel-${index + 1}`}
-                            to={`/panels/${panelId}`}
-                            icon={solidIcon('CubeIcon')}
-                        />
-                    );
-                }
+
+                        {/* Button to delete panels. Do not include if there is only one panel */}
+                        {panels.length > 1 && (
+                            <IconButton
+                                icon="XMarkIcon"
+                                colorPalette="primary"
+                                onClick={() => deletePanel(panel)}
+                                className="opacity-0 group-hover:opacity-100"
+                            />
+                        )}
+                    </div>
+                );
             })}
 
             {/** Adding new panels */}
@@ -59,13 +82,10 @@ export const PanelSection = () => {
                     name="Add Panel"
                     colorPalette="primary"
                     icon="PlusIcon"
-                    className="w-full h-full justify-center m-0"
+                    className="w-full justify-center m-0 h-14"
                     onClick={newPanel}
                 />
             </div>
-
-            {/** Divider */}
-            <div className="h-[1px] bg-neutral-70 mx-4" />
         </React.Fragment>
     );
 };

@@ -50,6 +50,20 @@ export const bgHover = (c: Palette) => {
     }
 };
 
+/** Lighter hover color for the container of this palette */
+export const bgLightHover = (c: Palette) => {
+    switch (c) {
+        case 'primary':
+            return 'hover:bg-primary-90';
+        case 'secondary':
+            return 'hover:bg-secondary-90';
+        case 'tertiary':
+            return 'hover:bg-tertiary-90';
+        case 'red':
+            return 'hover:bg-red-90';
+    }
+};
+
 /** Active color for the container of this palette */
 export const bgActive = (c: Palette) => {
     switch (c) {
@@ -61,6 +75,20 @@ export const bgActive = (c: Palette) => {
             return 'active:bg-tertiary-20';
         case 'red':
             return 'active:bg-red-20';
+    }
+};
+
+/** Lighter active color for the container of this palette */
+export const bgLightActive = (c: Palette) => {
+    switch (c) {
+        case 'primary':
+            return 'active:bg-primary-80';
+        case 'secondary':
+            return 'active:bg-secondary-80';
+        case 'tertiary':
+            return 'active:bg-tertiary-80';
+        case 'red':
+            return 'active:bg-red-80';
     }
 };
 
