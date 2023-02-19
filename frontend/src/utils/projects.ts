@@ -147,9 +147,9 @@ export const initializeUserProjects = async (
 
     if (projectsRes.projects.length === 0) {
         if (write) {
-            //the user has now projects so create a new one
+            //the user has no projects so create a new one
             const name = 'main';
-            const saveRes = await saveNewProject({ name, data: { panels } });
+            const saveRes = await saveNewProject({ name, data: { theme: '', panels: panels } });
             if (saveRes.success) return [panels, [{ id: saveRes.id, name }]];
             //an unrecoverable error
         }

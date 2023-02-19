@@ -32,6 +32,7 @@ export interface ContentPanelType {
 export interface Project {
     name: string;
     data: {
+        theme: string;
         panels: ContentPanelType[];
     };
 }
