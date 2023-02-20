@@ -1,12 +1,6 @@
 import { apiFetch } from './apiFetch';
 import { backendURL } from './backendURL';
-import {
-    ContentPanelData,
-    Project,
-    ExcelFormat,
-    ExcelPanel,
-    ExcelBox,
-} from './types';
+import { ContentPanelData, Project, ExcelFormat, ExcelPanel } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
