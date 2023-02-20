@@ -30,6 +30,32 @@ export interface ApiResponse {
 }
 
 /**
+ * Box format as specified for Excel in the documentation
+ */
+export interface ExcelBox {
+    id: string;
+    input: string;
+    output: string;
+}
+
+/**
+ * Panel format as specified for Excel in the documentation
+ */
+export interface ExcelPanel {
+    category: string;
+    panels: ExcelPanel[];
+    boxes: ExcelBox[];
+}
+
+/**
+ * Excel export format as specified in the documentation
+ */
+export interface ExcelFormat {
+    theme: string;
+    panels: ExcelPanel[];
+}
+
+/**
  * A theme for a project, defining the overall style of the project and global parameters that
  * are used by default unless overridden by a ContentPanel
  */

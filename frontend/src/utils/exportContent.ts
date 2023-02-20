@@ -1,6 +1,12 @@
 import { apiFetch } from './apiFetch';
 import { backendURL } from './backendURL';
-import { ContentPanelData, Project } from './types';
+import {
+    ContentPanelData,
+    Project,
+    ExcelFormat,
+    ExcelPanel,
+    ExcelBox,
+} from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
@@ -38,10 +44,32 @@ const downloadJson = (link: string) => {
 const exportXlsx = async (data: ContentPanelData | Project) => {
     const fileid = uuidv4();
 
+    // Conform the data to the format required by the Excel export api
+
+    // Runtime check for type
+    const proj = data as Project;
+    const isProject = proj.data !== undefined;
+
+    // Map a ContentPanel to an equivalent ExcelPanel
+    const mapPanel = (p: ContentPanelData): ExcelPanel => {
+        return {
+            category: p.category,
+            panels: [],
+            boxes: p.prompts,
+        };
+    };
+
+    const obj: ExcelFormat = {
+        theme: isProject ? proj.data.theme.name : '',
+        panels: isProject
+            ? proj.data.panels.map(mapPanel)
+            : [mapPanel(data as ContentPanelData)],
+    };
+
     try {
         const response = await apiFetch(`/api/export/xlsx/${fileid}.xlsx`, {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(obj),
         });
         return response;
     } catch (e) {
