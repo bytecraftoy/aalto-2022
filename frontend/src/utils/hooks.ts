@@ -123,8 +123,8 @@ export const useLogin = () => {
     return async (acc: Account) => {
         dispatch(logIn(acc));
         const [project, projects] = await initializeUserProjects();
-        importProject(project);
         dispatch(setProjects(projects));
+        importProject(project);
     };
 };
 
@@ -135,7 +135,7 @@ export const useLogin = () => {
 export const useLogout = () => {
     const dispatch = useAppDispatch();
     const clearData = useClearData();
-    return () => {
+    return async () => {
         dispatch(logOut());
         clearData();
     };

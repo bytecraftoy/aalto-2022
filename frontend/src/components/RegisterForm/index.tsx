@@ -66,7 +66,7 @@ export const RegisterForm = () => {
             };
 
             // Initiate a login on the frontend
-            login(acc);
+            await login(acc);
 
             navigate('/');
         } else {

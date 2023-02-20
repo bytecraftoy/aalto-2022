@@ -24,7 +24,7 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
         });
 
         // Cause a logout on the frontend
-        logout();
+        await logout();
     }
 
     // Logs in after refresh
@@ -44,7 +44,7 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
                 };
 
                 // Initiate a login for this account
-                login(acc);
+                await login(acc);
             }
         };
 

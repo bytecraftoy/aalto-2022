@@ -86,7 +86,6 @@ export const usePanel = (
             // the project should not be chosen by name, etc.
 
             // Workaround, get first project since we only have one at this point
-            console.log(projects.length);
             const projectId = projects[0].id;
 
             /* Old code commented out before a solution is discussed:

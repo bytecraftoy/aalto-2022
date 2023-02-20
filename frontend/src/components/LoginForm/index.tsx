@@ -60,7 +60,7 @@ export const LoginForm = () => {
             };
 
             // Initiate a login on the frontend
-            login(acc);
+            await login(acc);
 
             // Navigates to the project main panel
             navigate('/');

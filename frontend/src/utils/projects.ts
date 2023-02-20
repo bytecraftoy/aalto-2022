@@ -82,8 +82,6 @@ export const saveNewProject = async (
 ): Promise<
     { success: true; id: string } | { success: false; error: Error }
 > => {
-    console.log('try save');
-
     try {
         const id = await apiFetch('/api/user/projects/new', {
             method: 'POST',
