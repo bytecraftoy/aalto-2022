@@ -1,14 +1,13 @@
-import { FC } from 'react';
-import { StateHook } from '../../../../utils/types';
+import React from 'react';
 import { CustomInput } from '../../../Inputs';
 
 interface PromptCategoryBoxProps {
     category: string;
-    setCategory: StateHook<string>;
+    setCategory: (s: string) => void;
 }
 
 /** Component exposing a textfield for editing a panel category */
-export const PromptCategoryBox: FC<PromptCategoryBoxProps> = ({
+export const PromptCategoryBox: React.FC<PromptCategoryBoxProps> = ({
     category,
     setCategory,
 }) => {

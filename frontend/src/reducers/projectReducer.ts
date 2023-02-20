@@ -22,12 +22,20 @@ export const projectSlice = createSlice({
     name: 'projects',
     initialState,
     reducers: {
-        saveProjects: (state, action: PayloadAction<ProjectInfo[]>) => {
+        // Sets the list of project ids
+        setProjects: (state, action: PayloadAction<ProjectInfo[]>) => {
             state.value = action.payload;
+        },
+        // Empties the reducer
+        clearProjects() {
+            return {
+                name: 'main',
+                value: [],
+            };
         },
     },
 });
 
-export const { saveProjects } = projectSlice.actions;
+export const { setProjects, clearProjects } = projectSlice.actions;
 
 export default projectSlice.reducer;

@@ -1,7 +1,7 @@
 import { apiFetchJSON } from './apiFetch';
 import { ApiRequest, ApiResponse, Parameters } from './types';
 
-type generateTextProps = {
+export type generateTextProps = {
     id: string;
     input: string;
     category: string;
@@ -17,7 +17,10 @@ const generateText = async ({
     category,
     parameters,
 }: generateTextProps) => {
-    //Simulate delay for now
+    //Simulate delay for dev mode
+    if (process.env.NODE_ENV === 'development') {
+        await new Promise((r) => setTimeout(r, 800));
+    }
 
     const req: ApiRequest = {
         id: id,
@@ -25,8 +28,6 @@ const generateText = async ({
         prompt: input,
         parameters,
     };
-
-    await new Promise((r) => setTimeout(r, 800));
 
     try {
         const response = (await apiFetchJSON('/api/textgen', {
@@ -36,7 +37,7 @@ const generateText = async ({
         return response.result;
     } catch (e) {
         console.error(e);
-        return 'Text generation failed';
+        return `Text generation failed: ${e}`;
     }
 };
 

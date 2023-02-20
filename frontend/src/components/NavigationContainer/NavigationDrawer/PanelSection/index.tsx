@@ -5,7 +5,7 @@ import { NavigationLink } from '../NavigationLink';
 import { solidIcon } from '../../../../utils/icons';
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks';
 import { addPanel, removePanel } from '../../../../reducers/panelReducer';
-import { ContentPanelType } from '../../../../utils/types';
+import { ContentPanelData } from '../../../../utils/types';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 /**
@@ -30,7 +30,7 @@ export const PanelSection = () => {
     };
 
     // Delete a content panel from the application
-    const deletePanel = (panel: ContentPanelType) => {
+    const deletePanel = (panel: ContentPanelData) => {
         //TODO: ask for confirmation if the panel isn't empty
 
         dispatch(removePanel(panel));
