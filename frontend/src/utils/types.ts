@@ -12,7 +12,7 @@ import { z } from 'zod';
 //////////////////////////////////
 
 /**
- * ApiRequest and ApiResponse types taken from backend
+ * ApiRequest to the backend
  */
 export interface ApiRequest {
     contexts: string[];
@@ -21,6 +21,9 @@ export interface ApiRequest {
     parameters: Parameters;
 }
 
+/**
+ * ApiResponse from backend
+ */
 export interface ApiResponse {
     result: string;
     id: string;
@@ -70,33 +73,27 @@ export interface Project {
     };
 }
 
-/**
- * An account is used for registering and logging in users
- */
 export const AccountSchema = z.object({
     username: z.string(),
     id: z.string(),
 });
 
+/**
+ * An account is used for registering and logging in users
+ */
 export type Account = z.infer<typeof AccountSchema>;
 
-/**
- * ProjectInfo contains the header data of a project, and can be
- * used to fetch the full project from a database
- */
 export const ProjectInfoSchema = z.object({
     id: z.string(),
     name: z.string(),
 });
 
+/**
+ * ProjectInfo contains the header data of a project, and can be
+ * used to fetch the full project from a database
+ */
 export type ProjectInfo = z.infer<typeof ProjectInfoSchema>;
 
-/**
- * Parameters control the details of the AI generation, from a high level perspective.
- * The underlying interpretation of each parameter can be AI specific, and may influence
- * multiple aspects of the AI in a complex way. This is generally hidden from the user and is handled
- * by the backend.
- */
 export const ParametersSchema = z.object({
     creativity: z.number().min(0).max(1),
     quality: z.number().min(0).max(9),
@@ -104,6 +101,12 @@ export const ParametersSchema = z.object({
     outputLength: z.number().min(0).max(1),
 });
 
+/**
+ * Parameters control the details of the AI generation, from a high level perspective.
+ * The underlying interpretation of each parameter can be AI specific, and may influence
+ * multiple aspects of the AI in a complex way. This is generally hidden from the user and is handled
+ * by the backend.
+ */
 export type Parameters = z.infer<typeof ParametersSchema>;
 
 //////////////////////////////////

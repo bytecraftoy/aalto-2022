@@ -1,11 +1,18 @@
-// The main idea behind defining these color palettes is to abstract away
-// from knowing individual material design colors. Right now, the system
-// is a bit lacking, but hopefully this can also be expanded to handle
-// light/night mode etc.
+/**
+ * This file defines color palettes that abstract away
+ * from components having to reimplement common material design colors.
+ * This makes it simple to create components supporting multiple variations
+ * of colors, as well as light/dark mode in the future
+ *
+ * Currently color palettes are mainly adopted for buttons
+ */
 
-// => Components implement less conditional styles themselves for the basic stuff
-
-/** Color palette defining multiple colors based on Material design */
+/**
+ * Color palette defining multiple matching colors based on Material design
+ * These are designed to work together when the palette is the same, i.e.
+ *
+ * primary bg and primary textOnBg
+ */
 export type Palette = 'primary' | 'secondary' | 'tertiary' | 'red';
 
 /** Background color for this palette */

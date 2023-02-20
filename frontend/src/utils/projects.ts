@@ -2,7 +2,7 @@ import { apiFetch, apiFetchJSON } from './apiFetch';
 import { Project, ProjectInfo, createEmptyProject } from './types';
 
 /**
- * Utility for fetching and saving projects to the database and
+ * Utilities for fetching and saving projects to the database and
  * initializing projects for the application
  */
 
@@ -82,6 +82,8 @@ export const saveNewProject = async (
 ): Promise<
     { success: true; id: string } | { success: false; error: Error }
 > => {
+    console.log('try save');
+
     try {
         const id = await apiFetch('/api/user/projects/new', {
             method: 'POST',

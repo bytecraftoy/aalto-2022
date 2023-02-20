@@ -1,7 +1,5 @@
 import { ContentPanel } from '../../components/ContentPanel';
-import { useAppSelector } from '../../utils/hooks';
-import { ContentPanelType } from '../../utils/types';
-import { useLoginRedirect } from './../../utils/hooks';
+import { useAppSelector, useLoginRedirect } from '../../utils/hooks';
 
 /**
  * Home page of the application
@@ -16,7 +14,7 @@ export const Home = () => {
     const panels = useAppSelector((state) => state.panels.value);
 
     // Home takes the first panel in the list
-    const panel: ContentPanelType = panels[0];
+    const panel = panels[0];
 
     return (
         <div className="App flex-1 bg-neutral-99 h-full flex flex-col justify-start items-center">

@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
-import { PromptData } from './ContentPanelPrompts/PromptIOBox';
-import { v4 as uuidv4 } from 'uuid';
 import { generateText } from '../../utils/generateContent';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { updatePanel } from '../../reducers/panelReducer';
-import { generatePrompts } from './promptUtil';
+import { generatePrompts, generatePromptProps } from './promptUtil';
 import { EventBus } from '../../utils/eventBus';
 import {
-    ContentPanelType,
+    PromptData,
     Parameters,
-    DEFAULT_PARAMETERS,
+    ContentPanelData,
+    createEmptyPrompt,
 } from '../../utils/types';
-import { getProjectIdByName, saveProject } from './../../utils/projects';
+import { getProject, saveProject } from './../../utils/projects';
 
 /**
  * Custom hook which return prompts, category and loading information + all the action functions related to prompts and category
@@ -27,23 +26,24 @@ export const usePanel = (
     id: string
 ) => {
     const dispatch = useAppDispatch();
+    const theme = useAppSelector((state) => state.theme.value);
     const logged = useAppSelector((state) => state.user.logged);
     const panels = useAppSelector((state) => state.panels.value);
+    const projects = useAppSelector((state) => state.projects.value);
 
     const [promptBoxes, setPromptBoxes] =
         useState<PromptData[]>(initialPrompts);
     const [category, setCategory] = useState<string>(initialCategory);
-    const [parameters, setParameters] =
-        useState<Parameters>(DEFAULT_PARAMETERS);
+    const [parameters, setParameters] = useState<Parameters>(
+        theme.globalParameters
+    );
 
     const [loading, setLoading] = useState<boolean>(false);
-
     const [popupOpen, setPopup] = useState<boolean>(false);
 
     //Callback to create new boxes in the panel
     const addPromptBox = () => {
-        const newBox = { id: uuidv4(), input: '', output: '', locked: false };
-        setPromptBoxes((prev) => [...prev, newBox]);
+        setPromptBoxes((prev) => [...prev, createEmptyPrompt()]);
     };
 
     //Callback to create multiple boxes
@@ -63,7 +63,7 @@ export const usePanel = (
             prompts: promptBoxes,
             category,
             parameters,
-        } as Omit<ContentPanelType, 'id'>);
+        } as generatePromptProps);
 
         // Sets all the promptboxes in a 1 setState call.
         setPromptBoxes((prev) =>
@@ -79,23 +79,36 @@ export const usePanel = (
     };
 
     // Get the main project from database and updates it
-    const updateDatabase = async (panel: ContentPanelType) => {
+    const updateDatabase = async (panel: ContentPanelData) => {
         if (logged) {
-            const mainProject = await getProjectIdByName('main');
+            // TODO: the current project id we are working should be clearly
+            // dictated somewhere in the redux store
+            // the project should not be chosen by name, etc.
+
+            // Workaround, get first project since we only have one at this point
+            console.log(projects.length);
+            const projectId = projects[0].id;
+
+            /* Old code commented out before a solution is discussed:
+             *
+             * It's bad to rely on some named project, because the user
+             * should be able to rename any projects
+             *
+             * const mainProject = await getProjectIdByName('main');
+             * if (!mainProject.success) return;
+             */
+
+            const mainProject = await getProject(projectId);
             if (!mainProject.success) return;
 
             // Current state of the panels
-            const updatedPanels = panels.map((p: ContentPanelType) => {
+            const updatedPanels = panels.map((p: ContentPanelData) => {
                 if (p.id === panel.id) return panel;
                 return p;
             });
 
-            const project = {
-                name: 'main',
-                data: { panels: updatedPanels },
-            };
-
-            await saveProject(mainProject.id, project);
+            mainProject.project.data.panels = updatedPanels;
+            await saveProject(projectId, mainProject.project);
         }
     };
 
@@ -104,7 +117,7 @@ export const usePanel = (
      */
     const saveState = async () => {
         // Create the new panel object
-        const panel: ContentPanelType = {
+        const panel: ContentPanelData = {
             id,
             category,
             prompts: promptBoxes,

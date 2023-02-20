@@ -1,24 +1,19 @@
 import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../utils/hooks';
+import { useLogin, useLogout } from '../../utils/hooks';
 import { EventBus } from '../../utils/eventBus';
 import { backendURL } from '../../utils/backendURL';
-import { logOut, logIn } from '../../reducers/userReducer';
 import { Account } from '../../utils/types';
-import { initializeUserProjects } from '../../utils/projects';
-import { setPanels, clearPanels } from '../../reducers/panelReducer';
-import { saveProjects } from '../../reducers/projectReducer';
-
-/**
- * Wrapped component for logging out of the user from the application.
- */
 
 interface ContainerProps {
     children: React.ReactNode;
 }
 
+/**
+ * Wrapped component for logging the user out of the application.
+ */
 export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
-    const dispatch = useAppDispatch();
-    const panels = useAppSelector((state) => state.panels.value);
+    const login = useLogin();
+    const logout = useLogout();
 
     // Function for log out, i.e., emptying the cookies.
     async function onCustomEvent() {
@@ -28,9 +23,8 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
             credentials: 'include',
         });
 
-        // Empty user logged in state from redux store
-        dispatch(logOut());
-        dispatch(clearPanels());
+        // Cause a logout on the frontend
+        logout();
     }
 
     // Logs in after refresh
@@ -48,20 +42,16 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
                     username: body.name,
                     id: body.id,
                 };
-                dispatch(logIn(acc));
-                const [newPanels, projects] = await initializeUserProjects(
-                    panels,
-                    false
-                );
-                dispatch(saveProjects(projects));
-                dispatch(setPanels(newPanels));
+
+                // Initiate a login for this account
+                login(acc);
             }
         };
 
         fetchData();
     }, []);
 
-    // Adds event listener for logout events and logouts user when the evne tis fired
+    // Adds event listener for logout events and logouts user when the event is fired
     useEffect(() => {
         EventBus.on('logout', onCustomEvent);
 

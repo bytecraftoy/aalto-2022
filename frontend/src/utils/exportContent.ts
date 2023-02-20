@@ -1,23 +1,21 @@
 import { apiFetch } from './apiFetch';
 import { backendURL } from './backendURL';
-import { PromptData } from '../components/ContentPanel/ContentPanelPrompts/PromptIOBox';
+import { ContentPanelData, Project } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
- * Send AI generated data to the backend in JSON format.
+ * Send data to the backend in JSON format. This can be an individual panel
+ * or a project containing all panels.
+ *
  * Returns an identifier used to retrieve the exported file
  */
-const exportJson = async (category: string, boxes: PromptData[]) => {
+const exportJson = async (data: ContentPanelData | Project) => {
     const fileid = uuidv4();
-    const obj = {
-        category: category,
-        prompts: boxes,
-    };
 
     try {
         const response = await apiFetch(`/api/export/json/${fileid}.json`, {
             method: 'POST',
-            body: JSON.stringify(obj),
+            body: JSON.stringify(data),
         });
         return response;
     } catch (e) {
@@ -26,30 +24,24 @@ const exportJson = async (category: string, boxes: PromptData[]) => {
     }
 };
 
+/**
+ * Initiate a download for an exported json file
+ */
 const downloadJson = (link: string) => {
     window.open(`${backendURL}/api/export/json/${link}`, '_blank');
 };
 
 /**
- * Excel export functions for a single panel,
+ * Export data in Excel format. This can be an individual panel or a
+ * project containing all panels
  */
-const exportXlsx = async (category: string, boxes: PromptData[]) => {
+const exportXlsx = async (data: ContentPanelData | Project) => {
     const fileid = uuidv4();
-    const obj = {
-        theme: '',
-        panels: [
-            {
-                category: category,
-                panels: [],
-                boxes: boxes,
-            },
-        ],
-    };
 
     try {
         const response = await apiFetch(`/api/export/xlsx/${fileid}.xlsx`, {
             method: 'POST',
-            body: JSON.stringify(obj),
+            body: JSON.stringify(data),
         });
         return response;
     } catch (e) {
@@ -58,6 +50,9 @@ const exportXlsx = async (category: string, boxes: PromptData[]) => {
     }
 };
 
+/**
+ * Initiate a download for an exported Excel file
+ */
 const downloadXlsx = (link: string) => {
     window.open(`${backendURL}/api/export/xlsx/${link}`, '_blank');
 };
