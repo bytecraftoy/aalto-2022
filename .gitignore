@@ -7,3 +7,4 @@ cypress/videos
 .env
 backend/files/timestamp-commit
 cypress/screenshots
+backend/coverage
