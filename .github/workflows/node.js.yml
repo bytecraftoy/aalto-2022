@@ -121,7 +121,7 @@ jobs:
 
     alert:
         environment: main
-        needs: [check, test]
+        needs: [check, build, unit-test, cypress]
         if: ${{ failure() && github.ref == 'refs/heads/main' }}
         runs-on: ubuntu-latest
         steps:
