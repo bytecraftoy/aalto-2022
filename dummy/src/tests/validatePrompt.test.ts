@@ -50,7 +50,7 @@ describe('prompt validation', () => {
             "max_tokens": 2000.0,
             "top_p": 1.0,
             "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
             "best_of": 1
         }`)
         ).toBe('max_tokens is not an integer');
@@ -62,7 +62,7 @@ describe('prompt validation', () => {
             "max_tokens": 2000,
             "top_p": 1.0,
             "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
             "best_of": 1
         }`)
         ).toBe('model is not recognized. Valid models: text-davinci-002');
@@ -74,7 +74,7 @@ describe('prompt validation', () => {
             "max_tokens": 2000,
             "top_p": 1.0,
             "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
             "best_of": 1
         }`)
         ).toBe('prompt is not a non-empty string');
@@ -87,7 +87,7 @@ describe('prompt validation', () => {
             "top_p": 1.0,
             "frequency_penalty": 0.52,
             "presence_penalty": 0.5,
-            "top_p": 1.0
+            "top_p": 1.0,
             "best_of": 1
         }`)
         ).toBe('duplicate fields detected');
@@ -99,7 +99,7 @@ describe('prompt validation', () => {
             "max_tokens": 255,
             "top_p": 1.0,
             "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
             "best_of": 1
         }`)
         ).toBe('max_tokens is not a number between 256 and 4000');
@@ -111,7 +111,7 @@ describe('prompt validation', () => {
             "max_tokens": 2000,
             "top_p": 1.0,
             "frequency_penalty": 1.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
             "best_of": 1
         }`)
         ).toBe('frequency_penalty is not a number between 0 and 1');
@@ -124,7 +124,7 @@ describe('prompt validation', () => {
             "top_p": 1.0,
             "frequency_penalty": 0.52,
             "presence_penalty": 0.5,
-            "extra_property": 0.5
+            "extra_property": 0.5,
             "best_of": 1
         }`)
         ).toBe('too many properties');
