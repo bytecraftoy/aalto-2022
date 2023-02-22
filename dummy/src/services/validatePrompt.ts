@@ -94,7 +94,7 @@ const validateProperties = (obj: Prompt): void => {
         throw new ValidationError(
             'presence_penalty is not a number between 0 and 1'
         );
-    else if (typeof obj.best_of !== 'number' || obj.best_of > 0)
+    else if (typeof obj.best_of !== 'number' || obj.best_of < 0)
         throw new ValidationError('best_of is not a positive integer');
     else if (Object.keys(obj).length !== 8)
         throw new ValidationError('too many properties');
