@@ -36,6 +36,44 @@ const correctPropertiesExist = (json: ApiRequest) => {
 };
 
 /**
+ * Function making sure the customizationparameters have correct and valid values
+ * creativity: float: 0-1
+ * quality: int: 1-9
+ * inputLength: int: 1024-8000
+ * outputLength: int: 1-5
+ *
+ * @param {ApiRequest} json
+ * @returns
+ */
+const parametersHaveValidValues = (json: ApiRequest) => {
+    try {
+        const creativityCorrect = json.creativity >= 0 && json.creativity <= 1;
+        const qualityCorrect =
+            Number.isInteger(json.quality) &&
+            json.quality >= 1 &&
+            json.quality <= 9;
+        const inputLengthCorrect =
+            Number.isInteger(json.inputLength) &&
+            json.inputLength >= 1024 &&
+            json.inputLength <= 8000;
+        const outputLengthCorrect =
+            Number.isInteger(json.outputLength) &&
+            json.outputLength >= 1 &&
+            json.outputLength <= 5;
+        return (
+            creativityCorrect &&
+            qualityCorrect &&
+            inputLengthCorrect &&
+            outputLengthCorrect
+        );
+    } catch (e) {
+        throw new ValidationError(
+            'One or more customizationparameter has invalid value'
+        );
+    }
+};
+
+/**
  * Backend level validation.
  * Checks that body is json, and
  * contains the necessary fields for an ApiRequest
@@ -52,6 +90,12 @@ const validateApiRequest = async (body: string): Promise<ApiRequest> => {
     if (!correctPropertiesExist(obj)) {
         throw new ValidationError(
             'Request does not contain all required properties'
+        );
+    }
+
+    if (!parametersHaveValidValues(obj)) {
+        throw new ValidationError(
+            'One or more customizationparameter has invalid value'
         );
     }
 
