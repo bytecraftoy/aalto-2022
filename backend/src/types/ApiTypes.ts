@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const ParametersSchema = z.object({
     creativity: z.number().min(0).max(1),
     quality: z.number().int().min(1).max(9),
-    inputLength: z.number().min(1024).max(8000),
+    inputLength: z.number().int().min(1024).max(8000),
     outputLength: z.number().int().min(0).max(5),
 });
 
