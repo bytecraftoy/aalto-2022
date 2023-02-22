@@ -23,7 +23,9 @@ const defaultPreset: Preset = {
  * AI parameters taken from some preset.
  */
 export const createPrompt = (
-    contexts: string[],
+    //the current implementation requires there to be exactly 2 contexts:
+    //the theme and the category
+    contexts: [string, string],
     text: string,
     preset = ''
 ): Prompt => {
@@ -34,7 +36,8 @@ export const createPrompt = (
     //Gpt3 works with prompts that are formatted such as
     //Theme: Medieval fantasy\nBackstory of a knight with black armor and a magic sword:
 
-    const theme = contexts.length ? `Theme: ${contexts[0]}\n` : '';
-    result.prompt = `${theme}${text}:`;
+    const theme = contexts[0];
+    const category = contexts[1];
+    result.prompt = `Write a game flavor text for ${text} which is a ${category} in a ${theme} setting`;
     return result;
 };

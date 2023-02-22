@@ -1,6 +1,7 @@
 describe('Prompt generation', () => {
     // The output_locator, category_input, and prompt_input variables are used to target specific elements on the page.
     const output_locator = 'textarea[placeholder*="AI generated content"]';
+    const theme_input = 'Sci-fi';
     const category_input = 'category input from cypress';
     const prompt_input = 'prompt input from cypress';
 
@@ -113,7 +114,7 @@ describe('Prompt generation', () => {
         cy.wait(100);
         cy.get(output_locator).should(
             'include.text',
-            `Theme: ${category_input}\\n${prompt_input}`
+            `Write a game flavor text for ${prompt_input} which is a ${category_input} in a ${theme_input} setting`
         );
     });
 
@@ -155,7 +156,7 @@ describe('Prompt generation', () => {
                 // Asserts that each output text area includes the input category and prompt
                 cy.wrap(el).should(
                     'include.text',
-                    `Theme: ${category_input}\\n${prompt_input} ${index}`
+                    `Write a game flavor text for ${prompt_input} ${index} which is a ${category_input} in a ${theme_input} setting`
                 );
             });
         }
