@@ -9,13 +9,16 @@ import { MenuItem } from './MenuItem';
  */
 
 interface DropdownMenuProps {
-    addPromptBoxes: (n: number) => void;
+    setPopup: (b: boolean) => void;
+
     saveState: () => void;
+    openDrawer: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
-    addPromptBoxes,
     saveState,
+    setPopup,
+    openDrawer,
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -37,9 +40,8 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         };
     }, []);
 
-    // Adds multiple I/O boxes
-    const addBoxes = (number: number) => {
-        addPromptBoxes(number);
+    const popup = () => {
+        setPopup(true);
         setOpen(false);
     };
 
@@ -56,9 +58,9 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
                     { hidden: !open }
                 )}
             >
-                <MenuItem onClick={() => addBoxes(5)} message="Add 5" />
-                <MenuItem onClick={() => addBoxes(10)} message="Add 10" />
+                <MenuItem onClick={popup} message="Add Boxes" />
                 <MenuItem onClick={saveState} message="Save" />
+                <MenuItem onClick={() => openDrawer(true)} message="Settings" />
             </div>
         </div>
     );

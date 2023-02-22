@@ -1,18 +1,20 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import {
     exportJson,
     downloadJson,
     exportXlsx,
     downloadXlsx,
 } from '../../utils/exportContent';
-import { PromptData } from './ContentPanelPrompts/PromptIOBox';
 import { Surface } from '../Surface';
+import { PromptData, ContentPanelData } from '../../utils/types';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
 import { ContentPanelActions } from './ContentPanelActions';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { usePanel } from './hooks';
+import { PopUpWindow } from './ContentPanelPrompts/PopUpWindow';
+import { ParameterDrawer } from '../ParameterDrawer';
 
 //Provide access to MasterCategory through a parent callback
 interface ContentPanelProps {
@@ -34,6 +36,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         category,
         promptBoxes,
         loading,
+        popupOpen,
         setCategory,
         setPromptBoxes,
         generateAll,
@@ -43,24 +46,41 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         addPromptBox,
         addPromptBoxes,
         saveState,
+        setPopup,
     } = usePanel(initialPrompts, initialCategory, id);
 
     //Callback to export the category, and all inputs / outputs in json
     const jsonExport = async () => {
-        const link = await exportJson(category, promptBoxes);
+        const panel: ContentPanelData = {
+            id,
+            category,
+            prompts: promptBoxes,
+        };
+
+        const link = await exportJson(panel);
         if (link) downloadJson(link);
     };
 
     //Callback to export outputs in excel
     //Not implemented, instead just call jsonExport
     const excelExport = async () => {
-        const link = await exportXlsx(category, promptBoxes);
+        const panel: ContentPanelData = {
+            id,
+            category,
+            prompts: promptBoxes,
+        };
+
+        const link = await exportXlsx(panel);
         if (link) downloadXlsx(link);
     };
 
+    // Opens ParameterDrawer
+    const [open, setOpen] = useState(false);
+
     return (
         //Take up full space, and center the content panel in it
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full flex-1">
+            <ParameterDrawer open={open} setOpen={setOpen} />
             <div
                 className={classNames(
                     'w-full px-4 py-16 flex flex-row justify-around items-center',
@@ -75,8 +95,16 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                     <ContentPanelHeader
                         category={category}
                         setCategory={setCategory}
-                        addPromptBoxes={addPromptBoxes}
+                        setPopup={setPopup}
                         saveState={saveState}
+                        setOpen={setOpen}
+                    />
+
+                    {/* Pop-up window used to add n boxes. Hidden by default*/}
+                    <PopUpWindow
+                        addPromptBoxes={addPromptBoxes}
+                        setPopup={setPopup}
+                        popupOpen={popupOpen}
                     />
 
                     {/* IO TExtfields: Prompts of the content panel */}

@@ -160,7 +160,7 @@ userRouter.post(
             const id = await createProject(
                 (req.token as TokenPayload).userID,
                 info.name,
-                info.json
+                info.data
             );
             res.status(200).send(id);
             return;
@@ -184,7 +184,7 @@ userRouter.put(
                 (req.token as TokenPayload).userID,
                 projectID,
                 info.name,
-                info.json
+                info.data
             );
             if (response) {
                 res.status(204).end();

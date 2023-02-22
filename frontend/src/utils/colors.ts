@@ -1,11 +1,18 @@
-// The main idea behind defining these color palettes is to abstract away
-// from knowing individual material design colors. Right now, the system
-// is a bit lacking, but hopefully this can also be expanded to handle
-// light/night mode etc.
+/**
+ * This file defines color palettes that abstract away
+ * from components having to reimplement common material design colors.
+ * This makes it simple to create components supporting multiple variations
+ * of colors, as well as light/dark mode in the future
+ *
+ * Currently color palettes are mainly adopted for buttons
+ */
 
-// => Components implement less conditional styles themselves for the basic stuff
-
-/** Color palette defining multiple colors based on Material design */
+/**
+ * Color palette defining multiple matching colors based on Material design
+ * These are designed to work together when the palette is the same, i.e.
+ *
+ * primary bg and primary textOnBg
+ */
 export type Palette = 'primary' | 'secondary' | 'tertiary' | 'red';
 
 /** Background color for this palette */
@@ -50,6 +57,20 @@ export const bgHover = (c: Palette) => {
     }
 };
 
+/** Lighter hover color for the container of this palette */
+export const bgLightHover = (c: Palette) => {
+    switch (c) {
+        case 'primary':
+            return 'hover:bg-primary-90';
+        case 'secondary':
+            return 'hover:bg-secondary-90';
+        case 'tertiary':
+            return 'hover:bg-tertiary-90';
+        case 'red':
+            return 'hover:bg-red-90';
+    }
+};
+
 /** Active color for the container of this palette */
 export const bgActive = (c: Palette) => {
     switch (c) {
@@ -61,6 +82,20 @@ export const bgActive = (c: Palette) => {
             return 'active:bg-tertiary-20';
         case 'red':
             return 'active:bg-red-20';
+    }
+};
+
+/** Lighter active color for the container of this palette */
+export const bgLightActive = (c: Palette) => {
+    switch (c) {
+        case 'primary':
+            return 'active:bg-primary-80';
+        case 'secondary':
+            return 'active:bg-secondary-80';
+        case 'tertiary':
+            return 'active:bg-tertiary-80';
+        case 'red':
+            return 'active:bg-red-80';
     }
 };
 

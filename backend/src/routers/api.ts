@@ -2,13 +2,13 @@ import { Router, Request, Response, NextFunction } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import {
     validateApiRequest,
-    ValidationError,
     sendToProxy,
     ProxyError,
     responseGen,
     createPrompt,
 } from '../services';
 import { logger } from '../utils/logger';
+import { ZodError } from 'zod';
 
 const apiRouter = Router();
 
@@ -43,7 +43,7 @@ apiRouter.post(
                 );
                 res.json(responseGen(gpt, id));
             } catch (e) {
-                if (e instanceof ValidationError) {
+                if (e instanceof ZodError) {
                     logger.error('validation_fail', {
                         error: {
                             name: e.name,

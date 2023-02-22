@@ -4,17 +4,6 @@ import { TextArea } from '../../../Inputs';
 import { z } from 'zod';
 
 /**
- * Minimum required data for representing PromptIOBox state.
- * Should also include the attributes we care about for import/export
- */
-export interface PromptData {
-    id: string;
-    input: string;
-    output: string;
-    locked: boolean;
-}
-
-/**
  * Visible PromptIOBox state, and callback functions for
  * performing necessary actions of the box.
  */
@@ -89,7 +78,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 errors={errors}
             />
             <div
-                className="w-full flex flex-col items-center justify-between z-10 bg-primary-90"
+                className="w-full flex flex-col items-center justify-between z-10 bg-primary-90 rounded-t-lg"
                 data-testid="prompt"
             >
                 <TextArea

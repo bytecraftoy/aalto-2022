@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import { Header } from './Header';
-import { useValue } from '../../utils/hooks';
+import { useValidation, useLogin, useTimedOpen } from '../../utils/hooks';
 import { CustomInput } from '../Inputs';
 import { FilledButton } from '../Buttons';
 import { usernameSchema, passwordSchema, tokenSchema } from './validation';
 import { useRepeatPassword } from './hooks';
 import { backendURL } from '../../utils/backendURL';
-import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { useNavigate } from 'react-router-dom';
-import { logIn } from '../../reducers/userReducer';
-import { setPanels } from '../../reducers/panelReducer';
 import { Notification } from '../Notification';
-import { useOpen } from '../../utils/hooks';
-import { setProjects } from '../../utils/projects';
 import { Account } from '../../utils/types';
 
 /**
@@ -24,30 +19,29 @@ export const RegisterForm = () => {
         value: username,
         errors: usernameErrors,
         setValue: setUsername,
-    } = useValue(usernameSchema);
+    } = useValidation(usernameSchema);
     const {
         value: password,
         errors: passwordErrors,
         setValue: setPassword,
-    } = useValue(passwordSchema);
+    } = useValidation(passwordSchema);
     const { repeatedPassword, repeatErrors, changeRepeated } =
         useRepeatPassword(password);
     const {
         value: token,
         errors: tokenErrors,
         setValue: setToken,
-    } = useValue(tokenSchema);
-
-    // Get the panels from the store
-    const panels = useAppSelector((state) => state.panels.value);
+    } = useValidation(tokenSchema);
 
     // Open the notification
-    const { open, setOpen } = useOpen(7000);
+    const { open, setOpen } = useTimedOpen(7000);
     const [error, setError] = useState('');
+
+    // Login once the user is registered
+    const login = useLogin();
 
     // Navigation
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
 
     // Disabled the submit button
     const disabled =
@@ -70,9 +64,10 @@ export const RegisterForm = () => {
                 username: body.userName,
                 id: body.userID,
             };
-            dispatch(logIn(acc));
-            const backendPanels = await setProjects(panels);
-            dispatch(setPanels(backendPanels));
+
+            // Initiate a login on the frontend
+            await login(acc);
+
             navigate('/');
         } else {
             // Set the error notification

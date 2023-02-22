@@ -2,7 +2,7 @@
     "scripts": {
         "ds": "run-p dev:*",
         "docusaurus": "npm run build-docs && npm run start-docs",
-        "setup-project": "npm install && npm run setup:backend && npm run install:frontend && npm run install:dummy",
+        "setup-project": "npm install && run-p setup:backend install:frontend install:dummy",
         "build-project": "run-s build:*",
         "test-project": "run-s test:*",
         "lint-project": "run-s lint:*",

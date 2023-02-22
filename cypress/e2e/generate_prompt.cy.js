@@ -4,17 +4,22 @@ describe('Prompt generation', () => {
     const category_input = 'category input from cypress';
     const prompt_input = 'prompt input from cypress';
 
+    const uuid = () => Cypress._.random(0, 1e6);
+    const username = uuid();
+
     before(() => {
         cy.visit('http://localhost:3000/');
         cy.location('pathname').should('eq', '/login/');
+        cy.wait(100);
         cy.get('button:contains("Sign up")').first().click();
         cy.location('pathname').should('eq', '/register');
+        cy.wait(100);
         cy.get('span:contains("Username")')
             .parent()
             .children()
             .filter('input')
             .first()
-            .type('testuser', { force: true });
+            .type(username, { force: true });
         cy.get('span:contains("Password")')
             .parent()
             .children()
@@ -33,6 +38,7 @@ describe('Prompt generation', () => {
             .filter('input')
             .first()
             .type(Cypress.env('REGISTER_KEY'), { force: true });
+        cy.wait(100);
         cy.get('button:contains("Create account")')
             .get('[data-testid="custom-button"]')
             .first()
@@ -54,13 +60,14 @@ describe('Prompt generation', () => {
             .children()
             .filter('input')
             .first()
-            .type('testuser', { force: true });
+            .type(username, { force: true });
         cy.get('span:contains("Password")')
             .parent()
             .children()
             .filter('input')
             .first()
             .type('salasana', { force: true });
+        cy.wait(100);
         cy.get('button:contains("Log in")')
             .get('[data-testid="custom-button"]')
             .first()
@@ -96,49 +103,61 @@ describe('Prompt generation', () => {
     // The test inputs a value for the category and prompt fields and checks that the output text area is empty.
     // Next, it clicks the "Generate" button and asserts that the output text area includes the input category and prompt.
     it('should generate a prompt and get result', () => {
-        cy.get('input[placeholder*="category"]').type(category_input);
+        cy.wait(100);
+        cy.get('input[placeholder*="category"]').first().type(category_input);
         cy.get('textarea[placeholder*="User input here"]').type(prompt_input);
         cy.get(output_locator).invoke('text').should('be.empty');
         cy.get('[data-testid="hover-area"]').realHover();
+        cy.wait(100);
         cy.get('button:contains("Generate")').first().click();
+        cy.wait(100);
         cy.get(output_locator).should(
             'include.text',
             `Theme: ${category_input}\\n${prompt_input}`
         );
     });
 
-    it('should generate all boxes with generate all button', () => {
-        const numExtra = 3;
-        // Inputs a value for category
-        //cy.get('input[placeholder*="category"]').type(category_input);
-        // Confirms that the output text area is empty
-        //cy.get(output_locator).invoke('text').should('be.empty');
-        // Confirms that there is 1 prompt
-        cy.get('[data-testid="prompt"]').should('have.length', 1);
-        for (let i = 1; i <= numExtra; i++) {
-            // Clicks the add prompt button to add extra prompts
-            cy.get('[data-testid="fab-button"]').click();
-        }
-        // Confirms that the number of prompts matches the number of extra prompts added
-        cy.get('[data-testid="prompt"]').should('have.length', 1 + numExtra);
-        cy.get('textarea[placeholder*="User input here"]').each(
-            (el, index, _list) => {
-                // Inputs a value for each prompt
-                cy.wrap(el).type(
-                    `{selectall}{backspace}${prompt_input} ${index}`
-                );
+    it(
+        'should generate all boxes with generate all button',
+        { defaultCommandTimeout: 10000 },
+        () => {
+            const numExtra = 3;
+            // Inputs a value for category
+            //cy.get('input[placeholder*="category"]').type(category_input);
+            // Confirms that the output text area is empty
+            //cy.get(output_locator).invoke('text').should('be.empty');
+            // Confirms that there is 1 prompt
+            cy.get('[data-testid="prompt"]').should('have.length', 1);
+            for (let i = 1; i <= numExtra; i++) {
+                // Clicks the add prompt button to add extra prompts
+                cy.get('[data-testid="fab-button"]').click();
             }
-        );
-        // Clicks the generate all button
-        cy.get(
-            '[data-testid="custom-button"]:contains("Generate all")'
-        ).click();
-        cy.get(output_locator).each((el, index, _list) => {
-            // Asserts that each output text area includes the input category and prompt
-            cy.wrap(el).should(
-                'include.text',
-                `Theme: ${category_input}\\n${prompt_input} ${index}`
+            // Confirms that the number of prompts matches the number of extra prompts added
+            cy.get('[data-testid="prompt"]').should(
+                'have.length',
+                1 + numExtra
             );
-        });
-    });
+            cy.get('textarea[placeholder*="User input here"]').each(
+                (el, index, _list) => {
+                    // Inputs a value for each prompt
+                    cy.wrap(el).type(
+                        `{selectall}{backspace}${prompt_input} ${index}`
+                    );
+                }
+            );
+            // Clicks the generate all button
+            cy.wait(100);
+            cy.get(
+                '[data-testid="custom-button"]:contains("Generate all")'
+            ).click();
+            cy.wait(100);
+            cy.get(output_locator).each((el, index, _list) => {
+                // Asserts that each output text area includes the input category and prompt
+                cy.wrap(el).should(
+                    'include.text',
+                    `Theme: ${category_input}\\n${prompt_input} ${index}`
+                );
+            });
+        }
+    );
 });

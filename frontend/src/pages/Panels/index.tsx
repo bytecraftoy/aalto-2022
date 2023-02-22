@@ -1,8 +1,6 @@
 import { ContentPanel } from '../../components/ContentPanel';
-import { useAppSelector } from '../../utils/hooks';
-import { ContentPanelType } from '../../utils/types';
+import { useAppSelector, useLoginRedirect } from '../../utils/hooks';
 import { useParams } from 'react-router-dom';
-import { useLoginRedirect } from './../../utils/hooks';
 
 /**
  * Show's user the panel by the panel id
@@ -19,10 +17,8 @@ export const Panels = () => {
     // Get the panel id from the route
     const { panelId } = useParams();
 
-    // Panel of the application
-    const panel: ContentPanelType | undefined = panels.find(
-        (e) => e.id === panelId
-    );
+    // Current panel of the application
+    const panel = panels.find((e) => e.id === panelId);
 
     // If not panel found with the id === panelId
     // TODO! Some "Page not found" component
@@ -31,7 +27,7 @@ export const Panels = () => {
     }
 
     return (
-        <div className="App bg-neutral-99 h-full flex flex-col justify-start items-center">
+        <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
             <ContentPanel
                 key={panel.id}
                 id={panel.id}
