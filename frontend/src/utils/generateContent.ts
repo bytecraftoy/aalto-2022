@@ -24,7 +24,8 @@ const generateText = async ({
 
     const req: ApiRequest = {
         id: id,
-        contexts: [category],
+        //TODO: replace 'Sci-fi' with the theme once implemented
+        contexts: ['Sci-fi', category],
         prompt: input,
         parameters,
     };
