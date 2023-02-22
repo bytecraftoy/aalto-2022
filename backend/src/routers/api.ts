@@ -20,25 +20,18 @@ apiRouter.post(
 
             try {
                 //Validate request and collect fields from ApiRequest
-                const {
-                    id,
-                    prompt,
-                    contexts,
-                    creativity,
-                    quality,
-                    inputLength,
-                    outputLength,
-                } = await validateApiRequest(body);
+                const { id, prompt, contexts, parameters } =
+                    await validateApiRequest(body);
 
                 //Retrieve GPT3 response from proxy, and create our response based on it
                 const gpt = await sendToProxy(
                     createPrompt(
                         contexts,
                         prompt,
-                        creativity,
-                        quality,
-                        inputLength,
-                        outputLength
+                        parameters.creativity,
+                        parameters.quality,
+                        parameters.inputLength,
+                        parameters.outputLength
                     )
                 );
                 res.json(responseGen(gpt, id));
