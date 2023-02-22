@@ -45,7 +45,13 @@ const parseJSON = (json: string): Prompt => {
  * Throws a ValidationError if something isn't correct.
  */
 const validateProperties = (obj: Prompt): void => {
-    const validModels = ['text-davinci-002'];
+    const validModels = [
+        'text-davinci-002',
+        'text-davinci-003',
+        'text-babbage-001',
+        'text-curie-001',
+        'text-ada-001',
+    ];
     if (obj === null || obj.constructor !== Object)
         throw new ValidationError('data does not represent a plain object');
     else if (!validModels.includes(obj.model))
