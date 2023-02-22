@@ -25,7 +25,7 @@ describe('Prompt creation', () => {
             5
         );
         expect(prompt.max_tokens).toBeLessThan(3000);
-        expect(prompt.model).toBe('text-curie-001');
+        expect(prompt.model).toBe('text-babbage-001');
         expect(prompt.prompt).toBe('Theme: Medieval\nBackstory for a hero:');
     });
 });
