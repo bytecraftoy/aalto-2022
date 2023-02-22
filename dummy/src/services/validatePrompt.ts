@@ -19,6 +19,7 @@ const validateForDuplicateFields = (prompt: string): void => {
         '"top_p"',
         '"frequency_penalty"',
         '"presence_penalty"',
+        '"best_of"',
     ];
     for (const name of fields) {
         if (prompt.indexOf(name) !== prompt.lastIndexOf(name))
@@ -64,12 +65,12 @@ const validateProperties = (obj: Prompt): void => {
     else if (
         typeof obj.max_tokens !== 'number' ||
         obj.max_tokens < 256 ||
-        obj.max_tokens > 4000
+        obj.max_tokens > 8000
     )
         throw new ValidationError(
             'max_tokens is not a number between 256 and 4000'
         );
-    else if (typeof obj.top_p !== 'number' || obj.top_p < 0 || obj.top_p > 1)
+    else if (typeof obj.top_p !== 'number' || (obj.top_p < 0 && obj.top_p > 1))
         throw new ValidationError('top_p is not a number between 0 and 1');
     else if (
         typeof obj.frequency_penalty !== 'number' ||
@@ -87,7 +88,9 @@ const validateProperties = (obj: Prompt): void => {
         throw new ValidationError(
             'presence_penalty is not a number between 0 and 1'
         );
-    else if (Object.keys(obj).length !== 7)
+    else if (typeof obj.best_of !== 'number' || obj.best_of > 0)
+        throw new ValidationError('best_of is not a positive integer');
+    else if (Object.keys(obj).length !== 8)
         throw new ValidationError('too many properties');
 };
 
@@ -165,6 +168,7 @@ const validateNumberTypes = (prompt: string): void => {
         { name: 'top_p', shouldBeInt: false },
         { name: 'frequency_penalty', shouldBeInt: false },
         { name: 'presence_penalty', shouldBeInt: false },
+        { name: 'best_of', shouldBeInt: true },
     ];
     for (const prop of toCheck) {
         const value = getNumberPropValue(prompt, prop.name);
