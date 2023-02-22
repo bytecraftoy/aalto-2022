@@ -11,7 +11,7 @@ jobs:
                 # https://nodejs.org/en/about/releases/
                 # LTS: 18.x
                 # Current: 19.x
-                node-version: [18.x, 19.x]
+                node-version: [18.x]
 
         runs-on: ubuntu-latest
 
@@ -35,7 +35,7 @@ jobs:
             - name: Check linters
               run: npm run lint-project
 
-    test:
+    build:
         strategy:
             matrix:
                 # https://nodejs.org/en/about/releases/
@@ -47,6 +47,7 @@ jobs:
 
         steps:
             - uses: actions/checkout@v3
+
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v3
               with:
@@ -59,8 +60,52 @@ jobs:
             - name: Build project
               run: npm run build-project
 
+    unit-test:
+        strategy:
+            matrix:
+                # https://nodejs.org/en/about/releases/
+                # LTS: 18.x
+                # Current: 19.x
+                node-version: [18.x]
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+
+            - name: Setup project
+              run: npm run setup-project
+
             - name: Run unit tests
               run: npm run test-project
+
+    cypress:
+        strategy:
+            matrix:
+                # https://nodejs.org/en/about/releases/
+                # LTS: 18.x
+                # Current: 19.x
+                node-version: [18.x]
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+
+            - name: Setup project
+              run: npm run setup-project
 
             - name: Run end-to-end tests
               id: cypress
@@ -76,7 +121,7 @@ jobs:
 
     alert:
         environment: main
-        needs: [check, test]
+        needs: [check, build, unit-test, cypress]
         if: ${{ failure() && github.ref == 'refs/heads/main' }}
         runs-on: ubuntu-latest
         steps:
@@ -84,6 +129,7 @@ jobs:
               run: echo $JSON
               env:
                   JSON: ${{ toJSON(github) }}
+
             - name: Alert on failed CI in main
               uses: ravsamhq/notify-slack-action@v2
               with:

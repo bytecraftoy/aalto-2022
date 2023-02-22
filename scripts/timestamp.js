@@ -1,3 +1,8 @@
+/**
+ * Script for creating a timestamp file that details the current commit
+ * and time of creation
+ */
+
 const ch = require('child_process');
 const fs = require('fs');
 const timestamp = ch.execSync('git show -s --format=%ci HEAD');

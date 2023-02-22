@@ -1,21 +1,23 @@
-import { generateText } from '../../utils/generateContent';
+import { generateText, generateTextProps } from '../../utils/generateContent';
 import { InputSchema } from './ContentPanelPrompts/PromptIOBox';
-import type { ContentPanelType } from '../../utils/types';
+import type { PromptData } from '../../utils/types';
 
-type PanelNoId = Omit<ContentPanelType, 'id'>;
+export interface generatePromptProps extends Omit<generateTextProps, 'id'> {
+    prompts: PromptData[];
+}
 
 /**
  * Creates an <id, output> map of generated prompts
  * @param prompts
  * @param category
  * @param parameters
- * @returns {Promsie<Map<string,string>>} generatedPrompts
+ * @returns {Promise<Map<string,string>>} generatedPrompts
  */
 export const generatePrompts = async ({
     prompts,
     category,
     parameters,
-}: PanelNoId): Promise<Map<string, string>> => {
+}: generatePromptProps): Promise<Map<string, string>> => {
     // Map of <id, output> for content panels that are generated
     const generated: Map<string, string> = new Map();
 

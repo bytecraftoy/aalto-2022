@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { EventBus } from '../../utils/eventBus';
-import { useOpen } from '../../utils/hooks';
+import { useTimedOpen } from '../../utils/hooks';
 
 /**
  * Snackbar for showing feedback to the user
@@ -13,7 +13,7 @@ interface SnackbarProps {
 
 export const Snackbar: React.FC<SnackbarProps> = ({ children }) => {
     const [message, setMessage] = useState('');
-    const { open, setOpen } = useOpen(3000);
+    const { open, setOpen } = useTimedOpen(3000);
 
     function onCustomEvent(e: CustomEvent<NotificationObj>) {
         setMessage(e.detail.message);

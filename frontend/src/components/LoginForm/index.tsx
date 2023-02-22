@@ -2,21 +2,15 @@ import React from 'react';
 import { CustomInput } from '../Inputs';
 import { FilledButton, TextButton } from '../Buttons';
 import { useNavigate } from 'react-router-dom';
-import { useValue } from '../../utils/hooks';
 import { usernameSchema, passwordSchema } from './validation';
+import { useValidation, useLogin, useTimedOpen } from '../../utils/hooks';
 import { Notification } from '../Notification';
-import { useOpen } from '../../utils/hooks';
 import { backendURL } from '../../utils/backendURL';
-import { useAppDispatch, useAppSelector } from '../../utils/hooks';
-import { logIn } from '../../reducers/userReducer';
-import { setPanels } from '../../reducers/panelReducer';
-import { saveProjects } from '../../reducers/projectReducer';
-import { initializeUserProjects } from '../../utils/projects';
 import { Account } from '../../utils/types';
 
 /**
  *
- * Form for log in to the application
+ * Form to log in to the application
  *
  */
 
@@ -25,25 +19,24 @@ export const LoginForm = () => {
         value: username,
         errors: usernameErrors,
         setValue: setUsername,
-    } = useValue(usernameSchema);
+    } = useValidation(usernameSchema);
     const {
         value: password,
         errors: passwordErrors,
         setValue: setPassword,
-    } = useValue(passwordSchema);
+    } = useValidation(passwordSchema);
 
     // If the error message of the user is shown
-    const { open, setOpen } = useOpen(7000);
+    const { open, setOpen } = useTimedOpen(7000);
 
-    // Gets the project from the store
-    const panels = useAppSelector((state) => state.panels.value);
+    // Hook to login and update user data
+    const login = useLogin();
 
     // Disables the submit button
     const disabled = usernameErrors !== '' || passwordErrors !== '';
 
     // Navigation
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
     const [errorMsg, setErrorMsg] = React.useState<string>('');
 
     //Submits the login form
@@ -57,7 +50,7 @@ export const LoginForm = () => {
             body: JSON.stringify({ name: username, password }),
         });
 
-        // If correct username and password then navigate to the project
+        // If correct username and password, then login the user and navigate to the project
         if (res.status === 200) {
             const body = await res.json();
 
@@ -65,14 +58,10 @@ export const LoginForm = () => {
                 username: body.userName,
                 id: body.userID,
             };
-            // Sets the user in the store
-            dispatch(logIn(acc));
-            // Senonets the project panels in the store
-            const [backendPanels, projects] = await initializeUserProjects(
-                panels
-            );
-            dispatch(saveProjects(projects));
-            dispatch(setPanels(backendPanels));
+
+            // Initiate a login on the frontend
+            await login(acc);
+
             // Navigates to the project main panel
             navigate('/');
         } else {

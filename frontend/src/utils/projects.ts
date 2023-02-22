@@ -1,5 +1,10 @@
 import { apiFetch, apiFetchJSON } from './apiFetch';
-import { Project, ProjectInfo, ContentPanelType } from './types';
+import { Project, ProjectInfo, createEmptyProject } from './types';
+
+/**
+ * Utilities for fetching and saving projects to the database and
+ * initializing projects for the application
+ */
 
 /**
  * A helper function for handling errors
@@ -126,46 +131,40 @@ export const getProjectByName = async (
 };
 
 /**
- * Get initial the states for the current project (panels)
+ * Get initial the states for the current project (theme and panels)
  * and for the list of user's projects.
  * Looks for existing projects in the database
- * and creates a new one if 'main' project is not found and write is true.
+ * and creates a new one if there is no main project and write is set to true.
  * Never throws an error.
  * Does not read or modify the redux store.
- * @param {ContentPanelType[]} panels Default panels to use if the user has no saved projects.
  * @param {boolean} write If true, add the default project to the database. Defaults to true.
  */
 export const initializeUserProjects = async (
-    panels: ContentPanelType[],
     write = true
-): Promise<[ContentPanelType[], ProjectInfo[]]> => {
-    const projectsRes = await getProjects();
+): Promise<[Project, ProjectInfo[]]> => {
+    const projectListRes = await getProjects();
 
-    if (!projectsRes.success)
-        //user is not logged in or some error that we can not fix has occured
-        return [panels, []];
-
-    if (projectsRes.projects.length === 0) {
-        if (write) {
-            //the user has no projects so create a new one
-            const name = 'main';
-            const saveRes = await saveNewProject({ name, data: { theme: '', panels: panels } });
-            if (saveRes.success) return [panels, [{ id: saveRes.id, name }]];
-            //an unrecoverable error
+    if (projectListRes.success) {
+        if (projectListRes.projects.length === 0) {
+            if (write) {
+                // the user has no projects so create a new one
+                const newProj = createEmptyProject();
+                const saveRes = await saveNewProject(newProj);
+                if (saveRes.success)
+                    return [newProj, [{ id: saveRes.id, name: newProj.name }]];
+            }
+            // no write allowed, so fallback to default return at the end of the method
+        } else {
+            // find the user's main project (sorted by how how recently they were saved)
+            // currently not supported by database schema, so just choose the first one
+            const projectId = projectListRes.projects[0].id;
+            const projectRes = await getProject(projectId);
+            if (projectRes.success)
+                // Main project successfully fetched, return it
+                return [projectRes.project, projectListRes.projects];
         }
-        return [panels, []];
     }
 
-    //find the user's main project
-    const projectId = projectsRes.projects.find((p) => p.name === 'main')?.id;
-
-    if (projectId) {
-        const projectRes = await getProject(projectId);
-        if (projectRes.success)
-            //if the main project was found and successfully fetched, return it
-            return [projectRes.project.data.panels, projectsRes.projects];
-    }
-
-    //otherwise return the default project
-    return [panels, projectsRes.projects];
+    //user was not logged in or some unrecoverable error occurred
+    return [createEmptyProject(), []];
 };
