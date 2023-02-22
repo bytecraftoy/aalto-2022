@@ -65,7 +65,9 @@ describe('prompt validation', () => {
             "presence_penalty": 0.5,
             "best_of": 1
         }`)
-        ).toBe('model is not recognized. Valid models: text-davinci-002');
+        ).toBe(
+            'model is not recognized. Valid models: text-davinci-002,text-davinci-003,text-babbage-001,text-curie-001,text-ada-001'
+        );
         expect(
             getPromptValidationError(`{
             "model": "text-davinci-002",
