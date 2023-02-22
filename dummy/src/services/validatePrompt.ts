@@ -76,7 +76,7 @@ const validateProperties = (obj: Prompt): void => {
         throw new ValidationError(
             'max_tokens is not a number between 256 and 4000'
         );
-    else if (typeof obj.top_p !== 'number' || (obj.top_p < 0 || obj.top_p > 1))
+    else if (typeof obj.top_p !== 'number' || obj.top_p < 0 || obj.top_p > 1)
         throw new ValidationError('top_p is not a number between 0 and 1');
     else if (
         typeof obj.frequency_penalty !== 'number' ||
