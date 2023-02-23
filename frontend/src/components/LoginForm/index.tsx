@@ -65,7 +65,7 @@ export const LoginForm = () => {
             await login(acc);
 
             // Navigates to the about page
-            navigate('/about');
+            navigate('/');
         } else {
             const text = await res.text();
             setErrorMsg(text);
