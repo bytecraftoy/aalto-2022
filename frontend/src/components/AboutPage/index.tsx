@@ -75,10 +75,7 @@ export const AboutPage = () => {
                     'w-full px-4 py-16 flex flex-row justify-around items-center'
                 )}
             >
-                <Surface
-                    level={2}
-                    className="w-full max-w-6xl min-h-fit rounded-2xl shadow-xl outline outline-1 outline-primary-90"
-                >
+                <Surface level={2} className="w-full max-w-6xl min-h-fit">
                     <AboutHeader
                         theme={theme}
                         setThemeName={setThemeName}

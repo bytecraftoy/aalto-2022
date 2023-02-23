@@ -25,6 +25,7 @@ export const Surface: React.FC<SurfaceProps> = ({
                 { 'bg-surface-3': level === 3 },
                 { 'bg-surface-4': level === 4 },
                 { 'bg-surface-5': level === 5 },
+                'shadow-xl shadow-secondary-20/10 rounded-2xl outline outline-1 outline-primary-90',
                 className
             )}
         >

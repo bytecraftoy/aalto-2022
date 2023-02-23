@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Icon, solidIcon } from '../../utils/icons';
 import { EventBus } from '../../utils/eventBus';
 import { useTimedOpen } from '../../utils/hooks';
 
@@ -38,7 +38,7 @@ export const Snackbar: React.FC<SnackbarProps> = ({ children }) => {
                         onClick={() => setOpen(false)}
                         className=" rounded-full bg-primary-99 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-8"
                     >
-                        <XMarkIcon className="text-white h-6 w-6" />
+                        {solidIcon('XMarkIcon', 'text-white')}
                     </div>
                 </div>
             )}

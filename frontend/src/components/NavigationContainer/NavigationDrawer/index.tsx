@@ -6,6 +6,7 @@ import { NavigationSubHeader } from './NavigationSubHeader';
 import { NavigationLink } from './NavigationLink';
 import { solidIcon } from '../../../utils/icons';
 import { PanelSection } from './PanelSection';
+import { Divider } from '../../Divider';
 
 /**
  *
@@ -52,12 +53,7 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
             leaveTo="opacity-0 -translate-x-20"
             className="z-30 fixed top-1 left-0 h-full"
         >
-            <Surface
-                level={1}
-                className={classNames(
-                    'w-[360px] h-full z-30 rounded-2xl shadow-lg'
-                )}
-            >
+            <Surface level={1} className={classNames('w-[360px] h-full z-30')}>
                 {/* The data area */}
                 <div className="h-full w-full p-3 overflow-y-auto scrollbar-hide">
                     {/* Drawer header */}
@@ -74,13 +70,12 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                         to="/about"
                     />
 
-                    <div className="h-[1px] bg-neutral-70 mx-4 my-2" />
+                    <Divider />
 
                     {/** Content panels */}
                     <PanelSection />
 
-                    {/** Divider */}
-                    <div className="h-[1px] bg-neutral-70 mx-4 my-2" />
+                    <Divider />
 
                     {/** Others */}
                     <NavigationLink

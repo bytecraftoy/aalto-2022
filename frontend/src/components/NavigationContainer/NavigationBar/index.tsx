@@ -15,7 +15,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ setOpen }) => {
     return (
         <Surface
             level={5}
-            className="sticky w-full top-0 left-0 h-20 z-20 flex justify-between items-center outline outline-1 outline-primary-80"
+            className="sticky w-full top-0 left-0 h-20 z-20 flex justify-between items-center rounded-none shadow-secondary-20/5 outline-primary-80"
         >
             <button onClick={() => setOpen(true)}>
                 {solidIcon('Bars3Icon', 'mx-8 w-8 h-8 text-primary-30')}

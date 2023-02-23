@@ -42,10 +42,7 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
             leaveFrom="opacity-100 -translate-x-0"
             leaveTo="opacity-0 translate-x-20"
         >
-            <Surface
-                level={1}
-                className="w-[360px] h-full rounded-2xl shadow-lg px-3 py-3"
-            >
+            <Surface level={1} className="w-[360px] h-full px-3 py-3">
                 <div className="pl-3 flex items-center h-14 text-xl">
                     Properties
                 </div>
