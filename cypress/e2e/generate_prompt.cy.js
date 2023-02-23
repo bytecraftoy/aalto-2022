@@ -106,6 +106,7 @@ describe('Prompt generation', () => {
     it('should generate a prompt and get result', () => {
         // First visit the about page to set project theme
         cy.visit('http://localhost:3000/about');
+        cy.wait(100);
         const themefield = cy
             .get('[data-testid="theme-input"]')
             .children()
