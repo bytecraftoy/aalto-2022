@@ -114,7 +114,7 @@ jobs:
               id: playwright
               run: npm run playwright-ci
 
-            - name: Archive Cypress videos on fail
+            - name: Archive Playwright videos on fail
               uses: actions/upload-artifact@v3
               # Only upload artifacts if Playwright failed
               if: ${{ failure() && steps.e2e.conclusion == 'failure' }}

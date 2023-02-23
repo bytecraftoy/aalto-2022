@@ -2,7 +2,7 @@
     "scripts": {
         "ds": "run-p dev:*",
         "docusaurus": "npm run build-docs && npm run start-docs",
-        "setup-project": "npm install && run-p setup:backend install:frontend install:dummy",
+        "setup-project": "npm install && run-p setup:backend install:frontend install:dummy install:playwright",
         "build-project": "run-s build:*",
         "test-project": "run-s test:*",
         "lint-project": "run-s lint:*",
@@ -42,6 +42,7 @@
         "prettier": "npx prettier --check .",
         "prettier-write": "npx prettier --write .",
         "timestamp-commit": "node scripts/timestamp.js",
+        "install:playwright": "npx playwright install",
         "playwright": "npx playwright test",
         "playwright-ci": "DUMMYURL='http://localhost:8080' npm run ds >/dev/null & wait-on --timeout 120000 http://127.0.0.1:3000 http://127.0.0.1:3030/api/health && npx playwright test"
     },
