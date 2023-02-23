@@ -1,6 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 import dotenv from 'dotenv';
 
+// Load env from backend for REGISTER_KEY
 dotenv.config({ path: 'backend/.env' });
 
 const output_locator = 'textarea[placeholder*="AI generated content"]';
