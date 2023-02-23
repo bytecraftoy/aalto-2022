@@ -9,23 +9,25 @@ import { Disclosure } from '@headlessui/react';
 
 export interface ExpandableParagraphProps {
     title: string;
-    text: string;
+    children: JSX.Element;
 }
 
 export const ExpandableParagraph: React.FC<ExpandableParagraphProps> = ({
     title,
-    text,
+    children,
 }) => {
     return (
         <Disclosure>
             {({ open }) => (
                 <>
-                    <Disclosure.Button className="flex w-full justify-between rounded-lg px-4 py-2 text-left text-lg font-bold">
-                        <span>{title}</span>
+                    <Disclosure.Button className="flex flex-row items-center w-full rounded-2xl px-2 py-4 text-left text-lg font-bold transition-all hover:bg-primary-90/80">
+                        <span className="font-medium text-neutral-20 text-xl pr-4">
+                            {title}
+                        </span>
                         {solidIcon(open ? 'ChevronUpIcon' : 'ChevronDownIcon')}
                     </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-md">
-                        {text}
+                    <Disclosure.Panel className="px-4 pt-2 pb-4 text-lg leading-relaxed">
+                        {children}
                     </Disclosure.Panel>
                 </>
             )}

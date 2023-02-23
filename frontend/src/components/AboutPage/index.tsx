@@ -13,6 +13,8 @@ import { Project } from '../../utils/types';
 import { useAbout } from './hooks';
 import { AboutHeader } from './AboutHeader';
 import { AboutInfoSection } from './AboutInfoSection';
+import { Divider } from '../Divider';
+import { AboutUsingSection } from './AboutUsingSection';
 
 /**
  * An about page explaining the usage of the application as well as
@@ -75,14 +77,21 @@ export const AboutPage = () => {
                     'w-full px-4 py-16 flex flex-row justify-around items-center'
                 )}
             >
-                <Surface level={2} className="w-full max-w-6xl min-h-fit">
+                <Surface level={2} className="w-full max-w-6xl min-h-fit mb-16">
                     <AboutHeader
                         theme={theme}
                         setThemeName={setThemeName}
                         setThemeParameters={setThemeParameters}
                         saveState={saveState}
                     />
+                    <div className="w-[80%] mx-auto pt-6">
+                        <Divider />
+                    </div>
                     <AboutInfoSection />
+                    <div className="w-[80%] mx-auto pt-6">
+                        <Divider />
+                    </div>
+                    <AboutUsingSection />
                 </Surface>
             </div>
         </div>

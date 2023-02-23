@@ -22,7 +22,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ setOpen }) => {
             </button>
 
             {/* Only show title on large screens */}
-            <h1 className="text-2xl font-medium mx-4 text-center text-neutral-10 max-lg:hidden">
+            <h1 className="text-2xl font-medium mx-4 text-center text-neutral-30 max-lg:hidden">
                 AI-assisted game content creator
             </h1>
 
