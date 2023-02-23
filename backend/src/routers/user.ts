@@ -19,6 +19,8 @@ import {
     createProject,
     saveProject,
     removeProject,
+    passwordRequestSchema,
+    changePassword,
 } from './../services/userService';
 import { TokenPayload } from '../types/TokenPayload';
 import {
@@ -254,6 +256,35 @@ userRouter.put(
             res.status(204).end();
         } catch (e) {
             logger.error('update_user_settings_fail', {
+                payload: req.token,
+                error: e,
+            });
+            res.status(400).send('Malformed body');
+        }
+    })
+);
+
+userRouter.put(
+    '/password/',
+    checkToken,
+    expressAsyncHandler(async (req, res) => {
+        try {
+            const info = passwordRequestSchema.parse(
+                JSON.parse(req.body as string)
+            );
+            const reqInfo = await changePassword(
+                (req.token as TokenPayload).userID,
+                info.currentPassword,
+                info.newPassword
+            );
+            if (reqInfo.success) {
+                res.status(204).end();
+                return;
+            } else {
+                res.status(400).send(reqInfo.message);
+            }
+        } catch (e) {
+            logger.error('update_user_password_fail', {
                 payload: req.token,
                 error: e,
             });

@@ -14,6 +14,8 @@ import {
     addProject,
     updateProject,
     deleteProject,
+    selectPasswordbyID,
+    updatePassword,
 } from '../db/queries';
 import { RequestInfo, DEFAULT_ERROR } from '../types/ServiceTypes';
 
@@ -38,6 +40,14 @@ const tokenLifetime =
 const loginRequestSchema = z.object({
     name: z.string(),
     password: z.string(),
+});
+
+const passwordRequestSchema = z.object({
+    currentPassword: z.string(),
+    newPassword: z
+        .string()
+        .min(6, 'Password should be at least 6 characters')
+        .max(50, 'Password can be 50 characters maximum'),
 });
 
 const registerRequestSchema = z.object({
@@ -82,6 +92,30 @@ const checkPassword = async (
             return {
                 success: false,
                 message: 'Incorrect username or password. Please try again.',
+            };
+        }
+    } catch (e) {
+        logger.error(e);
+        return DEFAULT_ERROR;
+    }
+};
+
+const changePassword = async (
+    userID: string,
+    currentPassword: string,
+    newPassword: string
+): Promise<RequestInfo> => {
+    const hash = await selectPasswordbyID(userID);
+    if (hash === null) return DEFAULT_ERROR;
+    try {
+        if (await bcrypt.compare(currentPassword, hash)) {
+            const passwordHash = await bcrypt.hash(newPassword, 10);
+            await updatePassword(userID, passwordHash);
+            return { success: true, message: 'Success.' };
+        } else {
+            return {
+                success: false,
+                message: 'Incorrect password. Please try again.',
             };
         }
     } catch (e) {
@@ -257,6 +291,7 @@ export {
     registerRequestSchema,
     updateSettingsRequestSchema,
     projectRequestSchema,
+    passwordRequestSchema,
     checkPassword,
     createUser,
     createToken,
@@ -266,4 +301,5 @@ export {
     createProject,
     saveProject,
     removeProject,
+    changePassword,
 };
