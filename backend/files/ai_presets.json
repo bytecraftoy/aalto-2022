@@ -3,191 +3,191 @@
         {
             "presetName": "LQ Item",
             "creativity": 0.0,
-            "quality": 0,
+            "quality": 1,
             "inputLength": 2000,
-            "outputLength": 0.6
+            "outputLength": 3
         },
         {
             "presetName": "LQ Snippet",
             "creativity": 0.5,
-            "quality": 0,
+            "quality": 1,
             "inputLength": 2000,
-            "outputLength": 0.6
+            "outputLength": 3
         },
         {
             "presetName": "LQ Name",
             "creativity": 1.0,
-            "quality": 0,
+            "quality": 1,
             "inputLength": 2000,
-            "outputLength": 0.6
+            "outputLength": 3
         },
         {
             "presetName": "MQ Item",
             "creativity": 0.0,
             "quality": 5,
             "inputLength": 2000,
-            "outputLength": 0.6
+            "outputLength": 3
         },
         {
             "presetName": "MQ Snippet",
             "creativity": 0.5,
             "quality": 5,
             "inputLength": 2000,
-            "outputLength": 0.6
+            "outputLength": 3
         },
         {
             "presetName": "MQ Name",
             "creativity": 1.0,
             "quality": 5,
             "inputLength": 2000,
-            "outputLength": 0.6
+            "outputLength": 3
         },
         {
             "presetName": "HQ Item",
             "creativity": 0.0,
             "quality": 9,
             "inputLength": 2000,
-            "outputLength": 0.6
+            "outputLength": 3
         },
         {
             "presetName": "HQ Snippet",
             "creativity": 0.5,
             "quality": 9,
             "inputLength": 2000,
-            "outputLength": 0.6
+            "outputLength": 3
         },
         {
             "presetName": "HQ Name",
             "creativity": 1.0,
             "quality": 9,
             "inputLength": 2000,
-            "outputLength": 0.6
+            "outputLength": 3
         },
         {
             "presetName": "LQ Technical Flavor",
             "creativity": 0.0,
-            "quality": 0,
+            "quality": 1,
             "inputLength": 5000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "LQ General Flavor",
             "creativity": 0.5,
-            "quality": 0,
+            "quality": 1,
             "inputLength": 5000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "LQ General Story",
             "creativity": 1.0,
-            "quality": 0,
+            "quality": 1,
             "inputLength": 5000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "MQ Technical Flavor",
             "creativity": 0.0,
             "quality": 5,
             "inputLength": 5000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "MQ General Flavor",
             "creativity": 0.5,
             "quality": 5,
             "inputLength": 5000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "MQ General Story",
             "creativity": 1.0,
             "quality": 5,
             "inputLength": 5000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "HQ Technical Flavor",
             "creativity": 0.0,
             "quality": 9,
             "inputLength": 5000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "HQ General Flavor",
             "creativity": 0.5,
             "quality": 9,
             "inputLength": 5000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "HQ General Story",
             "creativity": 1.0,
             "quality": 9,
             "inputLength": 5000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "LQ Technical Description",
             "creativity": 0.0,
-            "quality": 0,
+            "quality": 1,
             "inputLength": 8000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "LQ Prompted Flavor",
             "creativity": 0.5,
             "quality": 0,
             "inputLength": 8000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "LQ Prompted Story",
             "creativity": 1.0,
-            "quality": 0,
+            "quality": 1,
             "inputLength": 8000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "MQ Technical Description",
             "creativity": 0.0,
             "quality": 5,
             "inputLength": 8000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "MQ Prompted Flavor",
             "creativity": 0.5,
             "quality": 5,
             "inputLength": 8000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "MQ Prompted Story",
             "creativity": 1.0,
             "quality": 5,
             "inputLength": 8000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "HQ Technical Description",
             "creativity": 0.0,
             "quality": 9,
             "inputLength": 8000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "HQ Prompted Flavor",
             "creativity": 0.5,
             "quality": 9,
             "inputLength": 8000,
-            "outputLength": 1.0
+            "outputLength": 5
         },
         {
             "presetName": "HQ Prompted Story",
             "creativity": 1.0,
             "quality": 9,
             "inputLength": 8000,
-            "outputLength": 1.0
+            "outputLength": 5
         }
     ]
 }

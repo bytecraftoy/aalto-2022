@@ -31,7 +31,7 @@ const convertParameters = (
     const temperature = creativity * (4 / 5) + 0.2;
     const presence_penalty = creativity * (3 / 5);
     const frequency_penalty = creativity * (1 / 2);
-    const top_p = 1;
+    const top_p = 0.999;
     const max_tokens = Math.round(
         ((Math.floor((15872 - cutInputLength) / 4) * outputLength) / 5) *
             maxTokenFactor
