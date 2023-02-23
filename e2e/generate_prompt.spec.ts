@@ -5,8 +5,8 @@ dotenv.config({ path: 'backend/.env' });
 
 const output_locator = 'textarea[placeholder*="AI generated content"]';
 const theme_input = 'Sci-fi';
-const category_input = 'category input from cypress';
-const prompt_input = 'prompt input from cypress';
+const category_input = 'category input from playwright';
+const prompt_input = 'prompt input from playwright';
 
 const uuid = () => Math.random().toString(36).substring(2, 12);
 const username = uuid();

@@ -43,7 +43,7 @@
         "prettier-write": "npx prettier --write .",
         "timestamp-commit": "node scripts/timestamp.js",
         "playwright": "npx playwright test",
-        "playwright-ci": "DUMMYURL='http://localhost:8080' npm run ds >/dev/null & wait-on --timeout 120000 http://127.0.0.1:3000 http://127.0.0.1:3030/api/health && npm run playwright test"
+        "playwright-ci": "DUMMYURL='http://localhost:8080' npm run ds >/dev/null & wait-on --timeout 120000 http://127.0.0.1:3000 http://127.0.0.1:3030/api/health && npx playwright test"
     },
     "devDependencies": {
         "@playwright/test": "^1.31.1",
