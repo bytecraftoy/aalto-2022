@@ -5,16 +5,23 @@ import { Divider } from '../Divider';
 import { ParameterSlider } from './ParameterSlider';
 import { ParameterToggle } from './ParameterToggle';
 import { Parameters } from '../../utils/types';
+import { Dropdown } from '../Dropdown';
 
 interface ParameterDrawerProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    preset: string;
+    setPreset: (s: string) => void;
+    presets: string[];
     parameters: Parameters;
     setParameters: (p: Parameters | undefined) => void;
     // Allow setting params to undefined for reset
 }
 
 export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
+    preset,
+    setPreset,
+    presets,
     parameters,
     setParameters,
     open,
@@ -110,6 +117,7 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
                     <Divider />
 
                     {/* Presets dropdown */}
+                    <Dropdown choice={useAdvanced ? 'Custom' : preset} choices={presets} setChoice={setPreset} disabled={useAdvanced} />
 
                     <div className={useCustom ? '' : 'hidden'}>
                         <ParameterToggle

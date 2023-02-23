@@ -6,6 +6,8 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { setProjects, clearProjects } from '../reducers/projectReducer';
 import { setPanels, clearPanels } from '../reducers/panelReducer';
 import { setTheme, clearTheme } from '../reducers/themeReducer';
+import { setPresets } from '../reducers/presetReducer';
+import { loadPresets } from './loadPresets';
 import { useNavigate, To } from 'react-router-dom';
 import { apiFetch } from './apiFetch';
 import { Project, Account } from './types';
@@ -122,6 +124,12 @@ export const useLogin = () => {
 
     return async (acc: Account) => {
         dispatch(logIn(acc));
+
+        // Load presets
+        const presetRes = await loadPresets();
+        if(presetRes.success) dispatch(setPresets(presetRes.presets));
+
+        // Load projects
         const [project, projects] = await initializeUserProjects();
         dispatch(setProjects(projects));
         importProject(project);

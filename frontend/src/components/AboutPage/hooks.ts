@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { setTheme } from '../../reducers/themeReducer';
 import { EventBus } from '../../utils/eventBus';
-import { Parameters, Theme } from '../../utils/types';
+import { Parameters, Theme, Preset } from '../../utils/types';
 import { getProject, saveProject } from './../../utils/projects';
 import { useState } from 'react';
 
@@ -15,7 +15,28 @@ export const useAbout = () => {
     const logged = useAppSelector((state) => state.user.logged);
     const panels = useAppSelector((state) => state.panels.value);
     const projects = useAppSelector((state) => state.projects.value);
+    const presets = useAppSelector((state) => state.presets.value);
     const currentProject = () => projects[0];
+
+
+    
+    // Presets
+    const presetNames = presets.map(p => p.presetName);
+    const [currentPreset, setCurrentPreset] = useState(presetNames[0] ?? 'No presets found');
+    const selectPreset = (name: string) => {
+        const preset = presets.find(p => p.presetName === name);
+        if (preset) {
+            const value = preset as Preset;
+            setCurrentPreset(value.presetName);
+
+            // TODO:
+            // change parameters on preset change
+        }
+    }
+
+
+
+
 
     // Keep track of the last saved theme so we don't cause unnecessary saves
     const [lastTheme, setLastTheme] = useState<Theme>(theme);
@@ -95,12 +116,15 @@ export const useAbout = () => {
     };
 
     return {
-        currentAI,
         theme,
+        panels,
+        presets,
+        currentAI,
+        currentPreset,
         setThemeName,
         setThemeParameters,
-        panels,
         currentProject,
+        selectPreset,
         saveState,
     };
 };

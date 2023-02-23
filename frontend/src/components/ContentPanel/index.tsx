@@ -36,6 +36,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({
     const {
         theme,
         category,
+        currentPreset,
+        presetNames,
         promptBoxes,
         parameters,
         loading,
@@ -50,6 +52,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         addPromptBoxes,
         saveState,
         setPopup,
+        selectPreset,
         setParameters,
     } = usePanel(initialPrompts, initialCategory, id);
 
@@ -90,6 +93,9 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         //Take up full space, and center the content panel in it
         <div className="relative w-full h-full flex-1">
             <ParameterDrawer
+                preset={currentPreset}
+                setPreset={selectPreset}
+                presets={presetNames}
                 parameters={parameters ?? theme.globalParameters}
                 setParameters={setParameters}
                 open={open}

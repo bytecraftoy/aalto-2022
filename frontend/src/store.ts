@@ -11,6 +11,7 @@ import {
     userReducer,
     projectReducer,
     themeReducer,
+    presetReducer,
 } from './reducers';
 
 const store = configureStore({
@@ -19,6 +20,7 @@ const store = configureStore({
         panels: panelReducer,
         user: userReducer,
         projects: projectReducer,
+        presets: presetReducer
     },
 });
 

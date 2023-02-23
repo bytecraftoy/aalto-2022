@@ -7,6 +7,7 @@ import { EventBus } from '../../utils/eventBus';
 import {
     PromptData,
     Parameters,
+    Preset,
     ContentPanelData,
     createEmptyPrompt,
 } from '../../utils/types';
@@ -30,6 +31,7 @@ export const usePanel = (
     const logged = useAppSelector((state) => state.user.logged);
     const panels = useAppSelector((state) => state.panels.value);
     const projects = useAppSelector((state) => state.projects.value);
+    const presets = useAppSelector((state) => state.presets.value);
 
     const [promptBoxes, setPromptBoxes] =
         useState<PromptData[]>(initialPrompts);
@@ -38,6 +40,20 @@ export const usePanel = (
         undefined
     );
     // undefined parameters means that we use globalParameters
+
+
+    // Presets
+    const presetNames = presets.map(p => p.presetName);
+    const [currentPreset, setCurrentPreset] = useState(presetNames[0] ?? 'No presets found');
+    const selectPreset = (name: string) => {
+        const preset = presets.find(p => p.presetName === name);
+        if (preset) {
+            const value = preset as Preset;
+            setCurrentPreset(value.presetName);
+            setParameters(value);
+        }
+    }
+
 
     const [loading, setLoading] = useState<boolean>(false);
     const [popupOpen, setPopup] = useState<boolean>(false);
@@ -183,6 +199,8 @@ export const usePanel = (
         theme,
         category,
         promptBoxes,
+        presetNames,
+        currentPreset,
         loading,
         popupOpen,
         parameters,
@@ -197,5 +215,6 @@ export const usePanel = (
         setPopup,
         saveState,
         setParameters,
+        selectPreset
     };
 };

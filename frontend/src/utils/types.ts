@@ -23,10 +23,22 @@ export interface ApiRequest {
 
 /**
  * ApiResponse from backend
- */
+*/
 export interface ApiResponse {
     result: string;
     id: string;
+}
+
+
+/**
+ * Preset taken from backend
+ */
+export interface Preset {
+    presetName: string;
+    creativity: number;
+    quality: number;
+    inputLength: number;
+    outputLength: number;
 }
 
 /**
