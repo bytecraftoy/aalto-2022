@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Surface } from '../Surface';
 import { Transition } from '@headlessui/react';
 import { Divider } from '../Divider';
 import { ParameterSlider } from './ParameterSlider';
+import { ParameterToggle } from './ParameterToggle';
 import { Parameters } from '../../utils/types';
 
 interface ParameterDrawerProps {
@@ -19,6 +20,13 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
     setOpen,
 }) => {
     const drawerRef = useRef<HTMLDivElement>(null);
+    const [useDefault, setUseDefault] = useState(true);
+
+    const toggleDefault = (b: boolean) => {
+        setUseDefault(b);
+
+        // Reset parameters to default values
+    };
 
     useEffect(() => {
         // Closes the drawer if clicked outside of the drawer
