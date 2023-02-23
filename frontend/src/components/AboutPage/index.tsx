@@ -1,41 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Surface } from '../Surface';
 import classNames from 'classnames';
 import { ParameterDrawer } from '../ParameterDrawer';
-import { Theme } from '../../utils/types';
-import { useAppSelector } from '../../utils/hooks';
 
-
-export interface AboutPageProps {
-    initialTheme: Theme;
-}
+import {
+    exportJson,
+    downloadJson,
+    exportXlsx,
+    downloadXlsx,
+} from '../../utils/exportContent';
+import { Project } from '../../utils/types';
+import { useAbout } from './hooks';
+import { AboutHeader } from './AboutHeader';
+import { AboutInfoSection } from './AboutInfoSection';
 
 /**
  * An about page explaining the usage of the application as well as
  * an input field for choosing a theme for the currently selected project
  *
  */
-export const AboutPage: React.FC<AboutPageProps> = ({ initialTheme }) => {
+export const AboutPage = () => {
+    const {
+        currentAI,
+        theme,
+        setThemeName,
+        setThemeParameters,
+        panels,
+        currentProject,
+        saveState,
+    } = useAbout();
 
-    useAppSelector((state) => state)
-
-    //Callback to export the current project, and all its inputs / outputs in json
+    // Callback to export the current project, and all its inputs / outputs in json
     const jsonExport = async () => {
+        // Current project
+        const project: Project = {
+            name: currentProject().name,
+            data: {
+                theme,
+                panels,
+            },
+        };
 
-        const link = await exportJson(panel);
+        const link = await exportJson(project);
         if (link) downloadJson(link);
     };
 
     //Callback to export outputs in excel
     //Not implemented, instead just call jsonExport
     const excelExport = async () => {
-        const panel: ContentPanelData = {
-            id,
-            category,
-            prompts: promptBoxes,
+        const project: Project = {
+            name: currentProject().name,
+            data: {
+                theme,
+                panels,
+            },
         };
 
-        const link = await exportXlsx(panel);
+        const link = await exportXlsx(project);
         if (link) downloadXlsx(link);
     };
 
@@ -43,61 +64,27 @@ export const AboutPage: React.FC<AboutPageProps> = ({ initialTheme }) => {
     const [open, setOpen] = useState(false);
 
     return (
-        //Take up full space, and center the content panel in it
+        //Take up full space, and center the content in it
         <div className="relative w-full h-full flex-1">
             <ParameterDrawer open={open} setOpen={setOpen} />
             <div
                 className={classNames(
-                    'w-full px-4 py-16 flex flex-row justify-around items-center',
-                    { 'opacity-50 pointer-events-none': loading }
+                    'w-full px-4 py-16 flex flex-row justify-around items-center'
                 )}
             >
                 <Surface
                     level={2}
                     className="w-full max-w-6xl min-h-fit rounded-2xl shadow-xl outline outline-1 outline-primary-90"
                 >
-                    {/* Top most part of the content panel */}
-                    <ContentPanelHeader
-                        category={category}
-                        setCategory={setCategory}
-                        setPopup={setPopup}
-                        saveState={saveState}
-                        setOpen={setOpen}
-                    />
-
-                    {/* Pop-up window used to add n boxes. Hidden by default*/}
-                    <PopUpWindow
-                        addPromptBoxes={addPromptBoxes}
-                        setPopup={setPopup}
-                        popupOpen={popupOpen}
-                    />
-
-                    {/* IO TExtfields: Prompts of the content panel */}
-                    <ContentPanelPrompts
-                        promptBoxes={promptBoxes}
-                        setPromptBoxes={setPromptBoxes}
-                        generateOutput={generateOutput}
-                        setPromptOutput={setPromptOutput}
-                        addPromptBox={addPromptBox}
-                        lockPrompt={lockPrompt}
+                    <AboutHeader
+                        theme={theme}
+                        setThemeName={setThemeName}
+                        setThemeParameters={setThemeParameters}
                         saveState={saveState}
                     />
-
-                    {/* Bottom bar containing content panel actions */}
-                    <ContentPanelActions
-                        generateAll={generateAll}
-                        exportJson={jsonExport}
-                        exportExcel={excelExport}
-                    />
+                    <AboutInfoSection />
                 </Surface>
             </div>
-            {/* Loading spinner */}
-            {loading && (
-                <div className="fixed inset-1/2">
-                    <Loader />
-                </div>
-            )}
         </div>
     );
-
 };

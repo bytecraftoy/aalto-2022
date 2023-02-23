@@ -34,9 +34,10 @@ export const usePanel = (
     const [promptBoxes, setPromptBoxes] =
         useState<PromptData[]>(initialPrompts);
     const [category, setCategory] = useState<string>(initialCategory);
-    const [parameters, setParameters] = useState<Parameters>(
-        theme.globalParameters
+    const [parameters, setParameters] = useState<Parameters | undefined>(
+        undefined
     );
+    // undefined parameters means that we use globalParameters
 
     const [loading, setLoading] = useState<boolean>(false);
     const [popupOpen, setPopup] = useState<boolean>(false);
@@ -154,8 +155,9 @@ export const usePanel = (
             await generateText({
                 id: p.id,
                 input: p.input,
+                theme: theme.name,
                 category,
-                parameters,
+                parameters: parameters ?? theme.globalParameters,
             })
         );
     };
@@ -177,6 +179,7 @@ export const usePanel = (
     };
 
     return {
+        theme,
         category,
         promptBoxes,
         loading,

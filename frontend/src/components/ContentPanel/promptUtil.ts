@@ -3,6 +3,7 @@ import { InputSchema } from './ContentPanelPrompts/PromptIOBox';
 import type { PromptData } from '../../utils/types';
 
 export interface generatePromptProps extends Omit<generateTextProps, 'id'> {
+    theme: string;
     prompts: PromptData[];
 }
 
@@ -16,6 +17,7 @@ export interface generatePromptProps extends Omit<generateTextProps, 'id'> {
 export const generatePrompts = async ({
     prompts,
     category,
+    theme,
     parameters,
 }: generatePromptProps): Promise<Map<string, string>> => {
     // Map of <id, output> for content panels that are generated
@@ -28,6 +30,7 @@ export const generatePrompts = async ({
             const output: string = await generateText({
                 id: p.id,
                 input: p.input,
+                theme,
                 category,
                 parameters,
             });
