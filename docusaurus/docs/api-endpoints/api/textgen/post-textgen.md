@@ -13,6 +13,8 @@ An API endpoint for requesting AI generated text. The text will be generated bas
 }
 ```
 
+There must be exactly two contexts listed: the theme and the category in that order.
+
 ## Response
 
 ```
