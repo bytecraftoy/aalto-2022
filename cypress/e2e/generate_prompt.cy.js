@@ -107,7 +107,7 @@ describe('Prompt generation', () => {
         // First visit the about page to set project theme
         cy.visit('http://localhost:3000/about');
         cy.location('pathname').should('eq', '/about');
-        cy.wait(200);
+        cy.wait(1000);
         const themefield = cy
             .get('[data-testid="theme-input"]')
             .first()
@@ -122,7 +122,7 @@ describe('Prompt generation', () => {
         // Go back to panels
         cy.visit('http://localhost:3000');
         cy.location('pathname').should('eq', '/');
-        cy.wait(200);
+        cy.wait(1000);
         const categoryfield = cy
             .get('[data-testid="category-input"]')
             .first()
