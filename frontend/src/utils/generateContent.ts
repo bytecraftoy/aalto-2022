@@ -31,6 +31,8 @@ const generateText = async ({
         parameters,
     };
 
+    console.log(req);
+
     try {
         const response = (await apiFetchJSON('/api/textgen', {
             method: 'POST',

@@ -145,10 +145,10 @@ export type Parameters = z.infer<typeof ParametersSchema>;
  * Default params to use when no preset is specified
  */
 export const DEFAULT_PARAMETERS: Parameters = {
-    creativity: 0,
-    quality: 0,
-    inputLength: 2000,
-    outputLength: 0.6,
+    creativity: 0.5,
+    quality: 9,
+    inputLength: 5000,
+    outputLength: 1.0,
 };
 
 /**

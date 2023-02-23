@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { updatePanel } from '../../reducers/panelReducer';
-import { generatePrompts, generatePromptProps } from './promptUtil';
+import { generatePrompts } from './promptUtil';
 import { EventBus } from '../../utils/eventBus';
 import {
     PromptData,
@@ -61,10 +61,11 @@ export const usePanel = (
 
         // Map of <id, output> for content panels that are generated
         const generated: Map<string, string> = await generatePrompts({
+            theme: theme.name,
             prompts: promptBoxes,
             category,
-            parameters,
-        } as generatePromptProps);
+            parameters: parameters ?? theme.globalParameters,
+        });
 
         // Sets all the promptboxes in a 1 setState call.
         setPromptBoxes((prev) =>
