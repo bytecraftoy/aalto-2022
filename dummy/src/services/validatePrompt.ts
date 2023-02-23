@@ -164,16 +164,12 @@ const validateNumberType = (
 
 /**
  * Checks that all of the required number types of a prompt
- * are valid int or float literals depending on their required type.
+ * are valid int literals depending on their required type.
  * Throws a ValidationError if something isn't correct.
  */
 const validateNumberTypes = (prompt: string): void => {
     const toCheck: { name: string; shouldBeInt: boolean }[] = [
-        //{ name: 'temperature', shouldBeInt: false },
         { name: 'max_tokens', shouldBeInt: true },
-        //{ name: 'top_p', shouldBeInt: false },
-        //{ name: 'frequency_penalty', shouldBeInt: false },
-        //{ name: 'presence_penalty', shouldBeInt: false },
         { name: 'best_of', shouldBeInt: true },
     ];
     for (const prop of toCheck) {
