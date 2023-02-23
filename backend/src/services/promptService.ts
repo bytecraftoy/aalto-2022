@@ -5,17 +5,63 @@ const presets = JSON.parse(
     fs.readFileSync('files/presets.json').toString()
 ) as Preset[];
 
-const defaultPreset: Preset = {
-    name: 'default',
-    parameters: {
-        model: 'text-davinci-002',
-        prompt: '',
-        temperature: 0.5,
-        max_tokens: 300,
-        top_p: 0.999,
-        frequency_penalty: 0.52,
-        presence_penalty: 0.5,
-    },
+/**
+ * Converts our own parameters into GPT-approved parameters according to discussed upon factors
+ *
+ * @returns custom preset with correctly converted parameters
+ */
+
+const convertParameters = (
+    creativity: number,
+    quality: number,
+    inputLength: number,
+    outputLength: number
+): Preset => {
+    //cut the input length, normally between 1024-8000,
+    //to 4000 if quality 1-3, also halves max_tokens
+    let cutInputLength = inputLength;
+    let maxTokenFactor = 1;
+    if (quality < 4) {
+        if (inputLength > 4000) {
+            cutInputLength = 4000;
+        }
+        maxTokenFactor = 0.5;
+    }
+
+    const temperature = creativity * (4 / 5) + 0.2;
+    const presence_penalty = creativity * (3 / 5);
+    const frequency_penalty = creativity * (1 / 2);
+    const top_p = 1;
+    const max_tokens = Math.round(
+        ((Math.floor((15872 - cutInputLength) / 4) * outputLength) / 5) *
+            maxTokenFactor
+    );
+    const best_of = Math.max(1, quality - 3);
+    let model = 'text-davinci-003';
+    switch (quality) {
+        case 1:
+            model = 'text-ada-001';
+            break;
+        case 2:
+            model = 'text-babbage-001';
+            break;
+        case 3:
+            model = 'text-curie-001';
+    }
+    const result = {
+        name: 'custom',
+        parameters: {
+            model: model,
+            prompt: '',
+            temperature: temperature,
+            max_tokens: max_tokens,
+            top_p: top_p,
+            frequency_penalty: frequency_penalty,
+            presence_penalty: presence_penalty,
+            best_of: best_of,
+        },
+    };
+    return result;
 };
 
 /**
@@ -27,10 +73,18 @@ export const createPrompt = (
     //the theme and the category
     contexts: [string, string],
     text: string,
+    creativity: number,
+    quality: number,
+    inputLength: number,
+    outputLength: number,
     preset = ''
 ): Prompt => {
     //Retrieve a preset by name, or the default preset if undefined
-    const template = presets.find((p) => p.name === preset) ?? defaultPreset;
+    //TODO: figure out what to do with this
+    const template =
+        presets.find((p) => p.name === preset) ??
+        convertParameters(creativity, quality, inputLength, outputLength);
+
     const result = template.parameters;
 
     //Gpt3 works with prompts that are formatted such as

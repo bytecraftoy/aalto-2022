@@ -13,7 +13,9 @@ describe('textgen router', () => {
             "max_tokens": 2000,
             "top_p": 0.99,
             "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
+            "best_of": 1
+
         }`;
 
         const response = await api.post('/').send(prompt).expect(200);
@@ -38,7 +40,8 @@ describe('textgen router', () => {
                 "max_tokens": 2000,
                 "top_p": 2.5,
                 "frequency_penalty": 0.52,
-                "presence_penalty": 0.5
+                "presence_penalty": 0.5,
+                "best_of": 1
             }`
             )
             .expect(400);
