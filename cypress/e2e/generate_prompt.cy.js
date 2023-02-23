@@ -151,7 +151,7 @@ describe('Prompt generation', () => {
             cy.get(
                 '[data-testid="custom-button"]:contains("Generate all")'
             ).click();
-            cy.wait(100);
+            cy.wait(800);
             cy.get(output_locator).each((el, index, _list) => {
                 // Asserts that each output text area includes the input category and prompt
                 cy.wrap(el).should(
