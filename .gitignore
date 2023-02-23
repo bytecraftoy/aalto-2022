@@ -8,3 +8,6 @@ cypress/videos
 backend/files/timestamp-commit
 cypress/screenshots
 backend/coverage
+/test-results/
+/playwright-report/
+/playwright/.cache/
