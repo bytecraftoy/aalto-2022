@@ -118,8 +118,8 @@ export const useAbout = () => {
     return {
         theme,
         panels,
-        presets,
         currentAI,
+        presetNames,
         currentPreset,
         setThemeName,
         setThemeParameters,

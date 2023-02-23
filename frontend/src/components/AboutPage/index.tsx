@@ -25,11 +25,14 @@ export const AboutPage = () => {
     const {
         // Used later
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        currentAI,
         theme,
-        setThemeName,
-        setThemeParameters,
         panels,
+        presetNames,
+        currentAI,
+        currentPreset,
+        setThemeName,
+        selectPreset,
+        setThemeParameters,
         currentProject,
         saveState,
     } = useAbout();
@@ -72,6 +75,9 @@ export const AboutPage = () => {
         //Take up full space, and center the content in it
         <div className="relative w-full h-full flex-1">
             <ParameterDrawer
+                preset={currentPreset}
+                presets={presetNames}
+                setPreset={selectPreset}
                 parameters={theme.globalParameters}
                 setParameters={setThemeParameters}
                 open={open}

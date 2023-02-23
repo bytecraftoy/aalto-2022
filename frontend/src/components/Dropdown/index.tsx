@@ -27,7 +27,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 {solidIcon('ChevronDownIcon')}
             </span>
           </Listbox.Button>
-          { disabled &&
+          { !disabled &&
             <Transition
             as={Fragment}
             leave="transition ease-in duration-100"
