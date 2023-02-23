@@ -18,7 +18,6 @@ test.beforeEach(async ({ page }) => {
 
         await page.goto('/');
         await expect(page).toHaveURL('/login/');
-        await page.waitForTimeout(100);
         await page.click('button:has-text("Sign up")');
         await expect(page).toHaveURL('/register');
         await page
@@ -51,7 +50,6 @@ test.beforeEach(async ({ page }) => {
             .first()
             .fill(process.env.REGISTER_KEY!, { force: true });
 
-        await page.waitForTimeout(100);
         await page.click('button:has-text("Create account")');
         await expect(page).toHaveURL('/');
     } else {
@@ -111,14 +109,11 @@ test('has IOBox delete button while multiple on screen', async ({ page }) => {
 // The test inputs a value for the category and prompt fields and checks that the output text area is empty.
 // Next, it clicks the "Generate" button and asserts that the output text area includes the input category and prompt.
 test('should generate a prompt and get result', async ({ page }) => {
-    await page.waitForTimeout(100);
     await page.fill('input[placeholder*="category"]', category_input);
     await page.fill('textarea[placeholder*="User input here"]', prompt_input);
     await expect(page.locator(output_locator)).toHaveText('');
     await page.hover('[data-testid="hover-area"]');
-    await page.waitForTimeout(100);
     await page.click('button:has-text("Generate")');
-    await page.waitForTimeout(100);
     await expect(page.locator(output_locator)).toContainText(
         `Write a game flavor text for ${prompt_input} which is a ${category_input} in a ${theme_input} setting`
     );
@@ -146,9 +141,7 @@ test('should generate all boxes with generate all button', async ({ page }) => {
             }
         });
     // Clicks the generate all button
-    await page.waitForTimeout(100);
     await page.click('button:has-text("Generate all")');
-    await page.waitForTimeout(100);
     // Find all output locators and assert their text content
     const outputAreas = page.locator(output_locator);
     const count = await outputAreas.count();
