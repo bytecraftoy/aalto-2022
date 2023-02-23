@@ -11,10 +11,10 @@ describe('Prompt generation', () => {
     before(() => {
         cy.visit('http://localhost:3000/');
         cy.location('pathname').should('eq', '/login/');
-        cy.wait(100);
+        cy.wait(200);
         cy.get('button:contains("Sign up")').first().click();
         cy.location('pathname').should('eq', '/register');
-        cy.wait(100);
+        cy.wait(200);
         cy.get('span:contains("Username")')
             .parent()
             .children()
@@ -39,7 +39,7 @@ describe('Prompt generation', () => {
             .filter('input')
             .first()
             .type(Cypress.env('REGISTER_KEY'), { force: true });
-        cy.wait(100);
+        cy.wait(200);
         cy.get('button:contains("Create account")')
             .get('[data-testid="custom-button"]')
             .first()
@@ -68,7 +68,7 @@ describe('Prompt generation', () => {
             .filter('input')
             .first()
             .type('salasana', { force: true });
-        cy.wait(100);
+        cy.wait(200);
         cy.get('button:contains("Log in")')
             .get('[data-testid="custom-button"]')
             .first()
@@ -107,26 +107,32 @@ describe('Prompt generation', () => {
         // First visit the about page to set project theme
         cy.visit('http://localhost:3000/about');
         cy.location('pathname').should('eq', '/about');
+        cy.wait(200);
         const themefield = cy
-            .get('[data-testid="theme-input"]')
-            .children()
+            .get('[data-testid="theme-input"]').first().children()
             .first()
             .children()
             .first();
         themefield.type(theme_input);
         themefield.blur(); // Get out of focus to cause autosave
-        cy.wait(100);
+        cy.wait(200);
 
         // Go back to panels
         cy.visit('http://localhost:3000');
         cy.location('pathname').should('eq', '/');
-        cy.get('input[placeholder*="category"]').first().type(category_input);
-        cy.get('textarea[placeholder*="User input here"]').type(prompt_input);
+        cy.wait(200);
+        const categoryfield = cy
+            .get('[data-testid="category-input"]').first().children()
+            .first()
+            .children()
+            .first();
+        categoryfield.type(category_input, { force: true });
+        cy.get('textarea[placeholder*="User input here"]').type(prompt_input, { force: true });
         cy.get(output_locator).invoke('text').should('be.empty');
         cy.get('[data-testid="hover-area"]').realHover();
-        cy.wait(100);
+        cy.wait(200);
         cy.get('button:contains("Generate")').first().click();
-        cy.wait(100);
+        cy.wait(200);
         cy.get(output_locator).should(
             'include.text',
             `Write a game flavor text for ${prompt_input} which is a ${category_input} in a ${theme_input} setting`
@@ -157,16 +163,17 @@ describe('Prompt generation', () => {
                 (el, index, _list) => {
                     // Inputs a value for each prompt
                     cy.wrap(el).type(
-                        `{selectall}{backspace}${prompt_input} ${index}`
+                        `{selectall}{backspace}${prompt_input} ${index}`,
+                        { force: true }
                     );
                 }
             );
             // Clicks the generate all button
-            cy.wait(100);
+            cy.wait(200);
             cy.get(
                 '[data-testid="custom-button"]:contains("Generate all")'
             ).click();
-            cy.wait(100);
+            cy.wait(200);
             cy.get(output_locator).each((el, index, _list) => {
                 // Asserts that each output text area includes the input category and prompt
                 cy.wrap(el).should(
