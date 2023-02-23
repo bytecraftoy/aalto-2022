@@ -136,7 +136,7 @@
         {
             "presetName": "LQ Prompted Flavor",
             "creativity": 0.5,
-            "quality": 0,
+            "quality": 1,
             "inputLength": 8000,
             "outputLength": 5
         },
