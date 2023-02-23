@@ -11,10 +11,11 @@ const prompt_input = 'prompt input from playwright';
 const uuid = () => Math.random().toString(36).substring(2, 12);
 const username = uuid();
 
-let first = true;
+let registered = false;
 test.beforeEach(async ({ page }) => {
-    if (first) {
-        first = false;
+    // Register once per worker
+    if (!registered) {
+        registered = true;
 
         await page.goto('/');
         await expect(page).toHaveURL('/login/');
@@ -52,6 +53,7 @@ test.beforeEach(async ({ page }) => {
 
         await page.click('button:has-text("Create account")');
         await expect(page).toHaveURL('/');
+        // Log in
     } else {
         await page.goto('/');
         await expect(page).toHaveURL('/login/');
