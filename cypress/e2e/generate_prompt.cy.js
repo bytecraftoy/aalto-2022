@@ -109,7 +109,9 @@ describe('Prompt generation', () => {
         cy.location('pathname').should('eq', '/about');
         cy.wait(200);
         const themefield = cy
-            .get('[data-testid="theme-input"]').first().children()
+            .get('[data-testid="theme-input"]')
+            .first()
+            .children()
             .first()
             .children()
             .first();
@@ -122,12 +124,16 @@ describe('Prompt generation', () => {
         cy.location('pathname').should('eq', '/');
         cy.wait(200);
         const categoryfield = cy
-            .get('[data-testid="category-input"]').first().children()
+            .get('[data-testid="category-input"]')
+            .first()
+            .children()
             .first()
             .children()
             .first();
         categoryfield.type(category_input, { force: true });
-        cy.get('textarea[placeholder*="User input here"]').type(prompt_input, { force: true });
+        cy.get('textarea[placeholder*="User input here"]').type(prompt_input, {
+            force: true,
+        });
         cy.get(output_locator).invoke('text').should('be.empty');
         cy.get('[data-testid="hover-area"]').realHover();
         cy.wait(200);
