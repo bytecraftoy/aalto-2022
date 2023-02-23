@@ -21,6 +21,8 @@ import { AboutInfoSection } from './AboutInfoSection';
  */
 export const AboutPage = () => {
     const {
+        // Used later
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         currentAI,
         theme,
         setThemeName,
@@ -31,6 +33,7 @@ export const AboutPage = () => {
     } = useAbout();
 
     // Callback to export the current project, and all its inputs / outputs in json
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const jsonExport = async () => {
         // Current project
         const project: Project = {
@@ -46,7 +49,7 @@ export const AboutPage = () => {
     };
 
     //Callback to export outputs in excel
-    //Not implemented, instead just call jsonExport
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const excelExport = async () => {
         const project: Project = {
             name: currentProject().name,

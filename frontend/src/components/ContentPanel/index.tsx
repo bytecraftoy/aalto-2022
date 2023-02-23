@@ -67,7 +67,6 @@ export const ContentPanel: FC<ContentPanelProps> = ({
     };
 
     //Callback to export outputs in excel
-    //Not implemented, instead just call jsonExport
     const excelExport = async () => {
         const data: panelExport = {
             theme,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppSelector, useLoginRedirect } from './../../utils/hooks';
+import { useLoginRedirect } from './../../utils/hooks';
 import { AboutPage } from '../../components/AboutPage';
 
 export const About = () => {

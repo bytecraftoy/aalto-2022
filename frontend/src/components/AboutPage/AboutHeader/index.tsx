@@ -1,5 +1,4 @@
 import React from 'react';
-import { DropdownMenu } from '../../DropdownMenu';
 import { ThemeInput } from './ThemeInput';
 import { Theme, Parameters } from '../../../utils/types';
 
@@ -19,6 +18,8 @@ interface AboutHeaderProps {
 export const AboutHeader: React.FC<AboutHeaderProps> = ({
     theme,
     setThemeName,
+    // Used later
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setThemeParameters,
     saveState,
 }) => {
