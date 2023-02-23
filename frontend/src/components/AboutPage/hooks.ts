@@ -1,8 +1,9 @@
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { setTheme } from '../../reducers/themeReducer';
 import { EventBus } from '../../utils/eventBus';
-import { Parameters } from '../../utils/types';
+import { Parameters, Theme } from '../../utils/types';
 import { getProject, saveProject } from './../../utils/projects';
+import { useState } from 'react';
 
 /**
  * Custom hook containing functionality used by the about page
@@ -15,6 +16,9 @@ export const useAbout = () => {
     const panels = useAppSelector((state) => state.panels.value);
     const projects = useAppSelector((state) => state.projects.value);
     const currentProject = () => projects[0];
+
+    // Keep track of the last saved theme so we don't cause unnecessary saves
+    const [lastTheme, setLastTheme] = useState<Theme>(theme);
 
     // Current AI being used. For now, just check dev mode
     const currentAI =
@@ -46,7 +50,12 @@ export const useAbout = () => {
 
             // Update theme
             mainProject.project.data.theme = theme;
-            await saveProject(projectId, mainProject.project);
+            const result = await saveProject(projectId, mainProject.project);
+
+            // Successfully updated theme, take note
+            if (result.success) {
+                setLastTheme(theme);
+            }
         }
     };
 
@@ -54,6 +63,13 @@ export const useAbout = () => {
      * Saves progress and updates database
      */
     const saveState = async () => {
+        // TODO: Add deeper equality check once parameters become changeable
+        // on the about page. For now, they are not updated anyway
+        // Theme has not changed, do not save
+        if (theme.name === lastTheme.name) {
+            return;
+        }
+
         await updateDatabase();
 
         EventBus.dispatch('notification', {
