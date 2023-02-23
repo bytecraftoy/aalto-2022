@@ -64,8 +64,8 @@ export const LoginForm = () => {
             // Initiate a login on the frontend
             await login(acc);
 
-            // Navigates to the project main panel
-            navigate('/');
+            // Navigates to the about page
+            navigate('/about');
         } else {
             const text = await res.text();
             setErrorMsg(text);

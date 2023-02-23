@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Icon, solidIcon } from '../../utils/icons';
+import { solidIcon } from '../../utils/icons';
 import { EventBus } from '../../utils/eventBus';
 import { useTimedOpen } from '../../utils/hooks';
 
