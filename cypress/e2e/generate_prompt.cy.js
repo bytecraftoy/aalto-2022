@@ -106,7 +106,7 @@ describe('Prompt generation', () => {
     it('should generate a prompt and get result', () => {
         // First visit the about page to set project theme
         cy.visit('http://localhost:3000/about');
-        cy.wait(100);
+        cy.location('pathname').should('eq', '/about');
         const themefield = cy
             .get('[data-testid="theme-input"]')
             .children()
@@ -119,7 +119,7 @@ describe('Prompt generation', () => {
 
         // Go back to panels
         cy.visit('http://localhost:3000');
-        cy.wait(100);
+        cy.location('pathname').should('eq', '/');
         cy.get('input[placeholder*="category"]').first().type(category_input);
         cy.get('textarea[placeholder*="User input here"]').type(prompt_input);
         cy.get(output_locator).invoke('text').should('be.empty');
