@@ -85,9 +85,12 @@ export const useAbout = () => {
         dispatch(setTheme(newTheme));
     };
 
-    const setThemeParameters = (globalParameters: Parameters) => {
+    const setThemeParameters = (globalParameters: Parameters | undefined) => {
+        // Ignore setting parameters to undefined
+        const params = globalParameters ?? theme.globalParameters;
+
         const newTheme = { ...theme };
-        newTheme.globalParameters = globalParameters;
+        newTheme.globalParameters = params;
         dispatch(setTheme(newTheme));
     };
 

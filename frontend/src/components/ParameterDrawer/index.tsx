@@ -10,7 +10,8 @@ interface ParameterDrawerProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     parameters: Parameters;
-    setParameters: (p: Parameters) => void;
+    setParameters: (p: Parameters | undefined) => void;
+    // Allow setting params to undefined for reset
 }
 
 export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
@@ -20,12 +21,23 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
     setOpen,
 }) => {
     const drawerRef = useRef<HTMLDivElement>(null);
-    const [useDefault, setUseDefault] = useState(true);
 
-    const toggleDefault = (b: boolean) => {
-        setUseDefault(b);
+    // Use custom parameters vs global parameters
+    const [useCustom, setUseCustom] = useState(false);
 
-        // Reset parameters to default values
+    // Use advanced mode (sliders) vs presets
+    const [useAdvanced, setUseAdvanced] = useState(false);
+
+    const toggleCustom = (b: boolean) => {
+        setUseCustom(b);
+
+        if (!b) {
+            // Reset parameters to undefined => default values
+            setParameters(undefined);
+
+            // Reset advanced mode
+            setUseAdvanced(false);
+        }
     };
 
     useEffect(() => {
@@ -89,47 +101,66 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
                         <h2 className="text-xl">Properties</h2>
                     </div>
 
+                    <ParameterToggle
+                        title="Override theme settings"
+                        enabled={useCustom}
+                        setEnabled={toggleCustom}
+                    />
+
                     <Divider />
 
-                    <ParameterSlider
-                        title="Creativity"
-                        minValue={0}
-                        maxValue={1}
-                        step={0.001}
-                        value={parameters.creativity}
-                        setValue={setCreativity}
-                        colorPalette="primary"
-                    />
+                    {/* Presets dropdown */}
 
-                    <ParameterSlider
-                        title="Input length"
-                        minValue={1024}
-                        maxValue={8000}
-                        step={1}
-                        value={parameters.inputLength}
-                        setValue={setInputLength}
-                        colorPalette="primary"
-                    />
+                    <div className={useCustom ? '' : 'hidden'}>
+                        <ParameterToggle
+                            title="Advanced settings"
+                            enabled={useAdvanced}
+                            setEnabled={setUseAdvanced}
+                        />
+                        <Divider />
+                    </div>
 
-                    <ParameterSlider
-                        title="Output length"
-                        minValue={0}
-                        maxValue={1}
-                        step={0.001}
-                        value={parameters.outputLength}
-                        setValue={setOutputLength}
-                        colorPalette="primary"
-                    />
+                    <div className={useCustom && useAdvanced ? '' : 'hidden'}>
+                        <ParameterSlider
+                            title="Creativity"
+                            minValue={0}
+                            maxValue={1}
+                            step={0.001}
+                            value={parameters.creativity}
+                            setValue={setCreativity}
+                            colorPalette="primary"
+                        />
 
-                    <ParameterSlider
-                        title="Quality"
-                        minValue={1}
-                        maxValue={9}
-                        step={1}
-                        value={parameters.quality}
-                        setValue={setQuality}
-                        colorPalette="primary"
-                    />
+                        <ParameterSlider
+                            title="Input length"
+                            minValue={1024}
+                            maxValue={8000}
+                            step={1}
+                            value={parameters.inputLength}
+                            setValue={setInputLength}
+                            colorPalette="primary"
+                        />
+
+                        <ParameterSlider
+                            title="Output length"
+                            minValue={0}
+                            maxValue={1}
+                            step={0.001}
+                            value={parameters.outputLength}
+                            setValue={setOutputLength}
+                            colorPalette="primary"
+                        />
+
+                        <ParameterSlider
+                            title="Quality"
+                            minValue={1}
+                            maxValue={9}
+                            step={1}
+                            value={parameters.quality}
+                            setValue={setQuality}
+                            colorPalette="primary"
+                        />
+                    </div>
                 </div>
             </Surface>
         </Transition>

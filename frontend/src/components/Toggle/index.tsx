@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import { Icon, solidIcon } from '../../utils/icons';
-import { Palette, bg, bgContainer, textOnContainer } from '../../utils/colors';
+import { Palette, bg, textOnContainer } from '../../utils/colors';
 import { Switch } from '@headlessui/react';
 
 export interface ToggleProps {
@@ -25,9 +25,9 @@ export const Toggle: React.FC<ToggleProps> = ({
                 /* Use the `checked` state to conditionally style the button. */
                 <button
                     className={classNames(
-                        'relative inline-flex h-6 w-11 items-center rounded-full',
+                        'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
                         enabled && bg(colorPalette),
-                        !enabled && bgContainer(colorPalette),
+                        !enabled && 'bg-neutral-50',
                         className
                     )}
                 >
