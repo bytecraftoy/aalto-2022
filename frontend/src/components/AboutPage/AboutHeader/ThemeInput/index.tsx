@@ -14,7 +14,10 @@ export const ThemeInput: React.FC<ThemeInputProps> = ({
     saveState,
 }) => {
     return (
-        <div className="w-full flex flex-col min-h-fit justify-start items-center">
+        <div
+            className="w-full flex flex-col min-h-fit justify-start items-center"
+            data-testid="theme-input"
+        >
             <CustomInput
                 type={'text'}
                 value={name}

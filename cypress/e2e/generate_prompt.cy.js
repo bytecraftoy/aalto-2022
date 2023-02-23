@@ -104,6 +104,20 @@ describe('Prompt generation', () => {
     // The test inputs a value for the category and prompt fields and checks that the output text area is empty.
     // Next, it clicks the "Generate" button and asserts that the output text area includes the input category and prompt.
     it('should generate a prompt and get result', () => {
+        // First visit the about page to set project theme
+        cy.visit('http://localhost:3000/about');
+        const themefield = cy
+            .get('[data-testid="theme-input"]')
+            .children()
+            .first()
+            .children()
+            .first();
+        themefield.type(theme_input);
+        themefield.blur(); // Get out of focus to cause autosave
+        cy.wait(100);
+
+        // Go back to panels
+        cy.visit('http://localhost:3000');
         cy.wait(100);
         cy.get('input[placeholder*="category"]').first().type(category_input);
         cy.get('textarea[placeholder*="User input here"]').type(prompt_input);
@@ -120,7 +134,7 @@ describe('Prompt generation', () => {
 
     it(
         'should generate all boxes with generate all button',
-        { defaultCommandTimeout: 10000 },
+        { defaultCommandTimeout: 12000 },
         () => {
             const numExtra = 3;
             // Inputs a value for category
