@@ -60,7 +60,6 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     <div className="py-2 pl-4 pr-2 h-14">
                         <h2 className="text-xl">Navigation</h2>
                     </div>
-
                     {/** The pages */}
                     <NavigationSubHeader>Pages</NavigationSubHeader>
 

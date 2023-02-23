@@ -71,7 +71,12 @@ export const AboutPage = () => {
     return (
         //Take up full space, and center the content in it
         <div className="relative w-full h-full flex-1">
-            <ParameterDrawer open={open} setOpen={setOpen} />
+            <ParameterDrawer
+                parameters={theme.globalParameters}
+                setParameters={setThemeParameters}
+                open={open}
+                setOpen={setOpen}
+            />
             <div
                 className={classNames(
                     'w-full px-4 py-16 flex flex-row justify-around items-center'
