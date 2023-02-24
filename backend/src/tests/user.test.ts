@@ -14,7 +14,7 @@ import {
     addProject,
     selectProject,
     selectProjectsbyUserID,
-    selectPasswordbyID,
+    selectPassword,
 } from '../db/queries';
 import { registerKey } from '../services/registerKeyService';
 import { TokenPayload } from '../types/TokenPayload';
@@ -678,11 +678,10 @@ describe('user router projects', () => {
 
 describe('user router change password', () => {
     let token: string;
-    let user_id: string;
-
+    let payload: TokenPayload;
     beforeEach(async () => {
-        user_id = (await createUser('testuser', 'password1234')).message;
-        const payload: TokenPayload = {
+        const user_id = (await createUser('testuser', 'password1234')).message;
+        payload = {
             userName: 'testuser',
             userID: user_id,
         };
@@ -694,13 +693,13 @@ describe('user router change password', () => {
             currentPassword: 'password1234',
             newPassword: 'password123456',
         };
-        const currentHash = await selectPasswordbyID(user_id);
+        const currentHash = await selectPassword(payload.userName);
         await api
             .put('/api/user/password/')
             .set('Cookie', `user-token=${token}`)
             .send(JSON.stringify(data))
             .expect(204);
-        const newHash = await selectPasswordbyID(user_id);
+        const newHash = await selectPassword(payload.userName);
         expect(currentHash !== newHash).toBe(true);
     });
 

@@ -273,7 +273,7 @@ userRouter.put(
                 JSON.parse(req.body as string)
             );
             const reqInfo = await changePassword(
-                (req.token as TokenPayload).userID,
+                (req.token as TokenPayload).userName,
                 info.currentPassword,
                 info.newPassword
             );

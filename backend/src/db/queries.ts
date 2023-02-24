@@ -95,17 +95,6 @@ export const selectPassword = async (name: string): Promise<string | null> => {
         : null;
 };
 
-export const selectPasswordbyID = async (
-    id: string
-): Promise<string | null> => {
-    const text = 'SELECT password_hash FROM users WHERE id = $1';
-    const values = [id];
-    const res = await executeQuery(text, values);
-    return res.length
-        ? (res[0] as { password_hash: string }).password_hash
-        : null;
-};
-
 export const userExists = async (name: string): Promise<boolean> => {
     const text = 'SELECT COUNT(*) from users WHERE name = $1';
     const values = [name];
@@ -127,9 +116,9 @@ export const deleteUser = async (id: string) => {
     await executeQuery(text, values);
 };
 
-export const updatePassword = async (id: string, passwordHash: string) => {
-    const text = 'UPDATE users SET password_hash = $1 WHERE id = $2';
-    const values = [passwordHash, id];
+export const updatePassword = async (name: string, passwordHash: string) => {
+    const text = 'UPDATE users SET password_hash = $1 WHERE name = $2';
+    const values = [passwordHash, name];
     await executeQuery(text, values);
 };
 

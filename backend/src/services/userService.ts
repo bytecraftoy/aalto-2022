@@ -14,7 +14,6 @@ import {
     addProject,
     updateProject,
     deleteProject,
-    selectPasswordbyID,
     updatePassword,
 } from '../db/queries';
 import { RequestInfo, DEFAULT_ERROR } from '../types/ServiceTypes';
@@ -71,6 +70,12 @@ const projectRequestSchema = z.object({
     data: z.object({}).passthrough(),
 });
 
+//Hashes password and returns the hash
+const hashPassword = async (password: string) => {
+    const hash = await bcrypt.hash(password, 10);
+    return hash;
+};
+
 /**
  * Checks if the user exists and the password is correct.
  * Returns the RequestInfo
@@ -101,16 +106,15 @@ const checkPassword = async (
 };
 
 const changePassword = async (
-    userID: string,
+    username: string,
     currentPassword: string,
     newPassword: string
 ): Promise<RequestInfo> => {
-    const hash = await selectPasswordbyID(userID);
-    if (hash === null) return DEFAULT_ERROR;
+    const res = await checkPassword(username, currentPassword);
     try {
-        if (await bcrypt.compare(currentPassword, hash)) {
-            const passwordHash = await bcrypt.hash(newPassword, 10);
-            await updatePassword(userID, passwordHash);
+        if (res.success) {
+            const passwordHash = await hashPassword(newPassword);
+            await updatePassword(username, passwordHash);
             return { success: true, message: 'Success.' };
         } else {
             return {
@@ -166,7 +170,7 @@ const createUser = async (
                 message:
                     'Username already exists, please choose a different one.',
             };
-        const passwordHash = await bcrypt.hash(password, 10);
+        const passwordHash = await hashPassword(password);
         await addUser(name, passwordHash);
         const userId = await selectUserID(name);
         if (!userId) return DEFAULT_ERROR;
