@@ -12,71 +12,67 @@ const prompt_input = 'prompt input from playwright';
 const uuid = () => Math.random().toString(36).substring(2, 12);
 const username = uuid();
 
-let registered = false;
+test.beforeAll(async ({ browser }) => {
+    const page = await browser.newPage();
+    await page.goto('/');
+    await expect(page).toHaveURL('/login/');
+    await page.click('button:has-text("Sign up")');
+    await expect(page).toHaveURL('/register');
+    await page
+        .locator('label', {
+            has: page.locator('span:has-text("Username")'),
+        })
+        .locator('input')
+        .first()
+        .fill(username, { force: true });
+    await page
+        .locator('label', {
+            has: page.locator('span:has-text("Password")'),
+        })
+        .locator('input')
+        .first()
+        .fill('salasana', { force: true });
+    await page
+        .locator('label', {
+            has: page.locator('span:has-text("Repeat password")'),
+        })
+        .locator('input')
+        .first()
+        .fill('salasana', { force: true });
+
+    await page
+        .locator('label', {
+            has: page.locator('span:has-text("Key")'),
+        })
+        .locator('input')
+        .first()
+        .fill(process.env.REGISTER_KEY!, { force: true });
+
+    await page.click('button:has-text("Create account")');
+    await expect(page).toHaveURL('/');
+});
+
 test.beforeEach(async ({ page }) => {
-    // Register once per worker
-    if (!registered) {
-        registered = true;
-
-        await page.goto('/');
-        await expect(page).toHaveURL('/login/');
-        await page.click('button:has-text("Sign up")');
-        await expect(page).toHaveURL('/register');
-        await page
-            .locator('label', {
-                has: page.locator('span:has-text("Username")'),
-            })
-            .locator('input')
-            .first()
-            .fill(username, { force: true });
-        await page
-            .locator('label', {
-                has: page.locator('span:has-text("Password")'),
-            })
-            .locator('input')
-            .first()
-            .fill('salasana', { force: true });
-        await page
-            .locator('label', {
-                has: page.locator('span:has-text("Repeat password")'),
-            })
-            .locator('input')
-            .first()
-            .fill('salasana', { force: true });
-
-        await page
-            .locator('label', {
-                has: page.locator('span:has-text("Key")'),
-            })
-            .locator('input')
-            .first()
-            .fill(process.env.REGISTER_KEY!, { force: true });
-
-        await page.click('button:has-text("Create account")');
-        await expect(page).toHaveURL('/');
-        // Log in
-    } else {
-        await page.goto('/');
-        await expect(page).toHaveURL('/login/');
-        await page
-            .locator('label', {
-                has: page.locator('span:has-text("Username")'),
-            })
-            .locator('input')
-            .first()
-            .fill(username, { force: true });
-        await page
-            .locator('label', {
-                has: page.locator('span:has-text("Password")'),
-            })
-            .locator('input')
-            .first()
-            .fill('salasana', { force: true });
-        await page
-            .locator('[data-testid="custom-button"]:has-text("Log in")')
-            .click();
-        await expect(page).toHaveURL('/');
-    }
+    await page.goto('/');
+    await expect(page).toHaveURL('/login/');
+    await page
+        .locator('label', {
+            has: page.locator('span:has-text("Username")'),
+        })
+        .locator('input')
+        .first()
+        .fill(username, { force: true });
+    await page
+        .locator('label', {
+            has: page.locator('span:has-text("Password")'),
+        })
+        .locator('input')
+        .first()
+        .fill('salasana', { force: true });
+    await page
+        .locator('[data-testid="custom-button"]:has-text("Log in")')
+        .click();
+    await expect(page).toHaveURL('/');
 });
 
 // This test is for checking that the "Generate" button is locked when there is no prompt input.
