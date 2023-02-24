@@ -6,6 +6,7 @@ import {
     healthRouter,
     userRouter,
     presetsRouter,
+    adminRouter,
 } from './routers';
 import { cors } from './middleware/cors';
 import { requestLogger, errorLogger } from './middleware/logger';
@@ -13,8 +14,12 @@ import cookieParser from 'cookie-parser';
 import { checkToken } from './middleware/checkToken';
 import expressAsyncHandler from 'express-async-handler';
 import { tokenReader } from './middleware/tokenReader';
+import { rootPath } from './routers/admin';
 
 const app = express();
+
+app.use(rootPath, adminRouter);
+
 app.use(cors);
 app.use(cookieParser());
 app.use(bodyParser.text({ type: '*/*' }));
