@@ -220,13 +220,13 @@ describe('user router register', () => {
         await validateUserStatus(validData.name, false);
     });
 
-    test('returns 400 for password longer than 50 characters', async () => {
+    test('returns 400 for password longer than 1000 characters', async () => {
         await api
             .post('/api/user/register/')
             .send(
                 JSON.stringify({
                     ...validData,
-                    password: 'a'.repeat(51),
+                    password: 'a'.repeat(1001),
                 })
             )
             .expect(400);
