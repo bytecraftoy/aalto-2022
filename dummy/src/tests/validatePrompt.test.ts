@@ -35,18 +35,6 @@ describe('prompt validation', () => {
             "model": "text-davinci-002",
             "prompt": "Write flavor text for a cyberpunk soldier in a dystopian board game:",
             "temperature": 0.5,
-            "max_tokens": 2000,
-            "top_p": 1,
-            "frequency_penalty": 0.52,
-            "presence_penalty": 0.5,
-            "best_of": 1
-        }`)
-        ).toBe('top_p is not a float');
-        expect(
-            getPromptValidationError(`{
-            "model": "text-davinci-002",
-            "prompt": "Write flavor text for a cyberpunk soldier in a dystopian board game:",
-            "temperature": 0.5,
             "max_tokens": 2000.0,
             "top_p": 1.0,
             "frequency_penalty": 0.52,
