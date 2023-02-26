@@ -108,6 +108,22 @@ test('has IOBox delete button while multiple on screen', async ({ page }) => {
 // The test inputs a value for the category and prompt fields and checks that the output text area is empty.
 // Next, it clicks the "Generate" button and asserts that the output text area includes the input category and prompt.
 test('should generate a prompt and get result', async ({ page }) => {
+    // First visit the about page to set project theme
+    await page.goto('http://localhost:3000/about');
+    await expect(page).toHaveURL('/about');
+    const themefield = await page
+        .locator('[data-testid="theme-input"]')
+        .first()
+        .locator('input')
+        .first();
+    await themefield.fill(theme_input, { force: true });
+    await expect(themefield).toHaveValue(theme_input);
+    await page.click('body'); // Get out of focus to cause autosave
+    await expect(page.locator('div:has-text("Your progress has been saved")')).toBeDefined();
+    await expect(page.locator('div:has-text("Your progress has been saved")')).toHaveCount(0); //Autosave finished
+
+    await page.goto('http://localhost:3000');
+    await expect(page).toHaveURL('/');
     await page.fill('input[placeholder*="category"]', category_input);
     await page.fill('textarea[placeholder*="User input here"]', prompt_input);
     await expect(page.locator(output_locator)).toHaveText('');
@@ -119,6 +135,19 @@ test('should generate a prompt and get result', async ({ page }) => {
 });
 
 test('should generate all boxes with generate all button', async ({ page }) => {
+        // First visit the about page to set project theme
+        await page.goto('http://localhost:3000/about');
+        await expect(page).toHaveURL('/about');
+        const themefield = await page
+            .locator('[data-testid="theme-input"]')
+            .first()
+            .locator('input')
+            .first();
+        await themefield.fill(theme_input, { force: true });
+        await expect(themefield).toHaveValue(theme_input);
+        await page.click('body'); // Get out of focus to cause autosave
+        await page.goto('http://localhost:3000');
+        await expect(page).toHaveURL('/');
     const numExtra = 3;
     await page.fill('input[placeholder*="category"]', category_input);
     await expect(page.locator('[data-testid="prompt"]')).toHaveCount(1);
