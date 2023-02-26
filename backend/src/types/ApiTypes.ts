@@ -17,7 +17,9 @@ export const GenerationRequestJsonSchema = z.object({
 });
 
 export interface ApiRequest {
-    contexts: string[];
+    //the current implementation requires there to be exactly 2 contexts:
+    //the theme and the category
+    contexts: [string, string];
     prompt: string;
     id: string;
     parameters: Parameters;

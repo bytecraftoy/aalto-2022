@@ -20,6 +20,11 @@ class ValidationError extends SyntaxError {
 // eslint-disable-next-line @typescript-eslint/require-await
 const validateApiRequest = async (body: string): Promise<ApiRequest> => {
     const parsed = GenerationRequestJsonSchema.parse(JSON.parse(body));
+    //currently we wan there to be exactly two contexts: theme and category
+    if (parsed.contexts.length !== 2)
+        throw new ValidationError(
+            `Found ${parsed.contexts.length} contexts instead of 2`
+        );
     return parsed as ApiRequest;
 };
 

@@ -6,6 +6,7 @@ import {
     ProxyError,
     responseGen,
     createPrompt,
+    ValidationError,
 } from '../services';
 import { logger } from '../utils/logger';
 import { ZodError } from 'zod';
@@ -36,7 +37,7 @@ apiRouter.post(
                 );
                 res.json(responseGen(gpt, id));
             } catch (e) {
-                if (e instanceof ZodError) {
+                if (e instanceof ZodError || e instanceof ValidationError) {
                     logger.error('validation_fail', {
                         error: {
                             name: e.name,
