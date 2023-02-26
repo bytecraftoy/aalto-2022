@@ -20,8 +20,7 @@ const handleError = (err: unknown): { success: false; error: Error } => {
  * load presets from the backend
  */
 export const loadPresets = async (): Promise<
-    | { success: true; presets: Preset[] }
-    | { success: false; error: Error }
+    { success: true; presets: Preset[] } | { success: false; error: Error }
 > => {
     try {
         const presets = await apiFetchJSON('/api/presets');

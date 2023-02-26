@@ -18,13 +18,13 @@ export const useAbout = () => {
     const presets = useAppSelector((state) => state.presets.value);
     const currentProject = () => projects[0];
 
-
-    
     // Presets
-    const presetNames = presets.map(p => p.presetName);
-    const [currentPreset, setCurrentPreset] = useState(presetNames[0] ?? 'No presets found');
+    const presetNames = presets.map((p) => p.presetName);
+    const [currentPreset, setCurrentPreset] = useState(
+        presetNames[0] ?? 'No presets found'
+    );
     const selectPreset = (name: string) => {
-        const preset = presets.find(p => p.presetName === name);
+        const preset = presets.find((p) => p.presetName === name);
         if (preset) {
             const value = preset as Preset;
             setCurrentPreset(value.presetName);
@@ -32,11 +32,7 @@ export const useAbout = () => {
             // TODO:
             // change parameters on preset change
         }
-    }
-
-
-
-
+    };
 
     // Keep track of the last saved theme so we don't cause unnecessary saves
     const [lastTheme, setLastTheme] = useState<Theme>(theme);

@@ -41,19 +41,19 @@ export const usePanel = (
     );
     // undefined parameters means that we use globalParameters
 
-
     // Presets
-    const presetNames = presets.map(p => p.presetName);
-    const [currentPreset, setCurrentPreset] = useState(presetNames[0] ?? 'No presets found');
+    const presetNames = presets.map((p) => p.presetName);
+    const [currentPreset, setCurrentPreset] = useState(
+        presetNames[0] ?? 'No presets found'
+    );
     const selectPreset = (name: string) => {
-        const preset = presets.find(p => p.presetName === name);
+        const preset = presets.find((p) => p.presetName === name);
         if (preset) {
             const value = preset as Preset;
             setCurrentPreset(value.presetName);
             setParameters(value);
         }
-    }
-
+    };
 
     const [loading, setLoading] = useState<boolean>(false);
     const [popupOpen, setPopup] = useState<boolean>(false);
@@ -215,6 +215,6 @@ export const usePanel = (
         setPopup,
         saveState,
         setParameters,
-        selectPreset
+        selectPreset,
     };
 };
