@@ -49,10 +49,11 @@ export const IOBoxButton: React.FC<IOBoxButtonProps> = ({
                     'h-12 rounded-md outline outline-1 outline-white/20',
                     { 'pr-3': !nameVisible }
                 )}
-                data-testid="custom-button">
+                data-testid="custom-button"
+            >
                 {solidIcon(icon, 'mr-2 ' + textOnBg(colorPalette))}
                 {nameVisible ? name : ''}
-                </button>
+            </button>
         </div>
     );
 };

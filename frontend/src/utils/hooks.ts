@@ -127,7 +127,7 @@ export const useLogin = () => {
 
         // Load presets
         const presetRes = await loadPresets();
-        if(presetRes.success) dispatch(setPresets(presetRes.presets));
+        if (presetRes.success) dispatch(setPresets(presetRes.presets));
 
         // Load projects
         const [project, projects] = await initializeUserProjects();

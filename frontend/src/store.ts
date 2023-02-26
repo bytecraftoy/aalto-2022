@@ -20,7 +20,7 @@ const store = configureStore({
         panels: panelReducer,
         user: userReducer,
         projects: projectReducer,
-        presets: presetReducer
+        presets: presetReducer,
     },
 });
 

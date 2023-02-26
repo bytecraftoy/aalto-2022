@@ -128,8 +128,8 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
 
                     <Divider />
                     <div className={useCustom ? '' : 'hidden'}>
-                        {/* Presets dropdown */}
-                        <Dropdown choice={isChanged ? 'Custom' : preset} choices={presets} setChoice={setPanelPreset} disabled={!useCustom} />
+                    {/* Presets dropdown */}
+                    <Dropdown choice={isChanged ? 'Custom' : preset} choices={presets} setChoice={setPanelPreset} disabled={!useCustom} />
 
                         <div className={useCustom ? '' : 'hidden'}>
                             <ParameterToggle
