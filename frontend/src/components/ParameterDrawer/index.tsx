@@ -35,6 +35,14 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
     // Use advanced mode (sliders) vs presets
     const [useAdvanced, setUseAdvanced] = useState(false);
 
+    // Shows Custom preset if sliders are changed
+    const [isChanged, setIsChanged] = useState(false);
+
+    const setPanelPreset = (s:string) => {
+        setIsChanged(false);
+        setPreset(s);
+    }
+
     const toggleCustom = (b: boolean) => {
         setUseCustom(b);
 
@@ -67,24 +75,28 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
         const params = { ...parameters };
         params.creativity = n;
         setParameters(params);
+        setIsChanged(true);
     };
 
     const setInputLength = (n: number) => {
         const params = { ...parameters };
         params.inputLength = n;
         setParameters(params);
+        setIsChanged(true);
     };
 
     const setQuality = (n: number) => {
         const params = { ...parameters };
         params.quality = n;
         setParameters(params);
+        setIsChanged(true);
     };
 
     const setOutputLength = (n: number) => {
         const params = { ...parameters };
         params.outputLength = n;
         setParameters(params);
+        setIsChanged(true);
     };
 
     return (
@@ -115,59 +127,60 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
                     />
 
                     <Divider />
-
-                    {/* Presets dropdown */}
-                    <Dropdown choice={useAdvanced ? 'Custom' : preset} choices={presets} setChoice={setPreset} disabled={useAdvanced} />
-
                     <div className={useCustom ? '' : 'hidden'}>
-                        <ParameterToggle
-                            title="Advanced settings"
-                            enabled={useAdvanced}
-                            setEnabled={setUseAdvanced}
-                        />
-                        <Divider />
-                    </div>
+                        {/* Presets dropdown */}
+                        <Dropdown choice={isChanged ? 'Custom' : preset} choices={presets} setChoice={setPanelPreset} disabled={!useCustom} />
 
-                    <div className={useCustom && useAdvanced ? '' : 'hidden'}>
-                        <ParameterSlider
-                            title="Creativity"
-                            minValue={0}
-                            maxValue={1}
-                            step={0.001}
-                            value={parameters.creativity}
-                            setValue={setCreativity}
-                            colorPalette="primary"
-                        />
+                        <div className={useCustom ? '' : 'hidden'}>
+                            <ParameterToggle
+                                title="Advanced settings"
+                                enabled={useAdvanced}
+                                setEnabled={setUseAdvanced}
+                            />
+                            <Divider />
+                        </div>
 
-                        <ParameterSlider
-                            title="Input length"
-                            minValue={1024}
-                            maxValue={8000}
-                            step={1}
-                            value={parameters.inputLength}
-                            setValue={setInputLength}
-                            colorPalette="primary"
-                        />
+                        <div className={useCustom && useAdvanced ? '' : 'hidden'}>
+                            <ParameterSlider
+                                title="Creativity"
+                                minValue={0}
+                                maxValue={1}
+                                step={0.001}
+                                value={parameters.creativity}
+                                setValue={setCreativity}
+                                colorPalette="primary"
+                            />
 
-                        <ParameterSlider
-                            title="Output length"
-                            minValue={0}
-                            maxValue={1}
-                            step={0.001}
-                            value={parameters.outputLength}
-                            setValue={setOutputLength}
-                            colorPalette="primary"
-                        />
+                            <ParameterSlider
+                                title="Input length"
+                                minValue={1024}
+                                maxValue={8000}
+                                step={1}
+                                value={parameters.inputLength}
+                                setValue={setInputLength}
+                                colorPalette="primary"
+                            />
 
-                        <ParameterSlider
-                            title="Quality"
-                            minValue={1}
-                            maxValue={9}
-                            step={1}
-                            value={parameters.quality}
-                            setValue={setQuality}
-                            colorPalette="primary"
-                        />
+                            <ParameterSlider
+                                title="Output length"
+                                minValue={0}
+                                maxValue={1}
+                                step={0.001}
+                                value={parameters.outputLength}
+                                setValue={setOutputLength}
+                                colorPalette="primary"
+                            />
+
+                            <ParameterSlider
+                                title="Quality"
+                                minValue={1}
+                                maxValue={9}
+                                step={1}
+                                value={parameters.quality}
+                                setValue={setQuality}
+                                colorPalette="primary"
+                            />
+                        </div>
                     </div>
                 </div>
             </Surface>
