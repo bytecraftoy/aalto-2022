@@ -185,6 +185,7 @@ export const usePanel = (
         promptBoxes,
         loading,
         popupOpen,
+        parameters,
         setCategory,
         setPromptBoxes,
         generateOutput,

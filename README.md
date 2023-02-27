@@ -42,7 +42,7 @@ Using the convinience scripts is purely optional. The backend and frontend can b
 
 ### Documentation
 
-The project contains a documentation site created from markdown using [Docusaurus]https://docusaurus.io/
+The project contains a documentation site created from markdown using [Docusaurus](https://docusaurus.io/)
 To view the documentation, you can use `npm run docusaurus`. This will open documentation as a site at `http://localhost:7777`.
 It is the same as running the commands:
 

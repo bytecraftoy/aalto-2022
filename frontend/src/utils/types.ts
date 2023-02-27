@@ -148,7 +148,7 @@ export const DEFAULT_PARAMETERS: Parameters = {
     creativity: 0.5,
     quality: 9,
     inputLength: 5000,
-    outputLength: 1.0,
+    outputLength: 3,
 };
 
 /**
