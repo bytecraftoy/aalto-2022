@@ -72,7 +72,7 @@ export interface ExcelFormat {
  */
 export interface Theme {
     name: string;
-    globalParameters: Parameters;
+    globalParameters: Preset;
 }
 
 /**
@@ -94,7 +94,10 @@ export interface ContentPanelData {
     id: string;
     category: string;
     prompts: PromptData[];
-    parameters?: Parameters; //Custom params, use global ones if not defined
+
+    overrideTheme: boolean;
+    advancedMode: boolean;
+    parameters?: Preset;
 }
 
 /**
@@ -167,7 +170,7 @@ export const DEFAULT_PARAMETERS: Parameters = {
  */
 export const DEFAULT_THEME: Theme = {
     name: '',
-    globalParameters: DEFAULT_PARAMETERS,
+    globalParameters: { presetName: 'Default', ...DEFAULT_PARAMETERS },
 };
 
 /**
@@ -185,6 +188,8 @@ export const createEmptyPanel = (): ContentPanelData => {
         id: generate(),
         category: '',
         prompts: [createEmptyPrompt()], // By default, there is one promptIOBox
+        overrideTheme: false,
+        advancedMode: false,
     };
 };
 

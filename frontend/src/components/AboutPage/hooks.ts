@@ -102,12 +102,12 @@ export const useAbout = () => {
         dispatch(setTheme(newTheme));
     };
 
-    const setThemeParameters = (globalParameters: Parameters | undefined) => {
+    const setThemeParameters = (globalParameters: Parameters) => {
         // Ignore setting parameters to undefined
         const params = globalParameters ?? theme.globalParameters;
 
         const newTheme = { ...theme };
-        newTheme.globalParameters = params;
+        newTheme.globalParameters = { presetName: 'Custom', ...params };
         dispatch(setTheme(newTheme));
     };
 

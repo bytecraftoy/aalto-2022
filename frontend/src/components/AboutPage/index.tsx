@@ -29,7 +29,6 @@ export const AboutPage = () => {
         theme,
         panels,
         presetNames,
-        currentPreset,
         setThemeName,
         selectPreset,
         setThemeParameters,
@@ -68,6 +67,11 @@ export const AboutPage = () => {
         if (link) downloadXlsx(link);
     };
 
+    // Empty function, implementation added in the future
+    const emptyMethod = () => {
+        return;
+    };
+
     // Opens ParameterDrawer
     const [open, setOpen] = useState(false);
 
@@ -75,11 +79,14 @@ export const AboutPage = () => {
         //Take up full space, and center the content in it
         <div className="relative w-full h-full flex-1">
             <ParameterDrawer
-                preset={currentPreset}
+                overrideTheme={false}
+                advancedMode={false}
+                setOverrideTheme={emptyMethod}
+                setAdvancedMode={emptyMethod}
                 presets={presetNames}
-                setPreset={selectPreset}
-                parameters={theme.globalParameters}
-                setParameters={setThemeParameters}
+                preset={theme.globalParameters}
+                selectPreset={selectPreset}
+                setCustomParameters={setThemeParameters}
                 open={open}
                 setOpen={setOpen}
             />

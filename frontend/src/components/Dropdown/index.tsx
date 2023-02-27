@@ -11,6 +11,9 @@ export interface DropdownProps {
     className?: string;
 }
 
+/**
+ * Text dropdown with a selection
+ */
 export const Dropdown: React.FC<DropdownProps> = ({
     choice,
     setChoice,

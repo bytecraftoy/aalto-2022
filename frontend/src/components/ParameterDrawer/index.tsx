@@ -1,59 +1,41 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Surface } from '../Surface';
 import { Transition } from '@headlessui/react';
 import { Divider } from '../Divider';
 import { ParameterSlider } from './ParameterSlider';
 import { ParameterToggle } from './ParameterToggle';
-import { Parameters } from '../../utils/types';
+import { Preset, Parameters } from '../../utils/types';
 import { Dropdown } from '../Dropdown';
 
 interface ParameterDrawerProps {
     open: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    preset: string;
-    setPreset: (s: string) => void;
+    setOpen: (b: boolean) => void;
+    preset: Preset; // Custom parameters can be a preset named "Custom"
+
+    overrideTheme: boolean;
+    setOverrideTheme: (b: boolean) => void;
+
+    advancedMode: boolean;
+    setAdvancedMode: (b: boolean) => void;
+
     presets: string[];
-    parameters: Parameters;
-    setParameters: (p: Parameters | undefined) => void;
-    // Allow setting params to undefined for reset
+    selectPreset: (s: string) => void;
+    setCustomParameters: (p: Parameters) => void;
 }
 
 export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
-    preset,
-    setPreset,
-    presets,
-    parameters,
-    setParameters,
     open,
     setOpen,
+    preset,
+    overrideTheme,
+    setOverrideTheme,
+    advancedMode,
+    setAdvancedMode,
+    presets,
+    selectPreset,
+    setCustomParameters,
 }) => {
     const drawerRef = useRef<HTMLDivElement>(null);
-
-    // Use custom parameters vs global parameters
-    const [useCustom, setUseCustom] = useState(false);
-
-    // Use advanced mode (sliders) vs presets
-    const [useAdvanced, setUseAdvanced] = useState(false);
-
-    // Shows Custom preset if sliders are changed
-    const [isChanged, setIsChanged] = useState(false);
-
-    const setPanelPreset = (s: string) => {
-        setIsChanged(false);
-        setPreset(s);
-    };
-
-    const toggleCustom = (b: boolean) => {
-        setUseCustom(b);
-
-        if (!b) {
-            // Reset parameters to undefined => default values
-            setParameters(undefined);
-
-            // Reset advanced mode
-            setUseAdvanced(false);
-        }
-    };
 
     useEffect(() => {
         // Closes the drawer if clicked outside of the drawer
@@ -72,31 +54,33 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
     }, []);
 
     const setCreativity = (n: number) => {
-        const params = { ...parameters };
+        const params = { ...preset };
         params.creativity = n;
-        setParameters(params);
-        setIsChanged(true);
+        setCustomParameters(params);
     };
 
     const setInputLength = (n: number) => {
-        const params = { ...parameters };
+        const params = { ...preset };
         params.inputLength = n;
-        setParameters(params);
-        setIsChanged(true);
+        setCustomParameters(params);
     };
 
     const setQuality = (n: number) => {
-        const params = { ...parameters };
+        const params = { ...preset };
         params.quality = n;
-        setParameters(params);
-        setIsChanged(true);
+
+        // Cap input length if quality is set to 1-3
+        if (n < 4 && params.inputLength > 4000) {
+            params.inputLength = 4000;
+        }
+
+        setCustomParameters(params);
     };
 
     const setOutputLength = (n: number) => {
-        const params = { ...parameters };
+        const params = { ...preset };
         params.outputLength = n;
-        setParameters(params);
-        setIsChanged(true);
+        setCustomParameters(params);
     };
 
     return (
@@ -122,49 +106,60 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
 
                     <ParameterToggle
                         title="Override theme settings"
-                        enabled={useCustom}
-                        setEnabled={toggleCustom}
+                        enabled={overrideTheme}
+                        setEnabled={setOverrideTheme}
                     />
 
                     <Divider />
-                    <div className={useCustom ? '' : 'hidden'}>
+                    <div className={overrideTheme ? '' : 'hidden'}>
                         {/* Presets dropdown */}
                         <Dropdown
-                            choice={isChanged ? 'Custom' : preset}
+                            choice={preset.presetName ?? 'Select a preset'}
                             choices={presets}
-                            setChoice={setPanelPreset}
-                            disabled={!useCustom}
+                            setChoice={selectPreset}
                             className="px-4 mb-4"
                         />
 
-                        <div className={useCustom ? '' : 'hidden'}>
+                        <div className={overrideTheme ? '' : 'hidden'}>
                             <ParameterToggle
                                 title="Advanced settings"
-                                enabled={useAdvanced}
-                                setEnabled={setUseAdvanced}
+                                enabled={advancedMode}
+                                setEnabled={setAdvancedMode}
                             />
                             <Divider />
                         </div>
 
                         <div
-                            className={useCustom && useAdvanced ? '' : 'hidden'}
+                            className={
+                                overrideTheme && advancedMode ? '' : 'hidden'
+                            }
                         >
                             <ParameterSlider
                                 title="Creativity"
                                 minValue={0}
                                 maxValue={1}
                                 step={0.001}
-                                value={parameters.creativity}
+                                value={preset.creativity}
                                 setValue={setCreativity}
+                                colorPalette="primary"
+                            />
+
+                            <ParameterSlider
+                                title="Quality"
+                                minValue={1}
+                                maxValue={9}
+                                step={1}
+                                value={preset.quality}
+                                setValue={setQuality}
                                 colorPalette="primary"
                             />
 
                             <ParameterSlider
                                 title="Input length"
                                 minValue={1024}
-                                maxValue={8000}
+                                maxValue={preset.quality < 4 ? 4000 : 8000}
                                 step={1}
-                                value={parameters.inputLength}
+                                value={preset.inputLength}
                                 setValue={setInputLength}
                                 colorPalette="primary"
                             />
@@ -174,18 +169,8 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
                                 minValue={1}
                                 maxValue={5}
                                 step={1}
-                                value={parameters.outputLength}
+                                value={preset.outputLength}
                                 setValue={setOutputLength}
-                                colorPalette="primary"
-                            />
-
-                            <ParameterSlider
-                                title="Quality"
-                                minValue={1}
-                                maxValue={9}
-                                step={1}
-                                value={parameters.quality}
-                                setValue={setQuality}
                                 colorPalette="primary"
                             />
                         </div>

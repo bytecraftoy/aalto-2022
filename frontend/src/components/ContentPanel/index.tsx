@@ -7,7 +7,6 @@ import {
     panelExport,
 } from '../../utils/exportContent';
 import { Surface } from '../Surface';
-import { PromptData } from '../../utils/types';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
 import { ContentPanelActions } from './ContentPanelActions';
@@ -17,28 +16,23 @@ import { usePanel } from './hooks';
 import { PopUpWindow } from './ContentPanelPrompts/PopUpWindow';
 import { ParameterDrawer } from '../ParameterDrawer';
 
-//Provide access to MasterCategory through a parent callback
+// State stored in redux store
 interface ContentPanelProps {
     id: string;
-    initialCategory: string;
-    initialPrompts: PromptData[];
 }
 
 /**
  * A standalone panel for creating AI content.
  *
  */
-export const ContentPanel: FC<ContentPanelProps> = ({
-    id,
-    initialCategory,
-    initialPrompts,
-}) => {
+export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
     const {
         theme,
         category,
-        currentPreset,
         presetNames,
         promptBoxes,
+        advancedMode,
+        overrideTheme,
         parameters,
         loading,
         popupOpen,
@@ -53,36 +47,33 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         saveState,
         setPopup,
         selectPreset,
-        setParameters,
-    } = usePanel(initialPrompts, initialCategory, id);
+        setCustomParameters,
+        setAdvancedMode,
+        setOverrideTheme,
+    } = usePanel(id);
+
+    // Current state of this panel in exportable format
+    const exportData: panelExport = {
+        theme,
+        panel: {
+            id,
+            category,
+            prompts: promptBoxes,
+            parameters,
+            advancedMode,
+            overrideTheme,
+        },
+    };
 
     //Callback to export the category, and all inputs / outputs in json
     const jsonExport = async () => {
-        const data: panelExport = {
-            theme,
-            panel: {
-                id,
-                category,
-                prompts: promptBoxes,
-            },
-        };
-
-        const link = await exportJson(data);
+        const link = await exportJson(exportData);
         if (link) downloadJson(link);
     };
 
     //Callback to export outputs in excel
     const excelExport = async () => {
-        const data: panelExport = {
-            theme,
-            panel: {
-                id,
-                category,
-                prompts: promptBoxes,
-            },
-        };
-
-        const link = await exportXlsx(data);
+        const link = await exportXlsx(exportData);
         if (link) downloadXlsx(link);
     };
 
@@ -93,11 +84,14 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         //Take up full space, and center the content panel in it
         <div className="relative w-full h-full flex-1">
             <ParameterDrawer
-                preset={currentPreset}
-                setPreset={selectPreset}
+                overrideTheme={overrideTheme}
+                advancedMode={advancedMode}
+                setOverrideTheme={setOverrideTheme}
+                setAdvancedMode={setAdvancedMode}
+                setCustomParameters={setCustomParameters}
                 presets={presetNames}
-                parameters={parameters ?? theme.globalParameters}
-                setParameters={setParameters}
+                selectPreset={selectPreset}
+                preset={parameters}
                 open={open}
                 setOpen={setOpen}
             />

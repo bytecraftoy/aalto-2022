@@ -67,21 +67,21 @@
             "presetName": "LQ Technical Flavor",
             "creativity": 0.0,
             "quality": 1,
-            "inputLength": 5000,
+            "inputLength": 4000,
             "outputLength": 5
         },
         {
             "presetName": "LQ General Flavor",
             "creativity": 0.5,
             "quality": 1,
-            "inputLength": 5000,
+            "inputLength": 4000,
             "outputLength": 5
         },
         {
             "presetName": "LQ General Story",
             "creativity": 1.0,
             "quality": 1,
-            "inputLength": 5000,
+            "inputLength": 4000,
             "outputLength": 5
         },
         {
@@ -129,21 +129,21 @@
         {
             "presetName": "LQ Technical Description",
             "creativity": 0.0,
-            "quality": 1,
+            "quality": 4,
             "inputLength": 8000,
             "outputLength": 5
         },
         {
             "presetName": "LQ Prompted Flavor",
             "creativity": 0.5,
-            "quality": 1,
+            "quality": 4,
             "inputLength": 8000,
             "outputLength": 5
         },
         {
             "presetName": "LQ Prompted Story",
             "creativity": 1.0,
-            "quality": 1,
+            "quality": 4,
             "inputLength": 8000,
             "outputLength": 5
         },

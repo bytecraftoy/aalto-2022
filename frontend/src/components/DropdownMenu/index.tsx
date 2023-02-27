@@ -1,27 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
-import { solidIcon } from '../../utils/icons';
+import { IconButton } from '../Buttons';
 import { MenuItem } from './MenuItem';
-
-/**
- * Content panel dropdown menu and its functionality
- *
- */
+import { Surface } from '../Surface';
+import { Icon } from '../../utils/icons';
 
 interface DropdownMenuProps {
-    setPopup: (b: boolean) => void;
-
-    saveState: () => void;
-    openDrawer: React.Dispatch<React.SetStateAction<boolean>>;
+    icon: Icon;
+    choices: { action: () => void; name: string }[];
 }
 
+/**
+ * Dropdown with a list of actions
+ *
+ */
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
-    saveState,
-    setPopup,
-    openDrawer,
+    icon,
+    choices,
 }) => {
     const [open, setOpen] = useState(false);
-
     const menuRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -40,28 +37,33 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         };
     }, []);
 
-    const popup = () => {
-        setPopup(true);
-        setOpen(false);
-    };
-
     return (
         // Dropdown menu and its styling
-        <div className="relative">
-            <button onClick={() => setOpen(!open)} className={classNames('')}>
-                {solidIcon('Cog6Tooth', 'w-8 h-8 text-primary-30 ')}
-            </button>
-            <div
-                ref={menuRef}
-                className={classNames(
-                    'absolute -right-6 top-12 rounded shadow w-44 bg-surface-2',
-                    { hidden: !open }
-                )}
+        <div className="relative" ref={menuRef}>
+            <IconButton
+                icon={icon}
+                colorPalette="primary"
+                onClick={() => setOpen(!open)}
+            />
+            <Surface
+                level={2}
+                className={classNames('absolute -right-2 top-16 w-32', {
+                    hidden: !open,
+                })}
             >
-                <MenuItem onClick={popup} message="Add Boxes" />
-                <MenuItem onClick={saveState} message="Save" />
-                <MenuItem onClick={() => openDrawer(true)} message="Settings" />
-            </div>
+                {choices.map((choice, index) => {
+                    return (
+                        <MenuItem
+                            key={index}
+                            onClick={() => {
+                                setOpen(false);
+                                choice.action();
+                            }}
+                            message={choice.name}
+                        />
+                    );
+                })}
+            </Surface>
         </div>
     );
 };
