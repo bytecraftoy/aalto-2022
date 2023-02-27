@@ -103,9 +103,10 @@ export const usePanel = (id: string) => {
 
     //Callback to create multiple boxes
     const addPromptBoxes = (n: number) => {
-        for (let i = 0; i < n; i++) {
-            addPromptBox();
-        }
+        const newBoxes = Array.from<PromptData>(Array(n)).map(
+            createEmptyPrompt
+        );
+        setPromptBoxes((prev) => [...prev, ...newBoxes]);
     };
 
     // Generates all the IO boxes that are not locked
