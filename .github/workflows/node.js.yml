@@ -85,7 +85,7 @@ jobs:
             - name: Run unit tests
               run: npm run test-project
 
-    cypress:
+    e2e:
         strategy:
             matrix:
                 # https://nodejs.org/en/about/releases/
@@ -107,21 +107,24 @@ jobs:
             - name: Setup project
               run: npm run setup-project
 
-            - name: Run end-to-end tests
-              id: cypress
-              run: npm run cypress-ci
+            - name: Install playwright browsers
+              run: npx playwright install --with-deps
 
-            - name: Archive Cypress videos on fail
+            - name: Run end-to-end tests
+              id: playwright
+              run: npm run playwright-ci
+
+            - name: Archive Playwright videos on fail
               uses: actions/upload-artifact@v3
-              # Only upload artifacts if Cypress failed
-              if: ${{ failure() && steps.cypress.conclusion == 'failure' }}
+              # Only upload artifacts if Playwright failed
+              if: ${{ failure() && steps.e2e.conclusion == 'failure' }}
               with:
-                  name: cypress-videos
-                  path: cypress/videos
+                  name: playwright-data
+                  path: test-results
 
     alert:
         environment: main
-        needs: [check, build, unit-test, cypress]
+        needs: [check, build, unit-test, e2e]
         if: ${{ failure() && github.ref == 'refs/heads/main' }}
         runs-on: ubuntu-latest
         steps:

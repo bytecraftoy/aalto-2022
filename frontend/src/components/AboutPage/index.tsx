@@ -25,10 +25,10 @@ export const AboutPage = () => {
     const {
         // Used later
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        currentAI,
         theme,
         panels,
         presetNames,
-        currentAI,
         currentPreset,
         setThemeName,
         selectPreset,

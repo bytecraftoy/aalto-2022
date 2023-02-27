@@ -171,9 +171,9 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
 
                             <ParameterSlider
                                 title="Output length"
-                                minValue={0}
-                                maxValue={1}
-                                step={0.001}
+                                minValue={1}
+                                maxValue={5}
+                                step={1}
                                 value={parameters.outputLength}
                                 setValue={setOutputLength}
                                 colorPalette="primary"

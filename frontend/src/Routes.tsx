@@ -4,6 +4,7 @@ import { Panels } from './pages/Panels';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Home } from './pages/Home';
+import { Settings } from './pages/Settings';
 
 /**
  *  Routes of the application
@@ -17,6 +18,7 @@ export const Routes = () => {
             <Route path="/about" element={<About />} />
             <Route path="/panels/:panelId" element={<Panels />} />
             <Route path="/" element={<Home />} />
+            <Route path="/settings" element={<Settings />} />
         </Switch>
     );
 };
