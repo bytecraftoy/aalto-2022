@@ -81,7 +81,7 @@ export const LoginForm = () => {
                 onSubmit={submitForm}
             >
                 <div>
-                    <h1 className=" font-semibold text-3xl text-center">
+                    <h1 className="font-semibold text-3xl text-center">
                         Log in
                     </h1>
                 </div>
