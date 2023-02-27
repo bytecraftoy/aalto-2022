@@ -38,10 +38,10 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
     // Shows Custom preset if sliders are changed
     const [isChanged, setIsChanged] = useState(false);
 
-    const setPanelPreset = (s:string) => {
+    const setPanelPreset = (s: string) => {
         setIsChanged(false);
         setPreset(s);
-    }
+    };
 
     const toggleCustom = (b: boolean) => {
         setUseCustom(b);
@@ -128,8 +128,14 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
 
                     <Divider />
                     <div className={useCustom ? '' : 'hidden'}>
-                    {/* Presets dropdown */}
-                    <Dropdown choice={isChanged ? 'Custom' : preset} choices={presets} setChoice={setPanelPreset} disabled={!useCustom} />
+                        {/* Presets dropdown */}
+                        <Dropdown
+                            choice={isChanged ? 'Custom' : preset}
+                            choices={presets}
+                            setChoice={setPanelPreset}
+                            disabled={!useCustom}
+                            className="px-4 mb-4"
+                        />
 
                         <div className={useCustom ? '' : 'hidden'}>
                             <ParameterToggle
@@ -140,7 +146,9 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
                             <Divider />
                         </div>
 
-                        <div className={useCustom && useAdvanced ? '' : 'hidden'}>
+                        <div
+                            className={useCustom && useAdvanced ? '' : 'hidden'}
+                        >
                             <ParameterSlider
                                 title="Creativity"
                                 minValue={0}
