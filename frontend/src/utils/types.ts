@@ -170,7 +170,7 @@ export const DEFAULT_PARAMETERS: Parameters = {
  */
 export const DEFAULT_THEME: Theme = {
     name: '',
-    globalParameters: { presetName: 'Default', ...DEFAULT_PARAMETERS },
+    globalParameters: { presetName: 'Select a preset', ...DEFAULT_PARAMETERS },
 };
 
 /**

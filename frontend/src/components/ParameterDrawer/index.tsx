@@ -114,7 +114,7 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
                     <div className={overrideTheme ? '' : 'hidden'}>
                         {/* Presets dropdown */}
                         <Dropdown
-                            choice={preset.presetName ?? 'Select a preset'}
+                            choice={preset.presetName}
                             choices={presets}
                             setChoice={selectPreset}
                             className="px-4 mb-4"

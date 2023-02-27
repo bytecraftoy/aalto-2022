@@ -77,11 +77,15 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     <Divider />
 
                     {/** Others */}
+                    {/* Hidden because this is currently not implemented
+                    
                     <NavigationLink
                         label="Overall view"
                         icon={solidIcon('WindowIcon')}
                         to="#"
                     />
+                    
+                    */}
                 </div>
             </Surface>
         </Transition>
