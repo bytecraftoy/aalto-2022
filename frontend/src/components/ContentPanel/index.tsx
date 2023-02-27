@@ -4,9 +4,10 @@ import {
     downloadJson,
     exportXlsx,
     downloadXlsx,
+    panelExport,
 } from '../../utils/exportContent';
 import { Surface } from '../Surface';
-import { PromptData, ContentPanelData } from '../../utils/types';
+import { PromptData } from '../../utils/types';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
 import { ContentPanelActions } from './ContentPanelActions';
@@ -33,6 +34,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
     initialPrompts,
 }) => {
     const {
+        theme,
         category,
         promptBoxes,
         loading,
@@ -51,26 +53,31 @@ export const ContentPanel: FC<ContentPanelProps> = ({
 
     //Callback to export the category, and all inputs / outputs in json
     const jsonExport = async () => {
-        const panel: ContentPanelData = {
-            id,
-            category,
-            prompts: promptBoxes,
+        const data: panelExport = {
+            theme,
+            panel: {
+                id,
+                category,
+                prompts: promptBoxes,
+            },
         };
 
-        const link = await exportJson(panel);
+        const link = await exportJson(data);
         if (link) downloadJson(link);
     };
 
     //Callback to export outputs in excel
-    //Not implemented, instead just call jsonExport
     const excelExport = async () => {
-        const panel: ContentPanelData = {
-            id,
-            category,
-            prompts: promptBoxes,
+        const data: panelExport = {
+            theme,
+            panel: {
+                id,
+                category,
+                prompts: promptBoxes,
+            },
         };
 
-        const link = await exportXlsx(panel);
+        const link = await exportXlsx(data);
         if (link) downloadXlsx(link);
     };
 
