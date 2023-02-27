@@ -29,7 +29,7 @@ export const FilledButton: React.FC<ButtonProps> = ({
                 bg(colorPalette),
                 textOnBg(colorPalette),
                 !disabled && bgHover(colorPalette),
-                bgActive(colorPalette),
+                !disabled && bgActive(colorPalette),
                 className
             )}
             type={type && type}

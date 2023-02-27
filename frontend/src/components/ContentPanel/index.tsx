@@ -94,10 +94,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                     { 'opacity-50 pointer-events-none': loading }
                 )}
             >
-                <Surface
-                    level={2}
-                    className="w-full max-w-6xl min-h-fit rounded-2xl shadow-xl outline outline-1 outline-primary-90"
-                >
+                <Surface level={2} className="w-full max-w-6xl min-h-fit pt-4">
                     {/* Top most part of the content panel */}
                     <ContentPanelHeader
                         category={category}

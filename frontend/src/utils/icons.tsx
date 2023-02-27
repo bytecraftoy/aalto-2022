@@ -29,7 +29,9 @@ export type Icon =
     | 'LockClosedIcon'
     | 'LockOpenIcon'
     | 'LogoutIcon'
-    | 'Cog6Tooth';
+    | 'Cog6Tooth'
+    | 'ChevronUpIcon'
+    | 'ChevronDownIcon';
 
 /**
  * Default sized solid icon element using HeroIcons.
@@ -71,6 +73,10 @@ export const solidIcon = (i?: Icon, className?: string) => {
             return <I.ArrowLeftOnRectangleIcon className={classN} />;
         case 'Cog6Tooth':
             return <I.Cog6ToothIcon className={classN} />;
+        case 'ChevronUpIcon':
+            return <I.ChevronUpIcon className={classN} />;
+        case 'ChevronDownIcon':
+            return <I.ChevronDownIcon className={classN} />;
         default:
             return <></>;
     }

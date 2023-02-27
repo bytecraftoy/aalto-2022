@@ -15,7 +15,7 @@ export const UserButtons = () => {
 
     if (!loggedIn) {
         return (
-            <div className="flex flex-row">
+            <div className="flex flex-row mr-2">
                 <TextButton
                     name="Sign up"
                     colorPalette="primary"

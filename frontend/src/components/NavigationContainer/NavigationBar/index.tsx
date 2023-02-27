@@ -15,7 +15,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ setOpen }) => {
     return (
         <Surface
             level={5}
-            className="sticky w-full top-0 left-0 h-20 z-20 flex justify-between items-center outline outline-1 outline-primary-80"
+            className="sticky w-full top-0 left-0 h-20 z-20 flex justify-between items-center rounded-none shadow-secondary-20/5 outline-primary-80"
         >
             <button
                 onClick={() => setOpen(true)}
@@ -25,7 +25,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ setOpen }) => {
             </button>
 
             {/* Only show title on large screens */}
-            <h1 className="text-2xl font-medium mx-4 text-center text-neutral-10 max-lg:hidden">
+            <h1 className="text-2xl font-medium mx-4 text-center text-neutral-30 max-lg:hidden">
                 AI-assisted game content creator
             </h1>
 

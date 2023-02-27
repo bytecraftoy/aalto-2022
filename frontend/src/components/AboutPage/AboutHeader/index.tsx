@@ -24,19 +24,16 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
     saveState,
 }) => {
     return (
-        <div className="flex flex-row justify-around items-center my-6">
-            <div className="flex flex-row justify-around items-center">
-                <div className="flex-1">
-                    <h1 className="text-center text-3xl py-4">
-                        My game is a...
-                    </h1>
-                    <ThemeInput
-                        name={theme.name}
-                        setName={setThemeName}
-                        saveState={saveState}
-                    />
-                </div>
-                <div className="flex-1 z-[15] pl-8"></div>
+        <div className="flex flex-col justify-center items-center my-6">
+            <div className="flex-1">
+                <h1 className="text-center text-3xl pt-4 pb-6">
+                    My game{"'"}s theme is ...
+                </h1>
+                <ThemeInput
+                    name={theme.name}
+                    setName={setThemeName}
+                    saveState={saveState}
+                />
             </div>
         </div>
     );

@@ -21,19 +21,23 @@ export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
     return (
         <Surface
             level={5}
-            className="h-20 w-full rounded-2xl flex flex-row justify-between items-center px-4"
+            className="w-full rounded-2xl flex flex-row justify-between items-end p-4"
         >
             <FilledButton
+                icon="ArrowPathIcon"
                 onClick={generateAll}
                 name="Generate all"
                 colorPalette="primary"
             />
-            <SegmentedButtons
-                actions={[
-                    { name: 'json', onClick: exportJson },
-                    { name: 'excel', onClick: exportExcel },
-                ]}
-            />
+            <div className="flex flex-col justify-center items-center">
+                <h3 className="text-lg font-medium pb-2">Export content</h3>
+                <SegmentedButtons
+                    actions={[
+                        { name: 'json', onClick: exportJson },
+                        { name: 'excel', onClick: exportExcel },
+                    ]}
+                />
+            </div>
         </Surface>
     );
 };
