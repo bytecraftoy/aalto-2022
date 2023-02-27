@@ -1,14 +1,23 @@
 import React from 'react';
+import classNames from 'classnames';
 
 interface MenuItemProps {
     onClick: () => void;
     message: string;
+    className?: string;
 }
 
-export const MenuItem: React.FC<MenuItemProps> = ({ onClick, message }) => {
+export const MenuItem: React.FC<MenuItemProps> = ({
+    onClick,
+    message,
+    className,
+}) => {
     return (
         <div
-            className='className="block px-4 py-2 rounded bg-neutral-10 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-8'
+            className={classNames(
+                'transition-colors w-full cursor-pointer inline-block p-4 hover:bg-primary-90',
+                className
+            )}
             onClick={onClick}
         >
             {message}

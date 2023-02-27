@@ -27,9 +27,11 @@ export const AboutPage = () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         currentAI,
         theme,
-        setThemeName,
-        setThemeParameters,
         panels,
+        presetNames,
+        setThemeName,
+        selectPreset,
+        setThemeParameters,
         currentProject,
         saveState,
     } = useAbout();
@@ -65,6 +67,11 @@ export const AboutPage = () => {
         if (link) downloadXlsx(link);
     };
 
+    // Empty function, implementation added in the future
+    const emptyMethod = () => {
+        return;
+    };
+
     // Opens ParameterDrawer
     const [open, setOpen] = useState(false);
 
@@ -72,8 +79,14 @@ export const AboutPage = () => {
         //Take up full space, and center the content in it
         <div className="relative w-full h-full flex-1">
             <ParameterDrawer
-                parameters={theme.globalParameters}
-                setParameters={setThemeParameters}
+                overrideTheme={false}
+                advancedMode={false}
+                setOverrideTheme={emptyMethod}
+                setAdvancedMode={emptyMethod}
+                presets={presetNames}
+                preset={theme.globalParameters}
+                selectPreset={selectPreset}
+                setCustomParameters={setThemeParameters}
                 open={open}
                 setOpen={setOpen}
             />

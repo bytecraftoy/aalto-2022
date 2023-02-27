@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { updatePanel } from '../../reducers/panelReducer';
@@ -15,32 +15,86 @@ import { getProject, saveProject } from './../../utils/projects';
 /**
  * Custom hook which return prompts, category and loading information + all the action functions related to prompts and category
  * (generating, locking, setting output for prompts etc.)
- * @param initialPrompts
- * @param initialCategory
  * @param id
  *
  */
-export const usePanel = (
-    initialPrompts: PromptData[],
-    initialCategory: string,
-    id: string
-) => {
+export const usePanel = (id: string) => {
     const dispatch = useAppDispatch();
     const theme = useAppSelector((state) => state.theme.value);
     const logged = useAppSelector((state) => state.user.logged);
     const panels = useAppSelector((state) => state.panels.value);
     const projects = useAppSelector((state) => state.projects.value);
+    const presets = useAppSelector((state) => state.presets.value);
 
-    const [promptBoxes, setPromptBoxes] =
-        useState<PromptData[]>(initialPrompts);
-    const [category, setCategory] = useState<string>(initialCategory);
-    const [parameters, setParameters] = useState<Parameters | undefined>(
-        undefined
-    );
-    // undefined parameters means that we use globalParameters
+    // We can assume the panel exists, since the panels page handles missing id's
+    const panel = panels.find((p) => p.id === id) as ContentPanelData;
 
+    // Panel state
+    const category = panel.category;
+    const promptBoxes = panel.prompts;
+
+    // Prioritize custom parameters
+    const parameters = panel.parameters ?? theme.globalParameters;
+
+    // Parameter drawer state
+    const advancedMode = panel.advancedMode;
+    const overrideTheme = panel.overrideTheme;
+
+    // Local state outside of redux store
     const [loading, setLoading] = useState<boolean>(false);
     const [popupOpen, setPopup] = useState<boolean>(false);
+
+    const setAdvancedMode = (b: boolean) => {
+        const newPanel = { ...panel };
+        newPanel.advancedMode = b;
+        dispatch(updatePanel(newPanel));
+    };
+
+    const setOverrideTheme = (b: boolean) => {
+        const newPanel = { ...panel };
+        newPanel.overrideTheme = b;
+
+        // Reset params to global ones
+        if (!b) newPanel.parameters = undefined;
+        dispatch(updatePanel(newPanel));
+    };
+
+    // Presets, (if they were fetched)
+    const presetNames = presets.map((p) => p.presetName) || [
+        'No presets found',
+    ];
+
+    // Select preset by name and update it
+    const selectPreset = (name: string) => {
+        const p = presets.find((p) => p.presetName === name);
+
+        // Preset exists, we can update it
+        if (p) {
+            const newPanel = { ...panel };
+            newPanel.parameters = p;
+            dispatch(updatePanel(newPanel));
+        }
+    };
+
+    // Set custom parameters. This creates a Preset called "Custom"
+    const setCustomParameters = (params: Parameters) => {
+        const newPanel = { ...panel };
+        newPanel.parameters = { presetName: 'Custom', ...params };
+        newPanel.parameters.presetName = 'Custom';
+        dispatch(updatePanel(newPanel));
+    };
+
+    const setCategory = (s: string) => {
+        const newPanel = { ...panel };
+        newPanel.category = s;
+        dispatch(updatePanel(newPanel));
+    };
+
+    const setPromptBoxes = (set: (prev: PromptData[]) => PromptData[]) => {
+        const newPanel = { ...panel };
+        newPanel.prompts = set(newPanel.prompts);
+        dispatch(updatePanel(newPanel));
+    };
 
     //Callback to create new boxes in the panel
     const addPromptBox = () => {
@@ -49,22 +103,23 @@ export const usePanel = (
 
     //Callback to create multiple boxes
     const addPromptBoxes = (n: number) => {
-        for (let i = 0; i < n; i++) {
-            addPromptBox();
-        }
+        const newBoxes = Array.from<PromptData>(Array(n)).map(
+            createEmptyPrompt
+        );
+        setPromptBoxes((prev) => [...prev, ...newBoxes]);
     };
 
     // Generates all the IO boxes that are not locked
     const generateAll = async () => {
         // Start the loading spinner
-        setLoading(() => true);
+        setLoading(true);
 
         // Map of <id, output> for content panels that are generated
         const generated: Map<string, string> = await generatePrompts({
             theme: theme.name,
             prompts: promptBoxes,
             category,
-            parameters: parameters ?? theme.globalParameters,
+            parameters,
         });
 
         // Sets all the promptboxes in a 1 setState call.
@@ -78,6 +133,10 @@ export const usePanel = (
                 return p;
             })
         );
+
+        // Save progress and end the loading spinner
+        await saveState();
+        setLoading(false);
     };
 
     // Get the main project from database and updates it
@@ -117,17 +176,7 @@ export const usePanel = (
      * Saves the panel state
      */
     const saveState = async () => {
-        // Create the new panel object
-        const panel: ContentPanelData = {
-            id,
-            category,
-            prompts: promptBoxes,
-            parameters,
-        };
-
-        // Update the redux store
-        dispatch(updatePanel(panel));
-
+        // Update panel state to database
         await updateDatabase(panel);
 
         EventBus.dispatch('notification', {
@@ -136,21 +185,10 @@ export const usePanel = (
         });
     };
 
-    /**
-     * A callback function for the setPromptBoxes which updates
-     * the redux store after the content generation
-     */
-    useEffect(() => {
-        if (loading) {
-            saveState();
-            // Take out the loading spinner
-            setLoading(() => false);
-        }
-    }, [promptBoxes]);
-
     // Generates single output
     const generateOutput = async (p: PromptData) => {
-        setLoading(() => true);
+        setLoading(true);
+
         setPromptOutput(
             p.id,
             await generateText({
@@ -158,9 +196,12 @@ export const usePanel = (
                 input: p.input,
                 theme: theme.name,
                 category,
-                parameters: parameters ?? theme.globalParameters,
+                parameters,
             })
         );
+
+        await saveState();
+        setLoading(false);
     };
 
     //Callback to modify the input area of a PromptIOBox by id
@@ -182,10 +223,13 @@ export const usePanel = (
     return {
         theme,
         category,
+        parameters,
         promptBoxes,
+        presetNames,
+        advancedMode,
+        overrideTheme,
         loading,
         popupOpen,
-        parameters,
         setCategory,
         setPromptBoxes,
         generateOutput,
@@ -196,6 +240,9 @@ export const usePanel = (
         lockPrompt,
         setPopup,
         saveState,
-        setParameters,
+        setCustomParameters,
+        selectPreset,
+        setAdvancedMode,
+        setOverrideTheme,
     };
 };

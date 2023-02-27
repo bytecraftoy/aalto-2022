@@ -10,7 +10,7 @@ import { useDebounce } from './hooks';
  */
 interface ContentPanelPromptsProps {
     promptBoxes: PromptData[];
-    setPromptBoxes: React.Dispatch<React.SetStateAction<PromptData[]>>;
+    setPromptBoxes: (set: (prev: PromptData[]) => PromptData[]) => void;
     generateOutput: (p: PromptData) => Promise<void>;
     setPromptOutput: (id: string, output: string) => void;
     addPromptBox: () => void;

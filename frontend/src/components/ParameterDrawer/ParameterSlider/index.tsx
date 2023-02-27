@@ -6,6 +6,9 @@ interface ParameterSliderProps extends SliderProps {
     title: string;
 }
 
+/**
+ * Component with a slider and a title displaying the current value of that slider
+ */
 export const ParameterSlider: React.FC<ParameterSliderProps> = ({
     title,
     value,
