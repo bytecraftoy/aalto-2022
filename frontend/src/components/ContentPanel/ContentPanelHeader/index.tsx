@@ -10,7 +10,7 @@ import { DropdownMenu } from '../../DropdownMenu';
 
 interface ContentPanelHeaderProps {
     category: string;
-    setCategory: React.Dispatch<React.SetStateAction<string>>;
+    setCategory: (s: string) => void;
     setPopup: (b: boolean) => void;
 
     saveState: () => void;
@@ -21,7 +21,6 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
     category,
     setCategory,
     setPopup,
-
     saveState,
     setOpen,
 }) => {
@@ -36,9 +35,12 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
                 </div>
                 <div className="flex-1 z-[15] pl-8">
                     <DropdownMenu
-                        setPopup={setPopup}
-                        saveState={saveState}
-                        openDrawer={setOpen}
+                        icon="Cog6Tooth"
+                        choices={[
+                            { action: () => setPopup(true), name: 'Add Boxes' },
+                            { action: () => setOpen(true), name: 'Parameters' },
+                            { action: saveState, name: 'Save' },
+                        ]}
                     />
                 </div>
             </div>

@@ -7,6 +7,8 @@ import { useValidation, useLogin, useTimedOpen } from '../../utils/hooks';
 import { Notification } from '../Notification';
 import { backendURL } from '../../utils/backendURL';
 import { Account } from '../../utils/types';
+import { Surface } from '../Surface';
+import { Divider } from '../Divider';
 
 /**
  *
@@ -62,7 +64,7 @@ export const LoginForm = () => {
             // Initiate a login on the frontend
             await login(acc);
 
-            // Navigates to the project main panel
+            // Navigates to the about page
             navigate('/');
         } else {
             const text = await res.text();
@@ -73,54 +75,59 @@ export const LoginForm = () => {
     };
 
     return (
-        <form className="flex flex-col w-72 gap-10" onSubmit={submitForm}>
-            <div>
-                <h1 className=" font-semibold text-3xl text-center pb-3">
-                    Log in
-                </h1>
-                <div className="w-full h-px bg-black" />
-            </div>
-            <Notification
-                isOpen={open}
-                close={() => setOpen(false)}
-                message={errorMsg}
-            />
-            <CustomInput
-                type="text"
-                label="Username"
-                textHelper="Please enter your username"
-                value={username}
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setUsername(e.target.value)
-                }
-                errors={usernameErrors}
-            />
-            <CustomInput
-                type="password"
-                label="Password"
-                textHelper="Please enter your password"
-                value={password}
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setPassword(e.target.value)
-                }
-                errors={passwordErrors}
-            />
-            <div className="flex flex-col gap-2">
-                <FilledButton
-                    name="Log in"
-                    colorPalette="primary"
-                    onClick={() => undefined}
-                    className="justify-center"
-                    type="submit"
-                    disabled={disabled}
+        <Surface level={2} className="py-12 px-24 max-sm:px-8 max-sm:w-[80%]">
+            <form
+                className="flex flex-col items-center gap-10"
+                onSubmit={submitForm}
+            >
+                <div>
+                    <h1 className="font-semibold text-3xl text-center">
+                        Log in
+                    </h1>
+                </div>
+                <Divider />
+                <Notification
+                    isOpen={open}
+                    close={() => setOpen(false)}
+                    message={errorMsg}
                 />
-                <TextButton
-                    name="Click here to register"
-                    colorPalette="primary"
-                    onClick={() => navigate('/register')}
-                    className="justify-center m-0"
+                <CustomInput
+                    type="text"
+                    label="Username"
+                    textHelper="Please enter your username"
+                    value={username}
+                    onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setUsername(e.target.value)
+                    }
+                    errors={usernameErrors}
                 />
-            </div>
-        </form>
+                <CustomInput
+                    type="password"
+                    label="Password"
+                    textHelper="Please enter your password"
+                    value={password}
+                    onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setPassword(e.target.value)
+                    }
+                    errors={passwordErrors}
+                />
+                <div className="flex flex-col mt-4 gap-2">
+                    <FilledButton
+                        name="Log in"
+                        colorPalette="primary"
+                        onClick={() => undefined}
+                        className="justify-center"
+                        type="submit"
+                        disabled={disabled}
+                    />
+                    <TextButton
+                        name="Click here to register"
+                        colorPalette="primary"
+                        onClick={() => navigate('/register')}
+                        className="justify-center m-0"
+                    />
+                </div>
+            </form>
+        </Surface>
     );
 };

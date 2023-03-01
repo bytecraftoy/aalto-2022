@@ -18,12 +18,7 @@ export const Home = () => {
 
     return (
         <div className="App flex-1 bg-neutral-99 h-full flex flex-col justify-start items-center">
-            <ContentPanel
-                id={panel.id}
-                key={panel.id}
-                initialCategory={panel.category}
-                initialPrompts={panel.prompts}
-            />
+            <ContentPanel id={panel.id} key={panel.id} />
         </div>
     );
 };

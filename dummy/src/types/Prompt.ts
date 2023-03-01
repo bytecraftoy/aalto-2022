@@ -9,4 +9,5 @@ export interface Prompt {
     top_p: number;
     frequency_penalty: number;
     presence_penalty: number;
+    best_of: number;
 }

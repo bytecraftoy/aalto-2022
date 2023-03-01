@@ -19,6 +19,7 @@ const validateForDuplicateFields = (prompt: string): void => {
         '"top_p"',
         '"frequency_penalty"',
         '"presence_penalty"',
+        '"best_of"',
     ];
     for (const name of fields) {
         if (prompt.indexOf(name) !== prompt.lastIndexOf(name))
@@ -44,7 +45,13 @@ const parseJSON = (json: string): Prompt => {
  * Throws a ValidationError if something isn't correct.
  */
 const validateProperties = (obj: Prompt): void => {
-    const validModels = ['text-davinci-002'];
+    const validModels = [
+        'text-davinci-002',
+        'text-davinci-003',
+        'text-babbage-001',
+        'text-curie-001',
+        'text-ada-001',
+    ];
     if (obj === null || obj.constructor !== Object)
         throw new ValidationError('data does not represent a plain object');
     else if (!validModels.includes(obj.model))
@@ -64,7 +71,7 @@ const validateProperties = (obj: Prompt): void => {
     else if (
         typeof obj.max_tokens !== 'number' ||
         obj.max_tokens < 256 ||
-        obj.max_tokens > 4000
+        obj.max_tokens > 8000
     )
         throw new ValidationError(
             'max_tokens is not a number between 256 and 4000'
@@ -87,7 +94,9 @@ const validateProperties = (obj: Prompt): void => {
         throw new ValidationError(
             'presence_penalty is not a number between 0 and 1'
         );
-    else if (Object.keys(obj).length !== 7)
+    else if (typeof obj.best_of !== 'number' || obj.best_of < 0)
+        throw new ValidationError('best_of is not a positive integer');
+    else if (Object.keys(obj).length !== 8)
         throw new ValidationError('too many properties');
 };
 
@@ -136,7 +145,7 @@ const isNumeric = (str: string): boolean => {
 /**
  * Checks that the string 'value' is a valid int or float literal
  * depending on the value of 'shouldBeInt'.
- * Throws a ValidationError if someting isn't correct.
+ * Throws a ValidationError if something isn't correct.
  */
 const validateNumberType = (
     name: string,
@@ -155,16 +164,13 @@ const validateNumberType = (
 
 /**
  * Checks that all of the required number types of a prompt
- * are valid int or float literals depending on their required type.
- * Throws a ValidationError if someting isn't correct.
+ * are valid int literals depending on their required type.
+ * Throws a ValidationError if something isn't correct.
  */
 const validateNumberTypes = (prompt: string): void => {
     const toCheck: { name: string; shouldBeInt: boolean }[] = [
-        { name: 'temperature', shouldBeInt: false },
         { name: 'max_tokens', shouldBeInt: true },
-        { name: 'top_p', shouldBeInt: false },
-        { name: 'frequency_penalty', shouldBeInt: false },
-        { name: 'presence_penalty', shouldBeInt: false },
+        { name: 'best_of', shouldBeInt: true },
     ];
     for (const prop of toCheck) {
         const value = getNumberPropValue(prompt, prop.name);
@@ -174,7 +180,7 @@ const validateNumberTypes = (prompt: string): void => {
 
 /**
  * Validates the prompt JSON string.
- * Throws a ValidationError if someting isn't correct.
+ * Throws a ValidationError if something isn't correct.
  */
 const validatePrompt = (prompt: string): void => {
     if (typeof prompt !== 'string')

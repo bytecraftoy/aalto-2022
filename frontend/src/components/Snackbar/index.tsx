@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { solidIcon } from '../../utils/icons';
 import { EventBus } from '../../utils/eventBus';
 import { useTimedOpen } from '../../utils/hooks';
 
@@ -32,13 +32,13 @@ export const Snackbar: React.FC<SnackbarProps> = ({ children }) => {
         <React.Fragment>
             {children}
             {open && (
-                <div className="fixed flex flex-row items-center justify-between pl-4 pr-2 bottom-4 right-6 w-80 h-12 bg-surface-inverse z-50 shadow-md rounded">
+                <div className="fixed flex flex-row items-center justify-between pl-6 pr-4 py-8 bottom-4 right-6 w-80 h-12 bg-surface-inverse z-50 shadow-md rounded">
                     <div className="text-white ">{message}</div>
                     <div
                         onClick={() => setOpen(false)}
                         className=" rounded-full bg-primary-99 bg-opacity-0 hover:bg-opacity-5 active:bg-opacity-8"
                     >
-                        <XMarkIcon className="text-white h-6 w-6" />
+                        {solidIcon('XMarkIcon', 'text-white')}
                     </div>
                 </div>
             )}

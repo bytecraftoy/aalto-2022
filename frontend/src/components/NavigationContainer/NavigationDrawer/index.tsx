@@ -6,6 +6,7 @@ import { NavigationSubHeader } from './NavigationSubHeader';
 import { NavigationLink } from './NavigationLink';
 import { solidIcon } from '../../../utils/icons';
 import { PanelSection } from './PanelSection';
+import { Divider } from '../../Divider';
 
 /**
  *
@@ -52,19 +53,13 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
             leaveTo="opacity-0 -translate-x-20"
             className="z-30 fixed top-1 left-0 h-full"
         >
-            <Surface
-                level={1}
-                className={classNames(
-                    'w-[360px] h-full z-30 rounded-2xl shadow-lg'
-                )}
-            >
+            <Surface level={1} className={classNames('w-[360px] h-full z-30')}>
                 {/* The data area */}
                 <div className="h-full w-full p-3 overflow-y-auto scrollbar-hide">
                     {/* Drawer header */}
                     <div className="py-2 pl-4 pr-2 h-14">
                         <h2 className="text-xl">Navigation</h2>
                     </div>
-
                     {/** The pages */}
                     <NavigationSubHeader>Pages</NavigationSubHeader>
 
@@ -74,20 +69,23 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                         to="/about"
                     />
 
-                    <div className="h-[1px] bg-neutral-70 mx-4 my-2" />
+                    <Divider />
 
                     {/** Content panels */}
                     <PanelSection />
 
-                    {/** Divider */}
-                    <div className="h-[1px] bg-neutral-70 mx-4 my-2" />
+                    <Divider />
 
                     {/** Others */}
+                    {/* Hidden because this is currently not implemented
+                    
                     <NavigationLink
                         label="Overall view"
                         icon={solidIcon('WindowIcon')}
                         to="#"
                     />
+                    
+                    */}
                 </div>
             </Surface>
         </Transition>

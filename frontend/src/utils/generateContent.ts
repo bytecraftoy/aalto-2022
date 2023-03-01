@@ -4,6 +4,7 @@ import { ApiRequest, ApiResponse, Parameters } from './types';
 export type generateTextProps = {
     id: string;
     input: string;
+    theme: string;
     category: string;
     parameters: Parameters;
 };
@@ -14,6 +15,7 @@ export type generateTextProps = {
 const generateText = async ({
     id,
     input,
+    theme,
     category,
     parameters,
 }: generateTextProps) => {
@@ -24,8 +26,7 @@ const generateText = async ({
 
     const req: ApiRequest = {
         id: id,
-        //TODO: replace 'Sci-fi' with the theme once implemented
-        contexts: ['Sci-fi', category],
+        contexts: [theme, category],
         prompt: input,
         parameters,
     };

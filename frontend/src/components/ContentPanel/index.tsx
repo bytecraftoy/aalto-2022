@@ -4,9 +4,9 @@ import {
     downloadJson,
     exportXlsx,
     downloadXlsx,
+    panelExport,
 } from '../../utils/exportContent';
 import { Surface } from '../Surface';
-import { PromptData, ContentPanelData } from '../../utils/types';
 import { ContentPanelHeader } from './ContentPanelHeader';
 import { ContentPanelPrompts } from './ContentPanelPrompts';
 import { ContentPanelActions } from './ContentPanelActions';
@@ -16,25 +16,24 @@ import { usePanel } from './hooks';
 import { PopUpWindow } from './ContentPanelPrompts/PopUpWindow';
 import { ParameterDrawer } from '../ParameterDrawer';
 
-//Provide access to MasterCategory through a parent callback
+// State stored in redux store
 interface ContentPanelProps {
     id: string;
-    initialCategory: string;
-    initialPrompts: PromptData[];
 }
 
 /**
  * A standalone panel for creating AI content.
  *
  */
-export const ContentPanel: FC<ContentPanelProps> = ({
-    id,
-    initialCategory,
-    initialPrompts,
-}) => {
+export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
     const {
+        theme,
         category,
+        presetNames,
         promptBoxes,
+        advancedMode,
+        overrideTheme,
+        parameters,
         loading,
         popupOpen,
         setCategory,
@@ -47,30 +46,34 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         addPromptBoxes,
         saveState,
         setPopup,
-    } = usePanel(initialPrompts, initialCategory, id);
+        selectPreset,
+        setCustomParameters,
+        setAdvancedMode,
+        setOverrideTheme,
+    } = usePanel(id);
 
-    //Callback to export the category, and all inputs / outputs in json
-    const jsonExport = async () => {
-        const panel: ContentPanelData = {
+    // Current state of this panel in exportable format
+    const exportData: panelExport = {
+        theme,
+        panel: {
             id,
             category,
             prompts: promptBoxes,
-        };
+            parameters,
+            advancedMode,
+            overrideTheme,
+        },
+    };
 
-        const link = await exportJson(panel);
+    //Callback to export the category, and all inputs / outputs in json
+    const jsonExport = async () => {
+        const link = await exportJson(exportData);
         if (link) downloadJson(link);
     };
 
     //Callback to export outputs in excel
-    //Not implemented, instead just call jsonExport
     const excelExport = async () => {
-        const panel: ContentPanelData = {
-            id,
-            category,
-            prompts: promptBoxes,
-        };
-
-        const link = await exportXlsx(panel);
+        const link = await exportXlsx(exportData);
         if (link) downloadXlsx(link);
     };
 
@@ -80,17 +83,25 @@ export const ContentPanel: FC<ContentPanelProps> = ({
     return (
         //Take up full space, and center the content panel in it
         <div className="relative w-full h-full flex-1">
-            <ParameterDrawer open={open} setOpen={setOpen} />
+            <ParameterDrawer
+                overrideTheme={overrideTheme}
+                advancedMode={advancedMode}
+                setOverrideTheme={setOverrideTheme}
+                setAdvancedMode={setAdvancedMode}
+                setCustomParameters={setCustomParameters}
+                presets={presetNames}
+                selectPreset={selectPreset}
+                preset={parameters}
+                open={open}
+                setOpen={setOpen}
+            />
             <div
                 className={classNames(
                     'w-full px-4 py-16 flex flex-row justify-around items-center',
                     { 'opacity-50 pointer-events-none': loading }
                 )}
             >
-                <Surface
-                    level={2}
-                    className="w-full max-w-6xl min-h-fit rounded-2xl shadow-xl outline outline-1 outline-primary-90"
-                >
+                <Surface level={2} className="w-full max-w-6xl min-h-fit pt-4">
                     {/* Top most part of the content panel */}
                     <ContentPanelHeader
                         category={category}

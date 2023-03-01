@@ -10,6 +10,7 @@ import { useError } from '../hooks';
 
 interface CustomInputProps extends InputProps {
     onInput: React.FormEventHandler<HTMLInputElement>;
+    onFocusOut?: React.FormEventHandler<HTMLInputElement>;
     textHelper?: string;
 }
 
@@ -18,6 +19,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     type,
     value,
     onInput,
+    onFocusOut,
     label,
     textHelper,
     errors,
@@ -36,15 +38,16 @@ export const CustomInput: React.FC<CustomInputProps> = ({
                     // Text styles
                     'font-sans text-base font-normal transition-colors',
                     //Color styles
-                    'bg-neutral-90 hover:bg-onSurface hover:bg-neutral-80 ',
+                    'bg-neutral-90 hover:bg-neutral-80 ',
                     // Borders
                     ' border-b border-onSurface focus:outline-none focus:border-b-2 focus:border-primary ',
                     //other
                     'placeholder:text-transparent placeholder:select-none cursor-text'
                 )}
-                placeholder="category"
+                placeholder="category" //Wtf, gonna fix this later
                 onInput={onInput}
                 onChange={touchInput}
+                onBlur={onFocusOut}
             />
             <span
                 className={classNames(

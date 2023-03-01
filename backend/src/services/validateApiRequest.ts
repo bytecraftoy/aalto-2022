@@ -15,6 +15,7 @@ class ValidationError extends SyntaxError {
  * also be handled on the frontend.
  *
  * Currently does not check type of fields
+ *
  */
 // eslint-disable-next-line @typescript-eslint/require-await
 const validateApiRequest = async (body: string): Promise<ApiRequest> => {

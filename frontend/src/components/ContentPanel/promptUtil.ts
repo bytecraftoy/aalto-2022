@@ -1,9 +1,12 @@
 import { generateText, generateTextProps } from '../../utils/generateContent';
 import { InputSchema } from './ContentPanelPrompts/PromptIOBox';
-import type { PromptData } from '../../utils/types';
+import type { PromptData, Parameters } from '../../utils/types';
 
-export interface generatePromptProps extends Omit<generateTextProps, 'id'> {
+export interface generatePromptProps {
     prompts: PromptData[];
+    category: string;
+    theme: string;
+    parameters: Parameters;
 }
 
 /**
@@ -16,6 +19,7 @@ export interface generatePromptProps extends Omit<generateTextProps, 'id'> {
 export const generatePrompts = async ({
     prompts,
     category,
+    theme,
     parameters,
 }: generatePromptProps): Promise<Map<string, string>> => {
     // Map of <id, output> for content panels that are generated
@@ -25,12 +29,15 @@ export const generatePrompts = async ({
     for (const p of prompts) {
         // Generate if the prompt is not locked and input is valid
         if (!p.locked && InputSchema.safeParse(p.input).success) {
-            const output: string = await generateText({
+            const input: generateTextProps = {
                 id: p.id,
                 input: p.input,
+                theme,
                 category,
                 parameters,
-            });
+            };
+
+            const output: string = await generateText(input);
             generated.set(p.id, output);
         }
     }

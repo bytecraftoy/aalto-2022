@@ -9,6 +9,8 @@ import { backendURL } from '../../utils/backendURL';
 import { useNavigate } from 'react-router-dom';
 import { Notification } from '../Notification';
 import { Account } from '../../utils/types';
+import { Surface } from '../Surface';
+import { Divider } from '../Divider';
 
 /**
  *  Form for registering the user
@@ -78,58 +80,66 @@ export const RegisterForm = () => {
     };
 
     return (
-        <form className="flex flex-col w-72 gap-10" onSubmit={submitForm}>
-            <Header />
-            <Notification
-                isOpen={open}
-                close={() => setOpen(false)}
-                message={error}
-            />
+        <Surface level={2} className="py-12 px-24 max-sm:px-8 max-sm:w-[80%]">
+            <form
+                className="flex flex-col items-center gap-10"
+                onSubmit={submitForm}
+            >
+                <Header />
 
-            <CustomInput
-                value={username}
-                label="Username"
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setUsername(e.target.value)
-                }
-                textHelper="Choose your username"
-                errors={usernameErrors}
-            />
-            <CustomInput
-                value={password}
-                label="Password"
-                type="password"
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setPassword(e.target.value)
-                }
-                textHelper="Choose your password"
-                errors={passwordErrors}
-            />
-            <CustomInput
-                value={repeatedPassword}
-                label="Repeat password"
-                type="password"
-                onInput={changeRepeated}
-                textHelper="Please enter your password again"
-                errors={repeatErrors}
-            />
-            <CustomInput
-                value={token}
-                label="Key"
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setToken(e.target.value)
-                }
-                textHelper="Enter the key"
-                errors={tokenErrors}
-            />
-            <FilledButton
-                name="Create account"
-                colorPalette="primary"
-                onClick={() => undefined}
-                className="justify-center"
-                type="submit"
-                disabled={disabled}
-            />
-        </form>
+                <Divider />
+
+                <Notification
+                    isOpen={open}
+                    close={() => setOpen(false)}
+                    message={error}
+                />
+
+                <CustomInput
+                    value={username}
+                    label="Username"
+                    onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setUsername(e.target.value)
+                    }
+                    textHelper="Choose your username"
+                    errors={usernameErrors}
+                />
+                <CustomInput
+                    value={password}
+                    label="Password"
+                    type="password"
+                    onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setPassword(e.target.value)
+                    }
+                    textHelper="Choose your password"
+                    errors={passwordErrors}
+                />
+                <CustomInput
+                    value={repeatedPassword}
+                    label="Repeat password"
+                    type="password"
+                    onInput={changeRepeated}
+                    textHelper="Please enter your password again"
+                    errors={repeatErrors}
+                />
+                <CustomInput
+                    value={token}
+                    label="Key"
+                    onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setToken(e.target.value)
+                    }
+                    textHelper="Enter the key"
+                    errors={tokenErrors}
+                />
+                <FilledButton
+                    name="Create account"
+                    colorPalette="primary"
+                    onClick={() => undefined}
+                    className="justify-center"
+                    type="submit"
+                    disabled={disabled}
+                />
+            </form>
+        </Surface>
     );
 };

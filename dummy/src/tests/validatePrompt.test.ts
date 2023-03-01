@@ -24,7 +24,8 @@ describe('prompt validation', () => {
             "max_tokens": 2000,
             "top_p": 1.0,
             "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
+            "best_of": 1
         }`)
         ).toBe(false);
     });
@@ -34,21 +35,11 @@ describe('prompt validation', () => {
             "model": "text-davinci-002",
             "prompt": "Write flavor text for a cyberpunk soldier in a dystopian board game:",
             "temperature": 0.5,
-            "max_tokens": 2000,
-            "top_p": 1,
-            "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
-        }`)
-        ).toBe('top_p is not a float');
-        expect(
-            getPromptValidationError(`{
-            "model": "text-davinci-002",
-            "prompt": "Write flavor text for a cyberpunk soldier in a dystopian board game:",
-            "temperature": 0.5,
             "max_tokens": 2000.0,
             "top_p": 1.0,
             "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
+            "best_of": 1
         }`)
         ).toBe('max_tokens is not an integer');
         expect(
@@ -59,9 +50,12 @@ describe('prompt validation', () => {
             "max_tokens": 2000,
             "top_p": 1.0,
             "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
+            "best_of": 1
         }`)
-        ).toBe('model is not recognized. Valid models: text-davinci-002');
+        ).toBe(
+            'model is not recognized. Valid models: text-davinci-002,text-davinci-003,text-babbage-001,text-curie-001,text-ada-001'
+        );
         expect(
             getPromptValidationError(`{
             "model": "text-davinci-002",
@@ -70,7 +64,8 @@ describe('prompt validation', () => {
             "max_tokens": 2000,
             "top_p": 1.0,
             "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
+            "best_of": 1
         }`)
         ).toBe('prompt is not a non-empty string');
         expect(
@@ -82,7 +77,8 @@ describe('prompt validation', () => {
             "top_p": 1.0,
             "frequency_penalty": 0.52,
             "presence_penalty": 0.5,
-            "top_p": 1.0
+            "top_p": 1.0,
+            "best_of": 1
         }`)
         ).toBe('duplicate fields detected');
         expect(
@@ -93,7 +89,8 @@ describe('prompt validation', () => {
             "max_tokens": 255,
             "top_p": 1.0,
             "frequency_penalty": 0.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
+            "best_of": 1
         }`)
         ).toBe('max_tokens is not a number between 256 and 4000');
         expect(
@@ -104,7 +101,8 @@ describe('prompt validation', () => {
             "max_tokens": 2000,
             "top_p": 1.0,
             "frequency_penalty": 1.52,
-            "presence_penalty": 0.5
+            "presence_penalty": 0.5,
+            "best_of": 1
         }`)
         ).toBe('frequency_penalty is not a number between 0 and 1');
         expect(
@@ -116,7 +114,8 @@ describe('prompt validation', () => {
             "top_p": 1.0,
             "frequency_penalty": 0.52,
             "presence_penalty": 0.5,
-            "extra_property": 0.5
+            "extra_property": 0.5,
+            "best_of": 1
         }`)
         ).toBe('too many properties');
         expect(getPromptValidationError(`[1, 2]`)).toBe(

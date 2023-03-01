@@ -12,7 +12,10 @@ export const PromptCategoryBox: React.FC<PromptCategoryBoxProps> = ({
     setCategory,
 }) => {
     return (
-        <div className="w-full flex flex-col min-h-fit justify-start items-center">
+        <div
+            className="w-full flex flex-col min-h-fit justify-start items-center"
+            data-testid="category-input"
+        >
             <CustomInput
                 type={'text'}
                 value={category}

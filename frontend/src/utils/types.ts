@@ -30,6 +30,17 @@ export interface ApiResponse {
 }
 
 /**
+ * Preset taken from backend
+ */
+export interface Preset {
+    presetName: string;
+    creativity: number;
+    quality: number;
+    inputLength: number;
+    outputLength: number;
+}
+
+/**
  * Box format as specified for Excel in the documentation
  */
 export interface ExcelBox {
@@ -61,7 +72,7 @@ export interface ExcelFormat {
  */
 export interface Theme {
     name: string;
-    globalParameters: Parameters;
+    globalParameters: Preset;
 }
 
 /**
@@ -83,7 +94,10 @@ export interface ContentPanelData {
     id: string;
     category: string;
     prompts: PromptData[];
-    parameters?: Parameters; //Custom params, use global ones if not defined
+
+    overrideTheme: boolean;
+    advancedMode: boolean;
+    parameters?: Preset;
 }
 
 /**
@@ -122,9 +136,9 @@ export type ProjectInfo = z.infer<typeof ProjectInfoSchema>;
 
 export const ParametersSchema = z.object({
     creativity: z.number().min(0).max(1),
-    quality: z.number().min(0).max(9),
-    inputLength: z.number().min(0).max(10000),
-    outputLength: z.number().min(0).max(1),
+    quality: z.number().int().min(1).max(9),
+    inputLength: z.number().int().min(1024).max(8000),
+    outputLength: z.number().int().min(0).max(5),
 });
 
 /**
@@ -145,10 +159,10 @@ export type Parameters = z.infer<typeof ParametersSchema>;
  * Default params to use when no preset is specified
  */
 export const DEFAULT_PARAMETERS: Parameters = {
-    creativity: 0,
-    quality: 0,
-    inputLength: 2000,
-    outputLength: 0.6,
+    creativity: 0.5,
+    quality: 9,
+    inputLength: 5000,
+    outputLength: 3,
 };
 
 /**
@@ -156,7 +170,7 @@ export const DEFAULT_PARAMETERS: Parameters = {
  */
 export const DEFAULT_THEME: Theme = {
     name: '',
-    globalParameters: DEFAULT_PARAMETERS,
+    globalParameters: { presetName: 'Select a preset', ...DEFAULT_PARAMETERS },
 };
 
 /**
@@ -174,6 +188,8 @@ export const createEmptyPanel = (): ContentPanelData => {
         id: generate(),
         category: '',
         prompts: [createEmptyPrompt()], // By default, there is one promptIOBox
+        overrideTheme: false,
+        advancedMode: false,
     };
 };
 
