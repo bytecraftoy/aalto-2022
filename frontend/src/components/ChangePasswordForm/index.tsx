@@ -11,6 +11,7 @@ import { useRepeatPassword } from '../RegisterForm/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Notification } from '../Notification';
 import { Divider } from '../Divider';
+import { changePassword } from './../../utils/changePassword';
 
 /**
  *  Form for registering the user
@@ -49,12 +50,9 @@ export const ChangePasswordForm = () => {
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        EventBus.dispatch('notification', {
-            type: 'error',
-            message: 'Password changing is not fully implemented yet.',
-        });
-
         console.log(password, newPassword, repeatedPassword);
+
+        await changePassword(password, newPassword);
     };
 
     return (
