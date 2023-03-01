@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { Icon, solidIcon } from '../../../utils/icons';
 import { Palette, bgContainer, textOnContainer } from '../../../utils/colors';
 import classNames from 'classnames';
@@ -23,14 +24,15 @@ export const FAB: React.FC<FABProps> = ({
     size,
     onClick,
 }) => {
+
     return (
-        <div className="inline-block p-4 ">
+        <div className="inline-block p-4">
             {/* Three different FABs: FAB, small FAB, large FAB */}
             <button onClick={onClick} data-testid="fab-button">
                 {/* Color layer */}
                 <div
                     className={classNames(
-                        'outline outline-2 outline-primary-80/30',
+                        'outline outline-2 outline-primary-80/30 position: relative',
                         bgContainer(colorPalette),
                         'shadow-lg',
                         { 'w-24 h-24 rounded-[28px]': size === 'large' },
@@ -63,12 +65,12 @@ export const FAB: React.FC<FABProps> = ({
                         {!size &&
                             solidIcon(icon, textOnContainer(colorPalette))}
                     </div>
+                    <Tooltip
+                        text={"Hello this is the tooltip box we are just trying some things out"}
+                        visible
+                    />
                 </div>
             </button>
-            <Tooltip
-                text={"Hello this is the tooltip box we are just trying some things out"}
-                visible={true}
-            />
         </div>
     );
 };
