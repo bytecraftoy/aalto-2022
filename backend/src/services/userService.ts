@@ -14,6 +14,7 @@ import {
     addProject,
     updateProject,
     deleteProject,
+    updatePassword,
 } from '../db/queries';
 import { RequestInfo, DEFAULT_ERROR } from '../types/ServiceTypes';
 
@@ -40,6 +41,14 @@ const loginRequestSchema = z.object({
     password: z.string(),
 });
 
+const passwordRequestSchema = z.object({
+    currentPassword: z.string(),
+    newPassword: z
+        .string()
+        .min(6, 'Password should be at least 6 characters')
+        .max(1000, 'Password can be 1000 characters maximum'),
+});
+
 const registerRequestSchema = z.object({
     name: z
         .string()
@@ -48,7 +57,7 @@ const registerRequestSchema = z.object({
     password: z
         .string()
         .min(6, 'Password should be at least 6 characters')
-        .max(50, 'Password can be 50 characters maximum'),
+        .max(1000, 'Password can be 1000 characters maximum'),
     key: z
         .string({ required_error: 'Register key required' })
         .min(1, 'Register key may not be empty'),
@@ -60,6 +69,12 @@ const projectRequestSchema = z.object({
     name: z.string(),
     data: z.object({}).passthrough(),
 });
+
+//Hashes password and returns the hash
+const hashPassword = async (password: string) => {
+    const hash = await bcrypt.hash(password, 10);
+    return hash;
+};
 
 /**
  * Checks if the user exists and the password is correct.
@@ -82,6 +97,29 @@ const checkPassword = async (
             return {
                 success: false,
                 message: 'Incorrect username or password. Please try again.',
+            };
+        }
+    } catch (e) {
+        logger.error(e);
+        return DEFAULT_ERROR;
+    }
+};
+
+const changePassword = async (
+    username: string,
+    currentPassword: string,
+    newPassword: string
+): Promise<RequestInfo> => {
+    const res = await checkPassword(username, currentPassword);
+    try {
+        if (res.success) {
+            const passwordHash = await hashPassword(newPassword);
+            await updatePassword(username, passwordHash);
+            return { success: true, message: 'Success.' };
+        } else {
+            return {
+                success: false,
+                message: 'Incorrect password. Please try again.',
             };
         }
     } catch (e) {
@@ -132,7 +170,7 @@ const createUser = async (
                 message:
                     'Username already exists, please choose a different one.',
             };
-        const passwordHash = await bcrypt.hash(password, 10);
+        const passwordHash = await hashPassword(password);
         await addUser(name, passwordHash);
         const userId = await selectUserID(name);
         if (!userId) return DEFAULT_ERROR;
@@ -257,6 +295,7 @@ export {
     registerRequestSchema,
     updateSettingsRequestSchema,
     projectRequestSchema,
+    passwordRequestSchema,
     checkPassword,
     createUser,
     createToken,
@@ -266,4 +305,5 @@ export {
     createProject,
     saveProject,
     removeProject,
+    changePassword,
 };

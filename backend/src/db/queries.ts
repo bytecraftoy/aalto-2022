@@ -116,9 +116,9 @@ export const deleteUser = async (id: string) => {
     await executeQuery(text, values);
 };
 
-export const updatePassword = async (id: string, passwordHash: string) => {
-    const text = 'UPDATE users SET password_hash = $1 WHERE id = $2';
-    const values = [id, passwordHash];
+export const updatePassword = async (name: string, passwordHash: string) => {
+    const text = 'UPDATE users SET password_hash = $1 WHERE name = $2';
+    const values = [passwordHash, name];
     await executeQuery(text, values);
 };
 
