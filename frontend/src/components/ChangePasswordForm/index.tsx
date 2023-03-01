@@ -50,8 +50,6 @@ export const ChangePasswordForm = () => {
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        console.log(password, newPassword, repeatedPassword);
-
         await changePassword(password, newPassword);
     };
 
