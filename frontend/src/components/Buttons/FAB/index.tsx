@@ -66,7 +66,7 @@ export const FAB: React.FC<FABProps> = ({
                 </div>
             </button>
             <Tooltip
-                text={"Tooltip"}
+                text={"Hello this is the tooltip box we are just trying some things out"}
                 visible={true}
             />
         </div>

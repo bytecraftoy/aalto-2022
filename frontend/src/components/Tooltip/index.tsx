@@ -15,10 +15,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
     if (!visible) return <></> ;
 
     return (
-        <div className="position: absolute justify-between h-8 px-3 bg-neutral-70 rounded-lg border-2 border-neutral-60 opacity-40">
-            <div className="flex flex-row gap-1">
-                <div className="text-sm">{text}</div>
-            </div>
+        <div className={classNames(' position: absolute w-fit h-fit px-2', 
+            'bg-neutral-70 rounded-lg border-2 border-neutral-60 opacity-50'
+            )}
+            >
+            <div className='text-justify text-center text-neutral-30 max-w-sm'>{text}</div>
         </div>
     );
 };
