@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "setup": "npm install && npm run copy-sample-env",
         "test-pre": "(docker-compose down || echo skipped docker-compose down) && docker-compose up -d",
