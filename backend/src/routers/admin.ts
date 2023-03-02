@@ -13,6 +13,6 @@ const db = await new Adapter('postgresql', {
 const admin = new AdminJS({ rootPath });
 const adminRouter = AdminJSExpress.buildRouter(admin);
 
-admin.watch()
+admin.watch();
 
 export { adminRouter, rootPath };
