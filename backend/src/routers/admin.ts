@@ -10,7 +10,10 @@ const db = await new Adapter('postgresql', {
     database: 'adminjs_panel',
 }).init();
 
-const admin = new AdminJS({ rootPath });
+const admin = new AdminJS({
+    rootPath,
+    resources: [{ resource: db.table('projects'), options: {} }],
+});
 const adminRouter = AdminJSExpress.buildRouter(admin);
 
 admin.watch();
