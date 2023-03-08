@@ -78,7 +78,7 @@ export const useFetchRedirect = (fetchPath: string, redirect: To) => {
     const navigate = useNavigate();
     useEffect(() => {
         apiFetch(fetchPath).catch(() => navigate(redirect));
-    }, []);
+    });
 };
 
 /**
