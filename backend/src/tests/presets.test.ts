@@ -1,11 +1,16 @@
 import supertest from 'supertest';
-import { app } from '../app';
+import { getApp } from '../app';
 import { getUserToken, initializeUsers } from '../services/testService';
-
-const api = supertest(app);
 
 beforeEach(async () => {
     await initializeUsers();
+});
+
+let api: supertest.SuperTest<supertest.Test>;
+
+beforeAll(async () => {
+    const server = await getApp();
+    api = supertest(server);
 });
 
 describe('presets api', () => {

@@ -5,7 +5,7 @@
 
 import supertest from 'supertest';
 import jwt from 'jsonwebtoken';
-import { app } from './../app';
+import { getApp } from './../app';
 import { createToken, createUser } from '../services/userService';
 import {
     selectUserSettings,
@@ -26,7 +26,12 @@ import {
 } from './../services/testService';
 import crypto from 'crypto';
 
-const api = supertest(app);
+let api: supertest.SuperTest<supertest.Test>;
+
+beforeAll(async () => {
+    const server = await getApp();
+    api = supertest(server);
+});
 
 beforeEach(async () => {
     await initializeUsers();
@@ -70,7 +75,12 @@ describe('user router login', () => {
     test('handles incorrect passwords', async () => {
         await api
             .post('/api/user/login/')
-            .send(JSON.stringify({ name: testUserName, password: 'incorrect' }))
+            .send(
+                JSON.stringify({
+                    name: testUserName,
+                    password: 'incorrect',
+                })
+            )
             .expect(400);
     });
 
@@ -375,7 +385,10 @@ describe('user router register', () => {
         await api
             .post('/api/user/register/')
             .send(
-                JSON.stringify({ name: 'testuser', password: 'password1234' })
+                JSON.stringify({
+                    name: 'testuser',
+                    password: 'password1234',
+                })
             )
             .expect(400);
         await validateUserStatus(validData.name, false);
@@ -578,7 +591,10 @@ describe('user router projects', () => {
             .get(`/api/user/projects/${project_id_1}`)
             .set('Cookie', `user-token=${token}`)
             .expect(200);
-        expect(res.body).toEqual({ name: 'name1', data: { testdata: 1 } });
+        expect(res.body).toEqual({
+            name: 'name1',
+            data: { testdata: 1 },
+        });
     });
 
     test('can post new project succesfully (POST api/user/projects/new)', async () => {

@@ -6,7 +6,7 @@ import {
     healthRouter,
     userRouter,
     presetsRouter,
-    adminRouter,
+    getAdminRouter,
 } from './routers';
 import { cors } from './middleware/cors';
 import { requestLogger, errorLogger } from './middleware/logger';
@@ -18,25 +18,30 @@ import { rootPath } from './routers/admin';
 
 const app = express();
 
-app.use(rootPath, adminRouter);
+const getApp = async (): Promise<express.Express> => {
+    const adminRouter = await getAdminRouter();
+    app.use(rootPath, adminRouter);
 
-app.use(cors);
-app.use(cookieParser());
-app.use(bodyParser.text({ type: '*/*' }));
-app.use(expressAsyncHandler(tokenReader));
+    app.use(cors);
+    app.use(cookieParser());
+    app.use(bodyParser.text({ type: '*/*' }));
+    app.use(expressAsyncHandler(tokenReader));
 
-// Request logger before router
-app.use(requestLogger);
+    // Request logger before router
+    app.use(requestLogger);
 
-app.use('/api/health', healthRouter);
-app.use('/api/user', userRouter);
-app.use(express.static('./public/'));
-app.use(checkToken);
-app.use('/api/export/', exportRouter);
-app.use('/api/textgen', apiRouter);
-app.use('/api/presets', presetsRouter);
+    app.use('/api/health', healthRouter);
+    app.use('/api/user', userRouter);
+    app.use(express.static('./public/'));
+    app.use(checkToken);
+    app.use('/api/export/', exportRouter);
+    app.use('/api/textgen', apiRouter);
+    app.use('/api/presets', presetsRouter);
 
-// Error logger after router
-app.use(errorLogger);
+    // Error logger after router
+    app.use(errorLogger);
 
-export { app };
+    return app;
+};
+
+export { getApp };

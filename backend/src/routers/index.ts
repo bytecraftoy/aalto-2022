@@ -3,4 +3,4 @@ export { exportRouter } from './export';
 export { healthRouter } from './health';
 export { userRouter } from './user';
 export { presetsRouter } from './presets';
-export { adminRouter } from './admin';
+export { getAdminRouter } from './admin';

@@ -1,12 +1,17 @@
 import supertest from 'supertest';
-import { server } from '../index';
+import { getServer } from '../index';
 import { initializeUsers, getUserToken } from './../services/testService';
+
+let api: supertest.SuperTest<supertest.Test>;
+
+beforeAll(async () => {
+    const server = await getServer();
+    api = supertest(server);
+});
 
 beforeEach(async () => {
     await initializeUsers();
 });
-
-const api = supertest(server);
 
 describe('backend dummy communication, POST /api/textgen', () => {
     const data = {
