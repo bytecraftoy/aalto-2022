@@ -1,52 +1,70 @@
-import React from 'react';
-import { useState } from 'react';
-import { bg, bgActive, bgHover, textOnBg } from '../../utils/colors';
-import { solidIcon } from '../../utils/icons';
+import React, { useState } from 'react';
 import classNames from 'classnames/dedupe';
+import { Transition } from '@headlessui/react';
+import { Icon, solidIcon } from '../../utils/icons';
 
 interface TooltipProps {
     text: string;
-    visible: boolean;
+    icon?: Icon;
+    children: JSX.Element;
+    floatRight?: boolean; // Prefer positioning the tooltip on the right
+    disabled?: boolean;
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({ text, visible }) => {
-    const [show, SetShow] = useState(false);
-    const [pos, SetPos] = useState([0.0, 0.0]);
-    visible = show;
+/**
+ * Component that renders a tooltip when the user hovers over the it.
+ * @param children Content that the tooltip is displayed for
+ */
+export const Tooltip: React.FC<TooltipProps> = ({
+    text,
+    icon,
+    children,
+    floatRight,
+    disabled,
+}) => {
+    // Show tooltip if we are hovering the parent container
+    const [show, setShow] = useState(false);
+    const enabled = show && !disabled;
 
-    if (!visible)
-        return (
-            <div
-                className="position: absolute left-0 top-0 w-full h-full"
-                onMouseEnter={() => SetShow(true)}
-                onMouseLeave={() => SetShow(false)}
-            ></div>
-        );
+    // Track mouse position and show the tooltip relative to it
+    const [pos, setPos] = useState([0.0, 0.0]);
+    const mouseHandler = enabled
+        ? (event: React.MouseEvent<HTMLDivElement>) =>
+              setPos([event.clientX, event.clientY])
+        : undefined;
+
     return (
+        /* Area to track hovering */
         <div
-            className="position: absolute left-0 top-0 w-full h-full"
-            onMouseEnter={() => SetShow(true)}
-            onMouseLeave={() => SetShow(false)}
-            onMouseMove={(event) => SetPos([event.clientX, event.clientY])}
+            className="relative"
+            onMouseEnter={() => setShow(true)}
+            onMouseLeave={() => setShow(false)}
+            onMouseMove={mouseHandler}
         >
-            <div
-                style={{
-                    position: 'fixed',
-                    left: pos[0],
-                    top: pos[1],
-                }}
+            {/* Visible tooltip with text */}
+            <Transition
+                show={enabled}
+                enterFrom="opacity-0 delay-[1000ms] duration-200 transition-opacity"
+                enterTo="opacity-100 delay-[1000ms] duration-200 transition-opacity"
+                leaveFrom="opacity-100 transition-all duration-100"
+                leaveTo="opacity-0 transition-all duration-100"
+                style={
+                    floatRight
+                        ? { left: pos[0] + 4 - 200, top: pos[1] + 20 }
+                        : { left: pos[0] + 4, top: pos[1] + 20 }
+                }
                 className={classNames(
-                    'content-fit',
-                    'bg-neutral-70 rounded-lg'
+                    'z-[999] max-w-[300px] fixed p-2 rounded-xl pointer-events-none select-none',
+                    'bg-neutral-70/90 text-neutral-99 text-base',
+                    'flex flex-row justify-center items-center'
                 )}
             >
-                <div
-                    className={classNames(
-                        'text-white text-sm max-w-sm opacity-50',
-                        'transition-colors duration-1000 delay-1000'
-                    )}
-                >{`Hi! this is a work in progress tooltip box. The mouse position is X: ${pos[0]} and Y: ${pos[1]}`}</div>
-            </div>
+                {solidIcon(icon, 'w-6 h-6 mr-2 text-neutral-99')}
+                <p className="w-full">{text}</p>
+            </Transition>
+
+            {/* Content that the tooltip is intended for */}
+            {children}
         </div>
     );
 };

@@ -1,9 +1,7 @@
 import React from 'react';
-import { useState } from 'react';
 import { Icon, solidIcon } from '../../../utils/icons';
 import { Palette, bgContainer, textOnContainer } from '../../../utils/colors';
 import classNames from 'classnames';
-import { Tooltip } from '../../Tooltip';
 
 /**
  * Floating action button, i.e., floating icon button
@@ -64,12 +62,6 @@ export const FAB: React.FC<FABProps> = ({
                         {!size &&
                             solidIcon(icon, textOnContainer(colorPalette))}
                     </div>
-                    <Tooltip
-                        text={
-                            'Hello this is the tooltip box we are just trying some things out'
-                        }
-                        visible
-                    />
                 </div>
             </button>
         </div>
