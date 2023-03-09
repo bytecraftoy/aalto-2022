@@ -24,7 +24,6 @@ export const FAB: React.FC<FABProps> = ({
     size,
     onClick,
 }) => {
-
     return (
         <div className="inline-block p-4">
             {/* Three different FABs: FAB, small FAB, large FAB */}
@@ -66,7 +65,9 @@ export const FAB: React.FC<FABProps> = ({
                             solidIcon(icon, textOnContainer(colorPalette))}
                     </div>
                     <Tooltip
-                        text={"Hello this is the tooltip box we are just trying some things out"}
+                        text={
+                            'Hello this is the tooltip box we are just trying some things out'
+                        }
                         visible
                     />
                 </div>
