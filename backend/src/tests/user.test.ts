@@ -14,6 +14,7 @@ import {
     addProject,
     selectProject,
     selectProjectsbyUserID,
+    selectPassword,
 } from '../db/queries';
 import { registerKey } from '../services/registerKeyService';
 import { TokenPayload } from '../types/TokenPayload';
@@ -219,13 +220,13 @@ describe('user router register', () => {
         await validateUserStatus(validData.name, false);
     });
 
-    test('returns 400 for password longer than 50 characters', async () => {
+    test('returns 400 for password longer than 1000 characters', async () => {
         await api
             .post('/api/user/register/')
             .send(
                 JSON.stringify({
                     ...validData,
-                    password: 'a'.repeat(51),
+                    password: 'a'.repeat(1001),
                 })
             )
             .expect(400);
@@ -670,6 +671,73 @@ describe('user router projects', () => {
             .expect(401);
         await api
             .post('/api/user/projects/new')
+            .set('Cookie', 'user-token=badtoken')
+            .expect(401);
+    });
+});
+
+describe('user router change password', () => {
+    let token: string;
+    let payload: TokenPayload;
+    beforeEach(async () => {
+        const user_id = (await createUser('testuser', 'password1234')).message;
+        payload = {
+            userName: 'testuser',
+            userID: user_id,
+        };
+        token = await createToken(payload);
+    });
+
+    test('changing password works when nothing is wrong', async () => {
+        const data = {
+            currentPassword: 'password1234',
+            newPassword: 'password123456',
+        };
+        const currentHash = await selectPassword(payload.userName);
+        await api
+            .put('/api/user/password/')
+            .set('Cookie', `user-token=${token}`)
+            .send(JSON.stringify(data))
+            .expect(204);
+        const newHash = await selectPassword(payload.userName);
+        expect(currentHash !== newHash).toBe(true);
+    });
+
+    test('returns 400 with wrong current password', async () => {
+        const data = {
+            currentPassword: 'incorrect',
+            newPassword: 'password123456',
+        };
+        await api
+            .put('/api/user/password/')
+            .set('Cookie', `user-token=${token}`)
+            .send(JSON.stringify(data))
+            .expect(400);
+    });
+
+    test('returns 400 with invalid new password', async () => {
+        const data = {
+            currentPassword: 'password1234',
+            newPassword: '00',
+        };
+        await api
+            .put('/api/user/password/')
+            .set('Cookie', `user-token=${token}`)
+            .send(JSON.stringify(data))
+            .expect(400);
+    });
+
+    test('returns 401 with missing jwt token', async () => {
+        await api.put('/api/user/settings/').expect(401);
+        await api
+            .put('/api/user/settings/')
+            .send(JSON.stringify({ testdata: 2 }))
+            .expect(401);
+    });
+
+    test('returns 401 with malformed jwt token', async () => {
+        await api
+            .put('/api/user/settings/')
             .set('Cookie', 'user-token=badtoken')
             .expect(401);
     });
