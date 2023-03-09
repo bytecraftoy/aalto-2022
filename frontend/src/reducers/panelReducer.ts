@@ -16,16 +16,18 @@ interface PanelState {
 /**
  * Initial state of the panels is 1 empty panel
  */
-const initialState: PanelState = {
-    name: 'main',
-    needsSaving: false,
-    value: [createEmptyPanel()],
+const createIntialState = (): PanelState => {
+    return {
+        name: 'main',
+        needsSaving: false,
+        value: [createEmptyPanel()],
+    };
 };
 
 // Panel slice
 export const panelSlice = createSlice({
     name: 'panels',
-    initialState,
+    initialState: createIntialState(),
     reducers: {
         // Sets all the panels to new ones
         setPanels(state, action: PayloadAction<ContentPanelData[]>) {
@@ -53,7 +55,7 @@ export const panelSlice = createSlice({
         },
         // Empties the reducer
         clearPanels() {
-            return initialState;
+            return createIntialState();
         },
     },
 });
