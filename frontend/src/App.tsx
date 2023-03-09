@@ -3,6 +3,8 @@ import { Routes } from './Routes';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import { UserContainer } from './components/UserContainer';
+import { Snackbar } from './components/Snackbar';
 
 /**
  * The base react component
@@ -11,14 +13,15 @@ import { store } from './store';
  * layout of the page.
  */
 function App() {
-    //Unused for now, will be important later
-    //const [masterCategory, setMasterCategory] = useState('');
-
     return (
         <Provider store={store}>
             <BrowserRouter>
                 <NavigationContainer>
-                    <Routes />
+                    <UserContainer>
+                        <Snackbar>
+                            <Routes />
+                        </Snackbar>
+                    </UserContainer>
                 </NavigationContainer>
             </BrowserRouter>
         </Provider>

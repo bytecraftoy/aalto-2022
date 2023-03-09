@@ -1,8 +1,12 @@
 # Does the same as */build etc.
-build
-node_modules
-deploy
-backend/public/
-cypress/videos
 .env
+/playwright-report/
+/playwright/.cache/
+/test-results/
+backend/coverage
 backend/files/timestamp-commit
+backend/public/
+build
+deploy
+node_modules
+test-results/

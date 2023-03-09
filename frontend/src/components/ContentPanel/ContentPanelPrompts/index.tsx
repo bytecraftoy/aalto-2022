@@ -1,7 +1,8 @@
-import React from 'react';
-import { PromptIOBox } from '../../PromptIOBox';
-import { PromptData } from '../../PromptIOBox';
+import React, { useEffect } from 'react';
+import { PromptIOBox } from './PromptIOBox';
+import { PromptData } from '../../../utils/types';
 import { FAB } from '../../Buttons';
+import { useDebounce } from './hooks';
 
 /**
  * Component of Content panel.
@@ -9,11 +10,12 @@ import { FAB } from '../../Buttons';
  */
 interface ContentPanelPromptsProps {
     promptBoxes: PromptData[];
-    setPromptBoxes: React.Dispatch<React.SetStateAction<PromptData[]>>;
+    setPromptBoxes: (set: (prev: PromptData[]) => PromptData[]) => void;
     generateOutput: (p: PromptData) => Promise<void>;
     setPromptOutput: (id: string, output: string) => void;
     addPromptBox: () => void;
     lockPrompt: (id: string) => void;
+    saveState: () => void;
 }
 
 export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
@@ -23,6 +25,7 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
     setPromptOutput,
     addPromptBox,
     lockPrompt,
+    saveState,
 }) => {
     //Callback to modify the output area of a PromptIOBox by id
     const setPromptInput = (id: string, input: string) => {
@@ -31,6 +34,14 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
             prev.map((o) => (o.id === id ? { ...o, input: input } : o))
         );
     };
+
+    // Debounce the inputs to prevent too many requests
+    const debouncedInputs = useDebounce(promptBoxes, 4000);
+
+    // Saves state when debouncedInputs changes
+    useEffect(() => {
+        saveState();
+    }, [debouncedInputs]);
 
     //Callbacks to add or remove PromptIOBoxes to the panels
     const deletePromptBox = (id: string) => {

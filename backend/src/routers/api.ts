@@ -2,13 +2,14 @@ import { Router, Request, Response, NextFunction } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import {
     validateApiRequest,
-    ValidationError,
     sendToProxy,
     ProxyError,
     responseGen,
     createPrompt,
+    ValidationError,
 } from '../services';
 import { logger } from '../utils/logger';
+import { ZodError } from 'zod';
 
 const apiRouter = Router();
 
@@ -20,13 +21,23 @@ apiRouter.post(
 
             try {
                 //Validate request and collect fields from ApiRequest
-                const { id, prompt, contexts } = await validateApiRequest(body);
+                const { id, prompt, contexts, parameters } =
+                    await validateApiRequest(body);
 
                 //Retrieve GPT3 response from proxy, and create our response based on it
-                const gpt = await sendToProxy(createPrompt(contexts, prompt));
+                const gpt = await sendToProxy(
+                    createPrompt(
+                        contexts,
+                        prompt,
+                        parameters.creativity,
+                        parameters.quality,
+                        parameters.inputLength,
+                        parameters.outputLength
+                    )
+                );
                 res.json(responseGen(gpt, id));
             } catch (e) {
-                if (e instanceof ValidationError) {
+                if (e instanceof ZodError || e instanceof ValidationError) {
                     logger.error('validation_fail', {
                         error: {
                             name: e.name,

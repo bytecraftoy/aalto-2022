@@ -11,7 +11,7 @@ jobs:
                 # https://nodejs.org/en/about/releases/
                 # LTS: 18.x
                 # Current: 19.x
-                node-version: [18.x, 19.x]
+                node-version: [18.x]
 
         runs-on: ubuntu-latest
 
@@ -35,7 +35,7 @@ jobs:
             - name: Check linters
               run: npm run lint-project
 
-    test:
+    build:
         strategy:
             matrix:
                 # https://nodejs.org/en/about/releases/
@@ -48,6 +48,7 @@ jobs:
 
         steps:
             - uses: actions/checkout@v3
+
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v3
               with:
@@ -60,17 +61,87 @@ jobs:
             - name: Build project
               run: npm run build-project
 
+    unit-test:
+        strategy:
+            matrix:
+                # https://nodejs.org/en/about/releases/
+                # LTS: 18.x
+                # Current: 19.x
+                node-version: [18.x]
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+
+            - name: Setup project
+              run: npm run setup-project
+
             - name: Run unit tests
               run: npm run test-project
 
-            - name: Run end-to-end tests
-              id: cypress
-              run: npm run cypress-ci
+    e2e:
+        strategy:
+            matrix:
+                # https://nodejs.org/en/about/releases/
+                # LTS: 18.x
+                # Current: 19.x
+                node-version: [18.x]
 
-            - name: Archive Cypress videos on fail
-              uses: actions/upload-artifact@v3
-              # Only upload artifacts if Cypress failed
-              if: ${{ failure() && steps.cypress.conclusion == 'failure' }}
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
               with:
-                  name: cypress-videos
-                  path: cypress/videos
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+
+            - name: Setup project
+              run: npm run setup-project
+
+            - name: Install playwright browsers
+              run: npx playwright install --with-deps
+
+            - name: Run end-to-end tests
+              id: playwright
+              run: npm run playwright-ci
+
+            - name: Archive Playwright videos on fail
+              uses: actions/upload-artifact@v3
+              # Only upload artifacts if Playwright failed
+              if: ${{ failure() && steps.e2e.conclusion == 'failure' }}
+              with:
+                  name: playwright-data
+                  path: test-results
+
+    alert:
+        environment: main
+        needs: [check, build, unit-test, e2e]
+        if: ${{ failure() && github.ref == 'refs/heads/main' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Dump GitHub context
+              run: echo $JSON
+              env:
+                  JSON: ${{ toJSON(github) }}
+
+            - name: Alert on failed CI in main
+              uses: ravsamhq/notify-slack-action@v2
+              with:
+                  # explicit failure instead of ${{ job.status }} due to
+                  # different job (TODO: fix somehow? how about multiple dependencies?)
+                  status: 'failure'
+                  notification_title: '{workflow} has {status_message}'
+                  message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}@{branch}> on commit *${{ github.event.head_commit.message }}* <{commit_url}|{commit_sha}> by *${{ github.event.head_commit.author.name }}*'
+                  footer: 'Linked Repo <{repo_url}|{repo}>'
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}

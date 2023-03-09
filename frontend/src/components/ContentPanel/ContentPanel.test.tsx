@@ -60,7 +60,7 @@ test('PromptIOBoxes should have a remove button', () => {
         });
     }
 
-    const removeButtons = screen.getAllByText<HTMLButtonElement>('Delete');
+    const removeButtons = screen.getAllByTestId<HTMLDivElement>('iobox-Delete');
     removeButtons.forEach((b) => expect(b).toBeInTheDocument());
     expect(removeButtons.length).toBeGreaterThanOrEqual(nClicks);
 });
@@ -99,50 +99,13 @@ test('Remove button should delete the correct promptIOBox', () => {
             'button'
         );
     expect(buttons?.length).toBeGreaterThan(0);
-    const delButton = buttons?.[0] as HTMLButtonElement | undefined;
+    const delButton = buttons?.[buttons?.length - 1] as
+        | HTMLButtonElement
+        | undefined;
 
     act(() => {
         delButton?.click();
     });
 
     expect(document.getElementById('TestEl')).toBeNull();
-});
-
-test('PromptIOBoxes should have no remove button if there are only one of them', () => {
-    act(() => {
-        render(<App />);
-    });
-    const addButton = screen.getByTestId<HTMLButtonElement>('fab-button');
-
-    act(() => {
-        addButton.click();
-    });
-    act(() => {
-        addButton.click();
-    });
-    act(() => {
-        addButton.click();
-    });
-
-    expect(
-        screen.getAllByTestId<HTMLElement>('prompt').length
-    ).toBeGreaterThanOrEqual(3);
-
-    expect(
-        screen.getAllByText<HTMLButtonElement>('Delete').length
-    ).toBeGreaterThanOrEqual(3);
-
-    //Try to repeatedly remove boxes so there is none left
-    for (let i = 0; i < 10; i++) {
-        act(() => {
-            screen.queryAllByText<HTMLButtonElement>('Delete')[0]?.click();
-        });
-    }
-
-    expect(screen.queryByText<HTMLButtonElement>('Delete')).toBeNull();
-
-    expect(
-        screen.getAllByPlaceholderText<HTMLTextAreaElement>('User input here')
-            .length
-    ).toBeGreaterThanOrEqual(1);
 });

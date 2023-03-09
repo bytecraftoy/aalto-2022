@@ -5,7 +5,7 @@
             "prompt": "",
             "temperature": 0.8,
             "max_tokens": 256,
-            "top_p": 0.999,
+            "top_p": 0.9999,
             "frequency_penalty": 0.5,
             "presence_penalty": 0.001
         }
@@ -16,7 +16,7 @@
             "prompt": "",
             "temperature": 0.8,
             "max_tokens": 400,
-            "top_p": 0.999,
+            "top_p": 0.9999,
             "frequency_penalty": 0.5,
             "presence_penalty": 0.001
         }

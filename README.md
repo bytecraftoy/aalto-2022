@@ -34,7 +34,7 @@ Other commands include utilities used by the previous commands, as well as testi
 -   `npm run clean-project`: Cleans node modules, builds and deploys.
 -   `npm run check-project`: Do a sanity check on the project before commits. This will lint, build, test, and prettier-write.
 -   `npm run clean-check`: Clean project, and then check it.
--   `npm run cypress`: Run End-to-End tests with Cypress.
+-   `npm run playwright`: Run End-to-End tests with Playwright.
 
 ### Building and running separately
 
@@ -42,7 +42,7 @@ Using the convinience scripts is purely optional. The backend and frontend can b
 
 ### Documentation
 
-The project contains a documentation site created from markdown using [Docusaurus]https://docusaurus.io/
+The project contains a documentation site created from markdown using [Docusaurus](https://docusaurus.io/)
 To view the documentation, you can use `npm run docusaurus`. This will open documentation as a site at `http://localhost:7777`.
 It is the same as running the commands:
 

@@ -9,9 +9,15 @@ An API endpoint for requesting AI generated text. The text will be generated bas
     contexts: string[], //contexts/categories listed from highes to lowest level
     prompt: string, //the "main" prompt for the AI
     id: string
-    //more fields can be added here later if/when required
+    //below are parameters recieved from the frontend, the affect the values sent to the API
+    creativity: number //float 0-1
+    quality: number //int 1-9
+    inputLength: number //int 1024-8000
+    outputLength: number //int 1-5
 }
 ```
+
+There must be exactly two contexts listed: the theme and the category in that order.
 
 ## Response
 

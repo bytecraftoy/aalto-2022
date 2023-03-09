@@ -11,6 +11,8 @@ interface SubHeaderProps {
 
 export const NavigationSubHeader: React.FC<SubHeaderProps> = ({ children }) => {
     return (
-        <div className="w-full h-14 px-4 py-[18px] leading-5">{children}</div>
+        <div className="w-full h-14 px-4 py-[18px] leading-5 font-medium">
+            {children}
+        </div>
     );
 };

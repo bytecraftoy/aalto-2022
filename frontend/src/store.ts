@@ -6,11 +6,21 @@
  */
 
 import { configureStore } from '@reduxjs/toolkit';
-import panelReducer from './reducers/panelReducer';
+import {
+    panelReducer,
+    userReducer,
+    projectReducer,
+    themeReducer,
+    presetReducer,
+} from './reducers';
 
 const store = configureStore({
     reducer: {
+        theme: themeReducer,
         panels: panelReducer,
+        user: userReducer,
+        projects: projectReducer,
+        presets: presetReducer,
     },
 });
 

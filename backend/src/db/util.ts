@@ -1,7 +1,12 @@
-import { Pool, Client } from 'pg';
+import { Pool } from 'pg';
 import { logger } from '../utils/logger';
+import { runMigrations } from './schema';
 
-const waitForDatabase = async (db: Pool | Client, timeout_secs = 60) => {
+const waitForDatabase = async (
+    db: Pool,
+    run_migrations: boolean,
+    timeout_secs = 60
+) => {
     logger.info('db_startup');
 
     const start = process.hrtime();
@@ -14,7 +19,8 @@ const waitForDatabase = async (db: Pool | Client, timeout_secs = 60) => {
         }
 
         try {
-            await db.connect();
+            const client = await db.connect();
+            client.release();
         } catch (e) {
             await new Promise((resolve) => setTimeout(resolve, 500));
             logger.warn('db_startup_timeout', { taken: taken[0], error: e });
@@ -24,6 +30,21 @@ const waitForDatabase = async (db: Pool | Client, timeout_secs = 60) => {
         logger.info('db_startup_done', { taken: taken[0] });
         break;
     }
+
+    if (run_migrations) {
+        await runMigrations();
+    }
 };
 
-export { waitForDatabase };
+const resetDatabase = async (pool: Pool) => {
+    logger.info('resetdb_start');
+    const client = await pool.connect();
+
+    await client.query('DROP SCHEMA public CASCADE');
+    await client.query('CREATE SCHEMA public');
+
+    client.release();
+    logger.info('resetdb_done');
+};
+
+export { waitForDatabase, resetDatabase };

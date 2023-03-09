@@ -103,6 +103,7 @@ module.exports = {
                 3: '#ECE8F5',
                 4: '#EBE7F4',
                 5: '#E4E0F1',
+                inverse: '#313034',
             },
 
             //OLD COLORS, delete these when color scheme changed to new one
@@ -140,22 +141,24 @@ module.exports = {
         },
     },
     plugins: [
+        require('tailwind-scrollbar-hide'),
         plugin(({ addBase }) => {
-            addBase({
-                '.scrollbar': {},
-                '.scrollbar::-webkit-scrollbar': {
-                    width: '0.6rem',
-                    borderRadius: '1rem',
-                },
-                '.scrollbar::-webkit-scrollbar-thumb': {
-                    backgroundColor: '#D6D3D180',
-                    borderRadius: '0.25rem',
-                },
-                '.scrollbar::-webkit-scrollbar-track': {
-                    backgroundColor: '#33415540',
-                    borderRadius: '0.25rem',
-                },
-            });
+            require('tailwind-scrollbar-hide'),
+                addBase({
+                    '.scrollbar': {},
+                    '.scrollbar::-webkit-scrollbar': {
+                        width: '0.6rem',
+                        borderRadius: '1rem',
+                    },
+                    '.scrollbar::-webkit-scrollbar-thumb': {
+                        backgroundColor: '#D6D3D180',
+                        borderRadius: '0.25rem',
+                    },
+                    '.scrollbar::-webkit-scrollbar-track': {
+                        backgroundColor: '#33415540',
+                        borderRadius: '0.25rem',
+                    },
+                });
         }),
     ],
 };
