@@ -43,7 +43,7 @@ export const IOBoxBar: React.FC<IOBoxBarProps> = ({
                 colorPalette={locked ? 'secondary' : 'tertiary'}
                 visible={locked || showButtons}
             />
-            {deleteSelf ? (
+            {deleteSelf && !locked ? (
                 <IOBoxButton
                     icon="XMarkIcon"
                     onClick={() => deleteSelf?.()}
