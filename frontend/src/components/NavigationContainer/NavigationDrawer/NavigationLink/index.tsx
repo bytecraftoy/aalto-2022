@@ -21,6 +21,7 @@ export const NavigationLink: React.FC<NavigationLinkProps> = ({
         <Link
             to={to}
             className="w-full h-14 block rounded-full hover:bg-secondary-90 transition-all"
+            data-testid="panel-link"
         >
             <div className="flex py-4 pl-4 pr-5 gap-3">
                 {icon}

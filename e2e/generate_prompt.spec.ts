@@ -166,15 +166,12 @@ test('should generate all boxes with generate all button', async ({ page }) => {
     ).toHaveCount(0); //Autosave finished
 
     await page.locator('[data-testid="navdrawer-button"]').first().click();
-    await page.fill('input[placeholder*="category"]', category_input);
-    await expect(page.getByRole('link', { name: category_input })).toHaveCount(
-        1
-    );
-    await page.getByRole('link', { name: category_input }).click();
+    await page.locator('[data-testid="panel-link"]').nth(1).click();
     await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
     await page.click('input[placeholder*="category"]'); // Closes nav drawer
 
     const numExtra = 3;
+    await page.fill('input[placeholder*="category"]', category_input);
     await expect(page.locator('[data-testid="prompt"]')).toHaveCount(1);
     for (let i = 1; i <= numExtra; i++) {
         // Clicks the add prompt button to add extra prompts
