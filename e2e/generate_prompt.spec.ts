@@ -166,13 +166,15 @@ test('should generate all boxes with generate all button', async ({ page }) => {
     ).toHaveCount(0); //Autosave finished
 
     await page.locator('[data-testid="navdrawer-button"]').first().click();
-    await expect(page.getByRole('link', { name: 'Panel-1' })).toHaveCount(1);
-    await page.getByRole('link', { name: 'Panel-1' }).click();
+    await page.fill('input[placeholder*="category"]', category_input);
+    await expect(page.getByRole('link', { name: category_input })).toHaveCount(
+        1
+    );
+    await page.getByRole('link', { name: category_input }).click();
     await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
     await page.click('input[placeholder*="category"]'); // Closes nav drawer
 
     const numExtra = 3;
-    await page.fill('input[placeholder*="category"]', category_input);
     await expect(page.locator('[data-testid="prompt"]')).toHaveCount(1);
     for (let i = 1; i <= numExtra; i++) {
         // Clicks the add prompt button to add extra prompts
@@ -201,4 +203,19 @@ test('should generate all boxes with generate all button', async ({ page }) => {
             `Write a game flavor text for ${prompt_input} ${i} which is a ${category_input} in a ${theme_input} setting`
         );
     }
+});
+
+test('Saving category does not change other panel information', async ({
+    page,
+}) => {
+    await page.getByTestId('navdrawer-button').click();
+    await page.getByRole('button', { name: 'Add Panel' }).click();
+    await page.getByRole('link', { name: 'Panel-2' }).click();
+    await page.getByPlaceholder('category').click();
+    await page.getByPlaceholder('category').fill('test');
+    await page.getByTestId('icon-button').first().click();
+    await page.getByText('Save', { exact: true }).click();
+    await page.getByTestId('navdrawer-button').click();
+    await page.getByRole('link', { name: 'Panel-1' }).click();
+    await page.getByText('Category', { exact: true }).click();
 });
