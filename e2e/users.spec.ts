@@ -6,7 +6,7 @@ dotenv.config({ path: 'backend/.env' });
 const uuid = () => Math.random().toString(36).substring(2, 12);
 const username = uuid();
 
-test('Can creata an account', async ({ page }) => {
+test('Can create an account', async ({ page }) => {
     await page.goto('http://localhost:3000/');
     await page.goto('http://localhost:3000/login/');
     await page.getByRole('button', { name: 'Sign up' }).click();
