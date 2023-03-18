@@ -1,3 +1,6 @@
+/**
+ * Defines logging and settings associated with it.
+ */
 import { createLogger, transports, format } from 'winston';
 import { isDevelopment, isTesting } from './env';
 

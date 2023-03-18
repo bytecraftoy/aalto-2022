@@ -1,3 +1,7 @@
+/**
+ * File contains functions related to logging errors and http requests
+ * the logging level can be adjusted with LOG_LEVEL environmental variable
+ */
 import { logger } from '../utils/logger';
 import { Request, Response } from 'express';
 

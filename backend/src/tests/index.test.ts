@@ -1,3 +1,6 @@
+/**
+ * tests CORS headers
+ */
 import supertest from 'supertest';
 import { server } from '../index';
 const api = supertest(server);

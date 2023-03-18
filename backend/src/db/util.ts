@@ -1,3 +1,7 @@
+/**
+ * Utility file containing functions for database startup and resetting
+ */
+
 import { Pool } from 'pg';
 import { logger } from '../utils/logger';
 import { runMigrations } from './schema';

@@ -1,3 +1,9 @@
+/**
+ * Defines the SQL queries and the means to execute the queries
+ * with the executeQuery function.
+ * All query functions are collected in this file.
+ */
+
 import { pool } from './pool';
 import { logger } from '../utils/logger';
 

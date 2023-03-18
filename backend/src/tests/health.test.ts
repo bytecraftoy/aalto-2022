@@ -1,3 +1,6 @@
+/**
+ * tests the /apy/health router
+ */
 import supertest from 'supertest';
 import fs from 'fs';
 import { app } from '../app';

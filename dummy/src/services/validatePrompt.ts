@@ -1,3 +1,6 @@
+/**
+ * validates types and values for each parameter used in the request
+ */
 import { Prompt } from './../types/Prompt';
 
 class ValidationError extends SyntaxError {

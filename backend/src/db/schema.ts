@@ -1,3 +1,8 @@
+/**
+ * Defines the database schema with the node-pg-migrate library
+ * Database schema stored in /backend/migrations
+ */
+
 import { logger } from '../utils/logger';
 import migrate, { RunnerOption } from 'node-pg-migrate';
 import { Client } from 'pg';
