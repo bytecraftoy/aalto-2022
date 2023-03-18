@@ -26,9 +26,12 @@ const validateApiRequest = async (body: string): Promise<ApiRequest> => {
         throw new ValidationError(
             `Found ${parsed.contexts.length} contexts instead of 2`
         );
-    
+
     //throw error if output length too high with low input length
-    if (parsed.parameters.outputLength === 5 && parsed.parameters.inputLength < 4000)
+    if (
+        parsed.parameters.outputLength === 5 &&
+        parsed.parameters.inputLength < 4000
+    )
         throw new ValidationError(
             `Invalid output/input length combination (${parsed.parameters.outputLength} and ${parsed.parameters.inputLength})`
         );

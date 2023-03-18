@@ -8,8 +8,6 @@ import { initializeUsers } from '../services/testService';
 
 const api = supertest(app);
 
-
-
 beforeEach(async () => {
     await initializeUsers();
 });

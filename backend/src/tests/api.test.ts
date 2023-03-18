@@ -111,7 +111,6 @@ describe('backend dummy communication, POST /api/textgen', () => {
     });
 });
 
-
 describe('promptService: Prompt creation', () => {
     test('Returns a prompt with valid parameters, high quality', () => {
         const prompt = createPrompt(

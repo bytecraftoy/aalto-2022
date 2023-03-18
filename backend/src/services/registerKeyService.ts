@@ -1,5 +1,5 @@
 /**
- * Service function that helps validate 
+ * Service function that helps validate
  * the key used to register for the app
  */
 import { logger } from '../utils/logger';
