@@ -3,6 +3,7 @@ import { useLogin, useLogout } from '../../utils/hooks';
 import { EventBus } from '../../utils/eventBus';
 import { backendURL } from '../../utils/backendURL';
 import { Account } from '../../utils/types';
+import { useNavigate } from 'react-router-dom';
 
 interface ContainerProps {
     children: React.ReactNode;
@@ -14,6 +15,7 @@ interface ContainerProps {
 export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
     const login = useLogin();
     const logout = useLogout();
+    const navigate = useNavigate();
 
     // Function for log out, i.e., emptying the cookies.
     async function onCustomEvent() {
@@ -25,6 +27,7 @@ export const UserContainer: React.FC<ContainerProps> = ({ children }) => {
 
         // Cause a logout on the frontend
         await logout();
+        navigate('/login');
     }
 
     // Logs in after refresh
