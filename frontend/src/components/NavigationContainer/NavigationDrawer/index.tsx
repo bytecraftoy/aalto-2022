@@ -7,6 +7,7 @@ import { NavigationLink } from './NavigationLink';
 import { solidIcon } from '../../../utils/icons';
 import { PanelSection } from './PanelSection';
 import { Divider } from '../../Divider';
+import { useAppSelector } from '../../../utils/hooks';
 
 /**
  *
@@ -23,6 +24,7 @@ interface DrawerProps {
 
 export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
     const drawerRef = useRef<HTMLDivElement>(null);
+    const user = useAppSelector((state) => state.user);
 
     useEffect(() => {
         // Closes the drawer if clicked outside of the drawer
@@ -72,9 +74,14 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     <Divider />
 
                     {/** Content panels */}
-                    <PanelSection />
-
-                    <Divider />
+                    {user.logged ? (
+                        <>
+                            <PanelSection />
+                            <Divider />
+                        </>
+                    ) : (
+                        <></>
+                    )}
 
                     {/** Others */}
                     {/* Hidden because this is currently not implemented
