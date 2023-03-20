@@ -30,7 +30,7 @@ export const IOBoxButton: React.FC<IOBoxButtonProps> = ({
             onMouseLeave={() => setNameVisible(false)}
             className={classNames(
                 'transition-all mb-0 mr-0',
-                { '-translate-y-[11.5em]': visible },
+                { '-translate-y-[4em]': visible },
                 { '': !visible },
                 { 'mr-0 scale-105': nameVisible }
             )}

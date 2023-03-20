@@ -24,7 +24,7 @@ export const IOBoxBar: React.FC<IOBoxBarProps> = ({
     errors,
 }) => {
     return (
-        <div className="absolute w-full px-5 flex flex-row justify-end items-center z-1">
+        <div className="relative translate-y-16 w-full px-5 flex flex-row justify-end items-center z-1">
             {!locked && !errors ? (
                 <IOBoxButton
                     icon="ArrowPathIcon"

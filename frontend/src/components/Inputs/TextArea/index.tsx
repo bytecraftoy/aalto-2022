@@ -15,6 +15,7 @@ interface TextInputProps extends InputProps {
     placeholder: string;
     value: string;
     onInput: React.FormEventHandler<HTMLTextAreaElement>;
+    resizable: boolean;
 }
 
 export const TextArea: React.FC<TextInputProps> = ({
@@ -23,6 +24,7 @@ export const TextArea: React.FC<TextInputProps> = ({
     value,
     onInput,
     errors,
+    resizable = false
 }) => {
     // Ref to the textarea element
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -52,6 +54,7 @@ export const TextArea: React.FC<TextInputProps> = ({
                 placeholder={placeholder}
                 ref={textareaRef}
                 className={classNames(
+                    `${resizable ? "resize-y" : "" }`,
                     'form-control peer h-40 block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding  resize-none',
                     'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
                     'rounded-t-lg transition-colors ',

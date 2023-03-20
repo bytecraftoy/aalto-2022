@@ -60,7 +60,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
     return (
         <div
             //IOBoxBar is absolute so use relative here
-            className="mt-6 pt-10 sm:px-5 sm:w-1/2 max-sm:w-3/4 min-w-fit flex flex-col items-center justify-around relative"
+            className="mt-6 pt-10 sm:px-5 sm:w-1/2 max-sm:w-3/4 min-w-fit flex flex-col justify-around relative"
             data-testid="hover-area"
             onMouseEnter={() => {
                 setShowButtons(true);
@@ -69,6 +69,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 setShowButtons(false);
             }}
         >
+
             <IOBoxBar
                 showButtons={showButtons}
                 locked={locked}
@@ -88,6 +89,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                     onInput={({ target }) => {
                         setInput((target as HTMLTextAreaElement).value);
                     }}
+                    resizable={false}
                     errors={errors}
                 />
                 <TextArea
@@ -97,6 +99,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                     onInput={({ target }) => {
                         setOutput((target as HTMLTextAreaElement).value);
                     }}
+                    resizable={true}
                 />
             </div>
         </div>
