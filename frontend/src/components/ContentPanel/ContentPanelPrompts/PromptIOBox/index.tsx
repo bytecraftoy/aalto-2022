@@ -69,7 +69,6 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 setShowButtons(false);
             }}
         >
-
             <IOBoxBar
                 showButtons={showButtons}
                 locked={locked}

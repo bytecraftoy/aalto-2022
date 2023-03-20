@@ -24,7 +24,7 @@ export const TextArea: React.FC<TextInputProps> = ({
     value,
     onInput,
     errors,
-    resizable = false
+    resizable = false,
 }) => {
     // Ref to the textarea element
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -60,7 +60,7 @@ export const TextArea: React.FC<TextInputProps> = ({
                     'bg-neutral-90  group-hover:bg-neutral-80 focus:bg-neutral-80',
                     'placeholder:text-transparent placeholder:select-none cursor-text',
                     { 'focus:border-red border-red': showError },
-                    { 'resize-y' : resizable}
+                    { 'resize-y': resizable }
                 )}
                 value={value}
                 onInput={onInput}
@@ -72,7 +72,11 @@ export const TextArea: React.FC<TextInputProps> = ({
                     'absolute select-none cursor-text left-0 top-0 pl-4 peer-placeholder-shown:top-3.5 rounded-t-lg',
                     'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base',
                     'transition-all',
-                    `${showPlaceholder ? 'bg-transparent' : 'group-hover:bg-neutral-80 peer-focus-within:bg-neutral-80'}`,
+                    `${
+                        showPlaceholder
+                            ? 'bg-transparent'
+                            : 'group-hover:bg-neutral-80 peer-focus-within:bg-neutral-80'
+                    }`,
                     {
                         'text-red peer-placeholder-shown:text-red': showError,
                     }
