@@ -49,7 +49,7 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
     };
 
     return (
-        <div className="flex flex-row flex-wrap justify-center items-center p-8 mb-6">
+        <div className="flex flex-wrap justify-center items-center p-8 mb-6">
             {promptBoxes.map((p) => {
                 return (
                     <PromptIOBox
