@@ -54,7 +54,7 @@ export const TextArea: React.FC<TextInputProps> = ({
                 placeholder={placeholder}
                 ref={textareaRef}
                 className={classNames(
-                    'form-control peer h-40 min-h-[160px] block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding min-h-full resize-none',
+                    'form-control peer h-40 min-h-[160px] block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding resize-none',
                     'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
                     'rounded-t-lg transition-colors ',
                     'bg-neutral-90  group-hover:bg-neutral-80 focus:bg-neutral-80',
