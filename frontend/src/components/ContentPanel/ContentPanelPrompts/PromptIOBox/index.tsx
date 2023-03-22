@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
 import { IOBoxBar } from './IOBoxBar';
 import { TextArea } from '../../../Inputs';
 import { z } from 'zod';
+import { PromptData } from '../../../../utils/types';
 
 /**
  * Visible PromptIOBox state, and callback functions for
@@ -57,10 +58,14 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
         errors = formattedErrors._errors.join(', ');
     }
 
+    const [height, setHeight] = useState(0)
+    const ref = useRef() as MutableRefObject<HTMLDivElement>
+    console.log(ref)
+
     return (
         <div
             //IOBoxBar is absolute so use relative here
-            className="mt-6 pt-10 sm:px-5 sm:w-1/2 max-sm:w-3/4 min-w-fit flex flex-col justify-around relative"
+            className="mt-6 pt-10 sm:px-5 sm:w-1/2 max-sm:w-3/4 min-w-fit h-fit flex flex-col relative"
             data-testid="hover-area"
             onMouseEnter={() => {
                 setShowButtons(true);
@@ -69,37 +74,39 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 setShowButtons(false);
             }}
         >
-            <IOBoxBar
-                showButtons={showButtons}
-                locked={locked}
-                generate={generate}
-                deleteSelf={deleteSelf}
-                lock={() => lock(id)}
-                errors={errors}
-            />
-            <div
-                className="w-full flex flex-col items-center justify-between z-10 bg-primary-90 rounded-t-lg"
-                data-testid="prompt"
-            >
-                <TextArea
-                    placeholder="User input here"
-                    label="Input"
-                    value={input}
-                    onInput={({ target }) => {
-                        setInput((target as HTMLTextAreaElement).value);
-                    }}
-                    resizable={false}
+            <div>
+                <IOBoxBar
+                    showButtons={showButtons}
+                    locked={locked}
+                    generate={generate}
+                    deleteSelf={deleteSelf}
+                    lock={() => lock(id)}
                     errors={errors}
                 />
-                <TextArea
-                    placeholder="AI generated content"
-                    label="Output"
-                    value={output}
-                    onInput={({ target }) => {
-                        setOutput((target as HTMLTextAreaElement).value);
-                    }}
-                    resizable={true}
-                />
+                <div
+                    className="w-full flex flex-col items-center justify-between z-10 bg-primary-90 rounded-t-lg"
+                    data-testid="prompt"
+                >
+                    <TextArea
+                        placeholder="User input here"
+                        label="Input"
+                        value={input}
+                        onInput={({ target }) => {
+                            setInput((target as HTMLTextAreaElement).value);
+                        }}
+                        resizable={false}
+                        errors={errors}
+                    />
+                    <TextArea
+                        placeholder="AI generated content"
+                        label="Output"
+                        value={output}
+                        onInput={({ target }) => {
+                            setOutput((target as HTMLTextAreaElement).value);
+                        }}
+                        resizable={true}
+                    />
+                </div>
             </div>
         </div>
     );

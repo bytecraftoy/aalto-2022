@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import classNames from 'classnames';
 import { PromptIOBox } from './PromptIOBox';
 import { PromptData } from '../../../utils/types';
 import { FAB } from '../../Buttons';
@@ -48,35 +49,57 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
         setPromptBoxes((prev) => prev.filter((p) => p.id !== id));
     };
 
+    const splitPromptBoxes = (boxes: PromptData[]) => {
+
+        return [boxes.slice(0, boxes.length / 2), boxes.slice(boxes.length / 2, boxes.length - 1)]
+    }
+
+    const makePromptBox = (p: PromptData) => {
+        console.log(p.id)
+        return (
+            <PromptIOBox
+                key={p.id}
+                id={p.id}
+                locked={p.locked}
+                input={p.input}
+                output={p.output}
+                setInput={(s: string) => setPromptInput(p.id, s)}
+                setOutput={(s: string) => setPromptOutput(p.id, s)}
+                lock={() => lockPrompt(p.id)}
+                generate={() => generateOutput(p)}
+                deleteSelf={
+                    promptBoxes.length > 1
+                        ? () => deletePromptBox(p.id)
+                        : null
+                }
+            />
+        );
+    }
+
+    const twoCols = true;
+    const leftHigher = false;
+    const pb = twoCols ? splitPromptBoxes(promptBoxes) : [promptBoxes, promptBoxes]
+
     return (
-        <div className="flex flex-wrap justify-center items-center p-8 mb-6">
-            {promptBoxes.map((p) => {
-                return (
-                    <PromptIOBox
-                        key={p.id}
-                        id={p.id}
-                        locked={p.locked}
-                        input={p.input}
-                        output={p.output}
-                        setInput={(s: string) => setPromptInput(p.id, s)}
-                        setOutput={(s: string) => setPromptOutput(p.id, s)}
-                        lock={() => lockPrompt(p.id)}
-                        generate={() => generateOutput(p)}
-                        deleteSelf={
-                            promptBoxes.length > 1
-                                ? () => deletePromptBox(p.id)
-                                : null
-                        }
+        <div className="flex justify-center items-center p-8 mb-6">
+            <div className={`grid grid-cols-${twoCols ? '2' : '1'} justify-around`}>
+                <div>
+                    {pb[0].map((p) => { return makePromptBox(p) })}
+                </div>
+                <div>
+                    {twoCols ? pb[1].map((p) => { return makePromptBox(p) }) : null}
+                </div>
+                <div className={classNames(
+                    'mt-10 ml-[120px] pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around',
+                    `${leftHigher && twoCols ? 'col-start-2' : 'col-start-1'}`
+                    )}>
+                    <FAB
+                        icon="PlusIcon"
+                        size="large"
+                        colorPalette="primary"
+                        onClick={addPromptBox}
                     />
-                );
-            })}
-            <div className="mt-10 pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around">
-                <FAB
-                    icon="PlusIcon"
-                    size="large"
-                    colorPalette="primary"
-                    onClick={addPromptBox}
-                />
+                </div>
             </div>
         </div>
     );

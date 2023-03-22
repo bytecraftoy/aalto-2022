@@ -54,7 +54,7 @@ export const TextArea: React.FC<TextInputProps> = ({
                 placeholder={placeholder}
                 ref={textareaRef}
                 className={classNames(
-                    'form-control peer h-40 min-h-[160px] block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding resize-none',
+                    'form-control peer h-40 min-h-[160px] block w-160 min-w-[400px] pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding resize-none',
                     'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
                     'rounded-t-lg transition-colors ',
                     'bg-neutral-90  group-hover:bg-neutral-80 focus:bg-neutral-80',
@@ -70,12 +70,12 @@ export const TextArea: React.FC<TextInputProps> = ({
             <span
                 className={classNames(
                     'absolute select-none cursor-text left-0 top-0 pl-4 peer-placeholder-shown:top-3.5 rounded-t-lg',
-                    'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base',
+                    'text-primary text-xs peer-placeholder-shown:text-neutral-40 peer-placeholder-shown:text-base',
                     'transition-all',
                     `${
                         showPlaceholder
                             ? 'bg-transparent'
-                            : 'group-hover:bg-neutral-80 peer-focus-within:bg-neutral-80'
+                            : 'group-hover:bg-neutral-80 peer-focus-within:bg-neutral-80 bg-neutral-90'
                     }`,
                     {
                         'text-red peer-placeholder-shown:text-red': showError,
