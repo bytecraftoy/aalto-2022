@@ -17,18 +17,26 @@ export const Panels = () => {
     // Get the panel id from the route
     const { panelId } = useParams();
 
-    // Current panel of the application
-    const panel = panels.find((e) => e.id === panelId);
+    if (panelId != "") {
+        // Current panel of the application
+        const panel = panels.find((e) => e.id === panelId);
 
-    // If not panel found with the id === panelId
-    // TODO! Some "Page not found" component
-    if (!panel) {
-        return <div>id not found</div>;
+        // If not panel found with the id === panelId
+        // TODO! Some "Page not found" component
+        if (!panel) {
+            return <div>id not found</div>;
+        }
+
+        return (
+            <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
+                <ContentPanel key={panel.id} id={panel.id} />
+            </div>
+        );
+    } else {
+        return (
+            <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
+                moro
+            </div>
+        );
     }
-
-    return (
-        <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
-            <ContentPanel key={panel.id} id={panel.id} />
-        </div>
-    );
 };

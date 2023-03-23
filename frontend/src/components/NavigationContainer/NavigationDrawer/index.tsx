@@ -78,6 +78,11 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                         <>
                             <PanelSection />
                             <Divider />
+                            <NavigationLink
+                                label="Category view"
+                                icon={solidIcon('WindowIcon')}
+                                to="/panels"
+                            />
                         </>
                     ) : (
                         <></>
