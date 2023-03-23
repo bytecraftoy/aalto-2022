@@ -1,0 +1,2 @@
+CREATE USER adminjs WITH SUPERUSER PASSWORD 'adminjs';
+GRANT ALL PRIVILEGES ON DATABASE aalto_backend TO adminjs;

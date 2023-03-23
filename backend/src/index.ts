@@ -1,7 +1,5 @@
 import http from 'http';
 import { getApp } from './app';
-import { pool } from './db/pool';
-import { waitForDatabase } from './db/util';
 import { isTesting } from './utils/env';
 import { logger } from './utils/logger';
 
@@ -10,9 +8,6 @@ const getServer = async (): Promise<
 > => {
     const app = await getApp();
     const server = http.createServer(app);
-    if (!isTesting) {
-        await waitForDatabase(pool, true);
-    }
     return server;
 };
 

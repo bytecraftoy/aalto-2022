@@ -15,12 +15,18 @@ import { checkToken } from './middleware/checkToken';
 import expressAsyncHandler from 'express-async-handler';
 import { tokenReader } from './middleware/tokenReader';
 import { rootPath } from './routers/admin';
+import { isTesting } from './utils/env';
+import { waitForDatabase } from './db/util';
+import { pool } from './db/pool';
 
 const app = express();
 
 const getApp = async (): Promise<express.Express> => {
-    const adminRouter = await getAdminRouter();
-    app.use(rootPath, adminRouter);
+    if (!isTesting) {
+        await waitForDatabase(pool, true);
+        const adminRouter = await getAdminRouter();
+        app.use(rootPath, adminRouter);
+    }
 
     app.use(cors);
     app.use(cookieParser());

@@ -2,8 +2,9 @@ version: '3'
 
 services:
     db:
-        # keep version in sync with production
-        image: 'docker.io/postgres:14'
+        build:
+            context: ./docker
+            dockerfile: db.Dockerfile
 
         # keep in sync with .env
         ports:

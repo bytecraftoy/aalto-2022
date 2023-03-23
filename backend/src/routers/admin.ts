@@ -7,17 +7,19 @@ AdminJS.registerAdapter({ Database, Resource });
 const rootPath = '/admin/adminjs';
 
 const getAdminRouter = async (): Promise<Router> => {
-    /*
     const db = await new Adapter('postgresql', {
         connectionString:
-            'postgres://adminjs:adminjs@localhost:5432/adminjs_panel',
-        database: 'adminjs_panel',
+            'postgres://adminjs:adminjs@localhost:5432/aalto_backend',
+        database: 'aalto_backend',
     }).init();
-    */
 
     const admin = new AdminJS({
         rootPath,
-        /*resources: [{ resource: db.table('projects'), options: {} }],*/
+        resources: [
+            { resource: db.table('users'), options: {} },
+            { resource: db.table('projects'), options: {} },
+        ],
+        //databases: [db],
     });
     const adminRouter = AdminJSExpress.buildRouter(admin);
 
