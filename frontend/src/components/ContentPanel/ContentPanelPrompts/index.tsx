@@ -50,12 +50,16 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
     };
 
     const splitPromptBoxes = (boxes: PromptData[]) => {
+        const boxesSplit: PromptData[][] = [[],[]]
 
-        return [boxes.slice(0, boxes.length / 2), boxes.slice(boxes.length / 2, boxes.length - 1)]
+        for (let i = 0; i < boxes.length; i++) {
+            if (i % 2 == 0) { boxesSplit[0].push(boxes[i]) }
+            else { boxesSplit[1].push(boxes[i]) }
+        }
+        return boxesSplit
     }
 
     const makePromptBox = (p: PromptData) => {
-        console.log(p.id)
         return (
             <PromptIOBox
                 key={p.id}
@@ -76,31 +80,39 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
         );
     }
 
-    const twoCols = true;
-    const leftHigher = false;
+    const makeAddButton = () => {
+        return (
+            <div className={classNames(
+                'mt-10 ml-[120px] pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around',
+                )}>
+                <FAB
+                    icon="PlusIcon"
+                    size="large"
+                    colorPalette="primary"
+                    onClick={addPromptBox}
+                />
+            </div>
+        )
+    }
+
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+
+    const twoCols = vw >= 1000;
     const pb = twoCols ? splitPromptBoxes(promptBoxes) : [promptBoxes, promptBoxes]
+    const addButtonOnRight = twoCols ? pb[0].length > pb[1].length : false
 
     return (
         <div className="flex justify-center items-center p-8 mb-6">
             <div className={`grid grid-cols-${twoCols ? '2' : '1'} justify-around`}>
-                <div>
-                    {pb[0].map((p) => { return makePromptBox(p) })}
+                <div className="col-start-1 items-center">
+                    <div>{pb[0].map((p) => makePromptBox(p) )}</div>
+                    <div>{!addButtonOnRight ? makeAddButton() : null}</div>
                 </div>
-                <div>
-                    {twoCols ? pb[1].map((p) => { return makePromptBox(p) }) : null}
-                </div>
-                <div className={classNames(
-                    'mt-10 ml-[120px] pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around',
-                    `${leftHigher && twoCols ? 'col-start-2' : 'col-start-1'}`
-                    )}>
-                    <FAB
-                        icon="PlusIcon"
-                        size="large"
-                        colorPalette="primary"
-                        onClick={addPromptBox}
-                    />
-                </div>
-            </div>
+                {twoCols ? <div className="col-start-2">
+                    <div>{pb[1].map((p) => makePromptBox(p) )}</div>
+                    <div className="pt-36">{addButtonOnRight ? makeAddButton() : null}</div>
+                </div> : null}
+            </div>  
         </div>
     );
 };
