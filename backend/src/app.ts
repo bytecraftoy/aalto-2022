@@ -6,6 +6,7 @@ import {
     healthRouter,
     userRouter,
     presetsRouter,
+    statusRouter,
 } from './routers';
 import { cors } from './middleware/cors';
 import { requestLogger, errorLogger } from './middleware/logger';
@@ -24,6 +25,7 @@ app.use(expressAsyncHandler(tokenReader));
 app.use(requestLogger);
 
 app.use('/api/health', healthRouter);
+app.use('/api/status', statusRouter);
 app.use('/api/user', userRouter);
 app.use(express.static('./public/'));
 app.use(checkToken);
