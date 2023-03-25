@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
+import React, { useState, useRef, MutableRefObject } from 'react';
 import { IOBoxBar } from './IOBoxBar';
 import { TextArea } from '../../../Inputs';
 import { z } from 'zod';
-import { PromptData } from '../../../../utils/types';
 
 /**
  * Visible PromptIOBox state, and callback functions for
@@ -57,10 +56,6 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
         const formattedErrors = validatedInput.error.format();
         errors = formattedErrors._errors.join(', ');
     }
-
-    const [height, setHeight] = useState(0);
-    const ref = useRef() as MutableRefObject<HTMLDivElement>;
-    console.log(ref);
 
     return (
         <div
