@@ -99,7 +99,7 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
         );
     };
 
-    const twoCols = false;
+    const twoCols = true;
     const pb = twoCols
         ? splitPromptBoxes(promptBoxes)
         : [promptBoxes, promptBoxes];
