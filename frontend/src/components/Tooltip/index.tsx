@@ -9,6 +9,8 @@ interface TooltipProps {
     children: JSX.Element;
     floatRight?: boolean; // Prefer positioning the tooltip on the right
     disabled?: boolean;
+    instant?: boolean; // Show the tooltip instantly
+    fullColors?: boolean; // Use full colors for the tooltip
 }
 
 /**
@@ -21,6 +23,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
     children,
     floatRight,
     disabled,
+    instant,
+    fullColors,
 }) => {
     // Show tooltip if we are hovering the parent container
     const [show, setShow] = useState(false);
@@ -44,18 +48,31 @@ export const Tooltip: React.FC<TooltipProps> = ({
             {/* Visible tooltip with text */}
             <Transition
                 show={enabled}
-                enterFrom="opacity-0 delay-[1000ms] duration-200 transition-opacity"
-                enterTo="opacity-100 delay-[1000ms] duration-200 transition-opacity"
-                leaveFrom="opacity-100 transition-all duration-100"
-                leaveTo="opacity-0 transition-all duration-100"
+                enterFrom={
+                    !instant
+                        ? `opacity-0 delay-[1000ms] duration-200 transition-opacity`
+                        : ''
+                }
+                enterTo={
+                    !instant
+                        ? `opacity-100 delay-[1000ms] duration-200 transition-opacity`
+                        : ''
+                }
+                leaveFrom={
+                    !instant ? `opacity-100 transition-all duration-100` : ''
+                }
+                leaveTo={
+                    !instant ? `opacity-0 transition-all duration-100` : ''
+                }
                 style={
                     floatRight
                         ? { left: pos[0] + 4 - 200, top: pos[1] + 20 }
                         : { left: pos[0] + 4, top: pos[1] + 20 }
                 }
                 className={classNames(
-                    'z-[999] max-w-[300px] fixed p-2 rounded-xl pointer-events-none select-none',
-                    'bg-neutral-70/90 text-neutral-99 text-base',
+                    'z-[999] max-w-[300px] fixed p-2 rounded-xl pointer-events-none select-none  text-base',
+                    { 'bg-neutral-70/90 text-neutral-99': !fullColors },
+                    { 'bg-onSurface text-white': fullColors },
                     'flex flex-row justify-center items-center'
                 )}
             >
