@@ -51,14 +51,17 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
     };
 
     const splitPromptBoxes = (boxes: PromptData[]) => {
-        const boxesSplit: PromptData[][] = [[],[]]
+        const boxesSplit: PromptData[][] = [[], []];
 
         for (let i = 0; i < boxes.length; i++) {
-            if (i % 2 == 0) { boxesSplit[0].push(boxes[i]) }
-            else { boxesSplit[1].push(boxes[i]) }
+            if (i % 2 == 0) {
+                boxesSplit[0].push(boxes[i]);
+            } else {
+                boxesSplit[1].push(boxes[i]);
+            }
         }
-        return boxesSplit
-    }
+        return boxesSplit;
+    };
 
     const makePromptBox = (p: PromptData) => {
         return (
@@ -73,19 +76,19 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
                 lock={() => lockPrompt(p.id)}
                 generate={() => generateOutput(p)}
                 deleteSelf={
-                    promptBoxes.length > 1
-                        ? () => deletePromptBox(p.id)
-                        : null
+                    promptBoxes.length > 1 ? () => deletePromptBox(p.id) : null
                 }
             />
         );
-    }
+    };
 
     const makeAddButton = () => {
         return (
-            <div className={classNames(
-                'mt-10 ml-[120px] pt-12 pb-12 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around',
-                )}>
+            <div
+                className={classNames(
+                    'mt-10 ml-[120px] pt-12 pb-12 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around'
+                )}
+            >
                 <FAB
                     icon="PlusIcon"
                     size="large"
@@ -93,26 +96,33 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
                     onClick={addPromptBox}
                 />
             </div>
-        )
-    }
+        );
+    };
 
     const twoCols = false;
-    const pb = twoCols ? splitPromptBoxes(promptBoxes) : [promptBoxes, promptBoxes]
-    const addButtonOnRight = twoCols ? pb[0].length > pb[1].length : false
+    const pb = twoCols
+        ? splitPromptBoxes(promptBoxes)
+        : [promptBoxes, promptBoxes];
+    const addButtonOnRight = twoCols ? pb[0].length > pb[1].length : false;
 
     return (
         <div className="flex justify-center items-center p-8 mb-6">
-            <div className={`grid grid-cols-${twoCols ? '2' : '1'} justify-around`}>
+            <div
+                className={`grid grid-cols-${
+                    twoCols ? '2' : '1'
+                } justify-around`}
+            >
                 <div className="col-start-1">
-                    <div>{pb[0].map((p) => makePromptBox(p) )}</div>
+                    <div>{pb[0].map((p) => makePromptBox(p))}</div>
                     <div>{!addButtonOnRight ? makeAddButton() : null}</div>
                 </div>
-                {twoCols ? <div className="col-start-2">
-                    <div>{pb[1].map((p) => makePromptBox(p) )}</div>
-                    <div>{addButtonOnRight ? makeAddButton() : null}</div>
-                </div> : null}
+                {twoCols ? (
+                    <div className="col-start-2">
+                        <div>{pb[1].map((p) => makePromptBox(p))}</div>
+                        <div>{addButtonOnRight ? makeAddButton() : null}</div>
+                    </div>
+                ) : null}
             </div>
         </div>
-
     );
 };
