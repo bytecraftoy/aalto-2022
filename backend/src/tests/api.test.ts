@@ -5,7 +5,7 @@
  * However, the dummys own tests should cover for that.
  */
 
-import { server } from '../index';
+import { app } from './../app';
 import { createPrompt } from '../services';
 import { TokenPayload } from '../types/TokenPayload';
 import { createToken, createUser } from '../services/userService';
@@ -16,7 +16,7 @@ beforeEach(async () => {
     await initializeUsers();
 });
 
-const api = supertest(server);
+const api = supertest(app);
 
 describe('API request validation', () => {
     let token: string;

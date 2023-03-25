@@ -30,8 +30,9 @@ const executeQuery = async (
     try {
         const res = await client.query(query);
         client.release();
-        logger.debug('db_query_done', { res });
-        return res.rows as unknown[];
+        const result = res.rows;
+        logger.debug('db_query_done', { result });
+        return result as unknown[];
     } catch (e) {
         client.release();
         logger.error('db_query_fail', { error: e, query });
