@@ -4,6 +4,7 @@ import { PromptIOBox } from './PromptIOBox';
 import { PromptData } from '../../../utils/types';
 import { FAB } from '../../Buttons';
 import { useDebounce } from './hooks';
+import { TextPreview } from '../../TextPreview';
 
 /**
  * Component of Content panel.
@@ -83,7 +84,7 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
     const makeAddButton = () => {
         return (
             <div className={classNames(
-                'mt-10 ml-[120px] pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around',
+                'mt-10 ml-[120px] pt-12 pb-12 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around',
                 )}>
                 <FAB
                     icon="PlusIcon"
@@ -95,24 +96,23 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
         )
     }
 
-    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-
-    const twoCols = vw >= 1000;
+    const twoCols = false;
     const pb = twoCols ? splitPromptBoxes(promptBoxes) : [promptBoxes, promptBoxes]
     const addButtonOnRight = twoCols ? pb[0].length > pb[1].length : false
 
     return (
         <div className="flex justify-center items-center p-8 mb-6">
             <div className={`grid grid-cols-${twoCols ? '2' : '1'} justify-around`}>
-                <div className="col-start-1 items-center">
+                <div className="col-start-1">
                     <div>{pb[0].map((p) => makePromptBox(p) )}</div>
                     <div>{!addButtonOnRight ? makeAddButton() : null}</div>
                 </div>
                 {twoCols ? <div className="col-start-2">
                     <div>{pb[1].map((p) => makePromptBox(p) )}</div>
-                    <div className="pt-36">{addButtonOnRight ? makeAddButton() : null}</div>
+                    <div>{addButtonOnRight ? makeAddButton() : null}</div>
                 </div> : null}
-            </div>  
+            </div>
         </div>
+
     );
 };
