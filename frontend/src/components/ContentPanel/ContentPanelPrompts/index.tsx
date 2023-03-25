@@ -4,7 +4,6 @@ import { PromptIOBox } from './PromptIOBox';
 import { PromptData } from '../../../utils/types';
 import { FAB } from '../../Buttons';
 import { useDebounce } from './hooks';
-import { TextPreview } from '../../TextPreview';
 
 /**
  * Component of Content panel.

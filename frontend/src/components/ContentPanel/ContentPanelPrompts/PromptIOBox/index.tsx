@@ -58,9 +58,9 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
         errors = formattedErrors._errors.join(', ');
     }
 
-    const [height, setHeight] = useState(0)
-    const ref = useRef() as MutableRefObject<HTMLDivElement>
-    console.log(ref)
+    const [height, setHeight] = useState(0);
+    const ref = useRef() as MutableRefObject<HTMLDivElement>;
+    console.log(ref);
 
     return (
         <div
