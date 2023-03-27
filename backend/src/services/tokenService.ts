@@ -1,3 +1,6 @@
+/**
+ * Service file that assists in cookie validation
+ */
 import { Request, CookieOptions } from 'express';
 import { logger } from './../utils/logger';
 import { parseToken } from './userService';

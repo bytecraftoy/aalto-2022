@@ -1,3 +1,7 @@
+/**
+ * Service file used for sending user created prompts to the proxy/dummy
+ * as well as generating the response for the frontend
+ */
 import { Gpt3Response, Prompt, ApiResponse } from '../types';
 import axios from 'axios';
 import dotenv from 'dotenv';

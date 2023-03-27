@@ -1,13 +1,12 @@
+/**
+ * Tests the error messages related to user log in
+ */
 /* eslint-disable no-console */
 import supertest from 'supertest';
 import { app } from '../app';
 import { initializeUsers } from '../services/testService';
 
 const api = supertest(app);
-
-/**
- * Tests the error messages
- */
 
 beforeEach(async () => {
     await initializeUsers();

@@ -1,8 +1,20 @@
+/**
+ * Tests API validation as well as prompt creation.
+ * Does not test the actual router communication, only errors,
+ * since opening communications during testing is tricky.
+ * However, the dummys own tests should cover for that.
+ */
+
 import { app } from './../app';
 import { createPrompt } from '../services';
 import { TokenPayload } from '../types/TokenPayload';
 import { createToken, createUser } from '../services/userService';
 import supertest from 'supertest';
+import { initializeUsers, getUserToken } from './../services/testService';
+
+beforeEach(async () => {
+    await initializeUsers();
+});
 
 const api = supertest(app);
 
@@ -76,6 +88,25 @@ describe('API request validation', () => {
             .post('/api/textgen')
             .set('Cookie', `user-token=${token}`)
             .send(JSON.stringify(data))
+            .expect(400);
+    });
+});
+
+describe('backend dummy communication, POST /api/textgen', () => {
+    const data = {
+        wrong_data: 'incorrect',
+    };
+
+    test('is not available for anonymous users', async () => {
+        await api.post('/api/textgen').send(data).expect(401);
+    });
+
+    test('router responds with 400 for wrong json request', async () => {
+        const cookie = await getUserToken(api);
+        await api
+            .post('/api/textgen')
+            .set('Cookie', cookie)
+            .send(data)
             .expect(400);
     });
 });

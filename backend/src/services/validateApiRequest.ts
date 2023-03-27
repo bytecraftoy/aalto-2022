@@ -1,12 +1,6 @@
-import { ApiRequest } from '../types';
-import { GenerationRequestJsonSchema } from '../types/ApiTypes';
-
-class ValidationError extends SyntaxError {
-    name = 'ValidationError';
-}
-
 /**
- * Backend level validation.
+ * This file handles backend level validation
+ * using the validateApiRequests function.
  * Checks that body is json, and
  * contains the necessary fields for an ApiRequest
  *
@@ -17,6 +11,13 @@ class ValidationError extends SyntaxError {
  * Currently does not check type of fields
  *
  */
+import { ApiRequest } from '../types';
+import { GenerationRequestJsonSchema } from '../types/ApiTypes';
+
+class ValidationError extends SyntaxError {
+    name = 'ValidationError';
+}
+
 // eslint-disable-next-line @typescript-eslint/require-await
 const validateApiRequest = async (body: string): Promise<ApiRequest> => {
     const parsed = GenerationRequestJsonSchema.parse(JSON.parse(body));

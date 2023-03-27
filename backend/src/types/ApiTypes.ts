@@ -1,3 +1,7 @@
+/**
+ * Defines schemas used for communication between frontend and backend
+ * zod is useful for validation.
+ */
 import { z } from 'zod';
 
 export const ParametersSchema = z.object({

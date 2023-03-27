@@ -1,3 +1,6 @@
+/**
+ * Tests presets router /api/presets
+ */
 import supertest from 'supertest';
 import { app } from '../app';
 import { getUserToken, initializeUsers } from '../services/testService';

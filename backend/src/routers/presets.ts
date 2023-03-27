@@ -1,3 +1,8 @@
+/**
+ * Router which returns the parameter presets stored in the backend
+ * GET /api/presets
+ * presets stored in /backend/files/ai_presets.json
+ */
 import { Request, Response, Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 
