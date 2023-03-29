@@ -1,7 +1,6 @@
 import { ContentPanel } from '../../components/ContentPanel';
 import { useAppSelector, useLoginRedirect } from '../../utils/hooks';
 import { useParams } from 'react-router-dom';
-import { CategoryView } from '../../components/CategoryView';
 
 /**
  * Show's user the panel by the panel id

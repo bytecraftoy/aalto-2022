@@ -1,7 +1,5 @@
-import { ContentPanel } from '../../components/ContentPanel';
 import { useAppSelector, useLoginRedirect } from '../../utils/hooks';
-import { useParams } from 'react-router-dom';
-import { CategoryView } from '../../components/CategoryView';
+import { ProjectView } from '../../components/ProjectView';
 
 /**
  * Show's user the panel by the panel id
@@ -12,12 +10,13 @@ export const Projects = () => {
     // Redirect anonymous users from this page to the login page
     useLoginRedirect();
 
-    const panels = useAppSelector((state) => state.panels.value);
+    const projects = useAppSelector((state) => state.projects.value);
 
-        return (
-            <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
-            <CategoryView panels={panels}/>
+    return (
+        <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
+            <ProjectView projects={projects} />
+            
         </div>
-        );
+    );
 
 };
