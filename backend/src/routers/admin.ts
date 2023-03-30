@@ -2,8 +2,8 @@ import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
 import { Router } from 'express';
-import bcrypt from 'bcrypt';
 import passwordsFeature from '@adminjs/passwords';
+import { hashPassword } from '../services/userService';
 
 AdminJS.registerAdapter({ Database, Resource });
 const rootPath = '/admin/adminjs';
@@ -29,12 +29,7 @@ const getAdminRouter = async (): Promise<Router> => {
                             encryptedPassword: 'password_hash',
                             password: 'newPassword',
                         },
-                        hash: async (password) => {
-                            const saltRounds = 10;
-                            const salt = await bcrypt.genSalt(saltRounds);
-                            const hash = await bcrypt.hash(password, salt);
-                            return hash;
-                        },
+                        hash: hashPassword,
                     }),
                 ],
             },
