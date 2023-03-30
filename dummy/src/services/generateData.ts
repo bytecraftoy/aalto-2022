@@ -1,3 +1,6 @@
+/**
+ * generates dummy prompt, which contains metadata along with a random text generation
+ */
 import fs from 'fs';
 import { Gpt3Response, Prompt } from '../types';
 import { getRndString } from './getRndString';

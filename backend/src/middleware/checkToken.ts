@@ -1,5 +1,3 @@
-import { Request, Response } from 'express';
-
 /**
  * This middleware prevents anonymous users
  * from accessing sensitive API endpoints.
@@ -8,6 +6,8 @@ import { Request, Response } from 'express';
  * Endpoints that must be available for anonymous users
  * must be added before this middleware.
  */
+import { Request, Response } from 'express';
+
 const checkToken = (
     req: Request,
     res: Response,

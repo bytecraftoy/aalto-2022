@@ -1,3 +1,8 @@
+/**
+ * Service file that converts our own parameter settings to
+ * parameters accepted by the API, as well as generating the
+ * prompt in correct form.
+ */
 import fs from 'fs';
 import { Prompt, Preset } from '../types';
 

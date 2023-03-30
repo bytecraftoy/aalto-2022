@@ -1,3 +1,6 @@
+/**
+ * file that starts the database during unit tests.
+ */
 import { pool } from '../db/pool';
 import { runMigrations } from '../db/schema';
 import { resetDatabase, waitForDatabase } from '../db/util';
