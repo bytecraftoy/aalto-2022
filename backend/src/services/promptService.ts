@@ -3,12 +3,7 @@
  * parameters accepted by the API, as well as generating the
  * prompt in correct form.
  */
-import fs from 'fs';
 import { Prompt, Preset } from '../types';
-
-const presets = JSON.parse(
-    fs.readFileSync('files/presets.json').toString()
-) as Preset[];
 
 /**
  * Converts our own parameters into GPT-approved parameters according to discussed upon factors
@@ -81,14 +76,14 @@ export const createPrompt = (
     creativity: number,
     quality: number,
     inputLength: number,
-    outputLength: number,
-    preset = ''
+    outputLength: number
 ): Prompt => {
-    //Retrieve a preset by name, or the default preset if undefined
-    //TODO: figure out what to do with this
-    const template =
-        presets.find((p) => p.name === preset) ??
-        convertParameters(creativity, quality, inputLength, outputLength);
+    const template = convertParameters(
+        creativity,
+        quality,
+        inputLength,
+        outputLength
+    );
 
     const result = template.parameters;
 
