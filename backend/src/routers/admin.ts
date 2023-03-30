@@ -8,11 +8,25 @@ import { hashPassword } from '../services/userService';
 AdminJS.registerAdapter({ Database, Resource });
 const rootPath = '/admin/adminjs';
 
+const getDatabaseName = (): string => {
+    return process.env.POSTGRES_DB ?? 'postgres';
+};
+
+const buildConnectionString = (): string => {
+    const user = process.env.POSTGRES_ADMINJS_USER;
+    const host = 'localhost';
+    const database = getDatabaseName();
+    const password = process.env.POSTGRES_ADMINJS_PASSWORD;
+    const port = parseInt(process.env.POSTGRES_PORT ?? '5432');
+    return `postgres://${user}:${password}@${host}:${port}/${database}`;
+};
+
 const getAdminRouter = async (): Promise<Router> => {
+    const connectionString = buildConnectionString();
+    const database = getDatabaseName();
     const db = await new Adapter('postgresql', {
-        connectionString:
-            'postgres://adminjs:adminjs@localhost:5432/aalto_backend',
-        database: 'aalto_backend',
+        connectionString,
+        database,
     }).init();
 
     const admin = new AdminJS({
@@ -21,7 +35,10 @@ const getAdminRouter = async (): Promise<Router> => {
             {
                 resource: db.table('users'),
                 options: {
-                    properties: { password_hash: { isVisible: false } },
+                    properties: {
+                        password_hash: { isVisible: false },
+                        settings: { isVisible: false },
+                    },
                 },
                 features: [
                     passwordsFeature({
@@ -33,9 +50,13 @@ const getAdminRouter = async (): Promise<Router> => {
                     }),
                 ],
             },
-            { resource: db.table('projects'), options: {} },
+            {
+                resource: db.table('projects'),
+                options: {
+                    properties: { data: { isVisible: false } },
+                },
+            },
         ],
-        //databases: [db],
     });
     const adminRouter = AdminJSExpress.buildRouter(admin);
 
