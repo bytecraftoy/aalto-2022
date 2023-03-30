@@ -20,8 +20,8 @@ export const PopUpWindow: React.FC<PopUpWindowProps> = ({
 
     // Adds multiple I/O boxes
     const addBoxes = (input: string) => {
-        const n: number = +input;
-        if (n > 0 && n < 101) {
+        const n: number = Number.parseInt(input);
+        if (n >= 1 && n <= 100) {
             addPromptBoxes(n);
             setPopup(false);
         }
@@ -45,8 +45,17 @@ export const PopUpWindow: React.FC<PopUpWindowProps> = ({
                         placeholder="0"
                         min="0"
                         value={numberInput}
-                        onInput={({ target }) => {
-                            setNumber((target as HTMLTextAreaElement).value);
+                        onBeforeInput={(e) => {
+                            const d = (e.nativeEvent as KeyboardEvent).key;
+                            if (
+                                typeof d === 'string' &&
+                                Number.parseInt(d).toString() !== d
+                            )
+                                e.preventDefault();
+                        }}
+                        onInput={(e) => {
+                            const t = e.target as HTMLInputElement;
+                            setNumber(t.value);
                         }}
                     />
 
