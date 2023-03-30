@@ -13,7 +13,7 @@ interface ContentPanelHeaderProps {
     setCategory: (s: string) => void;
     setPopup: (b: boolean) => void;
 
-    saveState: () => void;
+    saveState: (force?: boolean) => Promise<void>;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -39,7 +39,7 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
                         choices={[
                             { action: () => setPopup(true), name: 'Add Boxes' },
                             { action: () => setOpen(true), name: 'Parameters' },
-                            { action: saveState, name: 'Save' },
+                            { action: () => saveState(true), name: 'Save' },
                         ]}
                     />
                 </div>
