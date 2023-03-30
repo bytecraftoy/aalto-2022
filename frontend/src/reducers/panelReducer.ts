@@ -29,10 +29,15 @@ export const panelSlice = createSlice({
     name: 'panels',
     initialState: createIntialState(),
     reducers: {
-        // Sets all the panels to new ones
-        setPanels(state, action: PayloadAction<ContentPanelData[]>) {
+        // Sets all the panels to new ones that correspond to the state saved in the db
+        setSavedPanels(state, action: PayloadAction<ContentPanelData[]>) {
             state.value = action.payload;
             state.needsSaving = false;
+        },
+        // Sets all the panels to new ones that are not saved in the db
+        setNewPanels(state, action: PayloadAction<ContentPanelData[]>) {
+            state.value = action.payload;
+            state.needsSaving = true;
         },
         // Updates a single content panel
         updatePanel(state, action: PayloadAction<ContentPanelData>) {
@@ -60,7 +65,13 @@ export const panelSlice = createSlice({
     },
 });
 
-export const { setPanels, updatePanel, addPanel, removePanel, clearPanels } =
-    panelSlice.actions;
+export const {
+    setSavedPanels,
+    setNewPanels,
+    updatePanel,
+    addPanel,
+    removePanel,
+    clearPanels,
+} = panelSlice.actions;
 
 export default panelSlice.reducer;

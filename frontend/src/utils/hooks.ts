@@ -4,7 +4,7 @@ import { initializeUserProjects } from './projects';
 import { logIn, logOut } from '../reducers/userReducer';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { setProjects, clearProjects } from '../reducers/projectReducer';
-import { setPanels, clearPanels } from '../reducers/panelReducer';
+import { setSavedPanels, clearPanels } from '../reducers/panelReducer';
 import { setTheme, clearTheme } from '../reducers/themeReducer';
 import { setPresets } from '../reducers/presetReducer';
 import { loadPresets } from './loadPresets';
@@ -111,7 +111,7 @@ export const useImportProject = () => {
     const dispatch = useAppDispatch();
     return (project: Project) => {
         dispatch(setTheme(project.data.theme));
-        dispatch(setPanels(project.data.panels));
+        dispatch(setSavedPanels(project.data.panels));
     };
 };
 
