@@ -25,6 +25,7 @@
     "license": "ISC",
     "dependencies": {
         "@adminjs/express": "^5.1.0",
+        "@adminjs/passwords": "^3.0.1",
         "@adminjs/sql": "^1.0.0",
         "adminjs": "^6.8.6",
         "axios": "^1.2.0",
