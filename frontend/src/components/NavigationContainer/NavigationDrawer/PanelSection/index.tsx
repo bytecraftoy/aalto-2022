@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationSubHeader } from '../NavigationSubHeader';
 import { TextButton, IconButton } from '../../../Buttons';
 import { NavigationLink } from '../NavigationLink';
@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../../../utils/hooks';
 import { addPanel, removePanel } from '../../../../reducers/panelReducer';
 import { ContentPanelData } from '../../../../utils/types';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Popup } from '../../../Popup';
 
 /**
  * Content panels part of the navigation drawer
@@ -16,6 +17,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 export const PanelSection = () => {
     // Redux dispatch
     const dispatch = useAppDispatch();
+
+    // Local state
+    // Prefer object in the useState, because it's having the value as a function is more error prone
+    // I was trying to set the value but setPopAction kept calling the method instead
+    const [popOpen, setPopOpen] = useState(false);
+    const [popAction, setPopAction] = useState<{ action: () => boolean }>();
 
     // Current location and navigation
     const location = useLocation();
@@ -29,16 +36,24 @@ export const PanelSection = () => {
         dispatch(addPanel());
     };
 
+    const confirmDelete = (panel: ContentPanelData) => {
+        const hasContent =
+            panel.prompts.find((p) => p.input || p.output) !== undefined;
+        if (hasContent) {
+            setPopAction({ action: () => deletePanel(panel) });
+            setPopOpen(true);
+        } else deletePanel(panel);
+    };
+
     // Delete a content panel from the application
     const deletePanel = (panel: ContentPanelData) => {
-        //TODO: ask for confirmation if the panel isn't empty
-
         dispatch(removePanel(panel));
 
         // Redirect to another panel if we deleted the panel we were currently on
         if (location.pathname === `/panels/${panel.id}`) {
             navigate('/');
         }
+        return true;
     };
 
     return (
@@ -68,13 +83,30 @@ export const PanelSection = () => {
                             <IconButton
                                 icon="XMarkIcon"
                                 colorPalette="tertiary"
-                                onClick={() => deletePanel(panel)}
+                                onClick={() => confirmDelete(panel)}
                                 className="opacity-0 group-hover:opacity-100"
                             />
                         )}
                     </div>
                 );
             })}
+
+            <Popup
+                title="Delete category"
+                icon="ExclamationTriangleIcon"
+                open={popOpen}
+                setOpen={setPopOpen}
+                onConfirm={popAction?.action}
+            >
+                <div className="p-4">
+                    <p className="text-lg">
+                        This category contains prompts that are not empty.
+                    </p>
+                    <p className="text-lg">
+                        Are you sure you wish to delete it?
+                    </p>
+                </div>
+            </Popup>
 
             {/** Adding new panels */}
             <div className="py-2.5 h-14">

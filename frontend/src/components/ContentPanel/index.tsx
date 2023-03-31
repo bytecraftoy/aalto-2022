@@ -13,7 +13,7 @@ import { ContentPanelActions } from './ContentPanelActions';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { usePanel } from './hooks';
-import { PopUpWindow } from './ContentPanelPrompts/PopUpWindow';
+import { MultipleBoxPopup } from './ContentPanelPrompts/MultipleBoxPopup';
 import { ParameterDrawer } from '../ParameterDrawer';
 
 // State stored in redux store
@@ -112,10 +112,10 @@ export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
                     />
 
                     {/* Pop-up window used to add n boxes. Hidden by default*/}
-                    <PopUpWindow
-                        addPromptBoxes={addPromptBoxes}
-                        setPopup={setPopup}
+                    <MultipleBoxPopup
                         popupOpen={popupOpen}
+                        setPopup={setPopup}
+                        addPromptBoxes={addPromptBoxes}
                     />
 
                     {/* IO TExtfields: Prompts of the content panel */}
