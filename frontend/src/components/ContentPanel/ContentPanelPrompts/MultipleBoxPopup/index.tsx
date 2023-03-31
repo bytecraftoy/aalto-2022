@@ -40,7 +40,7 @@ export const MultipleBoxPopup: React.FC<MultipleBoxPopupProps> = ({
                 <input
                     className="px-4 py-2 rounded bg-neutral-10 bg-opacity-8"
                     type="number"
-                    placeholder="0"
+                    placeholder="1"
                     min="1"
                     max="100"
                     value={numberInput}
