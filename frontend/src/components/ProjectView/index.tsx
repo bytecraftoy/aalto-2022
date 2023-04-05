@@ -4,20 +4,10 @@ import { ProjectViewBox } from './ProjectViewBox';
 import { FAB } from '../Buttons';
 import { saveNewProject } from '../../utils/projects';
 import { createEmptyProject } from '../../utils/types';
-import { DEFAULT_THEME } from '../../utils/types';
-import { createEmptyPanel } from '../../utils/types';
 
 interface ProjectViewProps {
     projects: ProjectInfo[];
 }
-
-const emptyProject = {
-    name: 'new project',
-    data: {
-        theme: DEFAULT_THEME,
-        panels: [createEmptyPanel()], // A project contains at least one panel
-    },
-};
 
 export const ProjectView: React.FC<ProjectViewProps> = ({ projects }) => {
     return (
@@ -29,7 +19,7 @@ export const ProjectView: React.FC<ProjectViewProps> = ({ projects }) => {
                 <FAB
                     icon="PlusIcon"
                     colorPalette="secondary"
-                    onClick={() => saveNewProject(emptyProject)}
+                    onClick={() => saveNewProject(createEmptyProject())}
                 />
             </div>
         </div>
