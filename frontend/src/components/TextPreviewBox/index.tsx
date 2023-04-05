@@ -9,16 +9,19 @@ import { Tooltip } from '../Tooltip';
  */
 
 interface TextPreviewProps {
-    inputFieldText: string;
+    text: string;
 }
 
-export const TextPreview: React.FC<TextPreviewProps> = ({ inputFieldText }) => {
+export const TextPreview: React.FC<TextPreviewProps> = ({ text }) => {
+    const longText = text.length >= 130;
+
     const makePreview = () => {
-        return inputFieldText.slice(0, 130) + '...';
+        if (!longText) return text;
+        else return text.slice(0, 130) + '...';
     };
 
-    return (
-        <Tooltip text={inputFieldText} icon={'ArrowPathIcon'}>
+    return longText ? (
+        <Tooltip text={text} icon={'ArrowPathIcon'}>
             <div
                 className={classNames(
                     'm-4 h-24 rounded-xl w-full w-[380px] flex flex-row justify-center items-center bg-neutral-90 border-white border-2'
@@ -29,5 +32,15 @@ export const TextPreview: React.FC<TextPreviewProps> = ({ inputFieldText }) => {
                 </p>
             </div>
         </Tooltip>
+    ) : (
+        <div
+            className={classNames(
+                'm-4 h-24 rounded-xl w-full w-[380px] flex flex-row justify-center items-center bg-neutral-90 border-white border-2'
+            )}
+        >
+            <p className="pl-4 pr-4 overflow-hidden text-ellipsis max-h-24 text-neutral-40">
+                {makePreview()}
+            </p>
+        </div>
     );
 };
