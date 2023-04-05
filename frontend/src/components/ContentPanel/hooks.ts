@@ -23,7 +23,6 @@ export const usePanel = (id: string) => {
     const theme = useAppSelector((state) => state.theme.value);
     const logged = useAppSelector((state) => state.user.logged);
     const panels = useAppSelector((state) => state.panels.value);
-    const projects = useAppSelector((state) => state.projects.value);
     const presets = useAppSelector((state) => state.presets.value);
     const currentProjectId = useAppSelector((state) => state.project.value.id);
 

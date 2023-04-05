@@ -2,7 +2,8 @@ import React from "react";
 import { ProjectInfo } from "../../../utils/types";
 import { Surface } from "../../Surface";
 import { FAB } from "../../Buttons";
-import {openProject} from './../../../utils/projects';
+import {getProject} from './../../../utils/projects';
+import {useImportProject} from './../../../utils/hooks';
 
 
 interface ProjectViewBoxProps {
@@ -12,11 +13,14 @@ interface ProjectViewBoxProps {
 export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
     project,
 }) => {
+    const importProject = useImportProject();
 
-    const pTitle = project.name
-    const pID = project.name
-
-
+    const openProject = async (id: string) => {
+        const res = await getProject(id);
+        console.log(id, res)
+        if(!res.success) console.error(res.error);
+        else importProject(id, res.project);
+    }
 
     return (
         <Surface className="flex flex-row justify-center items-center m-[2%] w-2/5 max-sm:w-3/4 max-w-[800px] max-h-[500px] max-sm:m-[5%] max-sm:h-64"
