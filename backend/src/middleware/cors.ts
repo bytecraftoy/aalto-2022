@@ -1,3 +1,6 @@
+/**
+ * file for defining CORS (Cross-origin-resource sharing)
+ */
 import { Request, Response } from 'express';
 
 const cors = (

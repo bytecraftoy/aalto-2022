@@ -1,3 +1,7 @@
+/**
+ * helper function that generates a random string
+ * useful for creating id strings
+ */
 const chars =
     '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 

@@ -1,3 +1,6 @@
+/**
+ * Tests the dummy responses
+ */
 import supertest from 'supertest';
 import { server } from './../index';
 import { Gpt3Response } from '../types';
