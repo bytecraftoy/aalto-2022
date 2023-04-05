@@ -18,10 +18,7 @@ export const TextPreview: React.FC<TextPreviewProps> = ({ inputFieldText }) => {
     };
 
     return (
-        <Tooltip 
-            text={inputFieldText} 
-            icon={'ArrowPathIcon'}
-        >
+        <Tooltip text={inputFieldText} icon={'ArrowPathIcon'}>
             <div
                 className={classNames(
                     'm-4 h-24 rounded-xl w-full w-[380px] flex flex-row justify-center items-center bg-neutral-90 border-white border-2'
