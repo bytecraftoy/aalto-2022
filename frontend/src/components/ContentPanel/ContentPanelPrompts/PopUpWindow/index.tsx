@@ -11,17 +11,20 @@ interface PopUpWindowProps {
     popupOpen: boolean;
 }
 
+const isNumeric = (text: string): boolean => /^\d*$/.test(text);
+
 export const PopUpWindow: React.FC<PopUpWindowProps> = ({
     addPromptBoxes,
     setPopup,
     popupOpen,
 }) => {
     const [numberInput, setNumber] = useState<string>('');
+    const limits = [1, 100];
 
     // Adds multiple I/O boxes
     const addBoxes = (input: string) => {
         const n: number = Number.parseInt(input);
-        if (n >= 1 && n <= 100) {
+        if (n >= limits[0] && n <= limits[1]) {
             addPromptBoxes(n);
             setPopup(false);
         }
@@ -41,21 +44,24 @@ export const PopUpWindow: React.FC<PopUpWindowProps> = ({
 
                     <input
                         className="px-4 py-2 rounded bg-neutral-10 bg-opacity-8"
-                        type="number"
-                        placeholder="0"
-                        min="0"
+                        type="text"
+                        min={limits[0]}
+                        max={limits[1]}
                         value={numberInput}
-                        onBeforeInput={(e) => {
+                        /*onBeforeInput={(e) => {
                             const d = (e.nativeEvent as KeyboardEvent).key;
                             if (
                                 typeof d === 'string' &&
                                 Number.parseInt(d).toString() !== d
                             )
                                 e.preventDefault();
-                        }}
+                        }}*/
                         onInput={(e) => {
-                            const t = e.target as HTMLInputElement;
-                            setNumber(t.value);
+                            const value = (e.target as HTMLInputElement).value;
+                            const data = (e.nativeEvent as InputEvent).data;
+                            const isValid = isNumeric(value) && (data === null || isNumeric(data));
+                            console.log(value, data, isValid);
+                            if(isValid) setNumber(value);
                         }}
                     />
 
