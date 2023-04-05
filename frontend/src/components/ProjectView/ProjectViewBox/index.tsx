@@ -2,6 +2,7 @@ import React from "react";
 import { ProjectInfo } from "../../../utils/types";
 import { Surface } from "../../Surface";
 import { FAB } from "../../Buttons";
+import {openProject} from './../../../utils/projects';
 
 
 interface ProjectViewBoxProps {
@@ -24,11 +25,11 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
         >
             <div
                 className="hover:bg-secondary-90 rounded-2xl w-full h-full flex flex-row justify-center items-center transition-colors"
-
+                onClick={() => openProject(project.id)}
             >
                 <h1 className="text-2xl font-medium text-neutral-20">
                     {project.name}
-                    <FAB icon="SettingsIcon" colorPalette="secondary" onClick={() => project.name = "uusi nimi"} />
+                    <FAB icon="SettingsIcon" colorPalette="secondary" onClick={() => undefined} />
                 </h1>
             </div>
         </Surface>

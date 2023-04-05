@@ -11,6 +11,7 @@ import { loadPresets } from './loadPresets';
 import { useNavigate, To } from 'react-router-dom';
 import { apiFetch } from './apiFetch';
 import { Project, Account } from './types';
+import { setCurrentProjectID } from '../reducers/currentProjectReducer';
 
 /*
  * Generic custom hooks for reusing common functionality
@@ -109,9 +110,10 @@ export const useClearData = () => {
  */
 export const useImportProject = () => {
     const dispatch = useAppDispatch();
-    return (project: Project) => {
+    return (id: string, project: Project) => {
         dispatch(setTheme(project.data.theme));
         dispatch(setPanels(project.data.panels));
+        dispatch(setCurrentProjectID(id));
     };
 };
 
@@ -130,9 +132,9 @@ export const useLogin = () => {
         if (presetRes.success) dispatch(setPresets(presetRes.presets));
 
         // Load projects
-        const [project, projects] = await initializeUserProjects();
+        const [id, project, projects] = await initializeUserProjects();
         dispatch(setProjects(projects));
-        importProject(project);
+        importProject(id, project);
     };
 };
 

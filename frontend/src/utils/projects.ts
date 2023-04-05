@@ -1,5 +1,9 @@
 import { apiFetch, apiFetchJSON } from './apiFetch';
 import { Project, ProjectInfo, createEmptyProject } from './types';
+import {setTheme} from './../reducers/themeReducer';
+import {setPanels} from './../reducers/panelReducer';
+import {setCurrentProjectID} from './../reducers/currentProjectReducer';
+import {store} from './../store';
 
 /**
  * Utilities for fetching and saving projects to the database and
@@ -56,6 +60,8 @@ export const getProject = async (
 /**
  * Save a project by id.
  * Never throws an error.
+ * If you are about to save the currently open project,
+ * consider using saveCurrentProject instread.
  */
 export const saveProject = async (
     id: string,
@@ -70,6 +76,11 @@ export const saveProject = async (
     } catch (err) {
         return handleError(err);
     }
+};
+
+export const saveCurrentProject = async (project: Project) => {
+    const currentId = store.getState().project.value.id;
+    return await saveProject(currentId, project);
 };
 
 /**
@@ -141,7 +152,7 @@ export const getProjectByName = async (
  */
 export const initializeUserProjects = async (
     write = true
-): Promise<[Project, ProjectInfo[]]> => {
+): Promise<[string, Project, ProjectInfo[]]> => {
     const projectListRes = await getProjects();
 
     if (projectListRes.success) {
@@ -151,7 +162,7 @@ export const initializeUserProjects = async (
                 const newProj = createEmptyProject();
                 const saveRes = await saveNewProject(newProj);
                 if (saveRes.success)
-                    return [newProj, [{ id: saveRes.id, name: newProj.name }]];
+                    return [saveRes.id, newProj, [{ id: saveRes.id, name: newProj.name }]];
             }
             // no write allowed, so fallback to default return at the end of the method
         } else {
@@ -161,10 +172,25 @@ export const initializeUserProjects = async (
             const projectRes = await getProject(projectId);
             if (projectRes.success)
                 // Main project successfully fetched, return it
-                return [projectRes.project, projectListRes.projects];
+                return [projectId, projectRes.project, projectListRes.projects];
         }
     }
 
     //user was not logged in or some unrecoverable error occurred
-    return [createEmptyProject(), []];
+    return ['', createEmptyProject(), []];
+};
+
+/**
+ * 
+ */
+export const openProject = async (id:string) => {
+    const res = await getProject(id);
+    if(!res.success){
+        console.error(res.error);
+        return;
+    }
+    const project = res.project;
+    store.dispatch(setTheme(project.data.theme));
+    store.dispatch(setPanels(project.data.panels));
+    store.dispatch(setCurrentProjectID(id));
 };

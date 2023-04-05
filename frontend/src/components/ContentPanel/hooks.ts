@@ -25,6 +25,7 @@ export const usePanel = (id: string) => {
     const panels = useAppSelector((state) => state.panels.value);
     const projects = useAppSelector((state) => state.projects.value);
     const presets = useAppSelector((state) => state.presets.value);
+    const currentProjectId = useAppSelector((state) => state.project.value.id);
 
     // We can assume the panel exists, since the panels page handles missing id's
     const panel = panels.find((p) => p.id === id) as ContentPanelData;
@@ -147,7 +148,7 @@ export const usePanel = (id: string) => {
             // the project should not be chosen by name, etc.
 
             // Workaround, get first project since we only have one at this point
-            const projectId = projects[0].id;
+            const projectId = currentProjectId;
 
             /* Old code commented out before a solution is discussed:
              *
