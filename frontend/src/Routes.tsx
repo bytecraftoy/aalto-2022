@@ -18,7 +18,7 @@ export const Routes = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/about" element={<About />} />
             <Route path="/panels/:panelId" element={<Panels />} />
-            <Route path="/projects" element={<Projects />}/>
+            <Route path="/projects" element={<Projects />} />
             <Route path="/" element={<Home />} />
             <Route path="/settings" element={<Settings />} />
         </Switch>

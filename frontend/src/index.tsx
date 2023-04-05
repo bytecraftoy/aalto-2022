@@ -20,6 +20,6 @@ root.render(<App />);
 reportWebVitals();
 
 //development
-import {store} from './store';
-console.log(store.getState())
-store.subscribe(() => console.log(store.getState()))
+import { store } from './store';
+console.log(store.getState());
+store.subscribe(() => console.log(store.getState()));

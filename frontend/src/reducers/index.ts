@@ -10,5 +10,5 @@ export {
     themeReducer,
     projectReducer,
     presetReducer,
-    currentProjectReducer
+    currentProjectReducer,
 };

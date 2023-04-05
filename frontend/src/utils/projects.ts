@@ -151,7 +151,11 @@ export const initializeUserProjects = async (
                 const newProj = createEmptyProject();
                 const saveRes = await saveNewProject(newProj);
                 if (saveRes.success)
-                    return [saveRes.id, newProj, [{ id: saveRes.id, name: newProj.name }]];
+                    return [
+                        saveRes.id,
+                        newProj,
+                        [{ id: saveRes.id, name: newProj.name }],
+                    ];
             }
             // no write allowed, so fallback to default return at the end of the method
         } else {

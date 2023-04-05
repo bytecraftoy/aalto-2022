@@ -1,15 +1,15 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface CurrentProjectState {
     value: {
-        id: string
-    }
-};
+        id: string;
+    };
+}
 
 const initialState: CurrentProjectState = {
     value: {
-        id: ''
-    }
+        id: '',
+    },
 };
 
 export const currentProjectSlice = createSlice({
@@ -18,10 +18,10 @@ export const currentProjectSlice = createSlice({
     reducers: {
         setCurrentProjectID: (state, action: PayloadAction<string>) => {
             state.value.id = action.payload;
-        }
-    }
+        },
+    },
 });
 
-export const {setCurrentProjectID} = currentProjectSlice.actions;
+export const { setCurrentProjectID } = currentProjectSlice.actions;
 
 export default currentProjectSlice.reducer;

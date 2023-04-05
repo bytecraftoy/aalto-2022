@@ -15,8 +15,6 @@ export const Projects = () => {
     return (
         <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
             <ProjectView projects={projects} />
-            
         </div>
     );
-
 };

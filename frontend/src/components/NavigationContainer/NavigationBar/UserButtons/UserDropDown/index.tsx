@@ -77,10 +77,8 @@ export const UserDropDown = () => {
                         <div className="h-px w-full bg-neutral-10"></div>
                     </div>
 
-
                     {/** Actions */}
                     <div className="flex flex-col gap-2 cursor-default">
-
                         {/** Projects */}
                         <UserDropDownItem
                             onClick={() => navigate('/projects')}

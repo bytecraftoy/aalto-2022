@@ -17,7 +17,8 @@ export const useAbout = () => {
     const projects = useAppSelector((state) => state.projects.value);
     const presets = useAppSelector((state) => state.presets.value);
     const currentProjectId = useAppSelector((state) => state.project.value.id);
-    const currentProject = () => projects.find(p => p.id === currentProjectId) ?? {name: '', id: ''};
+    const currentProject = () =>
+        projects.find((p) => p.id === currentProjectId) ?? { name: '', id: '' };
 
     // Presets
     const presetNames = presets.map((p) => p.presetName);

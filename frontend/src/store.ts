@@ -12,7 +12,7 @@ import {
     projectReducer,
     themeReducer,
     presetReducer,
-    currentProjectReducer
+    currentProjectReducer,
 } from './reducers';
 
 const store = configureStore({
@@ -22,7 +22,7 @@ const store = configureStore({
         user: userReducer,
         projects: projectReducer,
         presets: presetReducer,
-        project: currentProjectReducer
+        project: currentProjectReducer,
     },
 });
 
