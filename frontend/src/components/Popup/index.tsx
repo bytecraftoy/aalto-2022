@@ -1,16 +1,27 @@
 import React, { useRef, useEffect } from 'react';
 import { Surface } from '../Surface';
 import { Icon, solidIcon } from '../../utils/icons';
-import { TextButton } from '../Buttons';
 import { Transition } from '@headlessui/react';
+import { PopupButtons } from './PopupButtons';
+
+// Action for a popup button
+export type PopupAction = (() => boolean) | (() => void);
+
+export interface PopupButton {
+    text: string;
+    icon?: Icon;
+    action?: PopupAction; // No action defaults to closing the popup
+}
 
 export interface PopupProps {
     title?: string;
     icon?: Icon;
     open: boolean;
-    onConfirm?: () => boolean;
-    onCancel?: () => void;
     setOpen: (b: boolean) => void;
+    onConfirm?: PopupAction; // Default confirm action if no buttons are specified
+    onOpen?: () => void; // Called before popup opens
+    onClose?: () => void; // Called before popup closes
+    buttons?: PopupButton[]; // Custom buttons
     children: JSX.Element;
 }
 
@@ -24,17 +35,23 @@ export const Popup: React.FC<PopupProps> = ({
     open,
     setOpen,
     onConfirm,
-    onCancel,
+    onOpen,
+    onClose,
+    buttons,
     children,
 }) => {
     const divRef = useRef<HTMLDivElement>(null);
+
+    const closePopup = () => {
+        onClose?.();
+        setOpen(false);
+    };
 
     useEffect(() => {
         // Closes the popup if clicked outside
         const close = (e: MouseEvent) => {
             if (!divRef.current?.contains(e.target as Node)) {
-                onCancel?.();
-                setOpen(false);
+                closePopup();
             }
         };
 
@@ -45,6 +62,17 @@ export const Popup: React.FC<PopupProps> = ({
             document.removeEventListener('mousedown', close);
         };
     }, []);
+
+    //Popup opened
+    onOpen?.();
+
+    const popupButtons = buttons ?? [
+        {
+            text: 'Confirm',
+            action: onConfirm,
+        },
+        { text: 'Cancel' },
+    ];
 
     return (
         <Transition
@@ -67,26 +95,7 @@ export const Popup: React.FC<PopupProps> = ({
                     <div className="flex flex-row justify-center items-center w-full h-full">
                         {children}
                     </div>
-                    <div className="p-4 w-full flex flex-row justify-between">
-                        <div className="w-full" />
-                        <div className="flex flex-row justify-between">
-                            <TextButton
-                                onClick={() => {
-                                    if (onConfirm?.()) setOpen(false);
-                                }}
-                                name="Confirm"
-                                colorPalette="primary"
-                            />
-                            <TextButton
-                                onClick={() => {
-                                    onCancel?.();
-                                    setOpen(false);
-                                }}
-                                name="Cancel"
-                                colorPalette="primary"
-                            />
-                        </div>
-                    </div>
+                    <PopupButtons close={closePopup} buttons={popupButtons} />
                 </Surface>
             </div>
         </Transition>

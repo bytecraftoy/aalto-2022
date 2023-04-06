@@ -17,13 +17,13 @@ export const MultipleBoxPopup: React.FC<MultipleBoxPopupProps> = ({
 }) => {
     const [numberInput, setNumber] = useState<string>('1');
 
-    // Adds multiple I/O boxes
+    // Adds multiple I/O boxes. return true to keep popup open if the input was invalid
     const addBoxes = (input: string) => {
         const n: number = Number.parseInt(input);
         if (n >= 1 && n <= 100) {
             addPromptBoxes(n);
-            return true;
-        } else return false;
+            return false;
+        } else return true;
     };
 
     return (
@@ -33,7 +33,7 @@ export const MultipleBoxPopup: React.FC<MultipleBoxPopupProps> = ({
             open={popupOpen}
             setOpen={setPopup}
             onConfirm={() => addBoxes(numberInput)}
-            onCancel={() => setNumber('1')}
+            onClose={() => setNumber('1')}
         >
             <div className="h-full w-full flex flex-col justify-between px-4 py-4">
                 <div className="px-2 py-2">Number of boxes (1-100)</div>
