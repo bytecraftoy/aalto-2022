@@ -1,3 +1,6 @@
+/**
+ * Tests the dummys parameter validation
+ */
 import { validatePrompt, ValidationError } from './../services/validatePrompt';
 
 /**

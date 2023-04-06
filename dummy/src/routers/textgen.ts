@@ -1,3 +1,8 @@
+/**
+ * Dummy router that tries to emulate OpenAI API.
+ * performs request validation and returns a random pre-generated text
+ * along with metadata
+ */
 import express, { NextFunction, Request, Response } from 'express';
 import { generateData, validatePrompt, ValidationError } from './../services';
 import { Gpt3Response, Prompt } from '../types';

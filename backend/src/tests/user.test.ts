@@ -1,6 +1,6 @@
 /**
- * Big parts of the code in this file is commented out
- * until we decide how to do tests with the database.
+ * Tests related to users, such as logging in, registering
+ *  user settings and projects
  */
 
 import supertest from 'supertest';

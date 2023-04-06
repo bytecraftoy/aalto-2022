@@ -1,10 +1,10 @@
+/**
+ * Tests the error messages related to user log in
+ */
+/* eslint-disable no-console */
 import supertest from 'supertest';
 import { getApp } from '../app';
 import { initializeUsers } from '../services/testService';
-
-/**
- * Tests the error messages
- */
 
 let api: supertest.SuperTest<supertest.Test>;
 

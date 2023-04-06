@@ -1,3 +1,6 @@
+/**
+ * tests xlxs/json export functionality
+ */
 import supertest from 'supertest';
 import crypto from 'crypto';
 import xlsx from 'xlsx';

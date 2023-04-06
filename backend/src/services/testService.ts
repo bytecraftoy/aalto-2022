@@ -1,3 +1,6 @@
+/**
+ * Service file for test user creation purposes
+ */
 import { createUser } from './userService';
 import supertest from 'supertest';
 

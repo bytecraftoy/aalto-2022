@@ -1,3 +1,9 @@
+/**
+ * This router handles communication between frontend and proxy/dummy
+ * POST /api/textgen
+ * Request validation done with validateApiRequests.ts
+ * and prompt handling done with textGenService.ts
+ */
 import { Router, Request, Response, NextFunction } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import {

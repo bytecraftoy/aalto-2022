@@ -1,3 +1,6 @@
+/**
+ * dummy error handling
+ */
 import { Request, Response, NextFunction } from 'express';
 
 const errorHandler = (

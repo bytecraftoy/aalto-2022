@@ -37,9 +37,9 @@ export const IOBoxBar: React.FC<IOBoxBarProps> = ({
                 <></>
             )}
             <IOBoxButton
-                icon="LockClosedIcon"
+                icon={locked ? 'LockClosedIcon' : 'LockOpenIcon'}
                 onClick={lock}
-                name={locked ? 'Unlock' : 'Lock'}
+                name={locked ? 'Locked' : 'Unlocked'}
                 colorPalette={locked ? 'secondary' : 'tertiary'}
                 visible={locked || showButtons}
             />

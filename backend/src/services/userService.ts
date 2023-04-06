@@ -1,3 +1,9 @@
+/**
+ * Service file used by user router to handle matters related to users,
+ * such as registering, logging in, handling settings and projects.
+ * The functions in this file typically use the query functions
+ * defined in ../db/queries.ts
+ */
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { logger } from './../utils/logger';

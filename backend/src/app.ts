@@ -7,6 +7,7 @@ import {
     userRouter,
     presetsRouter,
     getAdminRouter,
+    statusRouter,
 } from './routers';
 import { cors } from './middleware/cors';
 import { requestLogger, errorLogger } from './middleware/logger';
@@ -37,6 +38,7 @@ const getApp = async (): Promise<express.Express> => {
     app.use(requestLogger);
 
     app.use('/api/health', healthRouter);
+    app.use('/api/status', statusRouter);
     app.use('/api/user', userRouter);
     app.use(express.static('./public/'));
     app.use(checkToken);

@@ -1,3 +1,7 @@
+/**
+ * Router which returns server health
+ * GET /api/health
+ */
 import express from 'express';
 import fs from 'fs';
 import { logger } from '../utils/logger';

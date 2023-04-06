@@ -1,3 +1,10 @@
+/**
+ * Defines database variables based on environmental variables
+ * and creates the pool
+ * https://node-postgres.com/features/pooling
+ *
+ */
+
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import { isTesting } from '../utils/env';

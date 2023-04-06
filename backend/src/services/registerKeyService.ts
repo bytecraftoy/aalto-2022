@@ -1,3 +1,7 @@
+/**
+ * Service function that helps validate
+ * the key used to register for the app
+ */
 import { logger } from '../utils/logger';
 
 // is only exported for testing, prefer isValidRegisterKey
