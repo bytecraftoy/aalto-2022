@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import { ProjectInfo } from '../../../utils/types';
 import { Surface } from '../../Surface';
-import { FAB } from '../../Buttons';
 import { getProject } from './../../../utils/projects';
 import { useImportProject } from './../../../utils/hooks';
+import { DropdownMenu } from '../../DropdownMenu';
+import { useDeleteProject } from '../hooks';
 
 interface ProjectViewBoxProps {
     project: ProjectInfo;
@@ -12,12 +13,22 @@ interface ProjectViewBoxProps {
 export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project }) => {
     const importProject = useImportProject();
 
+    const settingsRef = useRef<HTMLDivElement>(null);
+
     const openProject = async (id: string) => {
         const res = await getProject(id);
         console.log(id, res);
         if (!res.success) console.error(res.error);
         else importProject(id, res.project);
     };
+
+    const clickHandler = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (!settingsRef.current?.contains(e.target as Node)){
+            openProject(project.id);
+        }
+    }
+
+    const delProject = useDeleteProject();
 
     return (
         <Surface
@@ -26,16 +37,18 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project }) => {
         >
             <div
                 className="hover:bg-secondary-90 rounded-2xl w-full h-full flex flex-row justify-center items-center transition-colors"
-                onClick={() => openProject(project.id)}
+                onClick={clickHandler}
             >
                 <h1 className="text-2xl font-medium text-neutral-20">
                     {project.name}
-                    <FAB
-                        icon="SettingsIcon"
-                        colorPalette="secondary"
-                        onClick={() => undefined}
-                    />
+
                 </h1>
+                <div ref={settingsRef}>
+                    <DropdownMenu
+                        icon='SettingsIcon'
+                        choices={[{ name: "Delete", action: () => delProject(project.id) }]}
+                    />
+                </div>
             </div>
         </Surface>
     );

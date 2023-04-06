@@ -94,6 +94,24 @@ export const saveNewProject = async (
 };
 
 /**
+ * Deletes a project by its id
+ */
+export const deleteProject = async (
+    id: string
+): Promise<
+    { success: true;} | { success: false; error: Error }
+> => {
+    try {
+        await apiFetch(`/api/user/projects/${id}`, {method:"DELETE"});
+        return {
+            success: true,
+        };
+    } catch (err) {
+        return handleError(err);
+    }
+};
+
+/**
  * Get project's id by its name.
  * Never throws an error.
  */

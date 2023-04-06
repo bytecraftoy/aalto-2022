@@ -2,14 +2,17 @@ import React from 'react';
 import { ProjectInfo } from '../../utils/types';
 import { ProjectViewBox } from './ProjectViewBox';
 import { FAB } from '../Buttons';
-import { saveNewProject } from '../../utils/projects';
-import { createEmptyProject } from '../../utils/types';
+import { useCreateProject } from './hooks';
 
 interface ProjectViewProps {
     projects: ProjectInfo[];
 }
 
+
 export const ProjectView: React.FC<ProjectViewProps> = ({ projects }) => {
+
+    const addProject = useCreateProject();
+
     return (
         <div className="flex flex-row flex-wrap justify-center w-full min-h-screen">
             {projects.map((project, id) => {
@@ -20,7 +23,7 @@ export const ProjectView: React.FC<ProjectViewProps> = ({ projects }) => {
                 <FAB
                     icon="PlusIcon"
                     colorPalette="secondary"
-                    onClick={() => saveNewProject(createEmptyProject())}
+                    onClick={addProject}
                 />
             </div>
         </div>
