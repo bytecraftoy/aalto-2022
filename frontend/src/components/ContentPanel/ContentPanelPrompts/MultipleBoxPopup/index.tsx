@@ -33,7 +33,7 @@ export const MultipleBoxPopup: React.FC<MultipleBoxPopupProps> = ({
             open={popupOpen}
             setOpen={setPopup}
             onConfirm={() => addBoxes(numberInput)}
-            onCancel={() => setNumber('')}
+            onClose={() => setNumber('')}
         >
             <div className="h-full w-full flex flex-col justify-between px-4 py-4">
                 <div className="px-2 py-2">Number of boxes (1-100)</div>
