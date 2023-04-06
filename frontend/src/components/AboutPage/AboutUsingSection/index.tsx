@@ -96,7 +96,7 @@ export const AboutUsingSection = () => {
                 <div>
                     <p className="pb-4">
                         You can influence the AI generation via{' '}
-                        <strong className="font-medium">Presets</strong>. and{' '}
+                        <strong className="font-medium">Presets</strong> and{' '}
                         <strong className="font-medium">Parameters</strong>.
                         These can be found by clicking the{' '}
                         {solidIcon('Cog6Tooth', 'w-5 h-5 m-0 p-0 inline-block')}{' '}
