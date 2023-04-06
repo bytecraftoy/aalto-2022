@@ -38,7 +38,8 @@ export const PanelSection = () => {
 
     const confirmDelete = (panel: ContentPanelData) => {
         const hasContent =
-            panel.prompts.find((p) => p.input || p.output) !== undefined;
+            panel.prompts.find((p) => p.input || p.output) !== undefined ||
+            panel.category;
         if (hasContent) {
             setPopAction({ action: () => deletePanel(panel) });
             setPopOpen(true);
