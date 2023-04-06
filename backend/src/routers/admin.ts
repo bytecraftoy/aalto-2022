@@ -37,7 +37,6 @@ const getAdminRouter = async (): Promise<Router> => {
                 options: {
                     properties: {
                         password_hash: { isVisible: false },
-                        settings: { isVisible: false },
                     },
                 },
                 features: [
@@ -52,9 +51,7 @@ const getAdminRouter = async (): Promise<Router> => {
             },
             {
                 resource: db.table('projects'),
-                options: {
-                    properties: { data: { isVisible: false } },
-                },
+                options: {},
             },
         ],
     });
