@@ -47,7 +47,6 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
     lock,
 }) => {
     const [showButtons, setShowButtons] = useState(false);
-    const [hasFocus, setHasFocus] = useState(false);
 
     // All the errors of the input
     let errors = '';
@@ -69,8 +68,6 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
             onMouseLeave={() => {
                 setShowButtons(false);
             }}
-            onFocus={() => setHasFocus(true)}
-            onBlur={() => setHasFocus(false)}
         >
             <IOBoxBar
                 showButtons={showButtons}
@@ -85,7 +82,7 @@ export const PromptIOBox: React.FC<PromptIOBoxProps> = ({
                 data-testid="prompt"
             >
                 <TextArea
-                    placeholder={hasFocus ? '' : 'User input here'}
+                    placeholder="User input here"
                     label="Input"
                     value={input}
                     onInput={({ target }) => {
