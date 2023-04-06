@@ -2,7 +2,7 @@ import { useAppSelector, useLoginRedirect } from '../../utils/hooks';
 import { ProjectView } from '../../components/ProjectView';
 
 /**
- * Show's user the panel by the panel id
+ * Shows user's projects
  *
  */
 
