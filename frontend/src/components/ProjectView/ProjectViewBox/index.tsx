@@ -5,6 +5,7 @@ import { getProject } from './../../../utils/projects';
 import { useImportProject } from './../../../utils/hooks';
 import { DropdownMenu } from '../../DropdownMenu';
 import { useDeleteProject } from '../hooks';
+import { useNavigate } from 'react-router-dom';
 
 interface ProjectViewBoxProps {
     project: ProjectInfo;
@@ -14,6 +15,8 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project }) => {
     const importProject = useImportProject();
 
     const settingsRef = useRef<HTMLDivElement>(null);
+
+    const navigate = useNavigate();
 
     const openProject = async (id: string) => {
         const res = await getProject(id);
@@ -25,6 +28,7 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project }) => {
     const clickHandler = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (!settingsRef.current?.contains(e.target as Node)){
             openProject(project.id);
+            navigate("/about");
         }
     }
 
@@ -41,7 +45,6 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project }) => {
             >
                 <h1 className="text-2xl font-medium text-neutral-20">
                     {project.name}
-
                 </h1>
                 <div ref={settingsRef}>
                     <DropdownMenu
