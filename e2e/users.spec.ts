@@ -61,5 +61,5 @@ test('Logout sends back to the login', async ({ page }) => {
         .nth(1)
         .click();
     await page.getByText('Logout').click();
-    await expect(page).toHaveURL('/login');
+    await expect(page).toHaveURL('/login/');
 });
