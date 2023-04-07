@@ -24,7 +24,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build",
+        "build": "react-scripts build && node ../scripts/copyFolder.js build/ ../backend/public/",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "eslint --max-warnings=0 --ext .tsx,.ts src"

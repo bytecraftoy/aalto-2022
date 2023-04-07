@@ -1,93 +1,124 @@
 /**
  * Component containing information about the application
+ * The information (info_texts.json) is fetched once from the
+ * server when this component is rendered for the first time.
+ * The contents of this component are constructed based on
+ * that json file.
  */
-import {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { solidIcon } from '../../../utils/icons';
 import { ExpandableParagraph } from '../../ExpandableParagraph';
 import { IconTip } from './IconTip';
 import { Icon } from './../../../utils/icons';
-import {apiFetchJSON} from './../../../utils/apiFetch';
+import { apiFetchJSON } from './../../../utils/apiFetch';
 
-interface InfoParagraphTextPart{
-    type: 'text',
-    text: string
+interface InfoParagraphTextPart {
+    type: 'text';
+    text: string;
 }
 
-interface InfoParagraphStrongTextPart{
-    type: 'strong-text',
-    text: string
+interface InfoParagraphStrongTextPart {
+    type: 'strong-text';
+    text: string;
 }
 
-interface InfoParagraphSolidIconPart{
-    type: 'solid-icon',
-    icon: Icon
+interface InfoParagraphSolidIconPart {
+    type: 'solid-icon';
+    icon: Icon;
 }
 
-interface InfoParagraph{
-    type: 'paragraph',
-    parts: Array<InfoParagraphTextPart | InfoParagraphStrongTextPart | InfoParagraphSolidIconPart>
+interface InfoParagraph {
+    type: 'paragraph';
+    parts: Array<
+        | InfoParagraphTextPart
+        | InfoParagraphStrongTextPart
+        | InfoParagraphSolidIconPart
+    >;
 }
 
-interface InfoIconTip{
-    type: 'icon-tip',
-    icon: Icon,
-    text: string
+interface InfoIconTip {
+    type: 'icon-tip';
+    icon: Icon;
+    text: string;
 }
 
-interface InfoSection{
-    title: string,
-    contents: Array<InfoParagraph | InfoIconTip>
+interface InfoSection {
+    title: string;
+    contents: Array<InfoParagraph | InfoIconTip>;
 }
 
 interface InfoData {
-    sections: InfoSection[]
+    sections: InfoSection[];
 }
 
-const renderParagraphTextPart = (part: InfoParagraphTextPart) => part.text;
+interface ContainerProps {
+    children: string | JSX.Element | JSX.Element[] | (() => JSX.Element);
+}
 
-const renderParagraphStrongTextPart = (part: InfoParagraphStrongTextPart) => 
-    <strong className="font-medium">{part.text}</strong>;
+//This container is required to give the key prop to strings and solid icons
+const Container = ({ children }: ContainerProps) => <>{children}</>;
 
-const renderParagraphSolidIconPart = (part: InfoParagraphSolidIconPart) => 
-    solidIcon(part.icon, 'w-5 h-5 m-0 p-0 inline-block');
+const renderParagraphTextPart = (key: number, part: InfoParagraphTextPart) => (
+    <Container key={key}>{part.text}</Container>
+);
 
-const renderParagraph = (paragraph: InfoParagraph) => <p className="pb-4">{
-    paragraph.parts.map(p => {
-        if(p.type === 'text')
-            return renderParagraphTextPart(p);
-        else if(p.type === 'strong-text')
-            return renderParagraphStrongTextPart(p);
-        else if(p.type === 'solid-icon')
-            return renderParagraphSolidIconPart(p);
-    })
-}</p>;
+const renderParagraphStrongTextPart = (
+    key: number,
+    part: InfoParagraphStrongTextPart
+) => (
+    <strong key={key} className="font-medium">
+        {part.text}
+    </strong>
+);
 
-const renderIconTip = (iconTip: InfoIconTip) => <IconTip icon={iconTip.icon} text={iconTip.text}/>;
+const renderParagraphSolidIconPart = (
+    key: number,
+    part: InfoParagraphSolidIconPart
+) => (
+    <Container key={key}>
+        {solidIcon(part.icon, 'w-5 h-5 m-0 p-0 inline-block')}
+    </Container>
+);
 
-const renderSection = (section: InfoSection) => <ExpandableParagraph
-    key={section.title}
-    title={section.title}
-><div>{
-    section.contents.map(p => {
-        if(p.type === 'paragraph')
-            return renderParagraph(p);
-        else if(p.type === 'icon-tip')
-            return renderIconTip(p);
-    })
-}</div></ExpandableParagraph>;
+const renderParagraph = (key: number, paragraph: InfoParagraph) => (
+    <p key={key} className="pb-4">
+        {paragraph.parts.map((p, i) => {
+            if (p.type === 'text') return renderParagraphTextPart(i, p);
+            else if (p.type === 'strong-text')
+                return renderParagraphStrongTextPart(i, p);
+            else if (p.type === 'solid-icon')
+                return renderParagraphSolidIconPart(i, p);
+        })}
+    </p>
+);
+
+const renderIconTip = (key: number, iconTip: InfoIconTip) => (
+    <IconTip key={key} icon={iconTip.icon} text={iconTip.text} />
+);
+
+const renderSection = (key: number, section: InfoSection) => (
+    <ExpandableParagraph key={key} title={section.title}>
+        <div>
+            {section.contents.map((p, i) => {
+                if (p.type === 'paragraph') return renderParagraph(i, p);
+                else if (p.type === 'icon-tip') return renderIconTip(i, p);
+            })}
+        </div>
+    </ExpandableParagraph>
+);
 
 export const AboutUsingSection = () => {
-    const [infoData, setInfoData] = useState<InfoData>({sections: []});
+    const [infoData, setInfoData] = useState<InfoData>({ sections: [] });
 
     useEffect(() => {
         apiFetchJSON('/info_texts.json')
-            .then(data => setInfoData(data))
-            .catch(err => console.error(err));
+            .then((data) => setInfoData(data))
+            .catch((err) => console.error(err));
     }, []);
 
     return (
         <div className="flex flex-row flex-wrap justify-start items-center px-32 max-sm:px-8 py-8">
-            {infoData.sections.map(section => renderSection(section))}
+            {infoData.sections.map((s, i) => renderSection(i, s))}
         </div>
     );
 };
