@@ -7,6 +7,11 @@ import { DropdownMenu } from '../../DropdownMenu';
 import { useDeleteProject } from '../hooks';
 import { useNavigate } from 'react-router-dom';
 
+
+/**
+ * A box that shows a project.
+ */
+
 interface ProjectViewBoxProps {
     project: ProjectInfo;
 }

@@ -7,7 +7,9 @@ import { useCreateProject } from './hooks';
 interface ProjectViewProps {
     projects: ProjectInfo[];
 }
-
+/**
+ * Boxes that indicate projects and an option to create more
+ */
 
 export const ProjectView: React.FC<ProjectViewProps> = ({ projects }) => {
 

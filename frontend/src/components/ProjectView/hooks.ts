@@ -1,7 +1,6 @@
-import { deleteProject, getProjects } from './../../utils/projects';
+import { deleteProject, getProjects, saveNewProject } from './../../utils/projects';
 import { setProjects } from '../../reducers/projectReducer';
 import { useAppDispatch } from './../../utils/hooks';
-import { saveNewProject } from '../../utils/projects';
 import { createEmptyProject } from '../../utils/types';
 
 
@@ -19,11 +18,16 @@ export const useUpdateProjects = () => {
 
 export const useDeleteProject = () => {
     const updateProjects = useUpdateProjects();
-    return async (id:string) => {
-        const delres = await deleteProject(id)
-        if(!delres.success){
-            console.error(delres.error);
-            return;
+    return async (id: string) => {
+        const projects = await getProjects();
+        if (projects.success) {
+            if (projects.projects.length > 1) {
+                const delres = await deleteProject(id);
+                if (!delres.success) {
+                    console.error(delres.error);
+                    return;
+                }
+            }
         }
         updateProjects();
     };
@@ -33,7 +37,7 @@ export const useCreateProject = () => {
     const updateProjects = useUpdateProjects();
     return async () => {
         const newP = await saveNewProject(createEmptyProject());
-        if(!newP.success){
+        if (!newP.success) {
             console.error(newP.error);
             return;
         }
