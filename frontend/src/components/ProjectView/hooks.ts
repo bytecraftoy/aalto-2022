@@ -1,5 +1,6 @@
 import {
     deleteProject,
+    getProject,
     getProjects,
     saveNewProject,
 } from './../../utils/projects';
@@ -48,6 +49,24 @@ export const useCreateProject = () => {
         updateProjects();
     };
 };
+
+export const useCloneProject = () => {
+    const updateProjects = useUpdateProjects();
+    return async (id:string) => {
+        const project = await getProject(id);
+        if(!project.success) {
+            console.error(project.error);
+            return;
+        }
+        project.project.name += ' clone'
+        const newProject = await saveNewProject(project.project);
+        if(!newProject.success){
+            console.error(newProject.error);
+            return;
+        }
+        updateProjects();
+    }
+}
 
 export const useRenameProject = () => {
     const updateProjects = useUpdateProjects();

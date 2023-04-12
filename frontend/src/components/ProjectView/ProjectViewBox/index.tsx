@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRenameProject } from '../hooks';
 import { RenamePopup } from './RenamePopUp';
 import { useState } from 'react';
+import { useCloneProject } from '../hooks';
 
 /**
  * A box that shows a project.
@@ -28,6 +29,8 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDel
 
     const rename = useRenameProject();
 
+    const clone = useCloneProject();
+
     const [popupOpen, setPopup] = useState(false);
 
     const openProject = async (id: string) => {
@@ -45,7 +48,7 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDel
     };
 
     const delProject = useDeleteProject();
-    const choices = [{name: 'Rename', action: () => setPopup(true)}];
+    const choices = [{name: 'Rename', action: () => setPopup(true)}, {name: 'Clone', action: () => clone(project.id)}];
     if(showDelete){
         choices.push({name: 'Delete', action: () => delProject(project.id)});
     }

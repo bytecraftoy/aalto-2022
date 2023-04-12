@@ -73,13 +73,13 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
 
                     <Divider />
 
-                    {/** Content panels */}
+                    {/** User's projects */}
                     {user.logged ? (
                         <>
                             <PanelSection />
                             <Divider />
                             <NavigationLink
-                                label="Category view"
+                                label="Projects"
                                 icon={solidIcon('WindowIcon')}
                                 to="/projects"
                             />
