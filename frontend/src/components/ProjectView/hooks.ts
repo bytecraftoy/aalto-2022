@@ -11,6 +11,7 @@ import { useImportProjectID } from './../../utils/hooks';
 import { store } from '../../store';
 import { renameProject } from './../../utils/projects';
 
+//Updates user's projects.
 export const useUpdateProjects = () => {
     const dispatch = useAppDispatch();
     return async () => {
@@ -23,6 +24,7 @@ export const useUpdateProjects = () => {
     };
 };
 
+//Deletes a project based on ID
 export const useDeleteProject = () => {
     const updateProjects = useUpdateProjects();
     const importProject = useImportProjectID();
@@ -38,6 +40,7 @@ export const useDeleteProject = () => {
     };
 };
 
+//Creates a new empty project
 export const useCreateProject = () => {
     const updateProjects = useUpdateProjects();
     return async () => {
@@ -50,29 +53,31 @@ export const useCreateProject = () => {
     };
 };
 
+//Creates a clone of a project based on ID
 export const useCloneProject = () => {
     const updateProjects = useUpdateProjects();
-    return async (id:string) => {
+    return async (id: string) => {
         const project = await getProject(id);
-        if(!project.success) {
+        if (!project.success) {
             console.error(project.error);
             return;
         }
-        project.project.name += ' clone'
+        project.project.name += ' clone';
         const newProject = await saveNewProject(project.project);
-        if(!newProject.success){
+        if (!newProject.success) {
             console.error(newProject.error);
             return;
         }
         updateProjects();
-    }
-}
+    };
+};
 
+//Changes the name of a project based on ID
 export const useRenameProject = () => {
     const updateProjects = useUpdateProjects();
     return async (id: string, newName: string) => {
         const res = await renameProject(id, newName);
-        if(!res.success) {
+        if (!res.success) {
             console.error(res.error);
             return;
         }

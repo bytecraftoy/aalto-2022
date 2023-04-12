@@ -20,7 +20,10 @@ interface ProjectViewBoxProps {
     showDelete: boolean;
 }
 
-export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDelete }) => {
+export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
+    project,
+    showDelete,
+}) => {
     const importProject = useImportProject();
 
     const settingsRef = useRef<HTMLDivElement>(null);
@@ -40,6 +43,7 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDel
         else importProject(id, res.project);
     };
 
+    //Handler for checking if user click on the project box or dropdown component
     const clickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (!settingsRef.current?.contains(e.target as Node)) {
             openProject(project.id);
@@ -48,9 +52,15 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDel
     };
 
     const delProject = useDeleteProject();
-    const choices = [{name: 'Rename', action: () => setPopup(true)}, {name: 'Clone', action: () => clone(project.id)}];
-    if(showDelete){
-        choices.push({name: 'Delete', action: () => delProject(project.id)});
+
+    //Dropdown menu choises
+    //Delete only appears if there are multiple projects
+    const choices = [
+        { name: 'Rename', action: () => setPopup(true) },
+        { name: 'Clone', action: () => clone(project.id) },
+    ];
+    if (showDelete) {
+        choices.push({ name: 'Delete', action: () => delProject(project.id) });
     }
 
     return (
@@ -59,10 +69,10 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDel
             level={2}
         >
             <RenamePopup
-                        popupOpen={popupOpen}
-                        setPopup={setPopup}
-                        rename={(newName) => rename(project.id, newName)}
-                    />
+                popupOpen={popupOpen}
+                setPopup={setPopup}
+                rename={(newName) => rename(project.id, newName)}
+            />
 
             <div
                 className="hover:bg-secondary-90 rounded-2xl w-full h-full flex flex-row justify-center items-center transition-colors"
@@ -72,10 +82,7 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDel
                     {project.name}
                 </h1>
                 <div ref={settingsRef}>
-                    <DropdownMenu
-                        icon="SettingsIcon"
-                        choices={choices}
-                    />
+                    <DropdownMenu icon="SettingsIcon" choices={choices} />
                 </div>
             </div>
         </Surface>
