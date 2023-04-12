@@ -1,3 +1,6 @@
+/**
+ * Router for the AdminJS panel, located in rootPath defined below.
+ */
 import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
@@ -9,7 +12,10 @@ import session from 'express-session';
 import { isProduction } from '../utils/env';
 import { selectUserRole } from '../db/queries';
 
+// Register the SQL adapter and resource with AdminJS
 AdminJS.registerAdapter({ Database, Resource });
+
+// Set the root path for the AdminJS panel
 const rootPath = '/admin/adminjs';
 
 const getDatabaseName = (): string => {
