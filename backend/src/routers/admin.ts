@@ -39,6 +39,14 @@ const authenticate = async (email: string, password: string) => {
     return null;
 };
 
+const getSesssionSecret = (): string => {
+    const secret = process.env.ADMINJS_SESSION_SECRET;
+    if (!secret) {
+        throw new Error('ADMINJS_SESSION_SECRET not set');
+    }
+    return secret;
+};
+
 const getAdminRouter = async (): Promise<Router> => {
     const connectionString = buildConnectionString();
     const database = getDatabaseName();
@@ -85,19 +93,21 @@ const getAdminRouter = async (): Promise<Router> => {
         ],
     });
 
+    const sessionSecret = getSesssionSecret();
+
     const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
         admin,
         {
             authenticate,
             cookieName: 'adminjs',
-            cookiePassword: 'sessionsecret',
+            cookiePassword: sessionSecret,
         },
         null,
         {
             store: sessionStore,
             resave: true,
             saveUninitialized: true,
-            secret: 'sessionsecret',
+            secret: sessionSecret,
             cookie: {
                 httpOnly: isProduction,
                 secure: isProduction,
