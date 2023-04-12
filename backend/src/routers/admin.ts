@@ -3,7 +3,11 @@ import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
 import { Router } from 'express';
 import passwordsFeature from '@adminjs/passwords';
-import { hashPassword } from '../services/userService';
+import { checkPassword, hashPassword } from '../services/userService';
+import Connect from 'connect-pg-simple';
+import session from 'express-session';
+import { isProduction } from '../utils/env';
+import { selectUserRole } from '../db/queries';
 
 AdminJS.registerAdapter({ Database, Resource });
 const rootPath = '/admin/adminjs';
@@ -21,6 +25,20 @@ const buildConnectionString = (): string => {
     return `postgres://${user}:${password}@${host}:${port}/${database}`;
 };
 
+const authenticate = async (email: string, password: string) => {
+    const user = await checkPassword(email, password);
+    if (!user.success) {
+        return null;
+    }
+
+    const role = await selectUserRole(user.message);
+    if (role == 'admin' || role == 'superadmin') {
+        return Promise.resolve({ email, password });
+    }
+
+    return null;
+};
+
 const getAdminRouter = async (): Promise<Router> => {
     const connectionString = buildConnectionString();
     const database = getDatabaseName();
@@ -29,8 +47,19 @@ const getAdminRouter = async (): Promise<Router> => {
         database,
     }).init();
 
+    const ConnectSession = Connect(session);
+    const sessionStore = new ConnectSession({
+        conObject: {
+            connectionString,
+        },
+        tableName: 'adminjs_sessions',
+        createTableIfMissing: true,
+    });
+
     const admin = new AdminJS({
         rootPath,
+        loginPath: `${rootPath}/login`,
+        logoutPath: `${rootPath}/logout`,
         resources: [
             {
                 resource: db.table('users'),
@@ -55,7 +84,27 @@ const getAdminRouter = async (): Promise<Router> => {
             },
         ],
     });
-    const adminRouter = AdminJSExpress.buildRouter(admin);
+
+    const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+        admin,
+        {
+            authenticate,
+            cookieName: 'adminjs',
+            cookiePassword: 'sessionsecret',
+        },
+        null,
+        {
+            store: sessionStore,
+            resave: true,
+            saveUninitialized: true,
+            secret: 'sessionsecret',
+            cookie: {
+                httpOnly: isProduction,
+                secure: isProduction,
+            },
+            name: 'adminjs',
+        }
+    );
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     admin.watch();
