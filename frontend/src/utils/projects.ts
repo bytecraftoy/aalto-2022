@@ -26,7 +26,12 @@ export const getProjects = async (): Promise<
     | { success: false; error: Error }
 > => {
     try {
-        const projects = await apiFetchJSON('/api/user/projects');
+        const projects = await apiFetchJSON('/api/user/projects') as ProjectInfo[];
+        projects.sort((a,b) => {
+            if(a.name < b.name) return -1;
+            else if(a.name > b.name) return 1;
+            else return 0;
+        });
         return { success: true, projects };
     } catch (err) {
         return handleError(err);
