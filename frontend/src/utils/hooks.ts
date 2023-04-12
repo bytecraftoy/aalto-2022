@@ -4,7 +4,7 @@ import { getProject, initializeUserProjects } from './projects';
 import { logIn, logOut } from '../reducers/userReducer';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { setProjects, clearProjects } from '../reducers/projectReducer';
-import { setPanels, clearPanels } from '../reducers/panelReducer';
+import { setSavedPanels, clearPanels } from '../reducers/panelReducer';
 import { setTheme, clearTheme } from '../reducers/themeReducer';
 import { setPresets } from '../reducers/presetReducer';
 import { loadPresets } from './loadPresets';
@@ -79,7 +79,7 @@ export const useFetchRedirect = (fetchPath: string, redirect: To) => {
     const navigate = useNavigate();
     useEffect(() => {
         apiFetch(fetchPath).catch(() => navigate(redirect));
-    }, []);
+    });
 };
 
 /**
@@ -112,7 +112,7 @@ export const useImportProject = () => {
     const dispatch = useAppDispatch();
     return (id: string, project: Project) => {
         dispatch(setTheme(project.data.theme));
-        dispatch(setPanels(project.data.panels));
+        dispatch(setSavedPanels(project.data.panels));
         dispatch(setCurrentProjectID(id));
     };
 };
@@ -121,12 +121,11 @@ export const useImportProjectID = () => {
     const importProject = useImportProject();
     return async (id: string) => {
         const project = await getProject(id);
-        if(project.success){
+        if (project.success) {
             importProject(id, project.project);
         } else {
             console.error(project.error);
         }
-        
     };
 };
 

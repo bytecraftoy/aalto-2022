@@ -5,6 +5,8 @@
  * after this middleware.
  * Endpoints that must be available for anonymous users
  * must be added before this middleware.
+ * This middleware depends on the tokenReader middleware
+ * and must therefore be added after it.
  */
 import { Request, Response } from 'express';
 

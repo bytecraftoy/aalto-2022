@@ -1,10 +1,10 @@
 /**
- * This middleware prevents anonymous users
- * from accessing sensitive API endpoints.
- * The sensitive endpoints must be added to the app
- * after this middleware.
- * Endpoints that must be available for anonymous users
- * must be added before this middleware.
+ * This middleware reads the token cookie from the request
+ * and adds a new 'token' property to the request object.
+ * If a valid token is found in the cookie,
+ * the token information is saved to the new token property
+ * as an instance of TokenPayload.
+ * Otherwise the value of the token property is null.
  */
 import { Request, Response } from 'express';
 import { TokenPayload } from '../types/TokenPayload';

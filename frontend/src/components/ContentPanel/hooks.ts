@@ -23,6 +23,7 @@ export const usePanel = (id: string) => {
     const theme = useAppSelector((state) => state.theme.value);
     const logged = useAppSelector((state) => state.user.logged);
     const panels = useAppSelector((state) => state.panels.value);
+    const needsSaving = useAppSelector((state) => state.panels.needsSaving);
     const presets = useAppSelector((state) => state.presets.value);
     const currentProjectId = useAppSelector((state) => state.project.value.id);
 
@@ -174,8 +175,11 @@ export const usePanel = (id: string) => {
 
     /**
      * Saves the panel state
+     * Does not save the state if needsSaving is false unless 'force' is true
      */
-    const saveState = async () => {
+    const saveState = async (force = false) => {
+        if (!needsSaving && !force) return;
+
         // Update panel state to database
         await updateDatabase(panel);
 
