@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import { ProjectInfo } from '../../../utils/types';
 import { Surface } from '../../Surface';
 import { getProject } from './../../../utils/projects';
@@ -7,16 +7,16 @@ import { DropdownMenu } from '../../DropdownMenu';
 import { useDeleteProject } from '../hooks';
 import { useNavigate } from 'react-router-dom';
 
-
 /**
  * A box that shows a project.
  */
 
 interface ProjectViewBoxProps {
     project: ProjectInfo;
+    showDelete: boolean;
 }
 
-export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project }) => {
+export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDelete }) => {
     const importProject = useImportProject();
 
     const settingsRef = useRef<HTMLDivElement>(null);
@@ -30,14 +30,18 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project }) => {
         else importProject(id, res.project);
     };
 
-    const clickHandler = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (!settingsRef.current?.contains(e.target as Node)){
+    const clickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (!settingsRef.current?.contains(e.target as Node)) {
             openProject(project.id);
-            navigate("/about");
+            navigate('/about');
         }
-    }
+    };
 
     const delProject = useDeleteProject();
+    const choices = [{name: 'Rename', action: () => console.log('Rename')}];
+    if(showDelete){
+        choices.push({name: 'Delete', action: () => delProject(project.id)});
+    }
 
     return (
         <Surface
@@ -53,8 +57,8 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project }) => {
                 </h1>
                 <div ref={settingsRef}>
                     <DropdownMenu
-                        icon='SettingsIcon'
-                        choices={[{name:"Rename", action: () => console.log("Rename")},{ name: "Delete", action: () => delProject(project.id) }]}
+                        icon="SettingsIcon"
+                        choices={choices}
                     />
                 </div>
             </div>
