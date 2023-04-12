@@ -22,7 +22,6 @@ export const RenamePopup: React.FC<RenamePopupProps> = ({
         setPopup(false);
     };
 
-
     return (
         <Popup
             title="Rename Project"

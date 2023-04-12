@@ -26,10 +26,12 @@ export const getProjects = async (): Promise<
     | { success: false; error: Error }
 > => {
     try {
-        const projects = await apiFetchJSON('/api/user/projects') as ProjectInfo[];
-        projects.sort((a,b) => {
-            if(a.name < b.name) return -1;
-            else if(a.name > b.name) return 1;
+        const projects = (await apiFetchJSON(
+            '/api/user/projects'
+        )) as ProjectInfo[];
+        projects.sort((a, b) => {
+            if (a.name < b.name) return -1;
+            else if (a.name > b.name) return 1;
             else return 0;
         });
         return { success: true, projects };
@@ -116,18 +118,17 @@ export const deleteProject = async (
 
 /**
  * Renames a project
- * 
+ *
  */
 export const renameProject = async (
     id: string,
     newName: string
 ): Promise<{ success: true } | { success: false; error: Error }> => {
     const project = await getProject(id);
-    if(!project.success) return project;
+    if (!project.success) return project;
     project.project.name = newName;
-    return await saveProject(id,project.project);
+    return await saveProject(id, project.project);
 };
-
 
 /**
  * Get project's id by its name.
