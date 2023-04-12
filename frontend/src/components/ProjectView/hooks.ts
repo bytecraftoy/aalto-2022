@@ -2,6 +2,8 @@ import { deleteProject, getProjects, saveNewProject } from './../../utils/projec
 import { setProjects } from '../../reducers/projectReducer';
 import { useAppDispatch } from './../../utils/hooks';
 import { createEmptyProject } from '../../utils/types';
+import { useImportProjectID } from './../../utils/hooks';
+import { store } from '../../store';
 
 
 export const useUpdateProjects = () => {
@@ -18,6 +20,7 @@ export const useUpdateProjects = () => {
 
 export const useDeleteProject = () => {
     const updateProjects = useUpdateProjects();
+    const importProject = useImportProjectID();
     return async (id: string) => {
         const projects = await getProjects();
         if (projects.success) {
@@ -29,7 +32,9 @@ export const useDeleteProject = () => {
                 }
             }
         }
-        updateProjects();
+        await updateProjects();
+        const newProjects = store.getState()
+        importProject(newProjects.projects.value[0].id);
     };
 }
 

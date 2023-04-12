@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { RootState, AppDispatch } from '../store';
-import { initializeUserProjects } from './projects';
+import { getProject, initializeUserProjects } from './projects';
 import { logIn, logOut } from '../reducers/userReducer';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { setProjects, clearProjects } from '../reducers/projectReducer';
@@ -114,6 +114,19 @@ export const useImportProject = () => {
         dispatch(setTheme(project.data.theme));
         dispatch(setPanels(project.data.panels));
         dispatch(setCurrentProjectID(id));
+    };
+};
+
+export const useImportProjectID = () => {
+    const importProject = useImportProject();
+    return async (id: string) => {
+        const project = await getProject(id);
+        if(project.success){
+            importProject(id, project.project);
+        } else {
+            console.error(project.error);
+        }
+        
     };
 };
 

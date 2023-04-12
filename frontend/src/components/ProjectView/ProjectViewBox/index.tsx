@@ -54,7 +54,7 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project }) => {
                 <div ref={settingsRef}>
                     <DropdownMenu
                         icon='SettingsIcon'
-                        choices={[{ name: "Delete", action: () => delProject(project.id) }]}
+                        choices={[{name:"Rename", action: () => console.log("Rename")},{ name: "Delete", action: () => delProject(project.id) }]}
                     />
                 </div>
             </div>
