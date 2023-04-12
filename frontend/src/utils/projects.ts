@@ -110,6 +110,21 @@ export const deleteProject = async (
 };
 
 /**
+ * Renames a project
+ * 
+ */
+export const renameProject = async (
+    id: string,
+    newName: string
+): Promise<{ success: true } | { success: false; error: Error }> => {
+    const project = await getProject(id);
+    if(!project.success) return project;
+    project.project.name = newName;
+    return await saveProject(id,project.project);
+};
+
+
+/**
  * Get project's id by its name.
  * Never throws an error.
  */

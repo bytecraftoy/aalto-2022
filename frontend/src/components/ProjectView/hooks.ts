@@ -8,6 +8,7 @@ import { useAppDispatch } from './../../utils/hooks';
 import { createEmptyProject } from '../../utils/types';
 import { useImportProjectID } from './../../utils/hooks';
 import { store } from '../../store';
+import { renameProject } from './../../utils/projects';
 
 export const useUpdateProjects = () => {
     const dispatch = useAppDispatch();
@@ -42,6 +43,18 @@ export const useCreateProject = () => {
         const newP = await saveNewProject(createEmptyProject());
         if (!newP.success) {
             console.error(newP.error);
+            return;
+        }
+        updateProjects();
+    };
+};
+
+export const useRenameProject = () => {
+    const updateProjects = useUpdateProjects();
+    return async (id: string, newName: string) => {
+        const res = await renameProject(id, newName);
+        if(!res.success) {
+            console.error(res.error);
             return;
         }
         updateProjects();

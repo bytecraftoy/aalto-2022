@@ -6,6 +6,9 @@ import { useImportProject } from './../../../utils/hooks';
 import { DropdownMenu } from '../../DropdownMenu';
 import { useDeleteProject } from '../hooks';
 import { useNavigate } from 'react-router-dom';
+import { useRenameProject } from '../hooks';
+import { RenamePopup } from './RenamePopUp';
+import { useState } from 'react';
 
 /**
  * A box that shows a project.
@@ -23,6 +26,10 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDel
 
     const navigate = useNavigate();
 
+    const rename = useRenameProject();
+
+    const [popupOpen, setPopup] = useState(false);
+
     const openProject = async (id: string) => {
         const res = await getProject(id);
         console.log(id, res);
@@ -38,7 +45,7 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDel
     };
 
     const delProject = useDeleteProject();
-    const choices = [{name: 'Rename', action: () => console.log('Rename')}];
+    const choices = [{name: 'Rename', action: () => setPopup(true)}];
     if(showDelete){
         choices.push({name: 'Delete', action: () => delProject(project.id)});
     }
@@ -48,6 +55,12 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({ project, showDel
             className="flex flex-row justify-center items-center m-[2%] w-2/5 max-sm:w-3/4 max-w-[800px] max-h-[500px] max-sm:m-[5%] max-sm:h-64"
             level={2}
         >
+            <RenamePopup
+                        popupOpen={popupOpen}
+                        setPopup={setPopup}
+                        rename={(newName) => rename(project.id, newName)}
+                    />
+
             <div
                 className="hover:bg-secondary-90 rounded-2xl w-full h-full flex flex-row justify-center items-center transition-colors"
                 onClick={clickHandler}
