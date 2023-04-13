@@ -45,7 +45,7 @@ const authenticate = async (email: string, password: string) => {
     return null;
 };
 
-const getSesssionSecret = (): string => {
+const getSessionSecret = (): string => {
     const secret = process.env.ADMINJS_SESSION_SECRET;
     if (!secret) {
         throw new Error('ADMINJS_SESSION_SECRET not set');
@@ -99,7 +99,7 @@ const getAdminRouter = async (): Promise<Router> => {
         ],
     });
 
-    const sessionSecret = getSesssionSecret();
+    const sessionSecret = getSessionSecret();
 
     const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
         admin,
