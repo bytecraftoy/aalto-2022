@@ -4,15 +4,10 @@
 import supertest from 'supertest';
 import crypto from 'crypto';
 import xlsx from 'xlsx';
-import { getApp } from '../app';
+import { app } from '../app';
 import { initializeUsers, getUserToken } from './../services/testService';
 
-let api: supertest.SuperTest<supertest.Test>;
-
-beforeAll(async () => {
-    const server = await getApp();
-    api = supertest(server);
-});
+const api = supertest(app);
 
 beforeEach(async () => {
     await initializeUsers();

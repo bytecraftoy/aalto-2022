@@ -2,14 +2,8 @@
  * tests CORS headers
  */
 import supertest from 'supertest';
-import { getServer } from '../index';
-
-let api: supertest.SuperTest<supertest.Test>;
-
-beforeAll(async () => {
-    const server = await getServer();
-    api = supertest(server);
-});
+import { server } from '../index';
+const api = supertest(server);
 
 test('The CORS headers are available', async () => {
     const response = await api.get('/');

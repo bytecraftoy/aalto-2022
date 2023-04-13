@@ -1,14 +1,10 @@
 import supertest from 'supertest';
-import { getApp } from '../app';
+import { app } from '../app';
 import dotenv from 'dotenv';
 dotenv.config();
 
-let api: supertest.SuperTest<supertest.Test>;
-
-beforeAll(async () => {
-    const server = await getApp();
-    api = supertest(server);
-});
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const api = supertest(app);
 
 describe('Service status', () => {
     test('Test that in the dev mode dummy service', async () => {

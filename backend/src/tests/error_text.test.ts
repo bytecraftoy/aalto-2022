@@ -3,15 +3,10 @@
  */
 /* eslint-disable no-console */
 import supertest from 'supertest';
-import { getApp } from '../app';
+import { app } from '../app';
 import { initializeUsers } from '../services/testService';
 
-let api: supertest.SuperTest<supertest.Test>;
-
-beforeAll(async () => {
-    const server = await getApp();
-    api = supertest(server);
-});
+const api = supertest(app);
 
 beforeEach(async () => {
     await initializeUsers();
@@ -38,10 +33,7 @@ describe('/user/login', () => {
         const res = await api
             .post('/api/user/login')
             .send(
-                JSON.stringify({
-                    name: 'tester',
-                    password: 'wrong_passowrd',
-                })
+                JSON.stringify({ name: 'tester', password: 'wrong_passowrd' })
             )
             .expect(400);
 

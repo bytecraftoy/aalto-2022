@@ -302,7 +302,6 @@ export {
     updateSettingsRequestSchema,
     projectRequestSchema,
     passwordRequestSchema,
-    hashPassword,
     checkPassword,
     createUser,
     createToken,

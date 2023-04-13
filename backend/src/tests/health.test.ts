@@ -3,14 +3,8 @@
  */
 import supertest from 'supertest';
 import fs from 'fs';
-import { getApp } from '../app';
-
-let api: supertest.SuperTest<supertest.Test>;
-
-beforeAll(async () => {
-    const server = await getApp();
-    api = supertest(server);
-});
+import { app } from '../app';
+const api = supertest(app);
 
 describe('health router', () => {
     const version = (() => {

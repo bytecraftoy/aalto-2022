@@ -102,14 +102,6 @@ export const selectPassword = async (name: string): Promise<string | null> => {
         : null;
 };
 
-type UserRole = 'normal' | 'admin' | 'superadmin';
-export const selectUserRole = async (id: string): Promise<UserRole | null> => {
-    const text = 'SELECT role from users WHERE id = $1';
-    const values = [id];
-    const res = await executeQuery(text, values);
-    return res.length ? (res[0] as { role: UserRole }).role : null;
-};
-
 export const userExists = async (name: string): Promise<boolean> => {
     const text = 'SELECT COUNT(*) from users WHERE name = $1';
     const values = [name];

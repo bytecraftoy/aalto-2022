@@ -6,7 +6,6 @@ import {
     healthRouter,
     userRouter,
     presetsRouter,
-    getAdminRouter,
     statusRouter,
 } from './routers';
 import { cors } from './middleware/cors';
@@ -15,41 +14,26 @@ import cookieParser from 'cookie-parser';
 import { checkToken } from './middleware/checkToken';
 import expressAsyncHandler from 'express-async-handler';
 import { tokenReader } from './middleware/tokenReader';
-import { rootPath } from './routers/admin';
-import { isTesting } from './utils/env';
-import { waitForDatabase } from './db/util';
-import { pool } from './db/pool';
 
 const app = express();
+app.use(cors);
+app.use(cookieParser());
+app.use(bodyParser.text({ type: '*/*' }));
+app.use(expressAsyncHandler(tokenReader));
 
-const getApp = async (): Promise<express.Express> => {
-    if (!isTesting) {
-        await waitForDatabase(pool, true);
-        const adminRouter = await getAdminRouter();
-        app.use(rootPath, adminRouter);
-    }
+// Request logger before router
+app.use(requestLogger);
 
-    app.use(cors);
-    app.use(cookieParser());
-    app.use(bodyParser.text({ type: '*/*' }));
-    app.use(expressAsyncHandler(tokenReader));
+app.use('/api/health', healthRouter);
+app.use('/api/status', statusRouter);
+app.use('/api/user', userRouter);
+app.use(express.static('./public/'));
+app.use(checkToken);
+app.use('/api/export/', exportRouter);
+app.use('/api/textgen', apiRouter);
+app.use('/api/presets', presetsRouter);
 
-    // Request logger before router
-    app.use(requestLogger);
+// Error logger after router
+app.use(errorLogger);
 
-    app.use('/api/health', healthRouter);
-    app.use('/api/status', statusRouter);
-    app.use('/api/user', userRouter);
-    app.use(express.static('./public/'));
-    app.use(checkToken);
-    app.use('/api/export/', exportRouter);
-    app.use('/api/textgen', apiRouter);
-    app.use('/api/presets', presetsRouter);
-
-    // Error logger after router
-    app.use(errorLogger);
-
-    return app;
-};
-
-export { getApp };
+export { app };
