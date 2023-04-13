@@ -23,7 +23,7 @@ const getDatabaseName = (): string => {
 };
 
 const buildConnectionString = (): string => {
-    const user = process.env.POSTGRES_ADMINJS_USER;
+    const user = process.env.POSTGRES_ADMINJS_USER ?? 'adminjs';
     const host = 'localhost';
     const database = getDatabaseName();
     const password = process.env.POSTGRES_ADMINJS_PASSWORD;
