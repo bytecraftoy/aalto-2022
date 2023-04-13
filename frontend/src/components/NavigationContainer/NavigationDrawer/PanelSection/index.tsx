@@ -22,7 +22,7 @@ export const PanelSection = () => {
     // Prefer object in the useState, because it's having the value as a function is more error prone
     // I was trying to set the value but setPopAction kept calling the method instead
     const [popOpen, setPopOpen] = useState(false);
-    const [popAction, setPopAction] = useState<{ action: () => boolean }>();
+    const [popAction, setPopAction] = useState<{ action: () => void }>();
 
     // Current location and navigation
     const location = useLocation();

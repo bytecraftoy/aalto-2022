@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import classNames from 'classnames/dedupe';
 import { InputProps } from '../index';
 import { useError } from '../hooks';
@@ -24,6 +24,7 @@ export const TextArea: React.FC<TextInputProps> = ({
     onInput,
     errors,
 }) => {
+    const [hasFocus, setHasFocus] = useState(false);
     // Ref to the textarea element
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
     // Show error if there are errors
@@ -62,6 +63,8 @@ export const TextArea: React.FC<TextInputProps> = ({
                 value={value}
                 onInput={onInput}
                 onChange={touchInput}
+                onFocus={() => setHasFocus(true)}
+                onBlur={() => setHasFocus(false)}
             />
 
             <span
@@ -76,8 +79,8 @@ export const TextArea: React.FC<TextInputProps> = ({
                 )}
                 style={{ width: `calc(100% - ${cachedScrollWidth}px)` }}
             >
-                {showError && errors}
-                {showPlaceholder && placeholder}
+                {!hasFocus && showError && errors}
+                {!hasFocus && showPlaceholder && placeholder}
                 {showLabel && label}
             </span>
         </label>
