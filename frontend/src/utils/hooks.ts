@@ -88,7 +88,7 @@ export const useFetchRedirect = (fetchPath: string, redirect: To) => {
  *
  * A more specific version of fetchRedirect
  */
-export const useLoginRedirect = () => useFetchRedirect('/api/user', '/login/');
+export const useLoginRedirect = () => useFetchRedirect('/api/user', '/login');
 
 /**
  * Callback to clear all data that is private to a user

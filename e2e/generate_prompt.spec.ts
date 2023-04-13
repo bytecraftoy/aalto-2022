@@ -15,7 +15,7 @@ const username = uuid();
 test.beforeAll(async ({ browser }) => {
     const page = await browser.newPage();
     await page.goto('/');
-    await expect(page).toHaveURL('/login/');
+    await expect(page).toHaveURL('/login');
     await page.click('button:has-text("Sign up")');
     await expect(page).toHaveURL('/register');
     await page
@@ -49,12 +49,15 @@ test.beforeAll(async ({ browser }) => {
         .fill(process.env.REGISTER_KEY!, { force: true });
 
     await page.click('button:has-text("Create account")');
+    await expect(page).toHaveURL('/projects');
+    await page.click('h1:has-text("new project")');
+    await page.goto('/');
     await expect(page).toHaveURL('/');
 });
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveURL('/login/');
+    await expect(page).toHaveURL('/login');
     await page
         .locator('label', {
             has: page.locator('span:has-text("Username")'),
@@ -72,6 +75,9 @@ test.beforeEach(async ({ page }) => {
     await page
         .locator('[data-testid="custom-button"]:has-text("Log in")')
         .click();
+    await expect(page).toHaveURL('/projects');
+    await page.click('h1:has-text("new project")');
+    await page.goto('/');
     await expect(page).toHaveURL('/');
 });
 
@@ -166,7 +172,7 @@ test('should generate all boxes with generate all button', async ({ page }) => {
     ).toHaveCount(0); //Autosave finished
 
     await page.locator('[data-testid="navdrawer-button"]').first().click();
-    await page.locator('[data-testid="panel-link"]').nth(1).click();
+    await page.locator('[data-testid="panel-link"]').nth(2).click();
     await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
     await page.click('input[placeholder*="category"]'); // Closes nav drawer
 

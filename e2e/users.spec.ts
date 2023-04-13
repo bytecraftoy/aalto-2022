@@ -8,8 +8,9 @@ const username = uuid();
 
 test('Can create an account', async ({ page }) => {
     await page.goto('http://localhost:3000/');
-    await page.goto('http://localhost:3000/login/');
+    await page.goto('http://localhost:3000/login');
     await page.getByRole('button', { name: 'Sign up' }).click();
+    await expect(page).toHaveURL('/register');
     await page.getByLabel('UsernameChoose your username').click();
     await page.getByLabel('UsernameChoose your username').fill(username);
     await page.getByLabel('PasswordChoose your password').click();
@@ -26,7 +27,7 @@ test('Can create an account', async ({ page }) => {
     await page
         .locator('div')
         .filter({
-            hasText: `AI-assisted game content creator${username}SettingsLogout`,
+            hasText: `AI-assisted game content creator${username}ProjectsSettingsLogout`,
         })
         .getByRole('button')
         .nth(1)
@@ -37,8 +38,9 @@ test('Can create an account', async ({ page }) => {
 test('Logout sends back to the login', async ({ page }) => {
     const username = uuid();
     await page.goto('http://localhost:3000/');
-    await page.goto('http://localhost:3000/login/');
+    await page.goto('http://localhost:3000/login');
     await page.getByRole('button', { name: 'Sign up' }).click();
+    await expect(page).toHaveURL('/register');
     await page.getByLabel('UsernameChoose your username').click();
     await page.getByLabel('UsernameChoose your username').fill(username);
     await page.getByLabel('PasswordChoose your password').click();
@@ -55,11 +57,11 @@ test('Logout sends back to the login', async ({ page }) => {
     await page
         .locator('div')
         .filter({
-            hasText: `AI-assisted game content creator${username}SettingsLogout`,
+            hasText: `AI-assisted game content creator${username}ProjectsSettingsLogout`,
         })
         .getByRole('button')
         .nth(1)
         .click();
     await page.getByText('Logout').click();
-    await expect(page).toHaveURL('/login/');
+    await expect(page).toHaveURL('/login');
 });
