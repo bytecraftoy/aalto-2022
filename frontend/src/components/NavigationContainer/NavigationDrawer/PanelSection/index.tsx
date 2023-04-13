@@ -54,7 +54,6 @@ export const PanelSection = () => {
         if (location.pathname === `/panels/${panel.id}`) {
             navigate('/');
         }
-        return true;
     };
 
     return (
