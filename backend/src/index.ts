@@ -1,18 +1,22 @@
 import http from 'http';
-import { app } from './app';
-import { pool } from './db/pool';
-import { waitForDatabase } from './db/util';
+import { getApp } from './app';
 import { isTesting } from './utils/env';
 import { logger } from './utils/logger';
 
-const server = http.createServer(app);
+const getServer = async (): Promise<
+    http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>
+> => {
+    const app = await getApp();
+    const server = http.createServer(app);
+    return server;
+};
 
 if (!isTesting) {
     const PORT = process.env.PORT || 3030;
 
-    waitForDatabase(pool, true)
-        .then(() => {
-            logger.info('starting');
+    getServer()
+        .then((server) => {
+            logger.info('started');
             server.listen(PORT, () => logger.info('started', { port: PORT }));
         })
         .catch((e: unknown) => {
@@ -20,4 +24,4 @@ if (!isTesting) {
         });
 }
 
-export { server };
+export { getServer };

@@ -5,18 +5,23 @@
  * However, the dummys own tests should cover for that.
  */
 
-import { app } from './../app';
+import { getApp } from './../app';
 import { createPrompt } from '../services';
 import { TokenPayload } from '../types/TokenPayload';
 import { createToken, createUser } from '../services/userService';
 import supertest from 'supertest';
 import { initializeUsers, getUserToken } from './../services/testService';
 
+let api: supertest.SuperTest<supertest.Test>;
+
+beforeAll(async () => {
+    const server = await getApp();
+    api = supertest(server);
+});
+
 beforeEach(async () => {
     await initializeUsers();
 });
-
-const api = supertest(app);
 
 describe('API request validation', () => {
     let token: string;

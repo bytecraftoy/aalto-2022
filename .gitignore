@@ -6,6 +6,7 @@
 backend/coverage
 backend/files/timestamp-commit
 backend/public/
+backend/.adminjs
 build
 deploy
 node_modules
