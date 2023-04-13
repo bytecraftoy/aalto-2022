@@ -32,7 +32,8 @@ export type Icon =
     | 'Cog6Tooth'
     | 'ChevronUpIcon'
     | 'ChevronDownIcon'
-    | 'ExclamationTriangleIcon';
+    | 'ExclamationTriangleIcon'
+    | 'ArrowLeftIcon';
 
 /**
  * Default sized solid icon element using HeroIcons.
@@ -80,6 +81,8 @@ export const solidIcon = (i?: Icon, className?: string) => {
             return <I.ChevronDownIcon className={classN} />;
         case 'ExclamationTriangleIcon':
             return <I.ExclamationTriangleIcon className={classN} />;
+        case 'ArrowLeftIcon':
+            return <I.ArrowLeftIcon className={classN} />;
         default:
             return <></>;
     }

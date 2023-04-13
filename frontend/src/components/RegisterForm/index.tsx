@@ -70,7 +70,7 @@ export const RegisterForm = () => {
             // Initiate a login on the frontend
             await login(acc);
 
-            navigate('/');
+            navigate('/projects');
         } else {
             // Set the error notification
             const text = await res.text();

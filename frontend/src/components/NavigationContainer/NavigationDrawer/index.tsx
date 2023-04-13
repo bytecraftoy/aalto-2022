@@ -8,6 +8,7 @@ import { solidIcon } from '../../../utils/icons';
 import { PanelSection } from './PanelSection';
 import { Divider } from '../../Divider';
 import { useAppSelector } from '../../../utils/hooks';
+import { IconButton } from '../../Buttons';
 
 /**
  *
@@ -59,37 +60,39 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                 {/* The data area */}
                 <div className="h-full w-full p-3 overflow-y-auto scrollbar-hide">
                     {/* Drawer header */}
-                    <div className="py-2 pl-4 pr-2 h-14">
-                        <h2 className="text-xl">Navigation</h2>
+                    <div className="flex flex-row items-center justify-between py-2 pl-4 pr-2 h-14">
+                        <h2 className="text-xl inline-block">Navigation</h2>
+                        <IconButton
+                            icon="ArrowLeftIcon"
+                            colorPalette="secondary"
+                            onClick={() => setOpen(false)}
+                            className="inline-block"
+                        />
                     </div>
-                    {/** The pages */}
-                    <NavigationSubHeader>Pages</NavigationSubHeader>
 
-                    <NavigationLink
-                        label="About"
-                        icon={solidIcon('InformationCircleIcon')}
-                        to="/about"
-                    />
-
-                    <Divider />
-
-                    {/** User's projects */}
+                    {/* Don't show content unless the user is logged in */}
                     {user.logged ? (
                         <>
-                            <PanelSection />
-                            <Divider />
+                            {/** The pages */}
+                            <NavigationSubHeader>Pages</NavigationSubHeader>
+                            <NavigationLink
+                                label="About"
+                                icon={solidIcon('InformationCircleIcon')}
+                                to="/about"
+                            />
                             <NavigationLink
                                 label="Projects"
                                 icon={solidIcon('WindowIcon')}
                                 to="/projects"
                             />
-                        </>
-                    ) : (
-                        <></>
-                    )}
 
-                    {/** Others */}
-                    {/* Hidden because this is currently not implemented
+                            <Divider />
+
+                            {/** Panels */}
+                            <PanelSection />
+
+                            {/** Others */}
+                            {/* Hidden because this is currently not implemented
                     
                     <NavigationLink
                         label="Overall view"
@@ -98,6 +101,10 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
                     />
                     
                     */}
+                        </>
+                    ) : (
+                        <></>
+                    )}
                 </div>
             </Surface>
         </Transition>

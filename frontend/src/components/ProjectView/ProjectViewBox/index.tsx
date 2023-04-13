@@ -75,13 +75,13 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
             />
 
             <div
-                className="hover:bg-secondary-90 rounded-2xl w-full h-full flex flex-row justify-center items-center transition-colors"
+                className="hover:bg-secondary-90/30 cursor-pointer rounded-2xl w-full h-full flex flex-row justify-center items-center transition-colors"
                 onClick={clickHandler}
             >
-                <h1 className="text-2xl font-medium text-neutral-20">
+                <h1 className="text-2xl font-medium text-neutral-20 inline-block">
                     {project.name}
                 </h1>
-                <div ref={settingsRef}>
+                <div ref={settingsRef} className="p-2">
                     <DropdownMenu icon="SettingsIcon" choices={choices} />
                 </div>
             </div>
