@@ -6,22 +6,11 @@ import { FilledButton } from '../Buttons';
 import { usernameSchema, passwordSchema, tokenSchema } from './validation';
 import { useRepeatPassword } from './hooks';
 import { backendURL } from '../../utils/backendURL';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Notification } from '../Notification';
 import { Account } from '../../utils/types';
 import { Surface } from '../Surface';
 import { Divider } from '../Divider';
-
-// A helper function to read query parameters from the current window location
-const getQueryParameters = () => {
-    const list = window.location.search
-        .slice(1)
-        .split('&')
-        .map((s) => s.split('='));
-    const out: Map<string, string> = new Map();
-    for (const pair of list) out.set(pair[0], pair[1]);
-    return out;
-};
 
 /**
  *  Form for registering the user
@@ -46,11 +35,11 @@ export const RegisterForm = () => {
         setValue: setToken,
     } = useValidation(tokenSchema);
 
+    const [params] = useSearchParams();
+
     // Try to read the registration key from the url when the page is opened for the first time
     useEffect(() => {
-        const queries = getQueryParameters();
-        const key = queries.get('key');
-        if (typeof key === 'string') setToken(key);
+        setToken(params.get('key') ?? token);
     }, []);
 
     // Open the notification
