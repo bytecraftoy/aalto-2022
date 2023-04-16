@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from './Header';
 import { useValidation, useLogin, useTimedOpen } from '../../utils/hooks';
 import { CustomInput } from '../Inputs';
@@ -6,7 +6,7 @@ import { FilledButton } from '../Buttons';
 import { usernameSchema, passwordSchema, tokenSchema } from './validation';
 import { useRepeatPassword } from './hooks';
 import { backendURL } from '../../utils/backendURL';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Notification } from '../Notification';
 import { Account } from '../../utils/types';
 import { Surface } from '../Surface';
@@ -34,6 +34,13 @@ export const RegisterForm = () => {
         errors: tokenErrors,
         setValue: setToken,
     } = useValidation(tokenSchema);
+
+    const [params] = useSearchParams();
+
+    // Try to read the registration key from the url when the page is opened for the first time
+    useEffect(() => {
+        setToken(params.get('key') ?? token);
+    }, []);
 
     // Open the notification
     const { open, setOpen } = useTimedOpen(7000);
