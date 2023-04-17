@@ -28,7 +28,7 @@ const getApp = async (): Promise<express.Express> => {
     app.set('trust proxy', [
         'linklocal',
         'uniquelocal',
-        'localhost',
+        '127.0.0.1',
         'loopback',
     ]);
 
