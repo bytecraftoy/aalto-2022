@@ -23,6 +23,15 @@ import { pool } from './db/pool';
 const app = express();
 
 const getApp = async (): Promise<express.Express> => {
+    // Trust proxy headers
+    // Required for Express to trust the X-Forwarded-* headers from NGINX
+    app.set('trust proxy', [
+        'linklocal',
+        'uniquelocal',
+        'localhost',
+        'loopback',
+    ]);
+
     if (!isTesting) {
         await waitForDatabase(pool, true);
         const adminRouter = await getAdminRouter();
