@@ -25,12 +25,7 @@ const app = express();
 const getApp = async (): Promise<express.Express> => {
     // Trust proxy headers
     // Required for Express to trust the X-Forwarded-* headers from NGINX
-    app.set('trust proxy', [
-        'linklocal',
-        'uniquelocal',
-        '127.0.0.1',
-        'loopback',
-    ]);
+    app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
 
     if (!isTesting) {
         await waitForDatabase(pool, true);
