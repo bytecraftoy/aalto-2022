@@ -98,7 +98,11 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
                     {project.name}
                 </h1>
                 <div ref={settingsRef} className="p-2">
-                    <DropdownMenu icon="SettingsIcon" items={choices} />
+                    <DropdownMenu
+                        dataID="cog-icon"
+                        icon="SettingsIcon"
+                        items={choices}
+                    />
                 </div>
             </div>
         </Surface>

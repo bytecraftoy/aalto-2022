@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Popup } from '../../../Popup';
+import { CustomInput } from '../../../Inputs';
 
 //Pop-up window used to rename projects
 
@@ -31,9 +32,12 @@ export const RenamePopup: React.FC<RenamePopupProps> = ({
             onConfirm={() => renameProject(textInput)}
             onClose={() => setText('')}
         >
-            <div className="h-full w-full flex flex-col justify-between px-4 py-4">
-                <input
-                    className="px-4 py-2 rounded bg-neutral-10 bg-opacity-8"
+            <div className="h-full w-full flex flex-col justify-between items-center px-4 py-4">
+                <p className="text-lg">
+                    What would you like to call this project?
+                </p>
+                <CustomInput
+                    label="New name for the project"
                     value={textInput}
                     onInput={({ target }) => {
                         setText((target as HTMLTextAreaElement).value);

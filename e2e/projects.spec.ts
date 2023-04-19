@@ -75,6 +75,26 @@ test.beforeEach(async ({ page }) => {
     await expect(page).toHaveURL('/projects');
 });
 
+// This test checks that a new user will already have a project when first registered,
+// and the ability to rename that project.
+test('should be able to rename a project', async ({ page }) => {
+    await expect(page.locator('h1:has-text("new project")')).toBeDefined();
+    await expect(page.getByTestId('cog-icon').first()).toBeVisible();
+    await page.click('[data-testid="cog-icon"]');
+    await expect(page.locator('p', { hasText: /Rename|Clone/ })).toHaveCount(2);
+    await expect(page.locator('p:has-text("Rename")').first()).toBeVisible();
+    await page.locator('div').filter({ hasText: 'Rename' }).first().click();
+    await page.click('input[placeholder*="New name for the project"]');
+    const projectName = uuid();
+    await page.fill(
+        'input[placeholder*="New name for the project"]',
+        projectName
+    );
+
+    await page.click('button:has-text("Confirm")');
+    await expect(page.locator(`h1:has-text("${projectName}")`)).toBeDefined();
+});
+
 // This test checks that the user can create new projects, and their data is correctly saved,
 // and loaded when the user changes projects It starts by creating N projects, and filling
 // each with sample data, switching between them. It then goes back to check each project

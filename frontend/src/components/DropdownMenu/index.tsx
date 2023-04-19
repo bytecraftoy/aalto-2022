@@ -7,6 +7,7 @@ import { Icon } from '../../utils/icons';
 
 interface DropdownMenuProps {
     icon: Icon;
+    dataID?: string;
     items: DropdownItem[];
     className?: string;
     iconClassName?: string;
@@ -18,6 +19,7 @@ interface DropdownMenuProps {
  */
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
     icon,
+    dataID,
     items,
     className,
     iconClassName,
@@ -46,7 +48,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
     return (
         // Dropdown menu and its styling
-        <div className="relative" ref={menuRef}>
+        <div className="relative" ref={menuRef} data-testid={dataID}>
             <IconButton
                 icon={icon}
                 colorPalette="primary"

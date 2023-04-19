@@ -27,7 +27,7 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
     return (
         <div className="flex flex-row justify-center items-center h-16 px-4 mt-6">
             <PromptCategoryBox category={category} setCategory={setCategory} />
-            <div className="h-full pl-2 z-[15]">
+            <div data-testid="panel-settings" className="h-full pl-2 z-[15]">
                 <DropdownMenu
                     icon="Cog6Tooth"
                     items={[
