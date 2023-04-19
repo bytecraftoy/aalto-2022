@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useValidation, useLogin, useTimedOpen } from '../../../utils/hooks';
 import {
     registerUsernameSchema,
@@ -36,6 +36,13 @@ export const RegisterForm = () => {
         errors: tokenErrors,
         setValue: setToken,
     } = useValidation(registerTokenSchema);
+
+    const [params] = useSearchParams();
+
+    // Try to read the registration key from the url when the page is opened for the first time
+    useEffect(() => {
+        setToken(params.get('key') ?? token);
+    }, []);
 
     // Open the notification
     const { open, setOpen } = useTimedOpen(7000);

@@ -1,125 +1,124 @@
 /**
  * Component containing information about the application
+ * The information (info_texts.json) is fetched once from the
+ * server when this component is rendered for the first time.
+ * The contents of this component are constructed based on
+ * that json file.
  */
-
+import React, { useState, useEffect } from 'react';
 import { solidIcon } from '../../../utils/icons';
 import { ExpandableParagraph } from '../../ExpandableParagraph';
 import { IconTip } from './IconTip';
+import { Icon } from './../../../utils/icons';
+import { apiFetchJSON } from './../../../utils/apiFetch';
+
+interface InfoParagraphTextPart {
+    type: 'text';
+    text: string;
+}
+
+interface InfoParagraphStrongTextPart {
+    type: 'strong-text';
+    text: string;
+}
+
+interface InfoParagraphSolidIconPart {
+    type: 'solid-icon';
+    icon: Icon;
+}
+
+interface InfoParagraph {
+    type: 'paragraph';
+    parts: Array<
+        | InfoParagraphTextPart
+        | InfoParagraphStrongTextPart
+        | InfoParagraphSolidIconPart
+    >;
+}
+
+interface InfoIconTip {
+    type: 'icon-tip';
+    icon: Icon;
+    text: string;
+}
+
+interface InfoSection {
+    title: string;
+    contents: Array<InfoParagraph | InfoIconTip>;
+}
+
+interface InfoData {
+    sections: InfoSection[];
+}
+
+interface ContainerProps {
+    children: string | JSX.Element | JSX.Element[] | (() => JSX.Element);
+}
+
+//This container is required to give the key prop to strings and solid icons
+const Container = ({ children }: ContainerProps) => <>{children}</>;
+
+const renderParagraphTextPart = (key: number, part: InfoParagraphTextPart) => (
+    <Container key={key}>{part.text}</Container>
+);
+
+const renderParagraphStrongTextPart = (
+    key: number,
+    part: InfoParagraphStrongTextPart
+) => (
+    <strong key={key} className="font-medium">
+        {part.text}
+    </strong>
+);
+
+const renderParagraphSolidIconPart = (
+    key: number,
+    part: InfoParagraphSolidIconPart
+) => (
+    <Container key={key}>
+        {solidIcon(part.icon, 'w-5 h-5 m-0 p-0 inline-block')}
+    </Container>
+);
+
+const renderParagraph = (key: number, paragraph: InfoParagraph) => (
+    <p key={key} className="pb-4">
+        {paragraph.parts.map((p, i) => {
+            if (p.type === 'text') return renderParagraphTextPart(i, p);
+            else if (p.type === 'strong-text')
+                return renderParagraphStrongTextPart(i, p);
+            else if (p.type === 'solid-icon')
+                return renderParagraphSolidIconPart(i, p);
+        })}
+    </p>
+);
+
+const renderIconTip = (key: number, iconTip: InfoIconTip) => (
+    <IconTip key={key} icon={iconTip.icon} text={iconTip.text} />
+);
+
+const renderSection = (key: number, section: InfoSection) => (
+    <ExpandableParagraph key={key} title={section.title}>
+        <div>
+            {section.contents.map((p, i) => {
+                if (p.type === 'paragraph') return renderParagraph(i, p);
+                else if (p.type === 'icon-tip') return renderIconTip(i, p);
+            })}
+        </div>
+    </ExpandableParagraph>
+);
 
 export const AboutUsingSection = () => {
+    const [infoData, setInfoData] = useState<InfoData>({ sections: [] });
+
+    useEffect(() => {
+        apiFetchJSON('/info_texts.json')
+            .then((data) => setInfoData(data))
+            .catch((err) => console.error(err));
+    }, []);
+
     return (
         <div className="flex flex-row flex-wrap justify-start items-center px-32 max-sm:px-8 py-8">
-            <ExpandableParagraph title="Content panels and the basic structure of the application">
-                <div>
-                    <p className="pb-4">
-                        When working with the application, your data is
-                        organised under a{' '}
-                        <strong className="font-medium">Project</strong>.
-                    </p>
-                    <p>
-                        Every <strong className="font-medium">Project</strong>{' '}
-                        contains a{' '}
-                        <strong className="font-medium">Theme</strong> and
-                        several{' '}
-                        <strong className="font-medium">ContentPanels</strong>.{' '}
-                        These are the main building block for your game world,
-                        and govern one area, or category of the assets you want
-                        to create. For example, you could have one panel for
-                        creating flavour texts for potions, and another for
-                        writing books that appear in your game world.
-                    </p>
-                    <p className="pt-4">
-                        All of the panels inside your project automatically
-                        include the theme of your game, and provide it to the AI
-                        when you ask it for content.
-                    </p>
-                    <IconTip
-                        icon="Bars3Icon"
-                        text="You can create as many panels as you want. They are organised under the drawer on the left hand side of the screen."
-                    />
-                </div>
-            </ExpandableParagraph>
-            <ExpandableParagraph title="Prompting with IOBoxes">
-                <div>
-                    <p className="pb-4">
-                        Under each panel, you can have any number of{' '}
-                        <strong className="font-medium">IOBoxes</strong>. Each
-                        box is responsible for one text output that will be
-                        generated by the AI. For example, if your theme was
-                        &quot;sci-fi&quot;, and your category was
-                        &quot;planet&quot;, your prompt could be a short
-                        description, such as &quot;a lizard-aliens&#39;
-                        stronghold&quot;.
-                    </p>
-                    <p className="pb-4">
-                        The final prompt sent to the AI is constructed by
-                        embedding them to the following sentence: &quot;Write a
-                        game flavor text for &lt;prompt&gt; which is a
-                        &lt;category&gt; in a &lt;theme&gt; setting&quot;. For
-                        the example given above this would yield: &quot;Write a
-                        game flavor text for a lizard-aliens&#39; stronghold
-                        which is a planet in a sci-fi setting&quot;.
-                    </p>
-                    <p>
-                        The input for each box can be long or detailed, or it
-                        could be a single keyword. Each box that you have in a
-                        panel can be generated individually from the controls on
-                        top of it. You can also generate all boxes in a panel at
-                        once, using the{' '}
-                        <strong className="font-medium">Generate all</strong>.{' '}
-                        button. Notice that you can edit both the input and
-                        ouput of a box by hand!
-                    </p>
-                    <IconTip
-                        icon="LockClosedIcon"
-                        text="Got a great output you don't want overwritten? You can lock IOBoxes, which prevents them from being edited by the AI generation."
-                    />
-                </div>
-            </ExpandableParagraph>
-            <ExpandableParagraph title="Exporting content">
-                <div>
-                    <p className="pb-4">
-                        Once you have generated some outputs from a panel, you
-                        can export them to a{' '}
-                        <strong className="font-medium">json</strong>. or{' '}
-                        <strong className="font-medium">xlsx</strong>. file. The
-                        exported file will contain the category of your panel,
-                        and all inputs/outputs currently in that panel.
-                    </p>
-                    <IconTip
-                        icon="WindowIcon"
-                        text="The json format includes more details, such as the parameters that were used to generate the prompts."
-                    />
-                </div>
-            </ExpandableParagraph>
-            <ExpandableParagraph title="Generation parameters and presets">
-                <div>
-                    <p className="pb-4">
-                        You can influence the AI generation via{' '}
-                        <strong className="font-medium">Presets</strong> and{' '}
-                        <strong className="font-medium">Parameters</strong>.
-                        These can be found by clicking the{' '}
-                        {solidIcon('Cog6Tooth', 'w-5 h-5 m-0 p-0 inline-block')}{' '}
-                        icon next to the category of your panel, and selecting{' '}
-                        <strong className="font-medium">Settings</strong>
-                        This will open a parameter drawer, where you can choose
-                        from hand picked items, or set precise values.
-                    </p>
-                    <IconTip
-                        icon="InformationCircleIcon"
-                        text="Don't forget to save your progress! You finetune parameters for each panel seperately if needed."
-                    />
-                </div>
-            </ExpandableParagraph>
-            <ExpandableParagraph title="Multiple panels">
-                <div>
-                    <p className="pb-4">
-                        You can add or remove panels from the left-hand drawer.
-                        When you give a category to a panel, you can find it
-                        with that name from the list of panels.
-                    </p>
-                </div>
-            </ExpandableParagraph>
+            {infoData.sections.map((s, i) => renderSection(i, s))}
         </div>
     );
 };
