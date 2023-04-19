@@ -40,7 +40,6 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
 
     const openProject = async (id: string) => {
         const res = await getProject(id);
-        console.log(id, res);
         if (!res.success) console.error(res.error);
         else importProject(id, res.project);
     };

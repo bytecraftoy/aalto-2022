@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Surface } from '../Surface';
 import classNames from 'classnames';
 import { ParameterDrawer } from '../ParameterDrawer';
@@ -23,16 +23,13 @@ import { AboutUsingSection } from './AboutUsingSection';
  */
 export const AboutPage = () => {
     const {
-        // Used later
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        currentAI,
         theme,
         panels,
         presetNames,
         setThemeName,
-        selectPreset,
         setThemeParameters,
         currentProject,
+        selectPreset,
         saveState,
     } = useAbout();
 
@@ -74,15 +71,22 @@ export const AboutPage = () => {
 
     // Opens ParameterDrawer
     const [open, setOpen] = useState(false);
+    const [advanced, setAdvanced] = useState(false);
+
+    // Autosave when the drawer is closed
+    useEffect(() => {
+        if (!open) saveState();
+    }, [open]);
 
     return (
         //Take up full space, and center the content in it
         <div className="relative w-full h-full flex-1">
             <ParameterDrawer
-                overrideTheme={false}
-                advancedMode={false}
+                themeDrawer
+                overrideTheme={true}
+                advancedMode={advanced}
                 setOverrideTheme={emptyMethod}
-                setAdvancedMode={emptyMethod}
+                setAdvancedMode={setAdvanced}
                 presets={presetNames}
                 preset={theme.globalParameters}
                 selectPreset={selectPreset}
@@ -98,8 +102,8 @@ export const AboutPage = () => {
                 <Surface level={2} className="w-full max-w-6xl min-h-fit mb-16">
                     <AboutHeader
                         theme={theme}
+                        setDrawerOpen={setOpen}
                         setThemeName={setThemeName}
-                        setThemeParameters={setThemeParameters}
                         saveState={saveState}
                     />
                     <div className="w-[80%] mx-auto pt-6">

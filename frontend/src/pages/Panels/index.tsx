@@ -17,14 +17,9 @@ export const Panels = () => {
     // Get the panel id from the route
     const { panelId } = useParams();
 
-    // Current panel of the application
-    const panel = panels.find((e) => e.id === panelId);
-
-    // If not panel found with the id === panelId
-    // TODO! Some "Page not found" component
-    if (!panel) {
-        return <div>id not found</div>;
-    }
+    // There should always be at least one panel
+    // Current panel of the application, or the first one if the id is incorrect
+    const panel = panels.find((e) => e.id === panelId) || panels[0];
 
     return (
         <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ThemeInput } from './ThemeInput';
-import { Theme, Parameters } from '../../../utils/types';
+import { Theme } from '../../../utils/types';
 import { solidIcon } from '../../../utils/icons';
 import { Tooltip } from '../../Tooltip';
 import { getStatus } from '../../../utils/status';
+import { IconButton } from '../../Buttons';
 
 /**
  * Top most part of the whole content panel.
@@ -14,16 +15,14 @@ import { getStatus } from '../../../utils/status';
 interface AboutHeaderProps {
     theme: Theme;
     setThemeName: (s: string) => void;
-    setThemeParameters: (p: Parameters) => void;
+    setDrawerOpen: (b: boolean) => void;
     saveState: () => void;
 }
 
 export const AboutHeader: React.FC<AboutHeaderProps> = ({
     theme,
     setThemeName,
-    // Used later
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setThemeParameters,
+    setDrawerOpen,
     saveState,
 }) => {
     const [status, setStatus] = useState({ environment: 'loading...' });
@@ -37,26 +36,39 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
     }, []);
 
     return (
-        <div className="relative flex flex-col justify-center items-center my-6">
-            <div className="absolute top-0 left-0 ml-6">
-                <Tooltip
-                    text={`Environment: ${status.environment}`}
-                    icon="InformationCircleIcon"
-                    instant={true}
-                >
-                    {solidIcon('InformationCircleIcon', 'text-primary')}
-                </Tooltip>
-            </div>
-            <div className="flex-1">
-                <h1 className="text-center text-3xl pt-4 pb-6">
+        <div className="relative flex flex-col justify-center items-center">
+            <div className="w-full flex flex-row items-center justify-between">
+                <div className="m-12">
+                    <Tooltip
+                        text={`Environment: ${status.environment}`}
+                        icon="InformationCircleIcon"
+                        instant={true}
+                    >
+                        {solidIcon('InformationCircleIcon', 'text-primary')}
+                    </Tooltip>
+                </div>
+
+                <h1 className="text-center text-3xl pt-4 pb-6 block max-sm:hidden">
                     My game{"'"}s theme is ...
                 </h1>
-                <ThemeInput
-                    name={theme.name}
-                    setName={setThemeName}
-                    saveState={saveState}
+
+                <IconButton
+                    icon="AdjustmentsHorizontalIcon"
+                    colorPalette="primary"
+                    onClick={() => setDrawerOpen(true)}
+                    className="m-6"
                 />
             </div>
+
+            <h1 className="text-center text-3xl pt-4 pb-6 block sm:hidden">
+                My game{"'"}s theme is ...
+            </h1>
+
+            <ThemeInput
+                name={theme.name}
+                setName={setThemeName}
+                saveState={saveState}
+            />
         </div>
     );
 };

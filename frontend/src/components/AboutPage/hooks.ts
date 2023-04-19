@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { setTheme } from '../../reducers/themeReducer';
 import { EventBus } from '../../utils/eventBus';
-import { Parameters, Theme, Preset } from '../../utils/types';
+import { Parameters, Theme } from '../../utils/types';
 import { getProject, saveProject } from './../../utils/projects';
 import { useState } from 'react';
 
@@ -20,49 +20,28 @@ export const useAbout = () => {
     const currentProject = () =>
         projects.find((p) => p.id === currentProjectId) ?? { name: '', id: '' };
 
-    // Presets
-    const presetNames = presets.map((p) => p.presetName);
-    const [currentPreset, setCurrentPreset] = useState(
-        presetNames[0] ?? 'No presets found'
-    );
-    const selectPreset = (name: string) => {
-        const preset = presets.find((p) => p.presetName === name);
-        if (preset) {
-            const value = preset as Preset;
-            setCurrentPreset(value.presetName);
+    // Presets, (if they were fetched)
+    const presetNames = presets.map((p) => p.presetName) || [
+        'No presets found',
+    ];
 
-            // TODO:
-            // change parameters on preset change
-        }
-    };
-
-    // Keep track of the last saved theme so we don't cause unnecessary saves
     const [lastTheme, setLastTheme] = useState<Theme>(theme);
 
-    // Current AI being used. For now, just check dev mode
-    const currentAI =
-        process.env.NODE_ENV === 'development'
-            ? 'Using Dummy Proxy'
-            : 'Using davinci-002';
+    const selectPreset = (name: string) => {
+        const p = presets.find((p) => p.presetName === name);
+
+        // Preset exists, we can update it
+        if (p) {
+            const newTheme = { ...theme };
+            newTheme.globalParameters = p;
+            dispatch(setTheme(newTheme));
+        }
+    };
 
     // Get the main project from database and updates it
     const updateDatabase = async () => {
         if (logged) {
-            // TODO: the current project id we are working should be clearly
-            // dictated somewhere in the redux store
-            // the project should not be chosen by name, etc.
-
-            // Workaround, get first project since we only have one at this point
             const projectId = currentProject().id;
-
-            /* Old code commented out before a solution is discussed:
-             *
-             * It's bad to rely on some named project, because the user
-             * should be able to rename any projects
-             *
-             * const mainProject = await getProjectIdByName('main');
-             * if (!mainProject.success) return;
-             */
 
             const mainProject = await getProject(projectId);
             if (!mainProject.success) return;
@@ -71,7 +50,14 @@ export const useAbout = () => {
             mainProject.project.data.theme = theme;
             const result = await saveProject(projectId, mainProject.project);
 
-            // Successfully updated theme, take note
+            EventBus.dispatch('notification', {
+                type: result.success ? 'success' : 'error',
+                message: result.success
+                    ? 'Your progress has been saved.'
+                    : result.error.message,
+            });
+
+            // Saving was successful, take note
             if (result.success) {
                 setLastTheme(theme);
             }
@@ -82,19 +68,10 @@ export const useAbout = () => {
      * Saves progress and updates database
      */
     const saveState = async () => {
-        // TODO: Add deeper equality check once parameters become changeable
-        // on the about page. For now, they are not updated anyway
-        // Theme has not changed, do not save
-        if (theme.name === lastTheme.name) {
-            return;
-        }
+        // Theme has not changed
+        if (JSON.stringify(theme) === JSON.stringify(lastTheme)) return;
 
         await updateDatabase();
-
-        EventBus.dispatch('notification', {
-            type: 'success',
-            message: 'Your progress has been saved.',
-        });
     };
 
     const setThemeName = (name: string) => {
@@ -110,15 +87,14 @@ export const useAbout = () => {
 
         const newTheme = { ...theme };
         newTheme.globalParameters = { presetName: 'Custom', ...params };
+        newTheme.globalParameters.presetName = 'Custom'; // TS bug, presetName doesn't get set without this
         dispatch(setTheme(newTheme));
     };
 
     return {
         theme,
         panels,
-        currentAI,
         presetNames,
-        currentPreset,
         setThemeName,
         setThemeParameters,
         currentProject,

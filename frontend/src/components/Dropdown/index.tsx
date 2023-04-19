@@ -29,7 +29,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                     className
                 )}
             >
-                <Listbox.Button className="relative w-full cursor-default rounded-xl bg-neutral-99 py-3 pl-3 pr-10 text-left font-medium shadow-md sm:text-sm">
+                <Listbox.Button className="relative w-full cursor-pointer rounded-xl bg-neutral-99 py-3 pl-3 pr-10 text-left font-medium shadow-md sm:text-sm">
                     <span className="block truncate">{choice}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         {solidIcon('ChevronDownIcon')}
@@ -48,7 +48,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                                     key={index}
                                     className={({ active }) =>
                                         classNames(
-                                            'relative cursor-default select-none py-2 pl-10 pr-4',
+                                            'relative cursor-pointer select-none py-2 pl-10 pr-4',
                                             {
                                                 'bg-primary-90 text-primary-20':
                                                     active,

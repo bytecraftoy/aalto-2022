@@ -9,6 +9,8 @@ import { IconButton } from '../Buttons';
 import { Dropdown } from '../Dropdown';
 
 interface ParameterDrawerProps {
+    themeDrawer?: boolean;
+
     open: boolean;
     setOpen: (b: boolean) => void;
     preset: Preset; // Custom parameters can be a preset named "Custom"
@@ -25,6 +27,7 @@ interface ParameterDrawerProps {
 }
 
 export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
+    themeDrawer,
     open,
     setOpen,
     preset,
@@ -112,7 +115,11 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
                     </div>
 
                     <ParameterToggle
-                        title="Override theme settings"
+                        title={
+                            themeDrawer
+                                ? 'Theme settings'
+                                : 'Override theme settings'
+                        }
                         enabled={overrideTheme}
                         setEnabled={setOverrideTheme}
                     />

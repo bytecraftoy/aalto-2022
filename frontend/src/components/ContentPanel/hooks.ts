@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { generateText } from '../../utils/generateContent';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
-import { updatePanel } from '../../reducers/panelReducer';
+import { setSavestatus, updatePanel } from '../../reducers/panelReducer';
 import { generatePrompts } from './promptUtil';
 import { EventBus } from '../../utils/eventBus';
 import {
     PromptData,
     Parameters,
+    Preset,
     ContentPanelData,
     createEmptyPrompt,
+    DEFAULT_THEME,
 } from '../../utils/types';
 import { getProject, saveProject } from './../../utils/projects';
 
@@ -44,6 +46,7 @@ export const usePanel = (id: string) => {
     // Local state outside of redux store
     const [loading, setLoading] = useState<boolean>(false);
     const [popupOpen, setPopup] = useState<boolean>(false);
+    const [lastParams, setLastParams] = useState<Preset>(parameters);
 
     const setAdvancedMode = (b: boolean) => {
         const newPanel = { ...panel };
@@ -55,8 +58,8 @@ export const usePanel = (id: string) => {
         const newPanel = { ...panel };
         newPanel.overrideTheme = b;
 
-        // Reset params to global ones
-        if (!b) newPanel.parameters = undefined;
+        // Reset params to default
+        if (!b) newPanel.parameters = DEFAULT_THEME.globalParameters;
         dispatch(updatePanel(newPanel));
     };
 
@@ -81,7 +84,7 @@ export const usePanel = (id: string) => {
     const setCustomParameters = (params: Parameters) => {
         const newPanel = { ...panel };
         newPanel.parameters = { presetName: 'Custom', ...params };
-        newPanel.parameters.presetName = 'Custom';
+        newPanel.parameters.presetName = 'Custom'; // TS bug, presetName doesn't get set without this
         dispatch(updatePanel(newPanel));
     };
 
@@ -143,21 +146,7 @@ export const usePanel = (id: string) => {
     // Get the main project from database and updates it
     const updateDatabase = async (panel: ContentPanelData) => {
         if (logged) {
-            // TODO: the current project id we are working should be clearly
-            // dictated somewhere in the redux store
-            // the project should not be chosen by name, etc.
-
-            // Workaround, get first project since we only have one at this point
             const projectId = currentProjectId;
-
-            /* Old code commented out before a solution is discussed:
-             *
-             * It's bad to rely on some named project, because the user
-             * should be able to rename any projects
-             *
-             * const mainProject = await getProjectIdByName('main');
-             * if (!mainProject.success) return;
-             */
 
             const mainProject = await getProject(projectId);
             if (!mainProject.success) return;
@@ -169,7 +158,20 @@ export const usePanel = (id: string) => {
             });
 
             mainProject.project.data.panels = updatedPanels;
-            await saveProject(projectId, mainProject.project);
+            const result = await saveProject(projectId, mainProject.project);
+
+            EventBus.dispatch('notification', {
+                type: result.success ? 'success' : 'error',
+                message: result.success
+                    ? 'Your progress has been saved.'
+                    : result.error.message,
+            });
+
+            // Successfully saved to database
+            if (result.success) {
+                setLastParams(parameters);
+                dispatch(setSavestatus(false));
+            }
         }
     };
 
@@ -178,15 +180,12 @@ export const usePanel = (id: string) => {
      * Does not save the state if needsSaving is false unless 'force' is true
      */
     const saveState = async (force = false) => {
-        if (!needsSaving && !force) return;
+        const paramsUpdated =
+            JSON.stringify(parameters) === JSON.stringify(lastParams);
+        if (!needsSaving && !force && paramsUpdated) return;
 
         // Update panel state to database
         await updateDatabase(panel);
-
-        EventBus.dispatch('notification', {
-            type: 'success',
-            message: 'Your progress has been saved.',
-        });
     };
 
     // Generates single output
