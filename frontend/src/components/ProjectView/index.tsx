@@ -25,8 +25,9 @@ export const ProjectView: React.FC<ProjectViewProps> = ({ projects }) => {
                     />
                 );
             })}
-            <div className="flex flex-row justify-center items-center m-[2%] w-2/5 max-sm:w-3/4 max-w-[800px] max-h-[500px] max-sm:m-[5%] max-sm:h-64">
+            <div className="flex flex-row justify-center items-center m-[2%] w-2/5 max-sm:w-3/4 max-w-[800px] max-h-[500px] min-h-[280px] max-sm:m-[5%] max-sm:h-64">
                 <FAB
+                    size="large"
                     icon="PlusIcon"
                     colorPalette="secondary"
                     onClick={addProject}

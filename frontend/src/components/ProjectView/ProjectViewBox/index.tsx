@@ -10,6 +10,8 @@ import { useRenameProject } from '../hooks';
 import { RenamePopup } from './RenamePopUp';
 import { useState } from 'react';
 import { useCloneProject } from '../hooks';
+import classNames from 'classnames';
+import { DropdownItem } from '../../DropdownMenu/MenuItem';
 
 /**
  * A box that shows a project.
@@ -55,17 +57,26 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
 
     //Dropdown menu choises
     //Delete only appears if there are multiple projects
-    const choices = [
-        { name: 'Rename', action: () => setPopup(true) },
-        { name: 'Clone', action: () => clone(project.id) },
+    const choices: DropdownItem[] = [
+        { name: 'Rename', icon: 'PencilIcon', action: () => setPopup(true) },
+        {
+            name: 'Clone',
+            icon: 'DocumentDuplicateIcon',
+            action: () => clone(project.id),
+        },
     ];
     if (showDelete) {
-        choices.push({ name: 'Delete', action: () => delProject(project.id) });
+        choices.push({
+            name: 'Delete',
+            icon: 'XMarkIcon',
+            color: 'red',
+            action: () => delProject(project.id),
+        });
     }
 
     return (
         <Surface
-            className="flex flex-row justify-center items-center m-[2%] w-2/5 max-sm:w-3/4 max-w-[800px] max-h-[500px] max-sm:m-[5%] max-sm:h-64"
+            className="flex flex-row justify-center items-center m-[2%] w-2/5 max-sm:w-3/4 max-w-[800px] max-h-[500px] min-h-[280px] max-sm:m-[5%] max-sm:h-64"
             level={2}
         >
             <RenamePopup
@@ -78,11 +89,17 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
                 className="hover:bg-secondary-90/30 cursor-pointer rounded-2xl w-full h-full flex flex-row justify-center items-center transition-colors"
                 onClick={clickHandler}
             >
-                <h1 className="text-2xl font-medium text-neutral-20 inline-block">
+                <h1
+                    className={classNames(
+                        { 'text-2xl': project.name.length < 20 },
+                        { 'text-xl': project.name.length < 40 },
+                        'pl-8 text-center break-all font-medium text-neutral-20 inline-block'
+                    )}
+                >
                     {project.name}
                 </h1>
                 <div ref={settingsRef} className="p-2">
-                    <DropdownMenu icon="SettingsIcon" choices={choices} />
+                    <DropdownMenu icon="SettingsIcon" items={choices} />
                 </div>
             </div>
         </Surface>

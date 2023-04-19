@@ -5,6 +5,7 @@ import { Divider } from '../Divider';
 import { ParameterSlider } from './ParameterSlider';
 import { ParameterToggle } from './ParameterToggle';
 import { Preset, Parameters } from '../../utils/types';
+import { IconButton } from '../Buttons';
 import { Dropdown } from '../Dropdown';
 
 interface ParameterDrawerProps {
@@ -86,7 +87,6 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
     return (
         <Transition
             ref={drawerRef}
-            className="z-30 fixed top-1 right-0 h-full"
             show={open}
             unmount={false}
             enter="transition-all duration-200"
@@ -95,13 +95,20 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
             leave="transition-all duration-200"
             leaveFrom="opacity-100 -translate-x-0"
             leaveTo="opacity-0 translate-x-20"
+            className="z-30 fixed top-1 right-0 max-w-[360px] w-[80%] h-full"
         >
-            <Surface level={1} className="w-[360px] h-full px-3 py-3">
+            <Surface level={1} className="w-full h-full px-3 py-3">
                 {/* The data area */}
                 <div className="h-full w-full p-3 overflow-y-auto scrollbar-hide">
                     {/* Drawer header */}
-                    <div className="py-2 pl-4 pr-2 h-14">
-                        <h2 className="text-xl">Properties</h2>
+                    <div className="flex flex-row items-center justify-between py-2 pl-4 pr-2 h-14">
+                        <IconButton
+                            icon="ArrowRightIcon"
+                            colorPalette="secondary"
+                            onClick={() => setOpen(false)}
+                            className="inline-block"
+                        />
+                        <h2 className="text-xl inline-block">Properties</h2>
                     </div>
 
                     <ParameterToggle

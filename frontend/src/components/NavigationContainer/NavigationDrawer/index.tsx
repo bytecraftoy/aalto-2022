@@ -54,9 +54,9 @@ export const NavigationDrawer: React.FC<DrawerProps> = ({ open, setOpen }) => {
             leave="transition-all duration-200"
             leaveFrom="opacity-100 translate-x-0"
             leaveTo="opacity-0 -translate-x-20"
-            className="z-30 fixed top-1 left-0 h-full"
+            className="z-30 fixed top-1 left-0 max-w-[360px] w-[80%] h-full" // try to take as much as 80% of screen (mobile), but a maximum of 360px
         >
-            <Surface level={1} className={classNames('w-[360px] h-full z-30')}>
+            <Surface level={1} className={classNames('w-full h-full z-30')}>
                 {/* The data area */}
                 <div className="h-full w-full p-3 overflow-y-auto scrollbar-hide">
                     {/* Drawer header */}

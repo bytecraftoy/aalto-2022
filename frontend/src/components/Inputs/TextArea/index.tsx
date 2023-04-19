@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames/dedupe';
 import { InputProps } from '../index';
 import { useError } from '../hooks';
@@ -24,7 +24,6 @@ export const TextArea: React.FC<TextInputProps> = ({
     onInput,
     errors,
 }) => {
-    const [hasFocus, setHasFocus] = useState(false);
     // Ref to the textarea element
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
     // Show error if there are errors
@@ -44,16 +43,16 @@ export const TextArea: React.FC<TextInputProps> = ({
         } else {
             return 0;
         }
-    }, [textareaRef.current]);
+    }, [textareaRef.current?.clientWidth]);
 
     return (
-        <label className="relative w-full h-full group">
+        <div className="w-full h-full relative group">
             <textarea
                 spellCheck={'false'}
                 placeholder={placeholder}
                 ref={textareaRef}
                 className={classNames(
-                    'form-control peer h-40 block w-full pl-4 pr-3 py-1.5 pt-3 text-base font-normal bg-clip-padding  resize-none',
+                    'form-control peer w-full h-56 min-h-[160px] pl-4 pr-3 pb-1.5 pt-6 text-base font-normal resize-none',
                     'border-b border-onSurface focus:border-b-2 focus:border-primary focus:outline-none ',
                     'rounded-t-lg transition-colors ',
                     'bg-neutral-90  group-hover:bg-neutral-80 focus:bg-neutral-80',
@@ -63,26 +62,27 @@ export const TextArea: React.FC<TextInputProps> = ({
                 value={value}
                 onInput={onInput}
                 onChange={touchInput}
-                onFocus={() => setHasFocus(true)}
-                onBlur={() => setHasFocus(false)}
             />
 
             <span
                 className={classNames(
-                    'absolute select-none cursor-text left-0 top-0 pl-4 peer-placeholder-shown:top-3.5 rounded-t-lg',
-                    'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base',
-                    'transition-all bg-neutral-90 group-hover:bg-neutral-80 peer-focus-within:bg-neutral-80',
-                    'peer-placeholder-shown:bg-transparent',
-                    {
-                        'text-red peer-placeholder-shown:text-red': showError,
-                    }
+                    'absolute select-none pointer-events-none left-0 top-0 py-1.5 pl-4 peer-placeholder-shown:top-[1.05rem] rounded-t-lg',
+                    'text-primary text-xs peer-placeholder-shown:text-base',
+                    'transition-all',
+                    `${
+                        showPlaceholder || showError
+                            ? 'bg-transparent'
+                            : 'group-hover:bg-neutral-80 peer-focus-within:bg-neutral-80 bg-neutral-90'
+                    }`,
+                    { 'text-red peer-placeholder-shown:text-red': showError },
+                    { 'peer-placeholder-shown:text-neutral-10': !showError }
                 )}
                 style={{ width: `calc(100% - ${cachedScrollWidth}px)` }}
             >
-                {!hasFocus && showError && errors}
-                {!hasFocus && showPlaceholder && placeholder}
+                {showError && errors}
+                {showPlaceholder && placeholder}
                 {showLabel && label}
             </span>
-        </label>
+        </div>
     );
 };

@@ -14,6 +14,9 @@ export const Projects = () => {
 
     return (
         <div>
+            <h1 className="py-16 text-center text-4xl text-neutral-30">
+                Projects
+            </h1>
             <ProjectView projects={projects} />
         </div>
     );

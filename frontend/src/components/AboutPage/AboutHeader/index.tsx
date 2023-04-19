@@ -43,7 +43,6 @@ export const AboutHeader: React.FC<AboutHeaderProps> = ({
                     text={`Environment: ${status.environment}`}
                     icon="InformationCircleIcon"
                     instant={true}
-                    fullColors={true}
                 >
                     {solidIcon('InformationCircleIcon', 'text-primary')}
                 </Tooltip>

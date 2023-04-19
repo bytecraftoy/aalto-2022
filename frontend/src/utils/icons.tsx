@@ -33,7 +33,14 @@ export type Icon =
     | 'ChevronUpIcon'
     | 'ChevronDownIcon'
     | 'ExclamationTriangleIcon'
-    | 'ArrowLeftIcon';
+    | 'ArrowLeftIcon'
+    | 'ArrowRightIcon'
+    | 'AdjustmentsHorizontalIcon'
+    | 'PencilIcon'
+    | 'IdentificationIcon'
+    | 'DocumentCheckIcon'
+    | 'DocumentPlusIcon'
+    | 'DocumentDuplicateIcon';
 
 /**
  * Default sized solid icon element using HeroIcons.
@@ -83,6 +90,20 @@ export const solidIcon = (i?: Icon, className?: string) => {
             return <I.ExclamationTriangleIcon className={classN} />;
         case 'ArrowLeftIcon':
             return <I.ArrowLeftIcon className={classN} />;
+        case 'ArrowRightIcon':
+            return <I.ArrowRightIcon className={classN} />;
+        case 'AdjustmentsHorizontalIcon':
+            return <I.AdjustmentsHorizontalIcon className={classN} />;
+        case 'PencilIcon':
+            return <I.PencilIcon className={classN} />;
+        case 'IdentificationIcon':
+            return <I.IdentificationIcon className={classN} />;
+        case 'DocumentCheckIcon':
+            return <I.DocumentCheckIcon className={classN} />;
+        case 'DocumentPlusIcon':
+            return <I.DocumentPlusIcon className={classN} />;
+        case 'DocumentDuplicateIcon':
+            return <I.DocumentDuplicateIcon className={classN} />;
         default:
             return <></>;
     }

@@ -27,24 +27,25 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     const { showError, touchInput } = useError(errors);
 
     return (
-        <label className="relative">
+        <label className="relative max-w-[280px] w-full">
             <input
                 type={type}
                 spellCheck={'false'}
                 value={value}
                 className={classNames(
                     // Shape
-                    'min-w-[280px] h-12 pl-4 pr-3 pt-3 rounded-t-lg peer',
+                    'w-full h-12 pl-4 pr-3 pt-3 rounded-t-lg peer',
                     // Text styles
                     'font-sans text-base font-normal transition-colors',
                     //Color styles
                     'bg-neutral-90 hover:bg-neutral-80 ',
                     // Borders
                     ' border-b border-onSurface focus:outline-none focus:border-b-2 focus:border-primary ',
-                    //other
+
+                    // Make default placeholder transparent, because we use a custom span instead of it
                     'placeholder:text-transparent placeholder:select-none cursor-text'
                 )}
-                placeholder="category" //Wtf, gonna fix this later
+                placeholder={label}
                 onInput={onInput}
                 onChange={touchInput}
                 onBlur={onFocusOut}
@@ -52,7 +53,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
             <span
                 className={classNames(
                     // Positions
-                    'absolute select-none left-0 top-0 peer-placeholder-shown:top-4',
+                    'absolute select-none left-0 top-0 peer-placeholder-shown:top-[1.05rem]',
                     // Text
                     'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base ',
                     // other

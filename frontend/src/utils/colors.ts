@@ -29,6 +29,20 @@ export const bg = (c: Palette) => {
     }
 };
 
+/** Text color for this palette */
+export const text = (c: Palette) => {
+    switch (c) {
+        case 'primary':
+            return 'text-primary';
+        case 'secondary':
+            return 'text-secondary';
+        case 'tertiary':
+            return 'text-tertiary';
+        case 'red':
+            return 'text-red';
+    }
+};
+
 /** Container color for this palette */
 export const bgContainer = (c: Palette) => {
     switch (c) {
