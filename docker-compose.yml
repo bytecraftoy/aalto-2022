@@ -1,7 +1,13 @@
 version: '3'
 
+networks:
+    net:
+       name: net
+
 services:
     db:
+        image: postgresql
+
         build:
             context: ./backend/docker
             dockerfile: db.Dockerfile
@@ -12,7 +18,12 @@ services:
 
         env_file: './backend/.env'
 
+        networks:
+            - net
+
     web:
+        image: nodeserver
+
         depends_on:
             - db
 
@@ -22,3 +33,6 @@ services:
         
         ports:
             - '3030:3030'
+
+        networks:
+            - net
