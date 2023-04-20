@@ -21,11 +21,25 @@ services:
         networks:
             - net
 
+    proxy:
+        image: aiproxy
+
+        build:
+            context: ./../aalto-2022-proxy/
+            dockerfile: Dockerfile
+
+        ports:
+            - '8080:8080'
+
+        networks:
+            - net
+
     web:
         image: nodeserver
 
         depends_on:
             - db
+            - proxy
 
         build:
             context: ./backend
