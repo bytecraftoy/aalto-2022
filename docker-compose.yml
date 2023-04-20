@@ -34,6 +34,8 @@ services:
         networks:
             - net
 
+        env_file: './.proxy-env'
+
     web:
         image: nodeserver
 
