@@ -9,7 +9,7 @@ export const Header = () => {
             </h1>
             <div className="flex flex-row gap-2 text-center">
                 Already have an account?
-                <div className="text-primary underline">
+                <div className="text-primary underline hover:text-primary-70">
                     <Link to="/login">Log in</Link>
                 </div>
             </div>

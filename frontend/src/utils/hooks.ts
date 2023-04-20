@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { RootState, AppDispatch } from '../store';
-import { initializeUserProjects } from './projects';
+import { getProject, initializeUserProjects } from './projects';
 import { logIn, logOut } from '../reducers/userReducer';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { setProjects, clearProjects } from '../reducers/projectReducer';
@@ -11,6 +11,7 @@ import { loadPresets } from './loadPresets';
 import { useNavigate, To } from 'react-router-dom';
 import { apiFetch } from './apiFetch';
 import { Project, Account } from './types';
+import { setCurrentProjectID } from '../reducers/currentProjectReducer';
 
 /*
  * Generic custom hooks for reusing common functionality
@@ -87,7 +88,7 @@ export const useFetchRedirect = (fetchPath: string, redirect: To) => {
  *
  * A more specific version of fetchRedirect
  */
-export const useLoginRedirect = () => useFetchRedirect('/api/user', '/login/');
+export const useLoginRedirect = () => useFetchRedirect('/api/user', '/login');
 
 /**
  * Callback to clear all data that is private to a user
@@ -109,9 +110,22 @@ export const useClearData = () => {
  */
 export const useImportProject = () => {
     const dispatch = useAppDispatch();
-    return (project: Project) => {
+    return (id: string, project: Project) => {
         dispatch(setTheme(project.data.theme));
         dispatch(setSavedPanels(project.data.panels));
+        dispatch(setCurrentProjectID(id));
+    };
+};
+
+export const useImportProjectID = () => {
+    const importProject = useImportProject();
+    return async (id: string) => {
+        const project = await getProject(id);
+        if (project.success) {
+            importProject(id, project.project);
+        } else {
+            console.error(project.error);
+        }
     };
 };
 
@@ -130,9 +144,9 @@ export const useLogin = () => {
         if (presetRes.success) dispatch(setPresets(presetRes.presets));
 
         // Load projects
-        const [project, projects] = await initializeUserProjects();
+        const [id, project, projects] = await initializeUserProjects();
         dispatch(setProjects(projects));
-        importProject(project);
+        importProject(id, project);
     };
 };
 

@@ -1,8 +1,8 @@
-import { LoginForm } from '../../components/LoginForm';
+import { LoginForm } from '../../components/Forms';
 
 export const Login = () => {
     return (
-        <div className="flex-1 flex justify-center items-center">
+        <div className="w-full py-20 max-sm:py-16 flex flex-row items-center justify-center">
             <LoginForm />
         </div>
     );

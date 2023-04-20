@@ -15,7 +15,7 @@ const username = uuid();
 test.beforeAll(async ({ browser }) => {
     const page = await browser.newPage();
     await page.goto('/');
-    await expect(page).toHaveURL('/login/');
+    await expect(page).toHaveURL('/login');
     await page.click('button:has-text("Sign up")');
     await expect(page).toHaveURL('/register');
     await page
@@ -49,12 +49,15 @@ test.beforeAll(async ({ browser }) => {
         .fill(process.env.REGISTER_KEY!, { force: true });
 
     await page.click('button:has-text("Create account")');
+    await expect(page).toHaveURL('/projects');
+    await page.click('h1:has-text("new project")');
+    await page.goto('/');
     await expect(page).toHaveURL('/');
 });
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveURL('/login/');
+    await expect(page).toHaveURL('/login');
     await page
         .locator('label', {
             has: page.locator('span:has-text("Username")'),
@@ -72,6 +75,9 @@ test.beforeEach(async ({ page }) => {
     await page
         .locator('[data-testid="custom-button"]:has-text("Log in")')
         .click();
+    await expect(page).toHaveURL('/projects');
+    await page.click('h1:has-text("new project")');
+    await page.goto('/');
     await expect(page).toHaveURL('/');
 });
 
@@ -90,18 +96,17 @@ test('should have no generate button without prompt input', async ({
 });
 
 test('has IOBox delete button while multiple on screen', async ({ page }) => {
-    const deleteSelector = page.locator('[data-testid="iobox-Delete"]');
     // Asserts that there is no delete button
-    await expect(deleteSelector).toHaveCount(0);
+    await expect(page.locator('[data-testid="iobox-Delete"]')).toHaveCount(0);
     // Clicks the add prompt button
-    await page.click('[data-testid="fab-button"]');
+    await page.click('[data-testid="fab-button"] >> visible=true');
     // Asserts that there are 2 delete buttons (1 for each IOBox)
-    await expect(deleteSelector).toHaveCount(2);
+    await expect(page.locator('[data-testid="iobox-Delete"]')).toHaveCount(2);
     // Hovers and clicks the first delete button
     await page.hover('[data-testid="hover-area"]');
-    await deleteSelector.first().click();
+    await page.locator('[data-testid="iobox-Delete"]').first().click();
     // Asserts that there is no delete button (since the first IOBox was deleted)
-    await expect(deleteSelector).toHaveCount(0);
+    await expect(page.locator('[data-testid="iobox-Delete"]')).toHaveCount(0);
 });
 
 // This test is for checking the prompt generation feature on the application.
@@ -132,9 +137,9 @@ test('should generate a prompt and get result', async ({ page }) => {
     await expect(page.getByRole('link', { name: 'Panel-1' })).toHaveCount(1);
     await page.getByRole('link', { name: 'Panel-1' }).click();
     await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
-    await page.click('input[placeholder*="category"]'); // Closes nav drawer
+    await page.click('input[placeholder*="Category"]'); // Closes nav drawer
 
-    await page.fill('input[placeholder*="category"]', category_input);
+    await page.fill('input[placeholder*="Category"]', category_input);
     await page.fill('textarea[placeholder*="User input here"]', prompt_input);
     await expect(page.locator(output_locator)).toHaveText('');
     await page.hover('[data-testid="hover-area"]');
@@ -166,12 +171,12 @@ test('should generate all boxes with generate all button', async ({ page }) => {
     ).toHaveCount(0); //Autosave finished
 
     await page.locator('[data-testid="navdrawer-button"]').first().click();
-    await page.locator('[data-testid="panel-link"]').nth(1).click();
+    await page.locator('[data-testid="panel-link"]').nth(2).click();
     await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
-    await page.click('input[placeholder*="category"]'); // Closes nav drawer
+    await page.click('input[placeholder*="Category"]'); // Closes nav drawer
 
     const numExtra = 3;
-    await page.fill('input[placeholder*="category"]', category_input);
+    await page.fill('input[placeholder*="Category"]', category_input);
     await expect(page.locator('[data-testid="prompt"]')).toHaveCount(1);
     for (let i = 1; i <= numExtra; i++) {
         // Clicks the add prompt button to add extra prompts
@@ -208,11 +213,15 @@ test('Saving category does not change other panel information', async ({
     await page.getByTestId('navdrawer-button').click();
     await page.getByRole('button', { name: 'Add Panel' }).click();
     await page.getByRole('link', { name: 'Panel-2' }).click();
-    await page.getByPlaceholder('category').click();
-    await page.getByPlaceholder('category').fill('test');
-    await page.getByTestId('icon-button').first().click();
-    await page.getByText('Save', { exact: true }).click();
+    await page.click('input[placeholder*="Category"]');
+    await page.fill('input[placeholder*="Category"]', 'test');
+    await page
+        .getByTestId('panel-settings')
+        .first()
+        .getByTestId('icon-button')
+        .click();
+    await page.click('button:has-text("Save")');
     await page.getByTestId('navdrawer-button').click();
     await page.getByRole('link', { name: 'Panel-1' }).click();
-    await page.getByText('Category', { exact: true }).click();
+    await page.click('input[placeholder*="Category"]');
 });

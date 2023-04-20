@@ -70,7 +70,7 @@ export const ContentPanelPrompts: React.FC<ContentPanelPromptsProps> = ({
                     />
                 );
             })}
-            <div className="mt-10 pt-4 px-4 w-1/2 min-w-fit flex flex-col items-center justify-around">
+            <div className="pt-10 lg:px-4 lg:w-1/2 max-lg:w-[80%] max-sm:w-[90%] flex flex-row justify-center items-center">
                 <FAB
                     icon="PlusIcon"
                     size="large"

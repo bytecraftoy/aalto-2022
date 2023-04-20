@@ -17,6 +17,7 @@ interface IconButtonProps {
     colorPalette: Palette;
     onClick: React.MouseEventHandler<HTMLButtonElement>;
     className?: string;
+    iconClassName?: string;
 }
 
 export const IconButton: React.FC<IconButtonProps> = ({
@@ -24,6 +25,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
     colorPalette,
     onClick,
     className,
+    iconClassName,
 }) => {
     return (
         // Circular hover with icon centered
@@ -37,7 +39,10 @@ export const IconButton: React.FC<IconButtonProps> = ({
                 className
             )}
         >
-            {solidIcon(icon, textOnContainer(colorPalette))}
+            {solidIcon(
+                icon,
+                classNames(textOnContainer(colorPalette), iconClassName)
+            )}
         </button>
     );
 };

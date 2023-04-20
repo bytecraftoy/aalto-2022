@@ -46,4 +46,5 @@ export const changePassword = async (
         message,
         type,
     });
+    return type;
 };
