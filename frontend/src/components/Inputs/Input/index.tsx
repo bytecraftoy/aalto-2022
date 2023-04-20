@@ -57,7 +57,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
                     // Text
                     'text-primary text-xs peer-placeholder-shown:text-neutral-10 peer-placeholder-shown:text-base ',
                     // other
-                    'pl-4 transition-all cursor-text'
+                    'pl-4 transition-all cursor-text pointer-events-none'
                 )}
             >
                 {label}

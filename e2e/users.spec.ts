@@ -15,7 +15,7 @@ test('Can create an account', async ({ page }) => {
     await page.getByLabel('UsernameChoose your username').fill(username);
     await page.getByLabel('PasswordChoose your password').click();
     await page.getByLabel('PasswordChoose your password').fill('123456');
-    await page.getByText('Repeat password').click();
+    await page.click('input[placeholder*="Repeat password"]');
     await page
         .getByLabel('Repeat passwordPlease enter your password again')
         .fill('123456');
@@ -45,7 +45,7 @@ test('Logout sends back to the login', async ({ page }) => {
     await page.getByLabel('UsernameChoose your username').fill(username);
     await page.getByLabel('PasswordChoose your password').click();
     await page.getByLabel('PasswordChoose your password').fill('123456');
-    await page.getByText('Repeat password').click();
+    await page.click('input[placeholder*="Repeat password"]');
     await page
         .getByLabel('Repeat passwordPlease enter your password again')
         .fill('123456');

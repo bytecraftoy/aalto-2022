@@ -96,18 +96,17 @@ test('should have no generate button without prompt input', async ({
 });
 
 test('has IOBox delete button while multiple on screen', async ({ page }) => {
-    const deleteSelector = page.locator('[data-testid="iobox-Delete"]');
     // Asserts that there is no delete button
-    await expect(deleteSelector).toHaveCount(0);
+    await expect(page.locator('[data-testid="iobox-Delete"]')).toHaveCount(0);
     // Clicks the add prompt button
     await page.click('[data-testid="fab-button"]');
     // Asserts that there are 2 delete buttons (1 for each IOBox)
-    await expect(deleteSelector).toHaveCount(2);
+    await expect(page.locator('[data-testid="iobox-Delete"]')).toHaveCount(2);
     // Hovers and clicks the first delete button
     await page.hover('[data-testid="hover-area"]');
-    await deleteSelector.first().click();
+    await page.locator('[data-testid="iobox-Delete"]').first().click();
     // Asserts that there is no delete button (since the first IOBox was deleted)
-    await expect(deleteSelector).toHaveCount(0);
+    await expect(page.locator('[data-testid="iobox-Delete"]')).toHaveCount(0);
 });
 
 // This test is for checking the prompt generation feature on the application.
@@ -214,15 +213,15 @@ test('Saving category does not change other panel information', async ({
     await page.getByTestId('navdrawer-button').click();
     await page.getByRole('button', { name: 'Add Panel' }).click();
     await page.getByRole('link', { name: 'Panel-2' }).click();
-    await page.getByPlaceholder('Category').click();
-    await page.getByPlaceholder('Category').fill('test');
+    await page.click('input[placeholder*="Category"]');
+    await page.fill('input[placeholder*="Category"]', 'test');
     await page
         .getByTestId('panel-settings')
         .first()
         .getByTestId('icon-button')
         .click();
-    await page.getByText('Save', { exact: true }).click();
+    await page.click('button:has-text("Save")');
     await page.getByTestId('navdrawer-button').click();
     await page.getByRole('link', { name: 'Panel-1' }).click();
-    await page.getByText('Category', { exact: true }).click();
+    await page.click('input[placeholder*="Category"]');
 });

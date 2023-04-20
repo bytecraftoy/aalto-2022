@@ -79,6 +79,7 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
             level={2}
         >
             <RenamePopup
+                dataID={`rename-popup-(${project.name})`}
                 popupOpen={popupOpen}
                 setPopup={setPopup}
                 rename={(newName) => rename(project.id, newName)}
@@ -99,7 +100,7 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
                 </h1>
                 <div ref={settingsRef} className="p-2">
                     <DropdownMenu
-                        dataID="cog-icon"
+                        dataID={`cog-icon-(${project.name})`}
                         icon="SettingsIcon"
                         items={choices}
                     />

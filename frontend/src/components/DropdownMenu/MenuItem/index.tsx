@@ -39,7 +39,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
     const hoverColor = bgLightHover(color ?? 'primary');
 
     return (
-        <div
+        <button
             className={classNames(
                 'transition-colors flex flex-row justify-start p-5 rounded-2xl',
                 action !== undefined && hoverColor,
@@ -66,6 +66,6 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             >
                 {name}
             </p>
-        </div>
+        </button>
     );
 };

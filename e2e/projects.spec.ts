@@ -4,11 +4,6 @@ import dotenv from 'dotenv';
 // Load env from backend for REGISTER_KEY
 dotenv.config({ path: 'backend/.env' });
 
-const output_locator = 'textarea[placeholder*="AI generated content"]';
-const theme_input = 'Sci-fi';
-const category_input = 'category input from playwright';
-const prompt_input = 'prompt input from playwright';
-
 const uuid = () => Math.random().toString(36).substring(2, 12);
 const username = uuid();
 
@@ -75,22 +70,38 @@ test.beforeEach(async ({ page }) => {
     await expect(page).toHaveURL('/projects');
 });
 
+test.afterEach(async ({ page }, testInfo) => {
+    if (testInfo.status !== testInfo.expectedStatus) {
+        // Get a unique place for the screenshot.
+        const screenshotPath = testInfo.outputPath(`failure.png`);
+        // Add it to the report.
+        testInfo.attachments.push({
+            name: 'screenshot',
+            path: screenshotPath,
+            contentType: 'image/png',
+        });
+        // Take the screenshot itself.
+        await page.screenshot({ path: screenshotPath, timeout: 5000 });
+    }
+});
+
 // This test checks that a new user will already have a project when first registered,
 // and the ability to rename that project.
 test('should be able to rename a project', async ({ page }) => {
     await expect(page.locator('h1:has-text("new project")')).toBeDefined();
-    await expect(page.getByTestId('cog-icon').first()).toBeVisible();
-    await page.click('[data-testid="cog-icon"]');
+    await expect(
+        page.getByTestId('cog-icon-(new project)').first()
+    ).toBeVisible();
+    await page.click('[data-testid="cog-icon-(new project)"]');
     await expect(page.locator('p', { hasText: /Rename|Clone/ })).toHaveCount(2);
     await expect(page.locator('p:has-text("Rename")').first()).toBeVisible();
-    await page.locator('div').filter({ hasText: 'Rename' }).first().click();
+    await page.click('button:has-text("Rename")');
     await page.click('input[placeholder*="New name for the project"]');
     const projectName = uuid();
     await page.fill(
         'input[placeholder*="New name for the project"]',
         projectName
     );
-
     await page.click('button:has-text("Confirm")');
     await expect(page.locator(`h1:has-text("${projectName}")`)).toBeDefined();
 });
@@ -99,6 +110,217 @@ test('should be able to rename a project', async ({ page }) => {
 // and loaded when the user changes projects It starts by creating N projects, and filling
 // each with sample data, switching between them. It then goes back to check each project
 // has the data that was entered
-test('should be able to create new projects', async ({ page }) => {
-    const addLocator = '[data-testid="fab-button"]';
+test('should be able to create multiple projects with their own data', async ({
+    page,
+}) => {
+    const numProjects = Math.floor(Math.random() * 3) + 2;
+    const projectData = [...Array(numProjects)].map(() => {
+        return {
+            name: uuid(),
+            theme: uuid(),
+            category: uuid(),
+        };
+    });
+
+    // Initial project
+    await expect(page.locator('h1:has-text("new project")')).toHaveCount(1);
+    await page
+        .locator('[data-testid="cog-icon-(new project)"]')
+        .first()
+        .click();
+    await expect(
+        page
+            .locator('[data-testid="cog-icon-(new project)"]')
+            .first()
+            .locator('button:has-text("Rename")')
+    ).toHaveCount(1);
+    await page
+        .locator('[data-testid="cog-icon-(new project)"]')
+        .first()
+        .locator('button:has-text("Rename")')
+        .click();
+    await expect(
+        page
+            .locator('[data-testid="rename-popup-(new project)"]')
+            .locator('input[placeholder*="New name for the project"]')
+    ).toHaveCount(1);
+    await page
+        .locator('[data-testid="rename-popup-(new project)"]')
+        .locator('input[placeholder*="New name for the project"]')
+        .fill(projectData[0].name);
+    await expect(
+        page
+            .locator('[data-testid="rename-popup-(new project)"]')
+            .locator('input[placeholder*="New name for the project"]')
+    ).toHaveValue(projectData[0].name);
+    await page.click('button:has-text("Confirm") >> visible=true');
+    await expect(
+        page.locator(`h1:has-text("${projectData[0].name}")`)
+    ).toBeDefined();
+
+    // Add projects
+    for (let i = 1; i < numProjects; i++) {
+        await page.click('[data-testid="fab-button"]');
+        await expect(page.locator('h1:has-text("new project")')).toHaveCount(1);
+        await expect(
+            page.locator('[data-testid="cog-icon-(new project)"]')
+        ).toHaveCount(1);
+        await page.locator('[data-testid="cog-icon-(new project)"]').click();
+        await expect(
+            page
+                .locator('[data-testid="cog-icon-(new project)"]')
+                .locator('button:has-text("Rename")')
+        ).toHaveCount(1);
+        await expect(
+            page
+                .locator('[data-testid="cog-icon-(new project)"]')
+                .first()
+                .locator('button:has-text("Rename")')
+        ).toBeVisible();
+        await page
+            .locator('[data-testid="cog-icon-(new project)"]')
+            .first()
+            .locator('button:has-text("Rename")')
+            .click();
+        await expect(
+            page
+                .locator('[data-testid="rename-popup-(new project)"]')
+                .locator('input[placeholder*="New name for the project"]')
+        ).toHaveCount(1);
+        await page
+            .locator('[data-testid="rename-popup-(new project)"]')
+            .locator('input[placeholder*="New name for the project"]')
+            .fill(projectData[i].name);
+        await expect(
+            page
+                .locator('[data-testid="rename-popup-(new project)"]')
+                .locator('input[placeholder*="New name for the project"]')
+        ).toHaveValue(projectData[i].name);
+        await page.click('button:has-text("Confirm") >> visible=true');
+        await expect(
+            page.locator(`h1:has-text("${projectData[i].name}")`)
+        ).toBeDefined();
+    }
+
+    for (let i = 0; i < numProjects; i++) {
+        await expect(
+            page.locator(`h1:has-text("${projectData[i].name}")`)
+        ).toBeDefined();
+    }
+
+    await expect(page.locator('h1:has-text("new project")')).toHaveCount(0);
+
+    for (let i = 0; i < numProjects; i++) {
+        const { name, theme, category } = projectData[i];
+        const prompt_input = `Input in project ${name}, with theme ${theme} and category ${category}`;
+
+        await page.locator(`h1:has-text("${name}")`).first().click();
+        await expect(page).toHaveURL('/about');
+
+        await page.click('input[placeholder*="Theme"]');
+        await page.fill('input[placeholder*="Theme"]', theme);
+        await page.locator('input[placeholder*="Theme"]').blur();
+
+        await expect(
+            page.locator('div:has-text("Your progress has been saved")')
+        ).toBeDefined();
+        await expect(
+            page.locator('div:has-text("Your progress has been saved")')
+        ).toHaveCount(0); //Autosave finished
+
+        await expect(page.locator('input[placeholder*="Theme"]')).toHaveValue(
+            theme
+        );
+
+        await page.locator('[data-testid="navdrawer-button"]').first().click();
+        await expect(page.getByRole('link', { name: 'Panel-1' })).toHaveCount(
+            1
+        );
+        await page.getByRole('link', { name: 'Panel-1' }).click();
+        await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
+        await page.click('input[placeholder*="Category"]'); // Closes nav drawer
+
+        await page.fill('input[placeholder*="Category"]', category);
+        await page.fill(
+            'textarea[placeholder*="User input here"]',
+            prompt_input
+        );
+        await expect(
+            page.locator('textarea[placeholder*="AI generated content"]')
+        ).toHaveText('');
+        await page.hover('[data-testid="hover-area"]');
+        await page.click('button:has-text("Generate")');
+        await expect(
+            page.locator('textarea[placeholder*="AI generated content"]')
+        ).toContainText(
+            `Write a game flavor text for ${prompt_input} which is a ${category} in a ${theme} setting`
+        );
+
+        // Save
+        await page
+            .getByTestId('panel-settings')
+            .first()
+            .getByTestId('icon-button')
+            .click();
+        await page.click('button:has-text("Save")');
+
+        await page.locator('[data-testid="navdrawer-button"]').first().click();
+        await expect(page.getByRole('link', { name: 'Projects' })).toHaveCount(
+            1
+        );
+        await page.getByRole('link', { name: 'Projects' }).click();
+
+        await expect(page).toHaveURL('/projects');
+
+        // Lose focus from navdrawer
+        await page.click('h1:has-text("AI-assisted game content creator")');
+    }
+
+    // Check that project data is correctly saved
+
+    for (let i = 0; i < numProjects; i++) {
+        await expect(
+            page.locator(`h1:has-text("${projectData[i].name}")`)
+        ).toBeDefined();
+
+        const { name, theme, category } = projectData[i];
+        const prompt_input = `Input in project ${name}, with theme ${theme} and category ${category}`;
+
+        // Go to project
+        await page.locator(`h1:has-text("${name}")`).first().click();
+        await expect(page).toHaveURL('/about');
+
+        await expect(page.locator('input[placeholder*="Theme"]')).toHaveValue(
+            theme
+        );
+
+        await page.locator('[data-testid="navdrawer-button"]').first().click();
+        await expect(page.getByRole('link', { name: category })).toHaveCount(1);
+        await page.getByRole('link', { name: category }).click();
+        await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
+        await page.click('input[placeholder*="Category"]'); // Closes nav drawer
+
+        await expect(
+            page.locator('input[placeholder*="Category"]')
+        ).toHaveValue(category);
+        await expect(
+            page.locator('textarea[placeholder*="User input here"]')
+        ).toHaveText(prompt_input);
+        await expect(
+            page.locator('textarea[placeholder*="AI generated content"]')
+        ).toContainText(
+            `Write a game flavor text for ${prompt_input} which is a ${category} in a ${theme} setting`
+        );
+
+        await page.locator('[data-testid="navdrawer-button"]').first().click();
+        await expect(page.getByRole('link', { name: 'Projects' })).toHaveCount(
+            1
+        );
+        await page.getByRole('link', { name: 'Projects' }).click();
+
+        await expect(page).toHaveURL('/projects');
+
+        // Lose focus from navdrawer
+        await page.click('h1:has-text("AI-assisted game content creator")');
+    }
 });

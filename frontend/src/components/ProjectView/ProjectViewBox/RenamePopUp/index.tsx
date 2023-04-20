@@ -9,12 +9,14 @@ interface RenamePopupProps {
     rename: (s: string) => Promise<void>;
     setPopup: (b: boolean) => void;
     popupOpen: boolean;
+    dataID?: string;
 }
 
 export const RenamePopup: React.FC<RenamePopupProps> = ({
     rename,
     setPopup,
     popupOpen,
+    dataID,
 }) => {
     const [textInput, setText] = useState<string>('');
 
@@ -32,7 +34,10 @@ export const RenamePopup: React.FC<RenamePopupProps> = ({
             onConfirm={() => renameProject(textInput)}
             onClose={() => setText('')}
         >
-            <div className="h-full w-full flex flex-col justify-between items-center px-4 py-4">
+            <div
+                data-testid={dataID}
+                className="h-full w-full flex flex-col justify-between items-center px-4 py-4"
+            >
                 <p className="text-lg">
                     What would you like to call this project?
                 </p>
