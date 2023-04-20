@@ -18,7 +18,8 @@
         "start-dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts",
         "start-dev-database": "(docker-compose down || echo skipped docker-compose down) && docker-compose up --build",
         "copy-sample-env": "cpy .env-sample . --no-overwrite --rename=.env || echo skipped copy-sample-env",
-        "migrate": "node-pg-migrate"
+        "migrate": "node-pg-migrate",
+        "dev-migrate": "node-pg-migrate -m dev_migrations"
     },
     "keywords": [],
     "author": "",
