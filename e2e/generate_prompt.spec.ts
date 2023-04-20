@@ -99,7 +99,7 @@ test('has IOBox delete button while multiple on screen', async ({ page }) => {
     // Asserts that there is no delete button
     await expect(page.locator('[data-testid="iobox-Delete"]')).toHaveCount(0);
     // Clicks the add prompt button
-    await page.click('[data-testid="fab-button"]');
+    await page.click('[data-testid="fab-button"] >> visible=true');
     // Asserts that there are 2 delete buttons (1 for each IOBox)
     await expect(page.locator('[data-testid="iobox-Delete"]')).toHaveCount(2);
     // Hovers and clicks the first delete button

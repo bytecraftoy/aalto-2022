@@ -5,10 +5,8 @@ import dotenv from 'dotenv';
 dotenv.config({ path: 'backend/.env' });
 
 const uuid = () => Math.random().toString(36).substring(2, 12);
-const username = uuid();
 
-test.beforeAll(async ({ browser }) => {
-    const page = await browser.newPage();
+test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveURL('/login');
     await page.click('button:has-text("Sign up")');
@@ -19,7 +17,7 @@ test.beforeAll(async ({ browser }) => {
         })
         .locator('input')
         .first()
-        .fill(username, { force: true });
+        .fill(uuid(), { force: true });
     await page
         .locator('label', {
             has: page.locator('span:has-text("Password")'),
@@ -44,29 +42,6 @@ test.beforeAll(async ({ browser }) => {
         .fill(process.env.REGISTER_KEY!, { force: true });
 
     await page.click('button:has-text("Create account")');
-    await expect(page).toHaveURL('/projects');
-});
-
-test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await expect(page).toHaveURL('/login');
-    await page
-        .locator('label', {
-            has: page.locator('span:has-text("Username")'),
-        })
-        .locator('input')
-        .first()
-        .fill(username, { force: true });
-    await page
-        .locator('label', {
-            has: page.locator('span:has-text("Password")'),
-        })
-        .locator('input')
-        .first()
-        .fill('salasana', { force: true });
-    await page
-        .locator('[data-testid="custom-button"]:has-text("Log in")')
-        .click();
     await expect(page).toHaveURL('/projects');
 });
 
@@ -323,4 +298,274 @@ test('should be able to create multiple projects with their own data', async ({
         // Lose focus from navdrawer
         await page.click('h1:has-text("AI-assisted game content creator")');
     }
+});
+
+test('should only have delete button if there are multiple projects', async ({
+    page,
+}) => {
+    await expect(page.locator('h1:has-text("new project")')).toHaveCount(1);
+    await page
+        .locator('[data-testid="cog-icon-(new project)"]')
+        .first()
+        .click();
+    await expect(page.locator('p', { hasText: /Rename|Clone/ })).toHaveCount(2); // No delete
+
+    await expect(
+        page
+            .locator('[data-testid="cog-icon-(new project)"]')
+            .first()
+            .locator('button:has-text("Rename")')
+    ).toHaveCount(1);
+    await page
+        .locator('[data-testid="cog-icon-(new project)"]')
+        .first()
+        .locator('button:has-text("Rename")')
+        .click();
+    await expect(
+        page
+            .locator('[data-testid="rename-popup-(new project)"]')
+            .locator('input[placeholder*="New name for the project"]')
+    ).toHaveCount(1);
+    await page
+        .locator('[data-testid="rename-popup-(new project)"]')
+        .locator('input[placeholder*="New name for the project"]')
+        .fill('Project1');
+    await expect(
+        page
+            .locator('[data-testid="rename-popup-(new project)"]')
+            .locator('input[placeholder*="New name for the project"]')
+    ).toHaveValue('Project1');
+    await page.click('button:has-text("Confirm") >> visible=true');
+    await expect(page.locator(`h1:has-text("Project1")`)).toBeDefined();
+
+    // Add a new project
+
+    await page.click('[data-testid="fab-button"]');
+    await expect(page.locator('h1:has-text("new project")')).toHaveCount(1);
+
+    await page.locator('[data-testid="cog-icon-(Project1)"]').first().click();
+    await expect(
+        page
+            .locator('[data-testid="cog-icon-(Project1)"]')
+            .locator('p', { hasText: /Rename|Clone|Delete/ })
+    ).toHaveCount(3);
+
+    // Delete Project1
+    await page
+        .locator('[data-testid="cog-icon-(Project1)"]')
+        .first()
+        .locator('button:has-text("Delete")')
+        .click();
+
+    await expect(page.locator(`h1:has-text("Project1")`)).toHaveCount(0);
+
+    await expect(page.locator(`h1:has-text("new project")`)).toHaveCount(1);
+
+    await page
+        .locator('[data-testid="cog-icon-(new project)"]')
+        .first()
+        .click();
+    await expect(page.locator('p', { hasText: /Rename|Clone/ })).toHaveCount(2); // No more delete
+});
+
+// This test checks that the user can clone existing projects, and they will have their own data
+test('should be able to clone projects', async ({ page }) => {
+    const name = uuid();
+    const theme = uuid();
+    const category = uuid();
+
+    // Initial project
+    await expect(page.locator('h1:has-text("new project")')).toHaveCount(1);
+    await page
+        .locator('[data-testid="cog-icon-(new project)"]')
+        .first()
+        .click();
+    await expect(
+        page
+            .locator('[data-testid="cog-icon-(new project)"]')
+            .first()
+            .locator('button:has-text("Rename")')
+    ).toHaveCount(1);
+    await page
+        .locator('[data-testid="cog-icon-(new project)"]')
+        .first()
+        .locator('button:has-text("Rename")')
+        .click();
+    await expect(
+        page
+            .locator('[data-testid="rename-popup-(new project)"]')
+            .locator('input[placeholder*="New name for the project"]')
+    ).toHaveCount(1);
+    await page
+        .locator('[data-testid="rename-popup-(new project)"]')
+        .locator('input[placeholder*="New name for the project"]')
+        .fill(name);
+    await expect(
+        page
+            .locator('[data-testid="rename-popup-(new project)"]')
+            .locator('input[placeholder*="New name for the project"]')
+    ).toHaveValue(name);
+    await page.click('button:has-text("Confirm") >> visible=true');
+    await expect(page.locator(`h1:has-text("${name}")`)).toBeDefined();
+
+    // Give the project some data
+    const prompt_input = `Input in project ${name}, with theme ${theme} and category ${category}`;
+
+    await page.locator(`h1:has-text("${name}")`).first().click();
+    await expect(page).toHaveURL('/about');
+
+    await page.click('input[placeholder*="Theme"]');
+    await page.fill('input[placeholder*="Theme"]', theme);
+    await page.locator('input[placeholder*="Theme"]').blur();
+
+    await expect(
+        page.locator('div:has-text("Your progress has been saved")')
+    ).toBeDefined();
+    await expect(
+        page.locator('div:has-text("Your progress has been saved")')
+    ).toHaveCount(0); //Autosave finished
+
+    await expect(page.locator('input[placeholder*="Theme"]')).toHaveValue(
+        theme
+    );
+
+    await page.locator('[data-testid="navdrawer-button"]').first().click();
+    await expect(page.getByRole('link', { name: 'Panel-1' })).toHaveCount(1);
+    await page.getByRole('link', { name: 'Panel-1' }).click();
+    await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
+    await page.click('input[placeholder*="Category"]'); // Closes nav drawer
+
+    await page.fill('input[placeholder*="Category"]', category);
+    await page.fill('textarea[placeholder*="User input here"]', prompt_input);
+    await expect(
+        page.locator('textarea[placeholder*="AI generated content"]')
+    ).toHaveText('');
+    await page.hover('[data-testid="hover-area"]');
+    await page.click('button:has-text("Generate")');
+    await expect(
+        page.locator('textarea[placeholder*="AI generated content"]')
+    ).toContainText(
+        `Write a game flavor text for ${prompt_input} which is a ${category} in a ${theme} setting`
+    );
+
+    // Save
+    await page
+        .getByTestId('panel-settings')
+        .first()
+        .getByTestId('icon-button')
+        .click();
+    await page.click('button:has-text("Save")');
+
+    await page.locator('[data-testid="navdrawer-button"]').first().click();
+    await expect(page.getByRole('link', { name: 'Projects' })).toHaveCount(1);
+    await page.getByRole('link', { name: 'Projects' }).click();
+
+    await expect(page).toHaveURL('/projects');
+
+    // Lose focus from navdrawer
+    await page.click('h1:has-text("AI-assisted game content creator")');
+
+    // Clone project
+    await page.locator(`[data-testid="cog-icon-(${name})"]`).first().click();
+    await expect(
+        page
+            .locator(`[data-testid="cog-icon-(${name})"]`)
+            .first()
+            .locator('button:has-text("Clone")')
+    ).toHaveCount(1);
+    await page
+        .locator(`[data-testid="cog-icon-(${name})"]`)
+        .first()
+        .locator('button:has-text("Clone")')
+        .click();
+    await expect(page.locator(`h1:has-text("${name} clone")`)).toBeDefined();
+
+    // Check that the clone has original data
+
+    // Go to project
+    await page.locator(`h1:has-text("${name} clone")`).first().click();
+    await expect(page).toHaveURL('/about');
+
+    await expect(page.locator('input[placeholder*="Theme"]')).toHaveValue(
+        theme
+    );
+
+    await page.locator('[data-testid="navdrawer-button"]').first().click();
+    await expect(page.getByRole('link', { name: category })).toHaveCount(1);
+    await page.getByRole('link', { name: category }).click();
+    await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
+    await page.click('input[placeholder*="Category"]'); // Closes nav drawer
+
+    await expect(page.locator('input[placeholder*="Category"]')).toHaveValue(
+        category
+    );
+    await expect(
+        page.locator('textarea[placeholder*="User input here"]')
+    ).toHaveText(prompt_input);
+    await expect(
+        page.locator('textarea[placeholder*="AI generated content"]')
+    ).toContainText(
+        `Write a game flavor text for ${prompt_input} which is a ${category} in a ${theme} setting`
+    );
+
+    // Change category, this should not affect the original project
+
+    await page.click('input[placeholder*="Category"]');
+    await page.fill('input[placeholder*="Category"]', 'Data that was changed');
+    await expect(page.locator('input[placeholder*="Category"]')).toHaveValue(
+        'Data that was changed'
+    );
+
+    // Save
+    await page
+        .getByTestId('panel-settings')
+        .first()
+        .getByTestId('icon-button')
+        .click();
+    await page.click('button:has-text("Save")');
+
+    await page.locator('[data-testid="navdrawer-button"]').first().click();
+    await expect(page.getByRole('link', { name: 'Projects' })).toHaveCount(1);
+    await page.getByRole('link', { name: 'Projects' }).click();
+
+    await expect(page).toHaveURL('/projects');
+
+    // Lose focus from navdrawer
+    await page.click('h1:has-text("AI-assisted game content creator")');
+
+    // Check back on original project
+
+    await expect(page.locator(`h1:has-text("${name}")`)).toBeDefined();
+
+    // Go to project
+    await page.locator(`h1:has-text("${name}")`).first().click();
+    await expect(page).toHaveURL('/about');
+
+    await expect(page.locator('input[placeholder*="Theme"]')).toHaveValue(
+        theme
+    );
+
+    await page.locator('[data-testid="navdrawer-button"]').first().click();
+    await expect(page.getByRole('link', { name: category })).toHaveCount(1);
+    await page.getByRole('link', { name: category }).click();
+    await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
+    await page.click('input[placeholder*="Category"]'); // Closes nav drawer
+
+    await expect(page.locator('input[placeholder*="Category"]')).toHaveValue(
+        category
+    );
+    await expect(
+        page.locator('textarea[placeholder*="User input here"]')
+    ).toHaveText(prompt_input);
+    await expect(
+        page.locator('textarea[placeholder*="AI generated content"]')
+    ).toContainText(
+        `Write a game flavor text for ${prompt_input} which is a ${category} in a ${theme} setting`
+    );
+
+    await page.locator('[data-testid="navdrawer-button"]').first().click();
+    await expect(page.getByRole('link', { name: 'Projects' })).toHaveCount(1);
+    await page.getByRole('link', { name: 'Projects' }).click();
+
+    await expect(page).toHaveURL('/projects');
 });
