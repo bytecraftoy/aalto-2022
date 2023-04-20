@@ -15,6 +15,7 @@ interface ContentPanelHeaderProps {
 
     saveState: (force?: boolean) => Promise<void>;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    hasCustomParameters: boolean;
 }
 
 export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
@@ -23,7 +24,34 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
     setPopup,
     saveState,
     setOpen,
+    hasCustomParameters,
 }) => {
+    interface IconAsteriskProps {
+        hasCustomParameters: boolean;
+    }
+    const IconAsterisk: React.FC<IconAsteriskProps> = ({
+        hasCustomParameters,
+    }) => {
+        let text = '';
+        if (hasCustomParameters) {
+            text = '*';
+        }
+        return (
+            <div
+                className="flex-1 z-[15] pl-8"
+                style={{
+                    position: 'relative',
+                    right: 52,
+                    bottom: 10,
+                    pointerEvents: 'none',
+                    minWidth: 40,
+                }}
+            >
+                {text}
+            </div>
+        );
+    };
+
     return (
         <div className="flex flex-row justify-center items-center h-16 px-4 mt-6">
             <PromptCategoryBox category={category} setCategory={setCategory} />
@@ -49,6 +77,7 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
                     ]}
                 />
             </div>
+                <IconAsterisk hasCustomParameters={hasCustomParameters} />
         </div>
     );
 };
