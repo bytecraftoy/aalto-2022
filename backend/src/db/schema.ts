@@ -39,13 +39,11 @@ const migrateFolder = async (folder: string): Promise<RunMigration[]> => {
 const runMigrations = async () => {
     logger.info('migrations_start');
     const res = await migrateFolder('migrations');
-    logger.info('migrations_done', { res });
 
     if (!isProduction) {
-        logger.info('dev_migrations_start');
-        const dev_res = await migrateFolder('dev_migrations');
-        logger.info('dev_migrations_done', { dev_res });
+        await migrateFolder('dev_migrations');
     }
+    logger.info('migrations_done', { res });
 };
 
 export { runMigrations };
