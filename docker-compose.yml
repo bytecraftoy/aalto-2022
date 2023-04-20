@@ -4,6 +4,9 @@ networks:
     net:
        name: net
 
+volumes:
+    aica
+
 services:
     db:
         image: postgresql
@@ -16,7 +19,7 @@ services:
         ports:
             - '5432:5432'
 
-        env_file: './backend/.env'
+        env_file: '.db-env'
 
         networks:
             - net
