@@ -39,6 +39,10 @@ export const panelSlice = createSlice({
             state.value = action.payload;
             state.needsSaving = true;
         },
+        // Clear the needsSaving flag
+        setSavestatus(state, action: PayloadAction<boolean>) {
+            state.needsSaving = action.payload;
+        },
         // Updates a single content panel
         updatePanel(state, action: PayloadAction<ContentPanelData>) {
             state.value = state.value.map((panel) =>
@@ -68,6 +72,7 @@ export const panelSlice = createSlice({
 export const {
     setSavedPanels,
     setNewPanels,
+    setSavestatus,
     updatePanel,
     addPanel,
     removePanel,

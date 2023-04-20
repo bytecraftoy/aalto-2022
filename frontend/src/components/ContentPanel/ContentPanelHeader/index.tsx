@@ -25,24 +25,29 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
     setOpen,
 }) => {
     return (
-        <div className="flex flex-row justify-around items-center mt-6">
-            <div className="flex flex-row justify-around items-center">
-                <div className="flex-1">
-                    <PromptCategoryBox
-                        category={category}
-                        setCategory={setCategory}
-                    />
-                </div>
-                <div className="flex-1 z-[15] pl-8">
-                    <DropdownMenu
-                        icon="Cog6Tooth"
-                        choices={[
-                            { action: () => setPopup(true), name: 'Add Boxes' },
-                            { action: () => setOpen(true), name: 'Parameters' },
-                            { action: () => saveState(true), name: 'Save' },
-                        ]}
-                    />
-                </div>
+        <div className="flex flex-row justify-center items-center h-16 px-4 mt-6">
+            <PromptCategoryBox category={category} setCategory={setCategory} />
+            <div data-testid="panel-settings" className="h-full pl-2 z-[15]">
+                <DropdownMenu
+                    icon="Cog6Tooth"
+                    items={[
+                        {
+                            action: () => setPopup(true),
+                            icon: 'CubeIcon',
+                            name: 'Add Boxes',
+                        },
+                        {
+                            action: () => setOpen(true),
+                            icon: 'AdjustmentsHorizontalIcon',
+                            name: 'Parameters',
+                        },
+                        {
+                            action: () => saveState(true),
+                            icon: 'DocumentCheckIcon',
+                            name: 'Save',
+                        },
+                    ]}
+                />
             </div>
         </div>
     );

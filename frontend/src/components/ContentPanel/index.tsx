@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import {
     exportJson,
     downloadJson,
@@ -79,6 +79,11 @@ export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
 
     // Opens ParameterDrawer
     const [open, setOpen] = useState(false);
+
+    // Autosave when the drawer is closed
+    useEffect(() => {
+        if (!open) saveState();
+    }, [open]);
 
     return (
         //Take up full space, and center the content panel in it

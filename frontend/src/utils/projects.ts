@@ -26,7 +26,14 @@ export const getProjects = async (): Promise<
     | { success: false; error: Error }
 > => {
     try {
-        const projects = await apiFetchJSON('/api/user/projects');
+        const projects = (await apiFetchJSON(
+            '/api/user/projects'
+        )) as ProjectInfo[];
+        projects.sort((a, b) => {
+            if (a.name < b.name) return -1;
+            else if (a.name > b.name) return 1;
+            else return 0;
+        });
         return { success: true, projects };
     } catch (err) {
         return handleError(err);
@@ -94,6 +101,36 @@ export const saveNewProject = async (
 };
 
 /**
+ * Deletes a project by its id
+ */
+export const deleteProject = async (
+    id: string
+): Promise<{ success: true } | { success: false; error: Error }> => {
+    try {
+        await apiFetch(`/api/user/projects/${id}`, { method: 'DELETE' });
+        return {
+            success: true,
+        };
+    } catch (err) {
+        return handleError(err);
+    }
+};
+
+/**
+ * Renames a project
+ *
+ */
+export const renameProject = async (
+    id: string,
+    newName: string
+): Promise<{ success: true } | { success: false; error: Error }> => {
+    const project = await getProject(id);
+    if (!project.success) return project;
+    project.project.name = newName;
+    return await saveProject(id, project.project);
+};
+
+/**
  * Get project's id by its name.
  * Never throws an error.
  */
@@ -141,7 +178,7 @@ export const getProjectByName = async (
  */
 export const initializeUserProjects = async (
     write = true
-): Promise<[Project, ProjectInfo[]]> => {
+): Promise<[string, Project, ProjectInfo[]]> => {
     const projectListRes = await getProjects();
 
     if (projectListRes.success) {
@@ -151,7 +188,11 @@ export const initializeUserProjects = async (
                 const newProj = createEmptyProject();
                 const saveRes = await saveNewProject(newProj);
                 if (saveRes.success)
-                    return [newProj, [{ id: saveRes.id, name: newProj.name }]];
+                    return [
+                        saveRes.id,
+                        newProj,
+                        [{ id: saveRes.id, name: newProj.name }],
+                    ];
             }
             // no write allowed, so fallback to default return at the end of the method
         } else {
@@ -161,10 +202,10 @@ export const initializeUserProjects = async (
             const projectRes = await getProject(projectId);
             if (projectRes.success)
                 // Main project successfully fetched, return it
-                return [projectRes.project, projectListRes.projects];
+                return [projectId, projectRes.project, projectListRes.projects];
         }
     }
 
     //user was not logged in or some unrecoverable error occurred
-    return [createEmptyProject(), []];
+    return ['', createEmptyProject(), []];
 };

@@ -21,7 +21,7 @@ export const FilledButton: React.FC<ButtonProps> = ({
         <button
             className={classNames(
                 'flex flex-row justify-start items-center',
-                'disabled:opacity-50 disabled:cursor-not-allowed',
+                'disabled:opacity-50 disabled:cursor-default',
                 'font-sans text-md font-medium py-2.5 ',
                 'h-10 transition-colors rounded-full shadow-lg',
                 { 'pl-4 pr-6': icon },

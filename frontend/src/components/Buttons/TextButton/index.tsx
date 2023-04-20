@@ -23,7 +23,7 @@ export const TextButton: React.FC<ButtonProps> = ({
             data-testid="text-button"
             className={classNames(
                 'flex flex-row justify-start items-center',
-                'disabled:opacity-50 disabled:cursor-not-allowed',
+                'disabled:opacity-50 disabled:cursor-default',
                 'font-sans text-md font-medium text-primary py-2.5',
                 'h-10 transition-colors rounded-full hover:bg-primary-state-layer hover:bg-opacity-8',
                 { 'pl-4 pr-6 gap-2': icon },
