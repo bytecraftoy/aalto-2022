@@ -11,7 +11,7 @@ This setup is recommended for running or demonstrating the app locally with a Op
 
 2. Clone this repository by running: `git clone https://github.com/bytecraftoy/aalto-2022`.
 
-3. Clone the proxy repository the same folder by running: `git clone https://github.com/bytecraftoy/aalto-2022-proxy`.
+3. Clone the proxy repository to the same folder by running: `git clone https://github.com/bytecraftoy/aalto-2022-proxy`.
 
 4. Open aalto-2022/.proxy-env with any text editor and replace "SOME_KEY" with your OpenAI API key (without the "Bearer", just the API key).
 
