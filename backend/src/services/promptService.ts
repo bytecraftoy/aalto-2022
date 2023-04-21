@@ -36,7 +36,7 @@ const convertParameters = (
         ((Math.floor((15872 - cutInputLength) / 4) * outputLength) / 5) *
             maxTokenFactor
     );
-    const best_of = Math.max(1, quality - 5);
+    const best_of = Math.max(1, quality - 3);
     let model = 'text-davinci-003';
     switch (quality) {
         case 1:
@@ -47,9 +47,6 @@ const convertParameters = (
             break;
         case 3:
             model = 'text-curie-001';
-            break;
-        case 9:
-            model = 'gpt-3.5-turbo';
     }
     const result = {
         name: 'custom',
