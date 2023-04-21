@@ -19,7 +19,7 @@ services:
         ports:
             - '5432:5432'
 
-        env_file: '.db-env'
+        env_file: '.db-env-sample'
 
         networks:
             - net
@@ -40,7 +40,7 @@ services:
         networks:
             - net
 
-        env_file: './.proxy-env'
+        env_file: './.proxy-env-sample'
 
     web:
         image: nodeserver
@@ -59,4 +59,4 @@ services:
         networks:
             - net
 
-        env_file: './.backend-env'
+        env_file: './.backend-env-sample'
