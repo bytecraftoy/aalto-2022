@@ -127,7 +127,7 @@ describe('promptService: Prompt creation', () => {
             5
         );
         expect(prompt.max_tokens).toBeGreaterThan(3000);
-        expect(prompt.model).toBe('text-davinci-003');
+        expect(prompt.model).toBe('gpt-3.5-turbo');
         expect(prompt.prompt).toBe(
             'Write a game flavor text for a hero which is a character in a Medieval setting'
         );
