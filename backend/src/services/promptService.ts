@@ -36,7 +36,7 @@ const convertParameters = (
         ((Math.floor((15872 - cutInputLength) / 4) * outputLength) / 5) *
             maxTokenFactor
     );
-    const best_of = Math.max(1, quality - 3);
+    const best_of = Math.max(1, quality - 5);
     let model = 'text-davinci-003';
     switch (quality) {
         case 1:
