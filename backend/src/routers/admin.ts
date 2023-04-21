@@ -80,6 +80,15 @@ const getAdminRouter = async (): Promise<Router> => {
                 options: {
                     properties: {
                         password_hash: { isVisible: false },
+                        settings: { isVisible: false },
+                        created: { isEditable: false },
+                        role: {
+                            availableValues: [
+                                { label: 'Normal', value: 'normal' },
+                                { label: 'Admin', value: 'admin' },
+                                { label: 'Superadmin', value: 'superadmin' },
+                            ],
+                        },
                     },
                 },
                 features: [
