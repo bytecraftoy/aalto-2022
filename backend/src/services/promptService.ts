@@ -47,9 +47,6 @@ const convertParameters = (
             break;
         case 3:
             model = 'text-curie-001';
-            break;
-        case 9:
-            model = 'gpt-3.5-turbo';
     }
     const result = {
         name: 'custom',
