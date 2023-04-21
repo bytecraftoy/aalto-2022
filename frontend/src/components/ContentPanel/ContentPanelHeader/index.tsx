@@ -15,7 +15,7 @@ interface ContentPanelHeaderProps {
 
     saveState: (force?: boolean) => Promise<void>;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    hasCustomParameters: boolean;
+    overrideTheme: boolean;
 }
 
 export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
@@ -24,25 +24,23 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
     setPopup,
     saveState,
     setOpen,
-    hasCustomParameters,
+    overrideTheme,
 }) => {
     interface IconAsteriskProps {
-        hasCustomParameters: boolean;
+        overrideTheme: boolean;
     }
-    const IconAsterisk: React.FC<IconAsteriskProps> = ({
-        hasCustomParameters,
-    }) => {
+    const IconAsterisk: React.FC<IconAsteriskProps> = ({ overrideTheme }) => {
         let text = '';
-        if (hasCustomParameters) {
+        if (overrideTheme) {
             text = '*';
         }
         return (
             <div
-                className="flex-1 z-[15] pl-8"
+                className="flex z-[15] pl-8"
                 style={{
                     position: 'relative',
-                    right: 52,
-                    bottom: 10,
+                    right: 50,
+                    bottom: -4,
                     pointerEvents: 'none',
                     minWidth: 40,
                 }}
@@ -55,7 +53,10 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
     return (
         <div className="flex flex-row justify-center items-center h-16 px-4 mt-6">
             <PromptCategoryBox category={category} setCategory={setCategory} />
-            <div data-testid="panel-settings" className="h-full pl-2 z-[15]">
+            <div
+                data-testid="panel-settings"
+                className="flex flex-row h-full pl-2 z-[15]"
+            >
                 <DropdownMenu
                     icon="Cog6Tooth"
                     items={[
@@ -76,8 +77,8 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
                         },
                     ]}
                 />
+                <IconAsterisk overrideTheme={overrideTheme} />
             </div>
-                <IconAsterisk hasCustomParameters={hasCustomParameters} />
         </div>
     );
 };

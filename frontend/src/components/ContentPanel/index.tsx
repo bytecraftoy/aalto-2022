@@ -85,8 +85,6 @@ export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
         if (!open) saveState();
     }, [open]);
 
-    const hasCustomParameters: boolean = parameters != theme.globalParameters;
-
     return (
         //Take up full space, and center the content panel in it
         <div className="relative w-full h-full flex-1">
@@ -116,7 +114,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
                         setPopup={setPopup}
                         saveState={saveState}
                         setOpen={setOpen}
-                        hasCustomParameters={hasCustomParameters}
+                        overrideTheme={overrideTheme}
                     />
 
                     {/* Pop-up window used to add n boxes. Hidden by default*/}
