@@ -11,3 +11,4 @@ ADMINJS_SESSION_SECRET=sessionsecret
 POSTGRES_HOST=db
 ENVIRONMENT=openai
 PROXYURL=http://proxy:8080
+NODE_ENV=production
