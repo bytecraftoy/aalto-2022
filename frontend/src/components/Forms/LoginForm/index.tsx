@@ -1,7 +1,6 @@
 import React from 'react';
 import { CustomInput } from '../../Inputs';
 import { useNavigate } from 'react-router-dom';
-import { TextButton } from '../../Buttons';
 import { loginUsernameSchema, loginPasswordSchema } from '../validation';
 import { useValidation, useLogin, useTimedOpen } from '../../../utils/hooks';
 import { Notification } from '../../Notification';
@@ -105,13 +104,6 @@ export const LoginForm = () => {
                     setPassword(e.target.value)
                 }
                 errors={passwordErrors}
-            />
-
-            <TextButton
-                name="Click here to register"
-                colorPalette="primary"
-                onClick={() => navigate('/register')}
-                className="justify-center m-0"
             />
         </TemplateForm>
     );
