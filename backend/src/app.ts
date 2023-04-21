@@ -19,6 +19,7 @@ import { rootPath } from './routers/admin';
 import { isTesting } from './utils/env';
 import { waitForDatabase } from './db/util';
 import { pool } from './db/pool';
+import { serveIndex } from './middleware/serveIndex';
 
 const app = express();
 
@@ -46,6 +47,7 @@ const getApp = async (): Promise<express.Express> => {
     app.use('/api/status', statusRouter);
     app.use('/api/user', userRouter);
     app.use(express.static('./public/'));
+    app.use(serveIndex);
     app.use(checkToken);
     app.use('/api/export/', exportRouter);
     app.use('/api/textgen', apiRouter);
