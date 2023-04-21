@@ -24,7 +24,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build && cpy . ../../backend/public/ --cwd=build",
+        "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "eslint --max-warnings=0 --ext .tsx,.ts src"

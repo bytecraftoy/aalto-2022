@@ -23,8 +23,6 @@ const databaseConfig = {
     port: parseInt(process.env.POSTGRES_PORT ?? '5432'),
 };
 
-console.log(databaseConfig)
-
 const pool = new Pool(databaseConfig);
 
 export { pool, databaseConfig };

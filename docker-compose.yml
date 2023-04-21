@@ -2,10 +2,10 @@ version: '3'
 
 networks:
     net:
-       name: net
+        name: net
 
 volumes:
-    aica
+    aica:
 
 services:
     db:
@@ -23,6 +23,9 @@ services:
 
         networks:
             - net
+
+        volumes:
+            - aica:/home/node/app
 
     proxy:
         image: aiproxy
@@ -47,11 +50,13 @@ services:
             - proxy
 
         build:
-            context: ./backend
-            dockerfile: Dockerfile
-        
+            context: ./
+            dockerfile: ./backend/Dockerfile
+
         ports:
             - '3030:3030'
 
         networks:
             - net
+
+        env_file: './.backend-env'
