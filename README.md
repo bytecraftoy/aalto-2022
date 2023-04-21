@@ -13,7 +13,7 @@ This setup is recommended for running or demonstrating the app locally with a Op
 
 3. Clone the proxy repository to the same folder by running: `git clone https://github.com/bytecraftoy/aalto-2022-proxy`.
 
-4. Open aalto-2022/.proxy-env-sample with any text editor and replace "SOME_KEY" with your OpenAI API key (without the "Bearer", just the API key).
+4. Open aalto-2022/docker_deploy/.proxy-env-sample with any text editor and replace "SOME_KEY" with your OpenAI API key (without the "Bearer", just the API key).
 
 5. inside aalto-2022/ run: `docker-compose up`.
 
