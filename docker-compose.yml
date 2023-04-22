@@ -9,7 +9,7 @@ volumes:
 
 services:
     db:
-        image: postgresql-14
+        image: postgresql
 
         build:
             context: ./docker_deploy/db
@@ -21,7 +21,7 @@ services:
             - net
 
         volumes:
-            - aica:/var/lib/postgresql/
+            - aica:/var/lib/postgresql/data
 
     proxy:
         image: aiproxy
