@@ -13,7 +13,7 @@ This setup is recommended for running or demonstrating the app locally with a Op
 
 3. Fetch the aalto-2022-proxy submodule by running `git submodule init` and `git submodule update` inside the aalto-2022 folder.
 
-4. Copy the sample files inside aalto-2022/docker_deploy/ and aalto-2022/docker_deploy/db/ with new names that don't include the "-sample". For example, aalto-2022/docker_deploy/.backend-env-sample should be copied to aalto-2022/docker_deploy/.backend-env. 
+4. Copy the sample files inside aalto-2022/docker_deploy/ and aalto-2022/docker_deploy/db/ with new names that don't include the "-sample". For example, aalto-2022/docker_deploy/.backend-env-sample should be copied to aalto-2022/docker_deploy/.backend-env.
 
 5. Modify the copied files with any text editor following the instructions given in each file.
 
