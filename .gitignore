@@ -11,3 +11,6 @@ build
 deploy
 node_modules
 test-results/
+docker_deploy/.backend-env
+docker_deploy/.proxy-env
+docker_deploy/db/init.sql

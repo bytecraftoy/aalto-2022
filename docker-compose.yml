@@ -12,35 +12,28 @@ services:
         image: postgresql
 
         build:
-            context: ./backend/docker
-            dockerfile: db.Dockerfile
+            context: ./docker_deploy/db
+            dockerfile: Dockerfile
 
-        # keep in sync with .env
-        ports:
-            - '5432:5432'
-
-        env_file: './docker_deploy/.db-env-sample'
+        env_file: './docker_deploy/.backend-env'
 
         networks:
             - net
 
         volumes:
-            - aica:/home/node/app
+            - aica:/var/lib/postgresql/
 
     proxy:
         image: aiproxy
 
         build:
-            context: ./../aalto-2022-proxy/
+            context: ./aalto-2022-proxy/
             dockerfile: Dockerfile
-
-        ports:
-            - '8080:8080'
 
         networks:
             - net
 
-        env_file: './docker_deploy/.proxy-env-sample'
+        env_file: './docker_deploy/.proxy-env'
 
     web:
         image: nodeserver
@@ -59,4 +52,4 @@ services:
         networks:
             - net
 
-        env_file: './docker_deploy/.backend-env-sample'
+        env_file: './docker_deploy/.backend-env'

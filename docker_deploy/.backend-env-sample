@@ -1,13 +1,17 @@
-DUMMYURL=http://localhost:8080
 POSTGRES_USER=aalto_user
 POSTGRES_ADMINJS_USER=adminjs
-POSTGRES_PASSWORD=DEV-SERVER-7XO0DFWMucoJ3q2rEwiWI9VMj
-POSTGRES_ADMINJS_PASSWORD=DEV-SERVER-dOaf4YKgfG6A1jl3
+# replace "RANDOM-PASSWORD" with a long random password
+POSTGRES_PASSWORD=RANDOM-PASSWORD
+# replace "RANDOM-PASSWORD" with a long random password and update the same password to ./db/init.sql
+POSTGRES_ADMINJS_PASSWORD=RANDOM-PASSWORD
 POSTGRES_DB=aalto_backend
-JWT_SECRET=vNqJTxA70qbdpojLeC64O8kOt3V2jcAUB9xPd08clZg
 POSTGRES_PORT=5432
-REGISTER_KEY=DEV-123
-ADMINJS_SESSION_SECRET=sessionsecret
+# replace "RANDOM-SECRET" with a long random string
+JWT_SECRET=RANDOM-SECRET
+# replace "SECRET-KEY" with a key that will be required to create a new account
+REGISTER_KEY=SECRET-KEY
+# replace "RANDOM-SECRET" with a long random string
+ADMINJS_SESSION_SECRET=RANDOM-SECRET
 POSTGRES_HOST=db
 ENVIRONMENT=openai
 PROXYURL=http://proxy:8080
