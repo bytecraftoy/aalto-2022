@@ -1,0 +1,3 @@
+[submodule "aalto-2022-proxy"]
+	path = aalto-2022-proxy
+	url = https://github.com/bytecraftoy/aalto-2022-proxy.git

@@ -24,9 +24,12 @@ const getDatabaseName = (): string => {
 
 const buildConnectionString = (): string => {
     const user = process.env.POSTGRES_ADMINJS_USER ?? 'adminjs';
-    const host = 'localhost';
+    const host = process.env.POSTGRES_HOST ?? 'localhost';
     const database = getDatabaseName();
     const password = process.env.POSTGRES_ADMINJS_PASSWORD;
+    if (!password) {
+        throw new Error('POSTGRES_ADMINJS_PASSWORD not set');
+    }
     const port = parseInt(process.env.POSTGRES_PORT ?? '5432');
     return `postgres://${user}:${password}@${host}:${port}/${database}`;
 };

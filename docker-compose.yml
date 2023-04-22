@@ -1,0 +1,55 @@
+version: '3'
+
+networks:
+    net:
+        name: net
+
+volumes:
+    aica:
+
+services:
+    db:
+        image: postgresql
+
+        build:
+            context: ./docker_deploy/db
+            dockerfile: Dockerfile
+
+        env_file: './docker_deploy/.backend-env'
+
+        networks:
+            - net
+
+        volumes:
+            - aica:/var/lib/postgresql/data
+
+    proxy:
+        image: aiproxy
+
+        build:
+            context: ./aalto-2022-proxy/
+            dockerfile: Dockerfile
+
+        networks:
+            - net
+
+        env_file: './docker_deploy/.proxy-env'
+
+    web:
+        image: nodeserver
+
+        depends_on:
+            - db
+            - proxy
+
+        build:
+            context: ./
+            dockerfile: ./backend/Dockerfile
+
+        ports:
+            - '3030:3030'
+
+        networks:
+            - net
+
+        env_file: './docker_deploy/.backend-env'

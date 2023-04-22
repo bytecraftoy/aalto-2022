@@ -1,0 +1,2 @@
+# replace "YOUR_KEY" with your OpenAI API key (without the "Bearer", just the API key)
+OpenAI_apikey=YOUR_KEY

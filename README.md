@@ -3,6 +3,24 @@
 A web based automation tool for rapid game content creation using state of the art AI models.
 This web application provides an efficient and easy-to-use interface for various online API's such as GPT3
 
+## Easy setup with Docker
+
+This setup is recommended for running or demonstrating the app locally with a OpenAI API key. However, it is not recommended to use this setup for development.
+
+1. Make sure [Docker](https://www.docker.com/) is installed and running.
+
+2. Clone this repository by running: `git clone https://github.com/bytecraftoy/aalto-2022`.
+
+3. Fetch the aalto-2022-proxy submodule by running `git submodule init` and `git submodule update` inside the aalto-2022 folder.
+
+4. Copy the sample files inside aalto-2022/docker_deploy/ and aalto-2022/docker_deploy/db/ with new names that don't include the "-sample". For example, aalto-2022/docker_deploy/.backend-env-sample should be copied to aalto-2022/docker_deploy/.backend-env.
+
+5. Modify the copied files with any text editor following the instructions given in each file.
+
+6. Inside aalto-2022/ run: `docker-compose up`.
+
+7. The app can now be accessed from [http://localhost:3030](http://localhost:3030).
+
 ## Setting up, running and deploying the project
 
 To build the project and install dependencies, make sure that node.js and npm are installed. Refer to https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
