@@ -17,7 +17,9 @@ This setup is recommended for running or demonstrating the app locally with a Op
 
 5. Modify the copied files with any text editor following the instructions given in each file.
 
-6. inside aalto-2022/ run: `docker-compose up`.
+6. Inside aalto-2022/ run: `docker-compose up`.
+
+7. The app can now be accessed from [http://localhost:3030](http://localhost:3030).
 
 ## Setting up, running and deploying the project
 
