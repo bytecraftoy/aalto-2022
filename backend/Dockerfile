@@ -1,7 +1,7 @@
 FROM node:18 as builder
-ENV ROOT_PATH /usr/src/app
+ENV BUILD_DIR /usr/src/app
 
-WORKDIR ${ROOT_PATH}/frontend
+WORKDIR ${BUILD_DIR}/frontend
 
 # copy frontend config and install dependencies
 COPY ./frontend/package*.json .
@@ -13,10 +13,10 @@ COPY ./frontend .
 # build frontend
 RUN npm run build
 
-WORKDIR ${ROOT_PATH}/backend
+WORKDIR ${BUILD_DIR}/backend
 
 # copy frontend build to backend public folder
-RUN mkdir ./build && cp -r "$ROOT_PATH/frontend/build" ./build/public
+RUN mkdir ./build && cp -r "$BUILD_DIR/frontend/build" ./build/public
 
 # copy backend config and install dependencies
 COPY ./backend/package*.json .
@@ -29,20 +29,20 @@ COPY ./backend .
 RUN npm run build
 
 FROM node:18-alpine
-ENV ROOT_PATH /usr/src/app
+ENV BUILD_DIR /usr/src/app
 
 WORKDIR /home/app
 
 RUN chown -R node:node /home/app
 
 # Install production dependencies
-COPY --from=builder ${ROOT_PATH}/backend/package*.json ./
+COPY --from=builder ${BUILD_DIR}/backend/package*.json ./
 RUN npm ci --omit=dev
 
 # copy only needed files from builder
-COPY --from=builder --chown=node:node ${ROOT_PATH}/backend/migrations/ ./migrations/
-COPY --from=builder --chown=node:node ${ROOT_PATH}/backend/files/ ./files/
-COPY --from=builder --chown=node:node ${ROOT_PATH}/backend/build ./
+COPY --from=builder --chown=node:node ${BUILD_DIR}/backend/migrations/ ./migrations/
+COPY --from=builder --chown=node:node ${BUILD_DIR}/backend/files/ ./files/
+COPY --from=builder --chown=node:node ${BUILD_DIR}/backend/build/ ./
 
 USER node
 
