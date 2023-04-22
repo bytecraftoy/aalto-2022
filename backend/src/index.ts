@@ -16,6 +16,16 @@ if (!isTesting) {
 
     getServer()
         .then((server) => {
+            // handle SIGTERM gracefully
+            process.on('SIGTERM', () => {
+                logger.info('sigterm_closing_server');
+                // Perform any necessary cleanup, such as closing database connections or finishing ongoing requests
+                server.close(() => {
+                    logger.info('server_closed');
+                    process.exit(0);
+                });
+            });
+
             logger.info('started');
             server.listen(PORT, () => logger.info('started', { port: PORT }));
         })
