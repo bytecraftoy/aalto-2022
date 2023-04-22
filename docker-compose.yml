@@ -9,7 +9,7 @@ volumes:
 
 services:
     db:
-        image: postgresql
+        image: postgresql-14
 
         build:
             context: ./docker_deploy/db
