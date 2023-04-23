@@ -41,7 +41,7 @@ const authenticate = async (email: string, password: string) => {
     }
 
     const role = await selectUserRole(user.message);
-    if (role == 'admin' || role == 'superadmin') {
+    if (role == 'admin') {
         return Promise.resolve({ email, password });
     }
 
@@ -84,12 +84,18 @@ const getAdminRouter = async (): Promise<Router> => {
                     properties: {
                         password_hash: { isVisible: false },
                         settings: { isVisible: false },
-                        created: { isEditable: false },
+                        created: {
+                            isVisible: {
+                                list: true,
+                                filter: true,
+                                show: true,
+                                edit: false,
+                            },
+                        },
                         role: {
                             availableValues: [
                                 { label: 'Normal', value: 'normal' },
                                 { label: 'Admin', value: 'admin' },
-                                { label: 'Superadmin', value: 'superadmin' },
                             ],
                         },
                     },
