@@ -45,8 +45,9 @@ export const usePanel = (id: string) => {
 
     // Local state outside of redux store
     const [loading, setLoading] = useState<boolean>(false);
-    const [popupOpen, setPopup] = useState<boolean>(false);
     const [lastParams, setLastParams] = useState<Preset>(parameters);
+    const [addPopupOpen, setAddPopup] = useState<boolean>(false);
+    const [clearPopupOpen, setClearPopup] = useState<boolean>(false);
 
     const setAdvancedMode = (b: boolean) => {
         const newPanel = { ...panel };
@@ -106,11 +107,56 @@ export const usePanel = (id: string) => {
     };
 
     //Callback to create multiple boxes
-    const addPromptBoxes = (n: number) => {
-        const newBoxes = Array.from<PromptData>(Array(n)).map(
-            createEmptyPrompt
-        );
+    const addPromptBoxes = (n: number, input: string) => {
+        const newBoxes = Array.from<PromptData>(Array(n)).map(() => {
+            return { ...createEmptyPrompt(), input };
+        });
         setPromptBoxes((prev) => [...prev, ...newBoxes]);
+    };
+
+    // Clear all boxes that are not locked
+    const clearPromptBoxes = () => {
+        setPromptBoxes((prev) =>
+            prev.map((p) => (p.locked ? p : { ...p, input: '', output: '' }))
+        );
+    };
+
+    // Lock or unlock all boxes
+    const lockAll = (b: boolean) => {
+        setPromptBoxes((prev) =>
+            prev.map((p) => {
+                return { ...p, locked: b };
+            })
+        );
+    };
+
+    // Lock or unlock all boxes
+    const flipLock = () => {
+        setPromptBoxes((prev) =>
+            prev.map((p) => {
+                return { ...p, locked: !p.locked };
+            })
+        );
+    };
+
+    // Delete empty prompt boxes
+    const deleteEmpty = () => {
+        // Keep a box if it is locked, or has non-empty input or output
+        setPromptBoxes((prev) => {
+            const filtered = prev.filter(
+                (p) => p.locked || p.input || p.output
+            );
+            // Prevent deleting all boxes
+            return filtered.length ? filtered : [createEmptyPrompt()];
+        });
+    };
+
+    const swapBoxes = () => {
+        setPromptBoxes((prev) =>
+            prev.map((p) =>
+                p.locked ? p : { ...p, input: p.output, output: p.input }
+            )
+        );
     };
 
     // Generates all the IO boxes that are not locked
@@ -232,7 +278,8 @@ export const usePanel = (id: string) => {
         advancedMode,
         overrideTheme,
         loading,
-        popupOpen,
+        addPopupOpen,
+        clearPopupOpen,
         setCategory,
         setPromptBoxes,
         generateOutput,
@@ -240,8 +287,14 @@ export const usePanel = (id: string) => {
         setPromptOutput,
         addPromptBox,
         addPromptBoxes,
+        clearPromptBoxes,
         lockPrompt,
-        setPopup,
+        setAddPopup,
+        setClearPopup,
+        deleteEmpty,
+        lockAll,
+        flipLock,
+        swapBoxes,
         saveState,
         setCustomParameters,
         selectPreset,

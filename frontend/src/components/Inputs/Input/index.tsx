@@ -27,7 +27,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     const { showError, touchInput } = useError(errors);
 
     return (
-        <label className="relative max-w-[280px] w-full">
+        <label className="relative max-w-[280px] inline-block w-full">
             <input
                 type={type}
                 spellCheck={'false'}

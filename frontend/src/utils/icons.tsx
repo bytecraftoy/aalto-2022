@@ -40,7 +40,10 @@ export type Icon =
     | 'IdentificationIcon'
     | 'DocumentCheckIcon'
     | 'DocumentPlusIcon'
-    | 'DocumentDuplicateIcon';
+    | 'DocumentDuplicateIcon'
+    | 'ArrowsUpDownIcon'
+    | 'MinusCircleIcon'
+    | 'TrashIcon';
 
 /**
  * Default sized solid icon element using HeroIcons.
@@ -104,6 +107,12 @@ export const solidIcon = (i?: Icon, className?: string) => {
             return <I.DocumentPlusIcon className={classN} />;
         case 'DocumentDuplicateIcon':
             return <I.DocumentDuplicateIcon className={classN} />;
+        case 'ArrowsUpDownIcon':
+            return <I.ArrowsUpDownIcon className={classN} />;
+        case 'MinusCircleIcon':
+            return <I.MinusCircleIcon className={classN} />;
+        case 'TrashIcon':
+            return <I.TrashIcon className={classN} />;
         default:
             return <></>;
     }

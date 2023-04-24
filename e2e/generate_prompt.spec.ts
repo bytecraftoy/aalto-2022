@@ -137,10 +137,10 @@ test('should generate a prompt and get result', async ({ page }) => {
     await expect(page.getByRole('link', { name: 'Panel-1' })).toHaveCount(1);
     await page.getByRole('link', { name: 'Panel-1' }).click();
     await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
-    await page.click('input[placeholder*="Category"]'); // Closes nav drawer
+    await page.click('input[placeholder="Category"]'); // Closes nav drawer
 
-    await page.fill('input[placeholder*="Category"]', category_input);
-    await page.fill('textarea[placeholder*="User input here"]', prompt_input);
+    await page.fill('input[placeholder="Category"]', category_input);
+    await page.fill('textarea[placeholder="User input here"]', prompt_input);
     await expect(page.locator(output_locator)).toHaveText('');
     await page.hover('[data-testid="hover-area"]');
     await page.click('button:has-text("Generate")');
@@ -173,10 +173,10 @@ test('should generate all boxes with generate all button', async ({ page }) => {
     await page.locator('[data-testid="navdrawer-button"]').first().click();
     await page.locator('[data-testid="panel-link"]').nth(2).click();
     await expect(page).toHaveURL(/\/panels\/.*/); // Match path, e.g. /panels/aDk4io9eRts
-    await page.click('input[placeholder*="Category"]'); // Closes nav drawer
+    await page.click('input[placeholder="Category"]'); // Closes nav drawer
 
     const numExtra = 3;
-    await page.fill('input[placeholder*="Category"]', category_input);
+    await page.fill('input[placeholder="Category"]', category_input);
     await expect(page.locator('[data-testid="prompt"]')).toHaveCount(1);
     for (let i = 1; i <= numExtra; i++) {
         // Clicks the add prompt button to add extra prompts
@@ -187,7 +187,7 @@ test('should generate all boxes with generate all button', async ({ page }) => {
         1 + numExtra
     );
     await page
-        .locator('textarea[placeholder*="User input here"]')
+        .locator('textarea[placeholder="User input here"]')
         .all()
         .then(async (elements) => {
             for (let i = 0; i < elements.length; i++) {
@@ -213,8 +213,8 @@ test('Saving category does not change other panel information', async ({
     await page.getByTestId('navdrawer-button').click();
     await page.getByRole('button', { name: 'Add Panel' }).click();
     await page.getByRole('link', { name: 'Panel-2' }).click();
-    await page.click('input[placeholder*="Category"]');
-    await page.fill('input[placeholder*="Category"]', 'test');
+    await page.click('input[placeholder="Category"]');
+    await page.fill('input[placeholder="Category"]', 'test');
     await page
         .getByTestId('panel-settings')
         .first()
@@ -223,5 +223,5 @@ test('Saving category does not change other panel information', async ({
     await page.click('button:has-text("Save")');
     await page.getByTestId('navdrawer-button').click();
     await page.getByRole('link', { name: 'Panel-1' }).click();
-    await page.click('input[placeholder*="Category"]');
+    await page.click('input[placeholder="Category"]');
 });

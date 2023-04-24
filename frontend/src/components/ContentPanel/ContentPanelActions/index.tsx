@@ -42,6 +42,7 @@ export const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({
                     <h3 className="text-lg font-medium">Export content</h3>
                     <Tooltip
                         text="Export content in json or excel format"
+                        icon="InformationCircleIcon"
                         floatRight
                         instant
                     >

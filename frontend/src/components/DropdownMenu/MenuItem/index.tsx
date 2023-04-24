@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon, solidIcon } from '../../../utils/icons';
 import { Palette, text, bgLightHover } from '../../../utils/colors';
+import { Tooltip } from '../../Tooltip';
 
 /** Item for a dropdown menu */
 
@@ -10,6 +11,7 @@ export type DropdownItem = {
     name: string;
     icon?: Icon;
     color?: Palette;
+    tooltip?: string;
 };
 
 interface MenuItemProps {
@@ -18,6 +20,7 @@ interface MenuItemProps {
     name: string;
     icon?: Icon;
     color?: Palette;
+    tooltip?: string;
     compact: boolean;
     className?: string;
 }
@@ -28,6 +31,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
     name,
     icon,
     color,
+    tooltip,
     compact,
     className,
 }) => {
@@ -38,13 +42,13 @@ export const MenuItem: React.FC<MenuItemProps> = ({
     const itemColor = color ? text(color) : '';
     const hoverColor = bgLightHover(color ?? 'primary');
 
-    return (
+    const item = (
         <button
             className={classNames(
-                'transition-colors flex flex-row justify-start p-5 rounded-2xl',
+                'w-full transition-colors flex flex-row justify-start items-center p-6 rounded-2xl',
                 action !== undefined && hoverColor,
                 { 'cursor-pointer': action },
-                { 'min-w-[180px]': icon },
+                { 'cursor-default': !action },
                 className
             )}
             onClick={() => {
@@ -57,15 +61,15 @@ export const MenuItem: React.FC<MenuItemProps> = ({
             {icon
                 ? solidIcon(icon, 'mr-5 inline-block ' + itemColor)
                 : iconPadding}
-            <p
-                className={classNames(
-                    itemColor,
-                    { 'cursor-pointer': action },
-                    { 'cursor-default': !action }
-                )}
-            >
-                {name}
-            </p>
+            <p className={classNames(itemColor, 'whitespace-nowrap')}>{name}</p>
         </button>
+    );
+
+    return tooltip ? (
+        <Tooltip text={tooltip} icon="InformationCircleIcon">
+            {item}
+        </Tooltip>
+    ) : (
+        item
     );
 };

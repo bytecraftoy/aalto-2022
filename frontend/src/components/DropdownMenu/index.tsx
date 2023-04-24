@@ -58,9 +58,11 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             />
             <Surface
                 level={2}
-                className={classNames('absolute -right-2 top-16 w-fit', {
-                    hidden: !open,
-                })}
+                className={classNames(
+                    'absolute -right-2 top-16',
+                    { compact: 'min-w-fit' },
+                    { hidden: !open }
+                )}
             >
                 {items.map((item, index) => {
                     return (
@@ -72,6 +74,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
                             icon={item.icon}
                             color={item.color}
                             name={item.name}
+                            tooltip={item.tooltip}
                         />
                     );
                 })}

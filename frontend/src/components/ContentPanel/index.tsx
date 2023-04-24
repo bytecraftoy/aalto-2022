@@ -15,6 +15,9 @@ import { Loader } from '../Loader';
 import { usePanel } from './hooks';
 import { MultipleBoxPopup } from './ContentPanelPrompts/MultipleBoxPopup';
 import { ParameterDrawer } from '../ParameterDrawer';
+import { ClearBoxesPopup } from './ContentPanelPrompts/ClearBoxesPopup';
+import { Tooltip } from '../Tooltip';
+import { solidIcon } from '../../utils/icons';
 
 // State stored in redux store
 interface ContentPanelProps {
@@ -35,7 +38,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
         overrideTheme,
         parameters,
         loading,
-        popupOpen,
+        addPopupOpen,
+        clearPopupOpen,
         setCategory,
         setPromptBoxes,
         generateAll,
@@ -44,8 +48,14 @@ export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
         lockPrompt,
         addPromptBox,
         addPromptBoxes,
+        clearPromptBoxes,
         saveState,
-        setPopup,
+        setAddPopup,
+        setClearPopup,
+        deleteEmpty,
+        lockAll,
+        flipLock,
+        swapBoxes,
         selectPreset,
         setCustomParameters,
         setAdvancedMode,
@@ -78,7 +88,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
     };
 
     // Opens ParameterDrawer
-    const [open, setOpen] = useState(false);
+    const [paramsOpen, setParamsOpen] = useState(false);
 
     // Autosave when the drawer is closed
     useEffect(() => {
@@ -97,8 +107,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
                 presets={presetNames}
                 selectPreset={selectPreset}
                 preset={parameters}
-                open={open}
-                setOpen={setOpen}
+                open={paramsOpen}
+                setOpen={setParamsOpen}
             />
             <div
                 className={classNames(
@@ -107,32 +117,63 @@ export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
                 )}
             >
                 <Surface level={2} className="w-full max-w-6xl min-h-fit pt-4">
+                    {/* Custom settings indicator */}
+                    <div className="flex flex-row justify-end px-6">
+                        {overrideTheme && (
+                            <Tooltip
+                                text={'Using custom parameters'}
+                                icon="InformationCircleIcon"
+                                instant={true}
+                                floatRight
+                            >
+                                {solidIcon(
+                                    'AdjustmentsHorizontalIcon',
+                                    'text-primary'
+                                )}
+                            </Tooltip>
+                        )}
+                    </div>
+
                     {/* Top most part of the content panel */}
                     <ContentPanelHeader
                         category={category}
                         setCategory={setCategory}
-                        setPopup={setPopup}
                         saveState={saveState}
-                        setOpen={setOpen}
+                        setAddPopup={setAddPopup}
+                        setClearPopup={setClearPopup}
+                        setOpenParams={setParamsOpen}
+                        deleteEmpty={deleteEmpty}
+                        lockAll={lockAll}
+                        flipLock={flipLock}
+                        swapBoxes={swapBoxes}
                     />
 
                     {/* Pop-up window used to add n boxes. Hidden by default*/}
                     <MultipleBoxPopup
-                        popupOpen={popupOpen}
-                        setPopup={setPopup}
+                        popupOpen={addPopupOpen}
+                        setPopup={setAddPopup}
                         addPromptBoxes={addPromptBoxes}
                     />
 
-                    {/* IO TExtfields: Prompts of the content panel */}
-                    <ContentPanelPrompts
-                        promptBoxes={promptBoxes}
-                        setPromptBoxes={setPromptBoxes}
-                        generateOutput={generateOutput}
-                        setPromptOutput={setPromptOutput}
-                        addPromptBox={addPromptBox}
-                        lockPrompt={lockPrompt}
-                        saveState={saveState}
+                    {/* Pop-up window confirming a delete action */}
+                    <ClearBoxesPopup
+                        open={clearPopupOpen}
+                        setOpen={setClearPopup}
+                        clear={clearPromptBoxes}
                     />
+
+                    {/* IO TExtfields: Prompts of the content panel */}
+                    <div className="max-h-[50rem] overflow-y-auto">
+                        <ContentPanelPrompts
+                            promptBoxes={promptBoxes}
+                            setPromptBoxes={setPromptBoxes}
+                            generateOutput={generateOutput}
+                            setPromptOutput={setPromptOutput}
+                            addPromptBox={addPromptBox}
+                            lockPrompt={lockPrompt}
+                            saveState={saveState}
+                        />
+                    </div>
 
                     {/* Bottom bar containing content panel actions */}
                     <ContentPanelActions

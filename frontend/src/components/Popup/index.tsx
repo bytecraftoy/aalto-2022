@@ -85,7 +85,7 @@ export const Popup: React.FC<PopupProps> = ({
             className="fixed top-0 left-0 w-screen h-screen z-[100] flex flex-row justify-center items-center bg-neutral-10/50"
         >
             <div className="max-sm:w-[80%] sm:min-w-[24em]" ref={divRef}>
-                <Surface level={3} className="flex flex-col h-80 min-h-fit p-4">
+                <Surface level={3} className="flex flex-col min-h-80 p-4">
                     <div className="p-4">
                         <h2 className="text-primary font-bold text-base flex flex-row items-center">
                             {solidIcon(icon, 'inline-block w-5 h-5 mr-3')}{' '}
