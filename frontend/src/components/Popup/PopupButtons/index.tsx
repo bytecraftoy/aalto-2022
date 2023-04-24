@@ -28,6 +28,7 @@ export const PopupButtons: React.FC<PopupButtonsProps> = ({
                             }}
                             icon={button.icon}
                             name={button.text}
+                            type={button.type}
                             colorPalette="primary"
                         />
                     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Popup } from '../../../Popup';
 import { CustomInput } from '../../../Inputs';
 
@@ -20,6 +20,7 @@ export const MultipleBoxPopup: React.FC<MultipleBoxPopupProps> = ({
 }) => {
     const [numberInput, setNumber] = useState<string>('1');
     const [boxInput, setBoxInput] = useState<string>('');
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const min = 1;
     const max = 100;
@@ -44,10 +45,13 @@ export const MultipleBoxPopup: React.FC<MultipleBoxPopupProps> = ({
                 setNumber('1');
                 setBoxInput('');
             }}
+            // Focus after fade in animation
+            onOpen={() => setTimeout(() => inputRef.current?.focus(), 200)}
         >
             <div className="h-full w-full flex flex-col justify-between items-center px-4 py-4 gap-2">
                 <p className="text-lg">Add boxes (1-100)</p>
                 <CustomInput
+                    inputRef={inputRef}
                     label="Number of boxes"
                     value={numberInput}
                     onInput={(e) => {
