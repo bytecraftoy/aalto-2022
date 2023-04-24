@@ -38,6 +38,7 @@ export interface Preset {
     quality: number;
     inputLength: number;
     outputLength: number;
+    promptBase?: PromptStructure;
 }
 
 /**
@@ -134,6 +135,19 @@ export const ProjectInfoSchema = z.object({
  */
 export type ProjectInfo = z.infer<typeof ProjectInfoSchema>;
 
+/**
+ * Structure for prompt generation, given in the form of
+ * <prefix> {input} <categoryText> {category} <themeText> {theme} <suffix>
+ * eg.
+ * "Write a game flavour text for {input} which is a {category} in a {theme} setting"
+ */
+export type PromptStructure = {
+    prefix: string;
+    categoryText: string;
+    themeText: string;
+    suffix: string;
+};
+
 export const ParametersSchema = z.object({
     creativity: z.number().min(0).max(1),
     quality: z.number().int().min(1).max(9),
@@ -147,7 +161,9 @@ export const ParametersSchema = z.object({
  * multiple aspects of the AI in a complex way. This is generally hidden from the user and is handled
  * by the backend.
  */
-export type Parameters = z.infer<typeof ParametersSchema>;
+export interface Parameters extends z.infer<typeof ParametersSchema> {
+    promptBase?: PromptStructure;
+}
 
 //////////////////////////////////
 ////////   CONSTANTS   ///////////
@@ -156,13 +172,24 @@ export type Parameters = z.infer<typeof ParametersSchema>;
 //////////////////////////////////
 
 /**
+ * Default prompt structure if it is undefined
+ */
+
+export const DEFAULT_PROMPT_STRUCTURE: PromptStructure = {
+    prefix: 'Write a game flavor text for',
+    categoryText: 'which is a',
+    themeText: 'in a',
+    suffix: 'setting',
+};
+
+/**
  * Default params to use when no preset is specified
  */
 export const DEFAULT_PARAMETERS: Parameters = {
     creativity: 0.5,
-    quality: 9,
+    quality: 7,
     inputLength: 5000,
-    outputLength: 3,
+    outputLength: 4,
 };
 
 /**

@@ -1,5 +1,10 @@
 import { apiFetchJSON } from './apiFetch';
-import { ApiRequest, ApiResponse, Parameters } from './types';
+import {
+    ApiRequest,
+    ApiResponse,
+    DEFAULT_PROMPT_STRUCTURE,
+    Parameters,
+} from './types';
 
 export type generateTextProps = {
     id: string;
@@ -24,10 +29,14 @@ const generateText = async ({
         await new Promise((r) => setTimeout(r, 800));
     }
 
+    const promptBase = parameters.promptBase ?? DEFAULT_PROMPT_STRUCTURE;
+
+    const text = `${promptBase.prefix} ${input} ${promptBase.categoryText} ${category} ${promptBase.themeText} ${theme} ${promptBase.suffix}`;
+
     const req: ApiRequest = {
         id: id,
         contexts: [theme, category],
-        prompt: input,
+        prompt: text,
         parameters,
     };
 

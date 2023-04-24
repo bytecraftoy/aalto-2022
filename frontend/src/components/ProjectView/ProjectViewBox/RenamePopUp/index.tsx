@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useState } from 'react';
 import { Popup } from '../../../Popup';
 import { CustomInput } from '../../../Inputs';
@@ -19,10 +19,12 @@ export const RenamePopup: React.FC<RenamePopupProps> = ({
     dataID,
 }) => {
     const [textInput, setText] = useState<string>('');
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const renameProject = (input: string) => {
-        rename(input);
-        setPopup(false);
+        const valid = input.trim().length;
+        if (valid) rename(input);
+        return !valid;
     };
 
     return (
@@ -33,15 +35,17 @@ export const RenamePopup: React.FC<RenamePopupProps> = ({
             setOpen={setPopup}
             onConfirm={() => renameProject(textInput)}
             onClose={() => setText('')}
+            onOpen={() => setTimeout(() => inputRef.current?.focus(), 200)}
         >
             <div
                 data-testid={dataID}
-                className="h-full w-full flex flex-col justify-between items-center px-4 py-4"
+                className="h-full w-full flex flex-col justify-between items-center px-4 py-4 gap-6"
             >
                 <p className="text-lg">
                     What would you like to call this project?
                 </p>
                 <CustomInput
+                    inputRef={inputRef}
                     label="New name for the project"
                     value={textInput}
                     onInput={({ target }) => {

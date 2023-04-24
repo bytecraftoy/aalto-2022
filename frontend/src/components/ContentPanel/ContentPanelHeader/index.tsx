@@ -11,18 +11,29 @@ import { DropdownMenu } from '../../DropdownMenu';
 interface ContentPanelHeaderProps {
     category: string;
     setCategory: (s: string) => void;
-    setPopup: (b: boolean) => void;
+
+    setAddPopup: (b: boolean) => void;
+    setOpenParams: (b: boolean) => void;
+    setClearPopup: (b: boolean) => void;
+    lockAll: (b: boolean) => void;
+    flipLock: () => void;
+    deleteEmpty: () => void;
+    swapBoxes: () => void;
 
     saveState: (force?: boolean) => Promise<void>;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
     category,
     setCategory,
-    setPopup,
+    setAddPopup,
+    setClearPopup,
+    setOpenParams,
+    deleteEmpty,
+    swapBoxes,
+    lockAll,
+    flipLock,
     saveState,
-    setOpen,
 }) => {
     return (
         <div className="flex flex-row justify-center items-center h-16 px-4 mt-6">
@@ -32,19 +43,59 @@ export const ContentPanelHeader: React.FC<ContentPanelHeaderProps> = ({
                     icon="Cog6Tooth"
                     items={[
                         {
-                            action: () => setPopup(true),
-                            icon: 'CubeIcon',
-                            name: 'Add Boxes',
-                        },
-                        {
-                            action: () => setOpen(true),
+                            action: () => setOpenParams(true),
                             icon: 'AdjustmentsHorizontalIcon',
                             name: 'Parameters',
+                            tooltip: 'Adjust AI settings',
                         },
                         {
                             action: () => saveState(true),
                             icon: 'DocumentCheckIcon',
                             name: 'Save',
+                            tooltip: 'Save panel data',
+                        },
+                        {
+                            action: () => setAddPopup(true),
+                            icon: 'CubeIcon',
+                            name: 'Add boxes',
+                            tooltip: 'Add multiple boxes with optional input',
+                        },
+                        {
+                            action: swapBoxes,
+                            icon: 'ArrowsUpDownIcon',
+                            name: 'Swap I/O',
+                            tooltip: 'Swap the contents of inputs and outputs',
+                        },
+                        {
+                            action: () => lockAll(true),
+                            icon: 'LockClosedIcon',
+                            name: 'Lock all',
+                            tooltip: 'Lock all boxes',
+                        },
+                        {
+                            action: () => lockAll(false),
+                            icon: 'LockOpenIcon',
+                            name: 'Unlock all',
+                            tooltip: 'Unlock all boxes',
+                        },
+                        {
+                            action: flipLock,
+                            icon: 'ArrowPathIcon',
+                            name: 'Flip lock',
+                            tooltip:
+                                'Unlock locked boxes, and lock unlocked boxes',
+                        },
+                        {
+                            action: deleteEmpty,
+                            icon: 'MinusCircleIcon',
+                            name: 'Remove empty',
+                            tooltip: 'Delete boxes that have no content',
+                        },
+                        {
+                            action: () => setClearPopup(true),
+                            icon: 'TrashIcon',
+                            name: 'Clear boxes',
+                            tooltip: 'Clear non-locked inputs',
                         },
                     ]}
                 />

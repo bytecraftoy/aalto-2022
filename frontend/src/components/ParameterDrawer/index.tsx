@@ -4,9 +4,15 @@ import { Transition } from '@headlessui/react';
 import { Divider } from '../Divider';
 import { ParameterSlider } from './ParameterSlider';
 import { ParameterToggle } from './ParameterToggle';
-import { Preset, Parameters } from '../../utils/types';
-import { IconButton } from '../Buttons';
+import {
+    Preset,
+    Parameters,
+    DEFAULT_PROMPT_STRUCTURE,
+    DEFAULT_PARAMETERS,
+} from '../../utils/types';
+import { FilledButton, IconButton } from '../Buttons';
 import { Dropdown } from '../Dropdown';
+import { CustomInput } from '../Inputs';
 
 interface ParameterDrawerProps {
     themeDrawer?: boolean;
@@ -84,6 +90,34 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
     const setOutputLength = (n: number) => {
         const params = { ...preset };
         params.outputLength = n;
+        setCustomParameters(params);
+    };
+
+    const setPromptPrefix = (s: string) => {
+        const params = { ...preset };
+        if (!params.promptBase) params.promptBase = DEFAULT_PROMPT_STRUCTURE;
+        params.promptBase = { ...params.promptBase, prefix: s };
+        setCustomParameters(params);
+    };
+
+    const setPromptCategoryText = (s: string) => {
+        const params = { ...preset };
+        if (!params.promptBase) params.promptBase = DEFAULT_PROMPT_STRUCTURE;
+        params.promptBase = { ...params.promptBase, categoryText: s };
+        setCustomParameters(params);
+    };
+
+    const setPromptThemeText = (s: string) => {
+        const params = { ...preset };
+        if (!params.promptBase) params.promptBase = DEFAULT_PROMPT_STRUCTURE;
+        params.promptBase = { ...params.promptBase, themeText: s };
+        setCustomParameters(params);
+    };
+
+    const setPromptSuffix = (s: string) => {
+        const params = { ...preset };
+        if (!params.promptBase) params.promptBase = DEFAULT_PROMPT_STRUCTURE;
+        params.promptBase = { ...params.promptBase, suffix: s };
         setCustomParameters(params);
     };
 
@@ -186,6 +220,86 @@ export const ParameterDrawer: React.FC<ParameterDrawerProps> = ({
                                 value={preset.outputLength}
                                 setValue={setOutputLength}
                                 colorPalette="primary"
+                            />
+                            <div className="w-full flex flex-row justify-between items-center py-6 px-4">
+                                <h3 className="font-medium text-lg">
+                                    Prompt construction
+                                </h3>
+                            </div>
+
+                            <div className="mb-4">
+                                <Divider />
+                            </div>
+
+                            <div className="px-[10%] grid gap-6">
+                                <CustomInput
+                                    onInput={(
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ) => setPromptPrefix(e.target.value)}
+                                    label="Prompt prefix"
+                                    value={
+                                        preset.promptBase?.prefix ??
+                                        DEFAULT_PROMPT_STRUCTURE.prefix
+                                    }
+                                />
+
+                                <p className="text-xl text-center text-neutral-30 font-thin">
+                                    {'{ '}input{' }'}
+                                </p>
+
+                                <CustomInput
+                                    onInput={(
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ) => setPromptCategoryText(e.target.value)}
+                                    label="Category prefix"
+                                    value={
+                                        preset.promptBase?.categoryText ??
+                                        DEFAULT_PROMPT_STRUCTURE.categoryText
+                                    }
+                                />
+
+                                <p className="text-xl text-center text-neutral-30 font-thin">
+                                    {'{ '}category{' }'}
+                                </p>
+
+                                <CustomInput
+                                    onInput={(
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ) => setPromptThemeText(e.target.value)}
+                                    label="Theme prefix"
+                                    value={
+                                        preset.promptBase?.themeText ??
+                                        DEFAULT_PROMPT_STRUCTURE.themeText
+                                    }
+                                />
+
+                                <p className="text-xl text-center text-neutral-30 font-thin">
+                                    {'{ '}theme{' }'}
+                                </p>
+
+                                <CustomInput
+                                    onInput={(
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ) => setPromptSuffix(e.target.value)}
+                                    label="Prompt suffix"
+                                    value={
+                                        preset.promptBase?.suffix ??
+                                        DEFAULT_PROMPT_STRUCTURE.suffix
+                                    }
+                                />
+                            </div>
+
+                            <div className="my-4">
+                                <Divider />
+                            </div>
+
+                            <FilledButton
+                                name="Reset defaults"
+                                colorPalette="primary"
+                                className="mx-auto"
+                                onClick={() =>
+                                    setCustomParameters(DEFAULT_PARAMETERS)
+                                }
                             />
                         </div>
                     </div>

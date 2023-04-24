@@ -12,6 +12,7 @@ interface CustomInputProps extends InputProps {
     onInput: React.FormEventHandler<HTMLInputElement>;
     onFocusOut?: React.FormEventHandler<HTMLInputElement>;
     textHelper?: string;
+    inputRef?: React.LegacyRef<HTMLInputElement>;
 }
 
 // Input template with predefined styles
@@ -22,13 +23,15 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     onFocusOut,
     label,
     textHelper,
+    inputRef,
     errors,
 }) => {
     const { showError, touchInput } = useError(errors);
 
     return (
-        <label className="relative max-w-[280px] w-full">
+        <label className="relative max-w-[280px] inline-block w-full">
             <input
+                ref={inputRef}
                 type={type}
                 spellCheck={'false'}
                 value={value}

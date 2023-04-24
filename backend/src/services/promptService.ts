@@ -95,3 +95,32 @@ export const createPrompt = (
     result.prompt = `Write a game flavor text for ${text} which is a ${category} in a ${theme} setting`;
     return result;
 };
+
+/**
+ * Create a prompt by combining contexts, a user provided text prompt, and
+ * AI parameters taken from some preset.
+ *
+ * Ignores contexts and instead passes prompt directly
+ * Added to allow frontend to build its own prompt structure
+ */
+export const createSimplePrompt = (
+    //the current implementation requires there to be exactly 2 contexts:
+    //the theme and the category
+    contexts: [string, string],
+    text: string,
+    creativity: number,
+    quality: number,
+    inputLength: number,
+    outputLength: number
+): Prompt => {
+    const template = convertParameters(
+        creativity,
+        quality,
+        inputLength,
+        outputLength
+    );
+
+    const result = template.parameters;
+    result.prompt = text;
+    return result;
+};

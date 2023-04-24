@@ -11,6 +11,17 @@ export const Panels = () => {
     // Redirect anonymous users from this page to the login page
     useLoginRedirect();
 
+    return (
+        <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
+            <PanelsPage />
+        </div>
+    );
+};
+
+// Fix for redundant requests sent by loginredirect
+// separate functionality to one component down to prevent useEffect from getting spammed
+
+const PanelsPage = () => {
     // Get all the panels of the user
     const panels = useAppSelector((state) => state.panels.value);
 
@@ -21,9 +32,5 @@ export const Panels = () => {
     // Current panel of the application, or the first one if the id is incorrect
     const panel = panels.find((e) => e.id === panelId) || panels[0];
 
-    return (
-        <div className="App bg-neutral-99 flex-1 flex flex-col justify-start items-center">
-            <ContentPanel key={panel.id} id={panel.id} />
-        </div>
-    );
+    return <ContentPanel key={panel.id} id={panel.id} />;
 };

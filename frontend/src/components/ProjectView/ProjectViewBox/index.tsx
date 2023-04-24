@@ -8,6 +8,7 @@ import { useDeleteProject } from '../hooks';
 import { useNavigate } from 'react-router-dom';
 import { useRenameProject } from '../hooks';
 import { RenamePopup } from './RenamePopUp';
+import { DeletePopup } from './DeletePopUp';
 import { useState } from 'react';
 import { useCloneProject } from '../hooks';
 import classNames from 'classnames';
@@ -37,6 +38,7 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
     const clone = useCloneProject();
 
     const [popupOpen, setPopup] = useState(false);
+    const [delPopupOpen, setDelPopupOpen] = useState(false);
 
     const openProject = async (id: string) => {
         const res = await getProject(id);
@@ -69,7 +71,7 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
             name: 'Delete',
             icon: 'XMarkIcon',
             color: 'red',
-            action: () => delProject(project.id),
+            action: () => setDelPopupOpen(true),
         });
     }
 
@@ -83,6 +85,13 @@ export const ProjectViewBox: React.FC<ProjectViewBoxProps> = ({
                 popupOpen={popupOpen}
                 setPopup={setPopup}
                 rename={(newName) => rename(project.id, newName)}
+            />
+
+            <DeletePopup
+                dataID={`delete-popup-(${project.name})`}
+                open={delPopupOpen}
+                setOpen={setDelPopupOpen}
+                del={() => delProject(project.id)}
             />
 
             <div
