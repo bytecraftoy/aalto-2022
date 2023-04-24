@@ -11,7 +11,7 @@ import {
     sendToProxy,
     ProxyError,
     responseGen,
-    createPrompt,
+    //createPrompt,
     createSimplePrompt,
     ValidationError,
 } from '../services';
