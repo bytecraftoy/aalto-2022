@@ -102,7 +102,7 @@ export const selectPassword = async (name: string): Promise<string | null> => {
         : null;
 };
 
-type UserRole = 'normal' | 'admin' | 'superadmin';
+type UserRole = 'normal' | 'admin';
 export const selectUserRole = async (id: string): Promise<UserRole | null> => {
     const text = 'SELECT role from users WHERE id = $1';
     const values = [id];
