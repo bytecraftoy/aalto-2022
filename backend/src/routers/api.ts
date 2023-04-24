@@ -12,6 +12,7 @@ import {
     ProxyError,
     responseGen,
     createPrompt,
+    createSimplePrompt,
     ValidationError,
 } from '../services';
 import { logger } from '../utils/logger';
@@ -32,7 +33,16 @@ apiRouter.post(
 
                 //Retrieve GPT3 response from proxy, and create our response based on it
                 const gpt = await sendToProxy(
-                    createPrompt(
+                    // createPrompt(
+                    //     contexts,
+                    //     prompt,
+                    //     parameters.creativity,
+                    //     parameters.quality,
+                    //     parameters.inputLength,
+                    //     parameters.outputLength
+                    // )
+
+                    createSimplePrompt(
                         contexts,
                         prompt,
                         parameters.creativity,

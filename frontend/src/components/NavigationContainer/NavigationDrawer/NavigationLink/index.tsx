@@ -25,7 +25,9 @@ export const NavigationLink: React.FC<NavigationLinkProps> = ({
         >
             <div className="flex py-4 pl-4 pr-5 gap-3">
                 {icon}
-                {label}
+                <p className="max-w-[200px] w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
+                    {label}
+                </p>
             </div>
         </Link>
     );

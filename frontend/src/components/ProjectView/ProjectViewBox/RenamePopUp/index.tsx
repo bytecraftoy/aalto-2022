@@ -21,8 +21,9 @@ export const RenamePopup: React.FC<RenamePopupProps> = ({
     const [textInput, setText] = useState<string>('');
 
     const renameProject = (input: string) => {
-        rename(input);
-        setPopup(false);
+        const valid = input.trim().length;
+        if (valid) rename(input);
+        return !valid;
     };
 
     return (
@@ -36,7 +37,7 @@ export const RenamePopup: React.FC<RenamePopupProps> = ({
         >
             <div
                 data-testid={dataID}
-                className="h-full w-full flex flex-col justify-between items-center px-4 py-4"
+                className="h-full w-full flex flex-col justify-between items-center px-4 py-4 gap-6"
             >
                 <p className="text-lg">
                     What would you like to call this project?
