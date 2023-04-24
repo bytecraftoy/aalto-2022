@@ -10,7 +10,6 @@ import {
     Preset,
     ContentPanelData,
     createEmptyPrompt,
-    DEFAULT_THEME,
 } from '../../utils/types';
 import { getProject, saveProject } from './../../utils/projects';
 
@@ -59,8 +58,8 @@ export const usePanel = (id: string) => {
         const newPanel = { ...panel };
         newPanel.overrideTheme = b;
 
-        // Reset params to default
-        if (!b) newPanel.parameters = DEFAULT_THEME.globalParameters;
+        // Reset params to theme
+        if (!b) newPanel.parameters = undefined;
         dispatch(updatePanel(newPanel));
     };
 
