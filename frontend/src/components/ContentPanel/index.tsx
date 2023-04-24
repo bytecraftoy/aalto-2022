@@ -92,8 +92,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({ id }) => {
 
     // Autosave when the drawer is closed
     useEffect(() => {
-        if (!open) saveState();
-    }, [open]);
+        if (!paramsOpen) saveState();
+    }, [paramsOpen]);
 
     return (
         //Take up full space, and center the content panel in it
